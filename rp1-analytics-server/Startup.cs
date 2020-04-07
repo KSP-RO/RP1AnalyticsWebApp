@@ -42,6 +42,11 @@ namespace rp1_analytics_server
 
             // app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins(
+                    "http://localhost:8080");
+            });
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

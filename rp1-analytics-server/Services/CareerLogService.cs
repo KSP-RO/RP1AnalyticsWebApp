@@ -29,5 +29,12 @@ namespace rp1_analytics_server.Services
             _careerLogs.InsertOne(careerLog);
             return careerLog;
         }
+
+        public List<CareerLog> CreateMany(List<CareerLog> careerLogs)
+        {
+            _careerLogs.InsertMany(careerLogs);
+            return careerLogs;
+        }
+
     }
 }

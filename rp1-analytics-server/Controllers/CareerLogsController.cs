@@ -37,10 +37,10 @@ namespace rp1_analytics_server.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<CareerLog> Create(CareerLog careerLog)
+        public ActionResult<CareerLog> CreateMany(List<CareerLog> careerLogs)
         {
-            _careerLogService.Create(careerLog);
-            return CreatedAtRoute("GetCareerLog", new {id = careerLog.Id}, careerLog);
+            _careerLogService.CreateMany(careerLogs);
+            return CreatedAtRoute("GetCareerLogs", careerLogs);
         }
     }
 }
