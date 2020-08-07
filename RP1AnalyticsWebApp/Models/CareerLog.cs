@@ -1,14 +1,13 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace rp1_analytics_server.Models
+namespace RP1AnalyticsWebApp.Models
 {
     public class CareerLog
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-
 
         public string EpochStartDate { get; set; }
         public string EpochEndDate { get; set; }

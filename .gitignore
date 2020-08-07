@@ -204,11 +204,12 @@ project.lock.json
 
 # Output folder used by Webpack or other FE stuff
 **/node_modules/*
-**/wwwroot/*
 
 # SpecFlow specific
 *.feature.cs
 *.feature.xlsx.*
 *.Specs_*.html
+
 rp1-analytics-server/appsettings.Development.json
 rp1-analytics-server/appsettings.json
+*.pubxml

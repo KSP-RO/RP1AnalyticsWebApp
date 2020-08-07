@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "rp1_analytics_server": {
+    "RP1AnalyticsWebApp": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "",

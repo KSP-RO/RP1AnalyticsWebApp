@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Microsoft.ApplicationInsights;
 using MongoDB.Driver;
-using rp1_analytics_server.Models;
+using RP1AnalyticsWebApp.Models;
 
-namespace rp1_analytics_server.Services
+namespace RP1AnalyticsWebApp.Services
 {
     public class CareerLogService
     {
@@ -10,19 +11,19 @@ namespace rp1_analytics_server.Services
 
         public CareerLogService(ICareerLogDatabaseSettings settings)
         {
-            {
-                var client = new MongoClient(settings.ConnectionString);
-                var database = client.GetDatabase(settings.DatabaseName);
+            var client = new MongoClient(settings.ConnectionString);
+            var database = client.GetDatabase(settings.DatabaseName);
 
-                _careerLogs = database.GetCollection<CareerLog>(settings.CareerLogsCollectionName);
-            }
+            _careerLogs = database.GetCollection<CareerLog>(settings.CareerLogsCollectionName);
         }
 
         public List<CareerLog> Get() =>
             _careerLogs.Find(FilterDefinition<CareerLog>.Empty).ToList();
 
-        public CareerLog Get(string id) =>
-            _careerLogs.Find<CareerLog>(book => book.Id == id).FirstOrDefault();
+        public CareerLog Get(string id)
+        {
+            return _careerLogs.Find<CareerLog>(entry => entry.Id == id).FirstOrDefault();
+        }
 
         public CareerLog Create(CareerLog careerLog)
         {
@@ -35,6 +36,5 @@ namespace rp1_analytics_server.Services
             _careerLogs.InsertMany(careerLogs);
             return careerLogs;
         }
-
     }
 }

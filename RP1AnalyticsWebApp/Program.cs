@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace rp1_analytics_server
+namespace RP1AnalyticsWebApp
 {
     public class Program
     {

@@ -1,0 +1,20 @@
+﻿@page
+@model rp1_analytics_server.HomeModel
+@{
+    ViewData["Title"] = "RP-1 Analytics";
+}
+
+<label for="uuid_input">UUID</label>
+<input name="uuid_input"
+       id="uuid_input"
+       placeholder="Enter UUID as displayed on the web export dialog"
+       type="text" />
+<button class="waves-effect waves-light btn" onclick="getCareerLogs()">
+    Get Career Log
+</button>
+
+<div id="chart"></div>
+
+@section Scripts {
+    <script src="~/js/careerLog.js" asp-append-version="true"></script>
+}

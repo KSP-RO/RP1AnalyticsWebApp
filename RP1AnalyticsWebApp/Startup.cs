@@ -4,10 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using rp1_analytics_server.Models;
-using rp1_analytics_server.Services;
+using RP1AnalyticsWebApp.Models;
+using RP1AnalyticsWebApp.Services;
 
-namespace rp1_analytics_server
+namespace RP1AnalyticsWebApp
 {
     public class Startup
     {
@@ -30,6 +30,8 @@ namespace rp1_analytics_server
             services.AddSingleton<CareerLogService>();
 
             services.AddControllers();
+            services.AddRazorPages();
+            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,15 +41,25 @@ namespace rp1_analytics_server
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
 
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseCors(builder =>
             {
                 builder.WithOrigins(
                     "http://localhost:8080");
             });
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+            });
         }
     }
 }

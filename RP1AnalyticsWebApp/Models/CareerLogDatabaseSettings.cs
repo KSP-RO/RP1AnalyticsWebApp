@@ -1,4 +1,4 @@
-﻿namespace rp1_analytics_server.Models
+﻿namespace RP1AnalyticsWebApp.Models
 {
     public class CareerLogDatabaseSettings : ICareerLogDatabaseSettings
     {

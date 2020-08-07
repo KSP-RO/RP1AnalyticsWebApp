@@ -1,20 +1,23 @@
 ﻿using System.Collections.Generic;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using rp1_analytics_server.Models;
-using rp1_analytics_server.Services;
+using RP1AnalyticsWebApp.Models;
+using RP1AnalyticsWebApp.Services;
 
-namespace rp1_analytics_server.Controllers
+namespace RP1AnalyticsWebApp.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CareerLogsController : ControllerBase
     {
         private readonly CareerLogService _careerLogService;
+        private readonly TelemetryClient _telemetry;
 
-        public CareerLogsController(CareerLogService careerLogService)
+        public CareerLogsController(CareerLogService careerLogService, TelemetryClient telemetry)
         {
             _careerLogService = careerLogService;
+            _telemetry = telemetry;
         }
 
         [HttpGet(Name = "GetCareerLogs")]
@@ -39,6 +42,7 @@ namespace rp1_analytics_server.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<CareerLog> CreateMany(List<CareerLog> careerLogs)
         {
+            _telemetry.TrackEvent("CareerLogsController-CreateMany");
             _careerLogService.CreateMany(careerLogs);
             return CreatedAtRoute("GetCareerLogs", careerLogs);
         }
