@@ -40,10 +40,10 @@ namespace RP1AnalyticsWebApp.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<CareerLog> CreateMany(List<CareerLog> careerLogs)
+        public ActionResult<CareerLogDto> CreateMany(List<CareerLogDto> careerLogs)
         {
             _telemetry.TrackEvent("CareerLogsController-CreateMany");
-            _careerLogService.CreateMany(careerLogs);
+            _careerLogService.Create(careerLogs);
             return CreatedAtRoute("GetCareerLogs", careerLogs);
         }
     }

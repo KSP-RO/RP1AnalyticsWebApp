@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.ApplicationInsights;
 using MongoDB.Driver;
 using RP1AnalyticsWebApp.Models;
@@ -25,16 +26,19 @@ namespace RP1AnalyticsWebApp.Services
             return _careerLogs.Find<CareerLog>(entry => entry.Id == id).FirstOrDefault();
         }
 
-        public CareerLog Create(CareerLog careerLog)
+        public CareerLog Create(List<CareerLogDto> careerLogDtos)
         {
-            _careerLogs.InsertOne(careerLog);
-            return careerLog;
-        }
+            var careerLog = new CareerLog
+            {
+                exportUuid = careerLogDtos[0].careerUuid,
+                epochStart = careerLogDtos[0].epoch,
+                epochEnd = careerLogDtos[^1].epoch,
+                careerLogEntries = new List<CareerLogDto>(careerLogDtos.Take(careerLogDtos.Count - 1).ToArray())
+            };
 
-        public List<CareerLog> CreateMany(List<CareerLog> careerLogs)
-        {
-            _careerLogs.InsertMany(careerLogs);
-            return careerLogs;
+            _careerLogs.InsertOne(careerLog);
+
+            return careerLog;
         }
     }
 }
