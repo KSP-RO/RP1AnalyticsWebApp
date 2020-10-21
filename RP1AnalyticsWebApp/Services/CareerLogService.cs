@@ -26,6 +26,11 @@ namespace RP1AnalyticsWebApp.Services
             return _careerLogs.Find<CareerLog>(entry => entry.exportUuid == id).FirstOrDefault();
         }
 
+        public List<string> GetCareerIDs()
+        {
+            return _careerLogs.Distinct<string>(nameof(CareerLog.exportUuid), FilterDefinition<CareerLog>.Empty).ToList();
+        }
+
         public CareerLog Create(List<CareerLogDto> careerLogDtos)
         {
             var careerLog = new CareerLog
