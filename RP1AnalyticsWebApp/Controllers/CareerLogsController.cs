@@ -24,7 +24,7 @@ namespace RP1AnalyticsWebApp.Controllers
         public ActionResult<List<CareerLog>> Get() =>
             _careerLogService.Get();
 
-        [HttpGet("{id:length(24)}", Name = "GetCareerLog")]
+        [HttpGet("{id:length(40)}", Name = "GetCareerLog")]
         public ActionResult<CareerLog> Get(string id)
         {
             var careerLog = _careerLogService.Get(id);

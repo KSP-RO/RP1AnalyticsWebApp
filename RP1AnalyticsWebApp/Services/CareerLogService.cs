@@ -23,7 +23,7 @@ namespace RP1AnalyticsWebApp.Services
 
         public CareerLog Get(string id)
         {
-            return _careerLogs.Find<CareerLog>(entry => entry.Id == id).FirstOrDefault();
+            return _careerLogs.Find<CareerLog>(entry => entry.exportUuid == id).FirstOrDefault();
         }
 
         public CareerLog Create(List<CareerLogDto> careerLogDtos)

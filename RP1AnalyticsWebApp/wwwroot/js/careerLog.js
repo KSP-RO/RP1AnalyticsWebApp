@@ -7,7 +7,7 @@
     if (uuidFromForm !== 'null' && uuidFromForm !== 'undefined' && uuidFromForm.length > 10) {
         fetch(`/api/careerlogs/${uuidFromForm}`)
             .then((res) => res.json())
-            .then((jsonLogs) => drawChart(jsonLogs))
+            .then((jsonLogs) => drawChart(jsonLogs.careerLogEntries))
             .catch((error) => alert(error));
     } else {
         window.alert("Please provide a valid log ID...");
@@ -19,7 +19,7 @@ function getEpochs(careerLogs) {
 
     let epochs = [];
 
-    careerLogs.entries.forEach((entry) => {
+    careerLogs.forEach((entry) => {
         epochs.push(entry.epoch);
     });
 
@@ -29,7 +29,7 @@ function getEpochs(careerLogs) {
 function getScienceEarned(careerLogs) {
     console.log("Fetching science earned from entries");
     let scienceEarned = [];
-    careerLogs.entries.forEach((entry) => {
+    careerLogs.forEach((entry) => {
         scienceEarned.push(entry.scienceEarned);
     });
 
@@ -41,7 +41,7 @@ function getCurrentFunds(careerLogs) {
 
     let currentFunds = [];
 
-    careerLogs.entries.forEach((entry) => {
+    careerLogs.forEach((entry) => {
         currentFunds.push(entry.currentFunds);
     });
 
@@ -53,7 +53,7 @@ function getVabUpgrades(careerLogs) {
 
     let vabUpgrades = [];
 
-    careerLogs.entries.forEach((entry) => {
+    careerLogs.forEach((entry) => {
         vabUpgrades.push(entry.vabUpgrades);
     });
 
@@ -65,7 +65,7 @@ function getSphUpgrades(careerLogs) {
 
     let sphUpgrades = [];
 
-    careerLogs.entries.forEach((entry) => {
+    careerLogs.forEach((entry) => {
         sphUpgrades.push(entry.sphUpgrades);
     });
 
@@ -77,7 +77,7 @@ function getRndUpgrades(careerLogs) {
 
     let rndUpgrades = [];
 
-    careerLogs.entries.forEach((entry) => {
+    careerLogs.forEach((entry) => {
         rndUpgrades.push(entry.rndUpgrades);
     });
 
@@ -88,8 +88,8 @@ function getFirstSatelliteMonth(careerLogs) {
 
     console.log("Fetching first Artificial Satellite month");
 
-    for (let i = 0; i < careerLogs.entries.length - 1; i++) {
-        let entry = careerLogs.entries[i];
+    for (let i = 0; i < careerLogs.length - 1; i++) {
+        let entry = careerLogs[i];
         for (let contractEvent of entry.contractEvents) {
             if (contractEvent === 'First Artificial Satellite') {
                 return {
