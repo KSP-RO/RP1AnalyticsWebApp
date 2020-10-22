@@ -210,6 +210,6 @@ project.lock.json
 *.feature.xlsx.*
 *.Specs_*.html
 
-rp1-analytics-server/appsettings.Development.json
-rp1-analytics-server/appsettings.json
+RP1AnalyticsWebApp/appsettings.Development.json
+RP1AnalyticsWebApp/appsettings.json
 *.pubxml

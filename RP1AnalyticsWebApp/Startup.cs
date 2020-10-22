@@ -32,6 +32,7 @@ namespace RP1AnalyticsWebApp
             services.AddControllers();
             services.AddRazorPages();
             services.AddApplicationInsightsTelemetry();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +47,12 @@ namespace RP1AnalyticsWebApp
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 API");
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
