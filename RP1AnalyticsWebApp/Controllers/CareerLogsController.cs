@@ -14,6 +14,8 @@ namespace RP1AnalyticsWebApp.Controllers
         private readonly CareerLogService _careerLogService;
         private readonly TelemetryClient _telemetry;
 
+        private bool IsLocalhost => string.Equals(HttpContext.Request.Host.Host, "localhost", System.StringComparison.OrdinalIgnoreCase);
+
         public CareerLogsController(CareerLogService careerLogService, TelemetryClient telemetry)
         {
             _careerLogService = careerLogService;
@@ -21,34 +23,91 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet(Name = "GetCareerLogs")]
-        public ActionResult<List<CareerLog>> Get() =>
-            _careerLogService.Get();
+        public ActionResult<List<CareerLog>> GetCareerLogs()
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetCareerLogs");
+            var res = _careerLogService.Get();
+            if (!IsLocalhost)
+            {
+                res.ForEach(c => c.RemoveNonPublicData());
+            }
+            return res;
+        }
 
         [HttpGet("IDs", Name = "GetCareerIDs")]
-        public ActionResult<List<string>> GetCareerIDs() =>
-            _careerLogService.GetCareerIDs();
-
-        [HttpGet("{id:length(40)}", Name = "GetCareerLog")]
-        public ActionResult<CareerLog> Get(string id)
+        public ActionResult<List<string>> GetCareerIDs()
         {
-            var careerLog = _careerLogService.Get(id);
+            _telemetry.TrackEvent("CareerLogsController-GetCareerIDs");
+            return _careerLogService.GetCareerIDs();
+        }
 
+        [HttpGet("{id:length(24)}", Name = "GetCareerLog")]
+        public ActionResult<CareerLog> GetCareerLog(string id)
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetCareerLog", new Dictionary<string, string>
+            {
+                { nameof(id), id }
+            });
+
+            var careerLog = _careerLogService.Get(id);
             if (careerLog == null)
             {
                 return NotFound();
             }
 
+            if (!IsLocalhost)
+            {
+                careerLog.RemoveNonPublicData();
+            }
+
             return careerLog;
+        }
+
+        [HttpGet("{id:length(24)}/Contracts", Name = "GetCareerContractCompletions")]
+        public ActionResult<List<ContractEvent>> GetCareerContractCompletions(string id)
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetCareerContractCompletions", new Dictionary<string, string>
+            {
+                { nameof(id), id }
+            });
+
+            List<ContractEvent> contractEvents = _careerLogService.GetRecords(id);
+            if (contractEvents == null)
+            {
+                return NotFound();
+            }
+
+            return contractEvents;
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<CareerLogDto> CreateMany(List<CareerLogDto> careerLogs)
+        public ActionResult<CareerLogDto> CreateCareer(CareerLog log)
         {
-            _telemetry.TrackEvent("CareerLogsController-CreateMany");
-            _careerLogService.Create(careerLogs);
-            return CreatedAtRoute("GetCareerLogs", careerLogs);
+            _telemetry.TrackEvent("CareerLogsController-CreateCareer", new Dictionary<string, string>
+            {
+                { nameof(CareerLog.name), log.name }
+            });
+
+            if (!IsLocalhost) return Unauthorized();
+
+            CareerLog res = _careerLogService.Create(log);
+            return CreatedAtRoute("CreateCareer", res);
+        }
+
+        [HttpPatch("{token:length(32)}", Name = "UpdateCareer")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<CareerLogDto> UpdateCareer(string token, CareerLogDto careerLog)
+        {
+            _telemetry.TrackEvent("CareerLogsController-UpdateCareer", new Dictionary<string, string>
+            {
+                { nameof(token), token }
+            });
+
+            CareerLog res = _careerLogService.Update(token, careerLog);
+            return CreatedAtRoute("UpdateCareer", res);
         }
     }
 }

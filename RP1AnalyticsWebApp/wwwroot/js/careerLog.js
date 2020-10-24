@@ -7,7 +7,7 @@
     if (uuidFromForm !== 'null' && uuidFromForm !== 'undefined' && uuidFromForm.length > 10) {
         fetch(`/api/careerlogs/${uuidFromForm}`)
             .then((res) => res.json())
-            .then((jsonLogs) => drawChart(jsonLogs.careerLogEntries))
+            .then((jsonLogs) => drawChart(jsonLogs))
             .catch((error) => alert(error));
     } else {
         window.alert("Please provide a valid log ID...");
@@ -20,7 +20,7 @@ function getEpochs(careerLogs) {
     let epochs = [];
 
     careerLogs.forEach((entry) => {
-        epochs.push(entry.epoch);
+        epochs.push(moment.utc(entry.startDate).format('yyyy-MM'));
     });
 
     return epochs;
@@ -54,22 +54,10 @@ function getVabUpgrades(careerLogs) {
     let vabUpgrades = [];
 
     careerLogs.forEach((entry) => {
-        vabUpgrades.push(entry.vabUpgrades);
+        vabUpgrades.push(entry.vabUpgrades + entry.sphUpgrades);
     });
 
     return vabUpgrades;
-}
-
-function getSphUpgrades(careerLogs) {
-    console.log("Fetching vab upgrades from entries");
-
-    let sphUpgrades = [];
-
-    careerLogs.forEach((entry) => {
-        sphUpgrades.push(entry.sphUpgrades);
-    });
-
-    return sphUpgrades;
 }
 
 function getRndUpgrades(careerLogs) {
@@ -90,13 +78,11 @@ function getFirstSatelliteMonth(careerLogs) {
 
     for (let i = 0; i < careerLogs.length - 1; i++) {
         let entry = careerLogs[i];
-        for (let contractEvent of entry.contractEvents) {
-            if (contractEvent === 'First Artificial Satellite') {
-                return {
-                    month: entry.epoch,
-                    index: i
-                };
-            }
+        if (entry.internalName === 'first_OrbitUncrewed' && entry.type === 1) {
+            return {
+                month: moment.utc(entry.date).format('yyyy-MM'),
+                index: i
+            };
         }
     }
     return {
@@ -105,8 +91,9 @@ function getFirstSatelliteMonth(careerLogs) {
     };
 }
 
-function drawChart(careerLogs) {
+function drawChart(careerLog) {
     console.log("Drawing Chart");
+    const careerPeriods = careerLog.careerLogEntries;
 
     const options = {
         chart: {
@@ -129,7 +116,7 @@ function drawChart(careerLogs) {
             discrete: [
                 {
                     seriesIndex: 0,
-                    dataPointIndex: this.getFirstSatelliteMonth(careerLogs).index,
+                    //dataPointIndex: this.getFirstSatelliteMonth(careerLog.contractEventEntries).index,
                     strokeColors: '#red',
                     strokeWidth: 1,
                     strokeOpacity: 0.2,
@@ -155,28 +142,24 @@ function drawChart(careerLogs) {
         },
         series: [
             {
+                name: "Current Funds",
+                data: getCurrentFunds(careerPeriods),
+            },
+            {
                 name: "Science Earned",
-                data: getScienceEarned(careerLogs),
+                data: getScienceEarned(careerPeriods),
             },
             {
                 name: "VAB Upgrades",
-                data: getVabUpgrades(careerLogs),
-            },
-            {
-                name: "SPH Upgrades",
-                data: getSphUpgrades(careerLogs),
+                data: getVabUpgrades(careerPeriods),
             },
             {
                 name: "RnD Upgrades",
-                data: getRndUpgrades(careerLogs),
-            },
-            {
-                name: "Current Funds",
-                data: getCurrentFunds(careerLogs),
+                data: getRndUpgrades(careerPeriods),
             },
         ],
         xaxis: {
-            categories: getEpochs(careerLogs),
+            categories: getEpochs(careerPeriods),
         },
         yaxis: [
             {
@@ -209,11 +192,7 @@ function drawChart(careerLogs) {
             {
                 seriesName: 'VAB Upgrades',
                 show: false,
-            },
-            {
-                seriesName: 'VAB Upgrades',
-                show: false,
-            },
+            }
         ],
     };
 
