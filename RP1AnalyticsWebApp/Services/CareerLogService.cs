@@ -61,9 +61,10 @@ namespace RP1AnalyticsWebApp.Services
             }).ToList();
         }
 
-        public List<string> GetCareerIDs()
+        public List<CareerListItem> GetCareerList()
         {
-            return _careerLogs.Distinct<string>(nameof(CareerLog.Id), FilterDefinition<CareerLog>.Empty).ToList();
+            var p = Builders<CareerLog>.Projection.Expression(c => new CareerListItem(c));
+            return _careerLogs.Find(FilterDefinition<CareerLog>.Empty).Project(p).ToList();
         }
 
         public CareerLog Create(CareerLog log)

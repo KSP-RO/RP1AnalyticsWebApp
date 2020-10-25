@@ -34,11 +34,11 @@ namespace RP1AnalyticsWebApp.Controllers
             return res;
         }
 
-        [HttpGet("IDs", Name = "GetCareerIDs")]
-        public ActionResult<List<string>> GetCareerIDs()
+        [HttpGet("List", Name = "GetCareerList")]
+        public ActionResult<List<CareerListItem>> GetCareerList()
         {
-            _telemetry.TrackEvent("CareerLogsController-GetCareerIDs");
-            return _careerLogService.GetCareerIDs();
+            _telemetry.TrackEvent("CareerLogsController-GetCareerList");
+            return _careerLogService.GetCareerList();
         }
 
         [HttpGet("{id:length(24)}", Name = "GetCareerLog")]

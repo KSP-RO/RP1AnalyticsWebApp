@@ -1,16 +1,15 @@
-﻿function getCareerLogs() {
-    console.log("Getting Logs...");
+﻿function getCareerLogs(careerId) {
+    console.log("Getting Logs for " + careerId + "...");
 
-    const uuidFromForm = document.querySelector("#uuid_input").value;
-    console.log(uuidFromForm);
-
-    if (uuidFromForm !== 'null' && uuidFromForm !== 'undefined' && uuidFromForm.length > 10) {
-        fetch(`/api/careerlogs/${uuidFromForm}`)
+    if (!careerId) {
+        document.getElementById('chart').classList.toggle('hide', true);
+    }
+    else {
+        fetch(`/api/careerlogs/${careerId}`)
             .then((res) => res.json())
             .then((jsonLogs) => drawChart(jsonLogs))
+            .then(() => document.getElementById('chart').classList.toggle('hide', false))
             .catch((error) => alert(error));
-    } else {
-        window.alert("Please provide a valid log ID...");
     }
 }
 

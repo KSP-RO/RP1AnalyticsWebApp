@@ -1,17 +1,16 @@
 ﻿@page
-@model rp1_analytics_server.HomeModel
+@model rp1_analytics_server.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "RP-1 Analytics";
 }
 
-<label for="uuid_input">UUID</label>
-<input name="uuid_input"
-       id="uuid_input"
-       placeholder="Enter UUID as displayed on the web export dialog"
-       type="text" />
-<button class="waves-effect waves-light btn" onclick="getCareerLogs()">
-    Get Career Log
-</button>
+<div>
+    <label for="Career">Select a career</label>
+    <select asp-for="Career" asp-items="Model.Careers" onchange="getCareerLogs(this.value);" class="browser-default">
+        <option value=""></option>
+    </select>
+</div>
 
 <div id="chart"></div>
 
