@@ -7,13 +7,25 @@
 
 <div>
     <label for="Career">Select a career</label>
-    <select asp-for="Career" asp-items="Model.Careers" onchange="getCareerLogs(this.value);" class="browser-default">
+    <select asp-for="Career" asp-items="Model.Careers" onchange="careerSelectionChanged(this.value);" class="browser-default">
         <option value=""></option>
     </select>
+</div>
+
+<div id="contracts" class="contracts-app" v-cloak>
+    <template v-if="isVisible">
+        <h5>Completed contracts</h5>
+        <ul class="collection">
+            <li class="collection-item" v-for="item in contracts">
+                {{ item.contractDisplayName }} - {{ formatDate(item.date) }}
+            </li>
+        </ul>
+    </template>
 </div>
 
 <div id="chart"></div>
 
 @section Scripts {
+    <script src="~/js/contractsApp.js" asp-append-version="true"></script>
     <script src="~/js/careerLog.js" asp-append-version="true"></script>
 }

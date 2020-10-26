@@ -1,0 +1,7 @@
+﻿[v-cloak] {
+    display: none
+}
+
+.contracts-app .collection .collection-item {
+    padding: 6px 12px;
+}

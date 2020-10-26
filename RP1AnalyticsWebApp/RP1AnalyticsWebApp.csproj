@@ -18,9 +18,5 @@
       <WCFMetadata Include="Connected Services" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="wwwroot\css\" />
-    </ItemGroup>
-
 
 </Project>

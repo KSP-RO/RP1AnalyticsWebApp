@@ -58,7 +58,7 @@ namespace RP1AnalyticsWebApp.Services
                 ContractDisplayName = kvp.Value,
                 Date = c.contractEventEntries.FirstOrDefault(e => e.type == ContractEventType.Complete &&
                                                                   string.Equals(e.internalName, kvp.Key, StringComparison.OrdinalIgnoreCase))?.date
-            }).ToList();
+            }).OrderBy(ce => ce.Date).ToList();
         }
 
         public List<CareerListItem> GetCareerList()
