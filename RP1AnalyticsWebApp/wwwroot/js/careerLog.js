@@ -2,6 +2,17 @@
     const app = Vue.createApp(Contracts);
     const vm = app.mount('#contracts');
 
+    let chart = null;
+
+    window.addEventListener('resize', () => {
+        if (!chart) return;
+        chart.updateOptions({
+            chart: {
+                height: calculateChartHeight()
+            }
+        });
+    });
+
     window.careerSelectionChanged = function getCareerLogs(careerId) {
         console.log("Getting Logs for " + careerId + "...");
 
@@ -110,8 +121,8 @@
         const options = {
             chart: {
                 type: "line",
-                height: 700,
-                width: 1800,
+                height: calculateChartHeight(),
+                width: '100%',
             },
             markers: {
                 size: 1,
@@ -232,8 +243,11 @@
             ],
         };
 
-        const chart = new ApexCharts(document.querySelector("#chart"), options);
-
+        chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
+    }
+
+    function calculateChartHeight() {
+        return Math.max(Math.min(window.innerHeight * 0.85, 1000), 300);
     }
 })();
