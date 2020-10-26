@@ -105,6 +105,7 @@
     function drawChart(careerLog) {
         console.log("Drawing Chart");
         const careerPeriods = careerLog.careerLogEntries;
+        if (!careerPeriods) return;
 
         const options = {
             chart: {

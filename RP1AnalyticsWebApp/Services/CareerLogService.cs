@@ -52,6 +52,8 @@ namespace RP1AnalyticsWebApp.Services
                 // TODO: other interesting milestones
             };
 
+            if (c.contractEventEntries == null) return new List<ContractEvent>(0);
+
             return contractDict.Select(kvp => new ContractEvent
             {
                 ContractInternalName = kvp.Key,
