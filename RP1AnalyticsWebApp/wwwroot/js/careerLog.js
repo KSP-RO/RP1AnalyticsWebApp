@@ -31,7 +31,7 @@
         let epochs = [];
 
         careerLogs.forEach((entry) => {
-            epochs.push(moment.utc(entry.startDate).format('YYYY-MM'));
+            epochs.push(entry.startDate);
         });
 
         return epochs;
@@ -124,18 +124,18 @@
                 radius: 1,
                 offsetX: 0,
                 offsetY: 0,
-                discrete: [
-                    {
-                        seriesIndex: 0,
-                        //dataPointIndex: this.getFirstSatelliteMonth(careerLog.contractEventEntries).index,
-                        strokeColors: '#red',
-                        strokeWidth: 1,
-                        strokeOpacity: 0.2,
-                        strokeDashArray: 0,
-                        fillOpacity: 1,
-                        size: 5,
-                    },
-                ],
+                //discrete: [
+                //    {
+                //        seriesIndex: 0,
+                //        dataPointIndex: this.getFirstSatelliteMonth(careerLog.contractEventEntries).index,
+                //        strokeColors: '#red',
+                //        strokeWidth: 1,
+                //        strokeOpacity: 0.2,
+                //        strokeDashArray: 0,
+                //        fillOpacity: 1,
+                //        size: 5,
+                //    },
+                //],
             },
             stroke: {
                 show: true,
@@ -150,6 +150,11 @@
                     colors: ["#f3f3f3", "transparent"],
                     opacity: 0.5,
                 },
+            },
+            tooltip: {
+                x: {
+                    format: 'yyyy-MM'
+                }
             },
             series: [
                 {
@@ -170,10 +175,13 @@
                 },
             ],
             xaxis: {
-                categories: getEpochs(careerPeriods),
+                type: 'datetime',
+                categories: getEpochs(careerPeriods)
             },
             yaxis: [
                 {
+                    seriesName: 'Current Funds',
+                    min: 0,
                     title: {
                         text: 'Funds $',
                     },
@@ -183,12 +191,22 @@
                     axisBorder: {
                         show: true,
                     },
+                    labels: {
+                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                    }
                 },
                 {
-                    seriesName: 'Total Funds',
+                    seriesName: 'Science Earned',
+                    title: {
+                        text: 'Sci',
+                    },
                     show: false,
+                    labels: {
+                        formatter: (val) => val && val.toLocaleString('en-GB', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+                    }
                 },
                 {
+                    seriesName: 'VAB Upgrades',
                     opposite: true,
                     axisTicks: {
                         show: true,
@@ -199,10 +217,16 @@
                     title: {
                         text: 'Upgrade Points',
                     },
+                    labels: {
+                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                    }
                 },
                 {
-                    seriesName: 'VAB Upgrades',
+                    seriesName: 'RnD Upgrades',
                     show: false,
+                    labels: {
+                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                    }
                 }
             ],
         };
