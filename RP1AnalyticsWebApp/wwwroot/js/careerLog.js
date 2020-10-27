@@ -70,6 +70,20 @@
         return currentFunds;
     }
 
+    function getFundsEarned(careerLogs) {
+        console.log("Fetching earned funds from entries");
+
+        let totals = [];
+        let total = 0;
+
+        careerLogs.forEach((entry) => {
+            total += entry.advanceFunds + entry.rewardFunds + entry.otherFundsEarned;
+            totals.push(total);
+        });
+
+        return totals;
+    }
+
     function getVabUpgrades(careerLogs) {
         console.log("Fetching vab upgrades from entries");
 
@@ -174,6 +188,10 @@
                     data: getCurrentFunds(careerPeriods),
                 },
                 {
+                    name: "Funds Earned",
+                    data: getFundsEarned(careerPeriods),
+                },
+                {
                     name: "Science Earned",
                     data: getScienceEarned(careerPeriods),
                 },
@@ -193,6 +211,7 @@
             yaxis: [
                 {
                     seriesName: 'Current Funds',
+                    showAlways: true,
                     min: 0,
                     title: {
                         text: 'Funds $',
@@ -203,6 +222,13 @@
                     axisBorder: {
                         show: true,
                     },
+                    labels: {
+                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                    }
+                },
+                {
+                    seriesName: 'Current Funds',
+                    show: false,
                     labels: {
                         formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
                     }
@@ -219,6 +245,7 @@
                 },
                 {
                     seriesName: 'VAB Upgrades',
+                    showAlways: true,
                     opposite: true,
                     axisTicks: {
                         show: true,
@@ -234,7 +261,7 @@
                     }
                 },
                 {
-                    seriesName: 'RnD Upgrades',
+                    seriesName: 'VAB Upgrades',
                     show: false,
                     labels: {
                         formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
@@ -245,6 +272,7 @@
 
         chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
+        chart.hideSeries('Funds Earned');
     }
 
     function calculateChartHeight() {
