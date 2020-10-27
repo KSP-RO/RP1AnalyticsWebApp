@@ -36,38 +36,13 @@
         }
     };
 
-    function getEpochs(careerLogs) {
-        console.log("Fetching epochs from entries");
-
-        let epochs = [];
-
+    function getValuesForField(careerLogs, fieldName) {
+        let arr = [];
         careerLogs.forEach((entry) => {
-            epochs.push(entry.startDate);
+            arr.push(entry[fieldName]);
         });
 
-        return epochs;
-    }
-
-    function getScienceEarned(careerLogs) {
-        console.log("Fetching science earned from entries");
-        let scienceEarned = [];
-        careerLogs.forEach((entry) => {
-            scienceEarned.push(entry.scienceEarned);
-        });
-
-        return scienceEarned;
-    }
-
-    function getCurrentFunds(careerLogs) {
-        console.log("Fetching current funds from entries");
-
-        let currentFunds = [];
-
-        careerLogs.forEach((entry) => {
-            currentFunds.push(entry.currentFunds);
-        });
-
-        return currentFunds;
+        return arr;
     }
 
     function getFundsEarned(careerLogs) {
@@ -94,18 +69,6 @@
         });
 
         return vabUpgrades;
-    }
-
-    function getRndUpgrades(careerLogs) {
-        console.log("Fetching vab upgrades from entries");
-
-        let rndUpgrades = [];
-
-        careerLogs.forEach((entry) => {
-            rndUpgrades.push(entry.rndUpgrades);
-        });
-
-        return rndUpgrades;
     }
 
     function getFirstSatelliteMonth(careerLogs) {
@@ -185,15 +148,23 @@
             series: [
                 {
                     name: "Current Funds",
-                    data: getCurrentFunds(careerPeriods),
+                    data: getValuesForField(careerPeriods, 'currentFunds'),
                 },
                 {
                     name: "Funds Earned",
                     data: getFundsEarned(careerPeriods),
                 },
                 {
+                    name: "Advance Funds",
+                    data: getValuesForField(careerPeriods, 'advanceFunds'),
+                },
+                {
+                    name: "Reward Funds",
+                    data: getValuesForField(careerPeriods, 'rewardFunds'),
+                },
+                {
                     name: "Science Earned",
-                    data: getScienceEarned(careerPeriods),
+                    data: getValuesForField(careerPeriods, 'scienceEarned'),
                 },
                 {
                     name: "VAB Upgrades",
@@ -201,14 +172,30 @@
                 },
                 {
                     name: "RnD Upgrades",
-                    data: getRndUpgrades(careerPeriods),
-                },
+                    data: getValuesForField(careerPeriods, 'rndUpgrades'),
+                }
             ],
             xaxis: {
                 type: 'datetime',
-                categories: getEpochs(careerPeriods)
+                categories: getValuesForField(careerPeriods, 'startDate')
             },
             yaxis: [
+                {
+                    seriesName: 'Current Funds',
+                    min: 0,
+                    labels: {
+                        show: false,
+                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                    }
+                },
+                {
+                    seriesName: 'Current Funds',
+                    min: 0,
+                    labels: {
+                        show: false,
+                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                    }
+                },
                 {
                     seriesName: 'Current Funds',
                     showAlways: true,
@@ -228,8 +215,10 @@
                 },
                 {
                     seriesName: 'Current Funds',
-                    show: false,
+                    min: 0,
+                    showAlways: true,
                     labels: {
+                        show: false,
                         formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
                     }
                 },
@@ -262,8 +251,9 @@
                 },
                 {
                     seriesName: 'VAB Upgrades',
-                    show: false,
+                    showAlways: true,
                     labels: {
+                        show: false,
                         formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
                     }
                 }
@@ -273,6 +263,8 @@
         chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
         chart.hideSeries('Funds Earned');
+        chart.hideSeries('Advance Funds');
+        chart.hideSeries('Reward Funds');
     }
 
     function calculateChartHeight() {
