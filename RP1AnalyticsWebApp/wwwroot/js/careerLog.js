@@ -21,6 +21,8 @@
             vm.contracts = null;
         }
         else {
+            chart?.destroy();
+
             fetch(`/api/careerlogs/${careerId}`)
                 .then((res) => res.json())
                 .then((jsonLogs) => drawChart(jsonLogs))
