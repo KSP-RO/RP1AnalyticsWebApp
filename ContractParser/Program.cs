@@ -58,7 +58,7 @@ namespace ContractParser
             }
 
             Console.WriteLine($"Successfully created json in {fullOutPath} from {ContractHandler.Count} parsed contracts");
-            return;
+            Console.ReadLine();
         }
 
         private static bool LoadAllFiles(string folderPath)

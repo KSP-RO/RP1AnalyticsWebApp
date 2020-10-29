@@ -9,6 +9,8 @@ namespace ContractParser
         public string Name { get; set; }
         public string Title { get; set; }
 
+        private bool genericTitle = false;
+
         public Contract(List<string[]> cfg)
         {
             if (cfg == null || cfg.Count == 0)
@@ -49,7 +51,12 @@ namespace ContractParser
                     switch (field)
                     {
                         case "title":
+                            if(!genericTitle)
+                                Title = value;
+                            break;
+                        case "genericTitle":
                             Title = value;
+                            genericTitle = true;
                             break;
                         case "name":
                             Name = value;
@@ -63,6 +70,7 @@ namespace ContractParser
                     GetDataFromBlock(block);
                 }
             }
+
         }
 
         private void GetDataFromBlock(ConfigBlock block)
