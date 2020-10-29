@@ -4,7 +4,10 @@
     const app = Vue.createApp(Contracts);
     const vm = app.mount('#contracts');
 
+    let contractEvents = null;
     let chart = null;
+    let tooltipDiv = null;
+    let monthIdx = -1;
 
     window.addEventListener('resize', () => {
         if (!chart) return;
@@ -19,6 +22,7 @@
         console.log("Getting Logs for " + careerId + "...");
 
         if (!careerId) {
+            contractEvents = null;
             document.getElementById('chart').classList.toggle('hide', true);
             vm.contracts = null;
         }
@@ -35,6 +39,13 @@
                 .then((res) => res.json())
                 .then((jsonContracts) => {
                     vm.contracts = jsonContracts;
+                })
+                .catch((error) => alert(error));
+
+            fetch(`/api/careerlogs/${careerId}/contracts`)
+                .then((res) => res.json())
+                .then((jsonContracts) => {
+                    contractEvents = jsonContracts;
                 })
                 .catch((error) => alert(error));
         }
@@ -104,6 +115,11 @@
                 type: "line",
                 height: calculateChartHeight(),
                 width: '100%',
+                events: {
+                    legendClick: function (chartContext, seriesIndex, config) {
+                        window.setTimeout(appendCustomTooltipDiv, 0);
+                    }
+                }
             },
             markers: {
                 size: 1,
@@ -269,6 +285,47 @@
         chart.hideSeries('Funds Earned');
         chart.hideSeries('Advance Funds');
         chart.hideSeries('Reward Funds');
+
+        appendCustomTooltipDiv();
+    }
+
+    function appendCustomTooltipDiv() {
+        tooltipDiv = document.createElement('div');
+        tooltipDiv.className = 'apexcharts-tooltip-series-group apexcharts-active contract-info';
+        tooltipDiv.style.cssText = 'order: 999; display: flex;';
+
+        const tooltipEl = chart.w.globals.tooltip.getElTooltip();
+        if (!tooltipEl.contains(tooltipDiv)) {
+            tooltipEl.appendChild(tooltipDiv);
+        }
+
+        const oldFn = chart.w.globals.tooltip.tooltipLabels.drawSeriesTexts;
+        chart.w.globals.tooltip.tooltipLabels.drawSeriesTexts = ({ shared = true, ttItems, i = 0, j = null, y1, y2, e }) => {
+            if (monthIdx !== j && contractEvents) {
+                monthIdx = j;
+
+                const sDate = chart.opts.xaxis.categories[monthIdx];
+                const dtStart = moment.utc(sDate);
+                const dtEnd = dtStart.clone().add(1, 'months');
+
+                const complete = contractEvents.filter(c => c.type === ContractEventTypes.Complete &&
+                    moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
+                const accept = contractEvents.filter(c => c.type === ContractEventTypes.Accept &&
+                    moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
+                const fail = contractEvents.filter(c => c.type === ContractEventTypes.Fail &&
+                    moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
+                tooltipDiv.innerHTML = createTooltipContractRow('Completed', complete) +
+                    createTooltipContractRow('Accepted', accept) +
+                    createTooltipContractRow('Failed', fail);
+            }
+
+            oldFn.apply(chart.w.globals.tooltip.tooltipLabels, [{ shared, ttItems, i, j, y1, y2, e }]);
+        };
+    }
+
+    function createTooltipContractRow(title, contracts) {
+        const res = contracts.reduce((acc, c) => acc + (acc === '' ? '' : '; ') + c.contractDisplayName, '');
+        return res ? `<div class="contract-group"><span>${title}:</span>${res}</div>` : '';
     }
 
     function calculateChartHeight() {

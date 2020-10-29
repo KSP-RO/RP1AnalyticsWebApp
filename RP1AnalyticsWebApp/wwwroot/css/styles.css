@@ -5,3 +5,22 @@
 .contracts-app .collection .collection-item {
     padding: 6px 12px;
 }
+
+.apexcharts-tooltip-series-group.contract-info {
+    order: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    max-width: 250px;
+    white-space: normal;
+    font-size: 11px;
+}
+
+.apexcharts-tooltip-series-group.contract-info .contract-group {
+    padding-bottom: 5px;
+}
+
+.apexcharts-tooltip-series-group.contract-info .contract-group > span {
+    font-weight: 500;
+    padding-right: 6px;
+}
