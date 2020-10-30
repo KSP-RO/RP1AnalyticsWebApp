@@ -63,15 +63,32 @@ namespace RP1AnalyticsWebApp.Controllers
             return careerLog;
         }
 
-        [HttpGet("{id:length(24)}/Contracts", Name = "GetCareerContractCompletions")]
-        public ActionResult<List<ContractEvent>> GetCareerContractCompletions(string id)
+        [HttpGet("{id:length(24)}/Contracts", Name = "GetCareerContracts")]
+        public ActionResult<List<ContractEvent>> GetCareerContracts(string id)
         {
-            _telemetry.TrackEvent("CareerLogsController-GetCareerContractCompletions", new Dictionary<string, string>
+            _telemetry.TrackEvent("CareerLogsController-GetCareerContracts", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<ContractEvent> contractEvents = _careerLogService.GetRecords(id);
+            List<ContractEvent> contractEvents = _careerLogService.GetContractsForCareer(id);
+            if (contractEvents == null)
+            {
+                return NotFound();
+            }
+
+            return contractEvents;
+        }
+
+        [HttpGet("{id:length(24)}/CompletedMilestones", Name = "GetCareerCompletedMilestones")]
+        public ActionResult<List<ContractEvent>> GetCareerCompletedMilestones(string id)
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetCareerCompletedMilestones", new Dictionary<string, string>
+            {
+                { nameof(id), id }
+            });
+
+            List<ContractEvent> contractEvents = _careerLogService.GetCompletedMilestonesForCareer(id);
             if (contractEvents == null)
             {
                 return NotFound();

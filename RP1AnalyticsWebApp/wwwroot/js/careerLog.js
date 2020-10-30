@@ -1,4 +1,6 @@
 ﻿(() => {
+    const ContractEventTypes = Object.freeze({ 'Accept': 0, 'Complete': 1, 'Fail': 2, 'Cancel': 3 });
+
     const app = Vue.createApp(Contracts);
     const vm = app.mount('#contracts');
 
@@ -29,7 +31,7 @@
                 .then(() => document.getElementById('chart').classList.toggle('hide', false))
                 .catch((error) => alert(error));
 
-            fetch(`/api/careerlogs/${careerId}/contracts`)
+            fetch(`/api/careerlogs/${careerId}/completedmilestones`)
                 .then((res) => res.json())
                 .then((jsonContracts) => {
                     vm.contracts = jsonContracts;

@@ -6,6 +6,7 @@ namespace RP1AnalyticsWebApp.Models
     {
         public string ContractInternalName { get; set; }
         public string ContractDisplayName { get; set; }
+        public ContractEventType Type { get; set; }
         public DateTime? Date { get; set; }
     }
 }

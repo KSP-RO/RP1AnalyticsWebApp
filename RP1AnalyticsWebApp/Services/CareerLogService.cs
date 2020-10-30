@@ -31,7 +31,22 @@ namespace RP1AnalyticsWebApp.Services
             return _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
         }
 
-        public List<ContractEvent> GetRecords(string id)
+        public List<ContractEvent> GetContractsForCareer(string id)
+        {
+            var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
+            if (c == null) return null;
+            if (c.contractEventEntries == null) return new List<ContractEvent>(0);
+
+            return c.contractEventEntries.Select(ce => new ContractEvent
+            {
+                ContractInternalName = ce.internalName,
+                ContractDisplayName = _contractSettings.ContractNameDict[ce.internalName],
+                Type = ce.type,
+                Date = ce.date
+            }).ToList();
+        }
+
+        public List<ContractEvent> GetCompletedMilestonesForCareer(string id)
         {
             var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
             if (c == null) return null;
@@ -41,6 +56,7 @@ namespace RP1AnalyticsWebApp.Services
             {
                 ContractInternalName = name,
                 ContractDisplayName = _contractSettings.ContractNameDict[name],
+                Type = ContractEventType.Complete,
                 Date = c.contractEventEntries.FirstOrDefault(e => e.type == ContractEventType.Complete &&
                                                                   string.Equals(e.internalName, name, StringComparison.OrdinalIgnoreCase))?.date
             }).Where(ce => ce.Date.HasValue).OrderBy(ce => ce.Date).ToList();
