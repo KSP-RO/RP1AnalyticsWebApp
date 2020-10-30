@@ -10,13 +10,15 @@ namespace RP1AnalyticsWebApp.Services
     public class CareerLogService
     {
         private readonly IMongoCollection<CareerLog> _careerLogs;
+        private readonly IContractSettings _contractSettings;
 
-        public CareerLogService(ICareerLogDatabaseSettings settings)
+        public CareerLogService(ICareerLogDatabaseSettings dbSettings, IContractSettings contractSettings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
+            _contractSettings = contractSettings;
 
-            _careerLogs = database.GetCollection<CareerLog>(settings.CareerLogsCollectionName);
+            var client = new MongoClient(dbSettings.ConnectionString);
+            var database = client.GetDatabase(dbSettings.DatabaseName);
+            _careerLogs = database.GetCollection<CareerLog>(dbSettings.CareerLogsCollectionName);
         }
 
         public List<CareerLog> Get()
@@ -33,52 +35,14 @@ namespace RP1AnalyticsWebApp.Services
         {
             var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
             if (c == null) return null;
-
-            var contractDict = new Dictionary<string, string>
-            {
-                { "first_KarmanUncrewed", "Karman Line" },
-                { "SuborbitalReturn", "Reach a Suborbital Trajectory & Return (uncrewed)" },
-                { "BreakSoundBarrier", "Break the Sound Barrier (Crewed)" },
-                { "first_Downrange", "Downrange Milestone (3000km)" },
-                { "first_OrbitUncrewed", "First Artificial Satellite" },
-                { "first_OrbitScience", "First Scientific Satellite" },
-                { "first_MoonFlybyUncrewed", "Lunar Flyby (Uncrewed)" },
-                { "first_MoonImpact", "Lunar Impactor (Uncrewed)" },
-                { "first_MoonOrbitUncrewed", "Lunar Orbiter (Uncrewed)" },
-                { "landingMoon", "Lunar Landing (Uncrewed)" },
-                { "MoonLandingReturn", "Lunar Landing & Sample Return (Uncrewed)" },
-                { "MoonRover", "Lunar Rover (Uncrewed)" },
-                { "first_OrbitRecover", "Reach Orbital Speed & Return Safely to Earth" },
-                { "first_KarmanCrewed", "Pass the Karman Line (Crewed)" },
-                { "first_OrbitCrewed", "First Orbital Flight (Crewed)" },
-                { "Rendezvous", "First Rendezvous" },
-                { "first_EVA", "First EVA" },
-                { "first_Docking", "First Docking" },
-                { "first_MoonFlybyCrewed", "Crewed Lunar Flyby" },
-                { "FirstCrewedLunarOrbit", "First Crewed Lunar Orbit" },
-                { "first_MoonLandingCrewed", "First Human Moon Landing" },
-                { "flybyMercury", "Mercury Flyby" },
-                { "flybyVenus", "Venus Flyby" },
-                { "flybyMars", "Mars Flyby" },
-                { "flybyJupiter", "Jupiter Flyby" },
-                { "orbitMercury", "Mercury Orbit" },
-                { "orbitVenus", "Venus Orbit" },
-                { "orbitMars", "Mars Orbit" },
-                { "orbitJupiter", "Jupiter Orbit" },
-                { "landingMercury", "Mercury Landing" },
-                { "landingVenus", "Venus Landing" },
-                { "landingMars", "Mars Landing" },
-                // TODO: other interesting milestones
-            };
-
             if (c.contractEventEntries == null) return new List<ContractEvent>(0);
 
-            return contractDict.Select(kvp => new ContractEvent
+            return _contractSettings.MilestoneContractNames.Select(name => new ContractEvent
             {
-                ContractInternalName = kvp.Key,
-                ContractDisplayName = kvp.Value,
+                ContractInternalName = name,
+                ContractDisplayName = _contractSettings.ContractNameDict[name],
                 Date = c.contractEventEntries.FirstOrDefault(e => e.type == ContractEventType.Complete &&
-                                                                  string.Equals(e.internalName, kvp.Key, StringComparison.OrdinalIgnoreCase))?.date
+                                                                  string.Equals(e.internalName, name, StringComparison.OrdinalIgnoreCase))?.date
             }).Where(ce => ce.Date.HasValue).OrderBy(ce => ce.Date).ToList();
         }
 

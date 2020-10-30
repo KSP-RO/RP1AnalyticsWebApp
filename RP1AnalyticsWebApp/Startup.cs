@@ -27,6 +27,9 @@ namespace RP1AnalyticsWebApp
             services.AddSingleton<ICareerLogDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<CareerLogDatabaseSettings>>().Value);
 
+            services.AddSingleton<IContractSettings>(sp =>
+                sp.GetRequiredService<IOptions<ContractSettings>>().Value);
+
             services.AddSingleton<CareerLogService>();
 
             services.AddControllers();

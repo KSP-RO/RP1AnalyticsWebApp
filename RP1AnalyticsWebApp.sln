@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RP1AnalyticsWebApp", "RP1AnalyticsWebApp\RP1AnalyticsWebApp.csproj", "{05A4ABFE-19A0-4C2F-B8DA-D2FF352C0FA0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractParser", "ContractParser\ContractParser.csproj", "{0765EEF9-9D48-4263-871C-65CC65FC9C03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{05A4ABFE-19A0-4C2F-B8DA-D2FF352C0FA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05A4ABFE-19A0-4C2F-B8DA-D2FF352C0FA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05A4ABFE-19A0-4C2F-B8DA-D2FF352C0FA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0765EEF9-9D48-4263-871C-65CC65FC9C03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0765EEF9-9D48-4263-871C-65CC65FC9C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0765EEF9-9D48-4263-871C-65CC65FC9C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0765EEF9-9D48-4263-871C-65CC65FC9C03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
