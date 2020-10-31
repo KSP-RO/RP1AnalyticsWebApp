@@ -40,7 +40,7 @@ namespace RP1AnalyticsWebApp.Services
             return c.contractEventEntries.Select(ce => new ContractEvent
             {
                 ContractInternalName = ce.internalName,
-                ContractDisplayName = _contractSettings.ContractNameDict[ce.internalName],
+                ContractDisplayName = _contractSettings.ContractNameDict.TryGetValue(ce.internalName, out string disp) ? disp : ce.internalName,
                 Type = ce.type,
                 Date = ce.date
             }).ToList();
@@ -55,7 +55,7 @@ namespace RP1AnalyticsWebApp.Services
             return _contractSettings.MilestoneContractNames.Select(name => new ContractEvent
             {
                 ContractInternalName = name,
-                ContractDisplayName = _contractSettings.ContractNameDict[name],
+                ContractDisplayName = _contractSettings.ContractNameDict.TryGetValue(name, out string disp) ? disp : name,
                 Type = ContractEventType.Complete,
                 Date = c.contractEventEntries.FirstOrDefault(e => e.type == ContractEventType.Complete &&
                                                                   string.Equals(e.internalName, name, StringComparison.OrdinalIgnoreCase))?.date
