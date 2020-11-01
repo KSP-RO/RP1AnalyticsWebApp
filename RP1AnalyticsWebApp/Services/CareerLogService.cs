@@ -40,7 +40,7 @@ namespace RP1AnalyticsWebApp.Services
             return c.contractEventEntries.Select(ce => new ContractEvent
             {
                 ContractInternalName = ce.internalName,
-                ContractDisplayName = _contractSettings.ContractNameDict.TryGetValue(ce.internalName, out string disp) ? disp : ce.internalName,
+                ContractDisplayName = ResolveContractName(ce.internalName),
                 Type = ce.type,
                 Date = ce.date
             }).ToList();
@@ -55,11 +55,31 @@ namespace RP1AnalyticsWebApp.Services
             return _contractSettings.MilestoneContractNames.Select(name => new ContractEvent
             {
                 ContractInternalName = name,
-                ContractDisplayName = _contractSettings.ContractNameDict.TryGetValue(name, out string disp) ? disp : name,
+                ContractDisplayName = ResolveContractName(name),
                 Type = ContractEventType.Complete,
                 Date = c.contractEventEntries.FirstOrDefault(e => e.type == ContractEventType.Complete &&
                                                                   string.Equals(e.internalName, name, StringComparison.OrdinalIgnoreCase))?.date
             }).Where(ce => ce.Date.HasValue).OrderBy(ce => ce.Date).ToList();
+        }
+
+        public List<ContractEventWithCareerInfo> GetEventsForContract(string contract, ContractEventType evtType = ContractEventType.Complete)
+        {
+            var projection = Builders<CareerLog>.Projection.Expression(c => new ContractEventWithCareerInfo
+            {
+                CareerId = c.Id,
+                CareerName = c.name,
+                ContractInternalName = contract,
+                ContractDisplayName = ResolveContractName(contract),
+                Type = evtType,
+                Date = c.contractEventEntries.First(ce => ce.internalName == contract && ce.type == evtType).date
+            });
+
+            var events = _careerLogs.Find(entry => entry.contractEventEntries.Any(ce => ce.internalName == contract && ce.type == evtType))
+                                    .Project(projection)
+                                    .ToList();
+            // Cannot use server-side sort here. https://stackoverflow.com/q/56988743
+            events.Sort((a, b) => a.Date.Value.CompareTo(b.Date.Value));
+            return events;
         }
 
         public List<CareerListItem> GetCareerList()
@@ -102,6 +122,11 @@ namespace RP1AnalyticsWebApp.Services
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
             return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.token == token, updateDef, opts);
+        }
+
+        private string ResolveContractName(string name)
+        {
+            return _contractSettings.ContractNameDict.TryGetValue(name, out string disp) ? disp : name;
         }
     }
 }

@@ -97,6 +97,18 @@ namespace RP1AnalyticsWebApp.Controllers
             return contractEvents;
         }
 
+        [HttpGet("Contracts/{contract}", Name = "GetCompletionsForContract")]
+        public ActionResult<List<ContractEventWithCareerInfo>> GetCompletionsForContract(string contract)
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetCompletionsForContract", new Dictionary<string, string>
+            {
+                { nameof(contract), contract }
+            });
+
+            List<ContractEventWithCareerInfo> events = _careerLogService.GetEventsForContract(contract, ContractEventType.Complete);
+            return events;
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
