@@ -1,0 +1,21 @@
+﻿@page
+@model RP1AnalyticsWebApp.RecordsModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Records";
+}
+
+<h5>Records</h5>
+
+<table class="striped">
+    <tbody>
+        @foreach (var r in Model.Records)
+        {
+            <tr>
+                <td>@r.ContractDisplayName</td>
+                <td>@($"{r.Date:yyyy-MM-dd}")</td>
+                <td>@r.CareerName</td>
+            </tr>
+        }
+    </tbody>
+</table>
