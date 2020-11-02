@@ -18,7 +18,16 @@
         });
     });
 
-    window.careerSelectionChanged = function getCareerLogs(careerId) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialCareerId = urlParams.get('careerId');
+    if (initialCareerId) {
+        document.getElementById('Career').value = initialCareerId;
+        getCareerLogs(initialCareerId);
+    }
+
+    window.careerSelectionChanged = getCareerLogs;
+
+    function getCareerLogs(careerId) {
         console.log("Getting Logs for " + careerId + "...");
 
         if (!careerId) {
@@ -49,7 +58,7 @@
                 })
                 .catch((error) => alert(error));
         }
-    };
+    }
 
     function getValuesForField(careerLogs, fieldName) {
         let arr = [];

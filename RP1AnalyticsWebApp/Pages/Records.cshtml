@@ -14,7 +14,7 @@
             <tr>
                 <td>@r.ContractDisplayName</td>
                 <td>@($"{r.Date:yyyy-MM-dd}")</td>
-                <td>@r.CareerName</td>
+                <td><a href="/?careerId=@r.CareerId">@r.CareerName</a></td>
             </tr>
         }
     </tbody>
