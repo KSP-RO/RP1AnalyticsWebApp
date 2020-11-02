@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.ApplicationInsights;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using RP1AnalyticsWebApp.Models;
 
@@ -60,6 +61,32 @@ namespace RP1AnalyticsWebApp.Services
                 Date = c.contractEventEntries.FirstOrDefault(e => e.type == ContractEventType.Complete &&
                                                                   string.Equals(e.internalName, name, StringComparison.OrdinalIgnoreCase))?.date
             }).Where(ce => ce.Date.HasValue).OrderBy(ce => ce.Date).ToList();
+        }
+
+        public List<ContractEventWithCareerInfo> GetRecords()
+        {
+            var proj = BsonDocument.Parse("{ contractEventEntries: 1, name: 1 }");
+            var gProj = BsonDocument.Parse("{ _id: \"$contractEventEntries.internalName\", ContractInternalName: { $first: \"$contractEventEntries.internalName\" }, " +
+                                           "CareerId: { $first: \"$_id\" }, CareerName: { $first: \"$name\" }, Date: { $min: \"$contractEventEntries.date\" } }");
+
+            var result = _careerLogs
+                .Aggregate()
+                .Project(proj)
+                .Unwind(nameof(CareerLog.contractEventEntries))
+                .Sort(BsonDocument.Parse("{ \"contractEventEntries.date\": 1 }"))
+                .Match(BsonDocument.Parse("{ \"contractEventEntries.type\": 1 }"))
+                .Group(gProj)
+                .Sort(BsonDocument.Parse("{ \"Date\": 1 }"))
+                .As<ContractEventWithCareerInfo>()
+                .ToList();
+
+            result.ForEach(r =>
+            {
+                r.ContractDisplayName = ResolveContractName(r.ContractInternalName);
+                r.Type = ContractEventType.Complete;
+            });
+
+            return result;
         }
 
         public List<ContractEventWithCareerInfo> GetEventsForContract(string contract, ContractEventType evtType = ContractEventType.Complete)
