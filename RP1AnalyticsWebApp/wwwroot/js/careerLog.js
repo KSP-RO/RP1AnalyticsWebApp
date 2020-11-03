@@ -1,5 +1,7 @@
 ﻿(() => {
     const ContractEventTypes = Object.freeze({ 'Accept': 0, 'Complete': 1, 'Fail': 2, 'Cancel': 3 });
+    const intFormatter = new Intl.NumberFormat('en-GB', { maximumFractionDigits: 0 });
+    const floatFormatter = new Intl.NumberFormat('en-GB', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
     const app = Vue.createApp(Contracts);
     const vm = app.mount('#contracts');
@@ -28,7 +30,7 @@
     window.careerSelectionChanged = getCareerLogs;
 
     function getCareerLogs(careerId) {
-        console.log("Getting Logs for " + careerId + "...");
+        console.log(`Getting Logs for ${careerId}...`);
 
         if (!careerId) {
             contractEvents = null;
@@ -70,8 +72,6 @@
     }
 
     function getFundsEarned(careerLogs) {
-        console.log("Fetching earned funds from entries");
-
         let totals = [];
         let total = 0;
 
@@ -84,8 +84,6 @@
     }
 
     function getVabUpgrades(careerLogs) {
-        console.log("Fetching vab upgrades from entries");
-
         let vabUpgrades = [];
 
         careerLogs.forEach((entry) => {
@@ -95,33 +93,44 @@
         return vabUpgrades;
     }
 
-    function getFirstSatelliteMonth(careerLogs) {
+    function getFirstSciSatMonth(careerLog) {
+        for (let i = 0; i < careerLog.contractEventEntries.length - 1; i++) {
+            let entry = careerLog.contractEventEntries[i];
+            if (entry.internalName === 'first_OrbitScience' && entry.type === ContractEventTypes.Complete) {
+                const dt = moment.utc(entry.date);
 
-        console.log("Fetching first Artificial Satellite month");
-
-        for (let i = 0; i < careerLogs.length - 1; i++) {
-            let entry = careerLogs[i];
-            if (entry.internalName === 'first_OrbitUncrewed' && entry.type === 1) {
+                const tmp = getLogPeriodForDate(careerLog.careerLogEntries, dt);
                 return {
-                    month: moment.utc(entry.date).format('YYYY-MM'),
-                    index: i
+                    month: dt.format('YYYY-MM'),
+                    index: tmp.index
                 };
             }
         }
         return {
-            month: "not yet reached",
-            index: 0
+            month: null,
+            index: -1
+        };
+    }
+
+    function getLogPeriodForDate(periods, dt) {
+        const idx = periods.findIndex(c => {
+            const dtStart = moment.utc(c.startDate);
+            const dtEnd = moment.utc(c.endDate);
+            return dt > dtStart && dt <= dtEnd;
+        });
+        return {
+            index: idx,
+            el: idx >= 0 ? periods[idx] : null
         };
     }
 
     function drawChart(careerLog) {
-        console.log("Drawing Chart");
         const careerPeriods = careerLog.careerLogEntries;
         if (!careerPeriods) return;
 
         const options = {
             chart: {
-                type: "line",
+                type: 'line',
                 height: calculateChartHeight(),
                 width: '100%',
                 events: {
@@ -133,41 +142,37 @@
             markers: {
                 size: 1,
                 colors: undefined,
-                strokeColors: "#fff",
+                strokeColors: '#fff',
                 strokeWidth: 1,
                 strokeOpacity: 0.2,
                 strokeDashArray: 0,
                 fillOpacity: 1,
-                shape: "circle",
+                shape: 'circle',
                 radius: 1,
                 offsetX: 0,
                 offsetY: 0,
-                //discrete: [
-                //    {
-                //        seriesIndex: 0,
-                //        dataPointIndex: this.getFirstSatelliteMonth(careerLog.contractEventEntries).index,
-                //        strokeColors: '#red',
-                //        strokeWidth: 1,
-                //        strokeOpacity: 0.2,
-                //        strokeDashArray: 0,
-                //        fillOpacity: 1,
-                //        size: 5,
-                //    },
-                //],
+                discrete: [
+                    {
+                        seriesIndex: 0,
+                        dataPointIndex: getFirstSciSatMonth(careerLog).index,
+                        fillColor: 'red',
+                        size: 5
+                    }
+                ]
             },
             stroke: {
                 show: true,
-                curve: "straight",
-                lineCap: "butt",
+                curve: 'straight',
+                lineCap: 'butt',
                 colors: undefined,
                 width: 3,
-                dashArray: 0,
+                dashArray: 0
             },
             grid: {
                 row: {
-                    colors: ["#f3f3f3", "transparent"],
-                    opacity: 0.5,
-                },
+                    colors: ['#f3f3f3', 'transparent'],
+                    opacity: 0.5
+                }
             },
             tooltip: {
                 x: {
@@ -176,32 +181,32 @@
             },
             series: [
                 {
-                    name: "Current Funds",
-                    data: getValuesForField(careerPeriods, 'currentFunds'),
+                    name: 'Current Funds',
+                    data: getValuesForField(careerPeriods, 'currentFunds')
                 },
                 {
-                    name: "Funds Earned",
-                    data: getFundsEarned(careerPeriods),
+                    name: 'Funds Earned',
+                    data: getFundsEarned(careerPeriods)
                 },
                 {
-                    name: "Advance Funds",
-                    data: getValuesForField(careerPeriods, 'advanceFunds'),
+                    name: 'Advance Funds',
+                    data: getValuesForField(careerPeriods, 'advanceFunds')
                 },
                 {
-                    name: "Reward Funds",
-                    data: getValuesForField(careerPeriods, 'rewardFunds'),
+                    name: 'Reward Funds',
+                    data: getValuesForField(careerPeriods, 'rewardFunds')
                 },
                 {
-                    name: "Science Earned",
-                    data: getValuesForField(careerPeriods, 'scienceEarned'),
+                    name: 'Science Earned',
+                    data: getValuesForField(careerPeriods, 'scienceEarned')
                 },
                 {
-                    name: "VAB Upgrades",
-                    data: getVabUpgrades(careerPeriods),
+                    name: 'VAB Upgrades',
+                    data: getVabUpgrades(careerPeriods)
                 },
                 {
-                    name: "RnD Upgrades",
-                    data: getValuesForField(careerPeriods, 'rndUpgrades'),
+                    name: 'RnD Upgrades',
+                    data: getValuesForField(careerPeriods, 'rndUpgrades')
                 }
             ],
             xaxis: {
@@ -230,16 +235,16 @@
                     showAlways: true,
                     min: 0,
                     title: {
-                        text: 'Funds $',
+                        text: 'Funds $'
                     },
                     axisTicks: {
-                        show: true,
+                        show: true
                     },
                     axisBorder: {
-                        show: true,
+                        show: true
                     },
                     labels: {
-                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                        formatter: (val) => val && intFormatter.format(val)
                     }
                 },
                 {
@@ -248,17 +253,17 @@
                     showAlways: true,
                     labels: {
                         show: false,
-                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                        formatter: (val) => val && intFormatter.format(val)
                     }
                 },
                 {
                     seriesName: 'Science Earned',
                     title: {
-                        text: 'Sci',
+                        text: 'Sci'
                     },
                     show: false,
                     labels: {
-                        formatter: (val) => val && val.toLocaleString('en-GB', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+                        formatter: (val) => val && floatFormatter.format(val)
                     }
                 },
                 {
@@ -266,16 +271,16 @@
                     showAlways: true,
                     opposite: true,
                     axisTicks: {
-                        show: true,
+                        show: true
                     },
                     axisBorder: {
-                        show: true,
+                        show: true
                     },
                     title: {
-                        text: 'Upgrade Points',
+                        text: 'Upgrade Points'
                     },
                     labels: {
-                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                        formatter: (val) => val && intFormatter.format(val)
                     }
                 },
                 {
@@ -283,13 +288,13 @@
                     showAlways: true,
                     labels: {
                         show: false,
-                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                        formatter: (val) => val && intFormatter.format(val)
                     }
                 }
-            ],
+            ]
         };
 
-        chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart = new ApexCharts(document.querySelector('#chart'), options);
         chart.render();
         chart.hideSeries('Funds Earned');
         chart.hideSeries('Advance Funds');
