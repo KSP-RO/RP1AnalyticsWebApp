@@ -96,7 +96,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
                         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
 
-                        return LocalRedirect(returnUrl);
+                        return RedirectToPage("./Manage/Index");
                     }
                 }
 
