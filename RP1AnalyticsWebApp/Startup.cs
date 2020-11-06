@@ -1,3 +1,5 @@
+using AspNetCore.Identity.Mongo;
+using AspNetCore.Identity.Mongo.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,10 +34,23 @@ namespace RP1AnalyticsWebApp
 
             services.AddSingleton<CareerLogService>();
 
+            services.AddIdentityMongoDbProvider<MongoUser, MongoRole>(identityOptions =>
+            {
+            }, mongoIdentityOptions => {
+                mongoIdentityOptions.ConnectionString = Configuration["CareerLogDatabaseSettings:ConnectionString"];
+            });
+
             services.AddControllers();
             services.AddRazorPages();
             services.AddApplicationInsightsTelemetry();
             services.AddSwaggerGen();
+
+            services.AddAuthentication()
+                .AddGitHub(options =>
+                {
+                    options.ClientId = Configuration["Authentication:GitHub:ClientId"];
+                    options.ClientSecret = Configuration["Authentication:GitHub:ClientSecret"];
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +75,10 @@ namespace RP1AnalyticsWebApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseCors(builder =>
             {
                 builder.WithOrigins(

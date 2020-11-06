@@ -1,0 +1,25 @@
+﻿@inject SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> SignInManager
+@inject UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> UserManager
+
+<ul id="nav-mobile" class="right hide-on-med-and-down">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+    </li>
+    <li>
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        </form>
+    </li>
+}
+else
+{
+    <li>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+</ul>

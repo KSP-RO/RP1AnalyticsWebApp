@@ -1,6 +1,4 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -35,7 +33,8 @@
 <body>
     <nav>
         <div class="nav-wrapper blue darken-4">
-            <a href="#" class="brand-logo" style="margin: 0 1rem;">KSPRO - RP1 - Analytics</a>
+            <a asp-page="/Index" class="brand-logo" style="margin: 0 1rem;">KSPRO - RP1 - Analytics</a>
+            <partial name="_LoginPartial" />
         </div>
     </nav>
 
