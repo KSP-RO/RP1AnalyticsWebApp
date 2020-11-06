@@ -1,7 +1,6 @@
 ﻿@inject SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> SignInManager
 @inject UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> UserManager
 
-<ul id="nav-mobile" class="right hide-on-med-and-down">
 @if (SignInManager.IsSignedIn(User))
 {
     <li>
@@ -22,4 +21,3 @@ else
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
 }
-</ul>

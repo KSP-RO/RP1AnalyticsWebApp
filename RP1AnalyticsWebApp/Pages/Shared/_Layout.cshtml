@@ -33,8 +33,12 @@
 <body>
     <nav>
         <div class="nav-wrapper blue darken-4">
-            <a asp-page="/Index" class="brand-logo" style="margin: 0 1rem;">KSPRO - RP1 - Analytics</a>
-            <partial name="_LoginPartial" />
+            <a asp-page="/Index" class="brand-logo" style="margin: 0 1rem;">RP1 - Analytics</a>
+
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a asp-page="/Records">Records</a></li>
+                <partial name="_LoginPartial" />
+            </ul>
         </div>
     </nav>
 
