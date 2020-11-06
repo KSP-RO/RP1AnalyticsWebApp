@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.ApplicationInsights;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RP1AnalyticsWebApp.Models;
@@ -35,10 +36,10 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet("List", Name = "GetCareerList")]
-        public ActionResult<List<CareerListItem>> GetCareerList()
+        public ActionResult<List<CareerListItem>> GetCareerList(string userName = null)
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerList");
-            return _careerLogService.GetCareerList();
+            return _careerLogService.GetCareerList(userName);
         }
 
         [HttpGet("{id:length(24)}", Name = "GetCareerLog")]
@@ -118,17 +119,19 @@ namespace RP1AnalyticsWebApp.Controllers
             return events;
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreateCareer")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<CareerLogDto> CreateCareer(CareerLog log)
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [Authorize]
+        public ActionResult<CareerLog> CreateCareer(CareerLog log)
         {
             _telemetry.TrackEvent("CareerLogsController-CreateCareer", new Dictionary<string, string>
             {
                 { nameof(CareerLog.name), log.name }
             });
 
-            if (!IsLocalhost) return Unauthorized();
+            log.userLogin = User.Identity.Name;
 
             CareerLog res = _careerLogService.Create(log);
             return CreatedAtRoute("CreateCareer", res);

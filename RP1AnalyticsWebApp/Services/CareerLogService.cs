@@ -109,10 +109,19 @@ namespace RP1AnalyticsWebApp.Services
             return events;
         }
 
-        public List<CareerListItem> GetCareerList()
+        public List<CareerListItem> GetCareerList(string userName = null)
         {
+            var res = GetCareerListWithTokens(userName);
+            res.ForEach(c => c.token = null);
+            return res;
+        }
+
+        public List<CareerListItem> GetCareerListWithTokens(string userName = null)
+        {
+            var filter = !string.IsNullOrWhiteSpace(userName) ? Builders<CareerLog>.Filter.Where(c => c.userLogin == userName) :
+                                                                FilterDefinition<CareerLog>.Empty;
             var p = Builders<CareerLog>.Projection.Expression(c => new CareerListItem(c));
-            return _careerLogs.Find(FilterDefinition<CareerLog>.Empty).Project(p).ToList();
+            return _careerLogs.Find(filter).Project(p).ToList();
         }
 
         public CareerLog Create(CareerLog log)
@@ -121,6 +130,7 @@ namespace RP1AnalyticsWebApp.Services
             {
                 token = Guid.NewGuid().ToString("N"),
                 name = log.name,
+                userLogin = log.userLogin
             };
 
             if (log.careerLogEntries != null)

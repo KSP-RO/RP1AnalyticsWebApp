@@ -12,6 +12,7 @@ namespace RP1AnalyticsWebApp.Models
         public string Id { get; set; }
 
         public string name { get; set; }
+        public string userLogin { get; set; }
         public string token { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }

@@ -5,22 +5,38 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h5>@ViewData["Title"]</h5>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
+
 <div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" disabled />
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.PhoneNumber"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
-        </form>
-    </div>
+    <h5>Careers</h5>
+    <table class="striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Token</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model.Careers)
+            {
+                <tr>
+                    <td><a href="/?careerId=@c.Id">@c.name</a></td>
+                    <td>@c.token</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <h5>Add new career</h5>
+    <form id="profile-form" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Input.CareerName"></label>
+            <input asp-for="Input.CareerName" class="form-control" />
+            <span asp-validation-for="Input.CareerName" class="text-danger"></span>
+        </div>
+        <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+    </form>
 </div>

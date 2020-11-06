@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RP1AnalyticsWebApp.Models;
+using RP1AnalyticsWebApp.Services;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -11,13 +14,16 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<MongoUser> _userManager;
         private readonly SignInManager<MongoUser> _signInManager;
+        private readonly CareerLogService _careerLogService;
 
-        public IndexModel(
-            UserManager<MongoUser> userManager,
-            SignInManager<MongoUser> signInManager)
+        public List<CareerListItem> Careers => _careerLogService.GetCareerListWithTokens(User.Identity.Name);
+
+        public IndexModel(UserManager<MongoUser> userManager, SignInManager<MongoUser> signInManager,
+                          CareerLogService careerLogService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _careerLogService = careerLogService;
         }
 
         public string Username { get; set; }
@@ -30,22 +36,15 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Required]
+            [Display(Name = "Career name")]
+            public string CareerName { get; set; }
         }
 
         private async Task LoadAsync(MongoUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
             Username = userName;
-
-            Input = new InputModel
-            {
-                PhoneNumber = phoneNumber
-            };
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -68,25 +67,19 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            await LoadAsync(user);
             if (!ModelState.IsValid)
             {
-                await LoadAsync(user);
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            _careerLogService.Create(new CareerLog
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
-            }
+                name = Input.CareerName,
+                userLogin = Username
+            });
 
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "A new career was created successfully";
             return RedirectToPage();
         }
     }
