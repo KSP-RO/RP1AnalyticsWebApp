@@ -9,6 +9,7 @@ namespace RP1AnalyticsWebApp.Models
     {
         public Dictionary<string, string> ContractNameDict { get; private set; }
         public HashSet<string> MilestoneContractNames { get; private set; }
+        public HashSet<string> RepeatableContractNames { get; private set; }
 
         public ContractSettings()
         {
@@ -21,6 +22,11 @@ namespace RP1AnalyticsWebApp.Models
             jsonString = File.ReadAllText(_milestoneFileName);
             var arr2 = JsonSerializer.Deserialize<string[]>(jsonString);
             MilestoneContractNames = new HashSet<string>(arr2);
+
+            const string _repeatableFileName = @"repeatableContracts.json";
+            jsonString = File.ReadAllText(_repeatableFileName);
+            var arr3 = JsonSerializer.Deserialize<string[]>(jsonString);
+            RepeatableContractNames = new HashSet<string>(arr3);
         }
     }
 
@@ -28,5 +34,6 @@ namespace RP1AnalyticsWebApp.Models
     {
         public Dictionary<string, string> ContractNameDict { get; }
         public HashSet<string> MilestoneContractNames { get; }
+        public HashSet<string> RepeatableContractNames { get; }
     }
 }

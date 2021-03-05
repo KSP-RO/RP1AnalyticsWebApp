@@ -63,6 +63,33 @@ namespace RP1AnalyticsWebApp.Services
             }).Where(ce => ce.Date.HasValue).OrderBy(ce => ce.Date).ToList();
         }
 
+        public List<ContractEventWithCount> GetRepeatableContractCompletionCountsForCareer(string id)
+        {
+            var proj = BsonDocument.Parse("{ contractEventEntries: 1, name: 1, _id: 1 }");
+            var gProj = BsonDocument.Parse("{ _id: \"$contractEventEntries.internalName\", ContractInternalName: { $first: \"$contractEventEntries.internalName\" }, " +
+                                           "CareerId: { $first: \"$_id\" }, CareerName: { $first: \"$name\" }, Date: { $min: \"$contractEventEntries.date\" }, Count: { $sum: 1 } }");
+
+            var result = _careerLogs
+                .Aggregate()
+                .Match(BsonDocument.Parse($"{{ \"_id\": ObjectId(\"{id}\") }}"))
+                .Project(proj)
+                .Unwind(nameof(CareerLog.contractEventEntries))
+                .Match(BsonDocument.Parse("{ \"contractEventEntries.type\": 1 }"))
+                .Group(gProj)
+                .As<ContractEventWithCount>()
+                .ToList();
+
+            var repeatables = result.Where(r => _contractSettings.RepeatableContractNames.Contains(r.ContractInternalName))
+                                    .ToList();
+            foreach (var item in repeatables)
+            {
+                item.ContractDisplayName = ResolveContractName(item.ContractInternalName);
+                item.Type = ContractEventType.Complete;
+            }
+
+            return repeatables;
+        }
+
         public List<ContractEventWithCareerInfo> GetRecords()
         {
             var proj = BsonDocument.Parse("{ contractEventEntries: 1, name: 1 }");

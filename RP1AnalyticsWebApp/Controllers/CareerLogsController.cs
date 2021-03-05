@@ -98,6 +98,23 @@ namespace RP1AnalyticsWebApp.Controllers
             return contractEvents;
         }
 
+        [HttpGet("{id:length(24)}/CompletedRepeatables", Name = "GetCareerCompletedRepeatables")]
+        public ActionResult<List<ContractEventWithCount>> GetCareerCompletedRepeatables(string id)
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetCareerCompletedRepeatables", new Dictionary<string, string>
+            {
+                { nameof(id), id }
+            });
+
+            List<ContractEventWithCount> contractEvents = _careerLogService.GetRepeatableContractCompletionCountsForCareer(id);
+            if (contractEvents == null)
+            {
+                return NotFound();
+            }
+
+            return contractEvents;
+        }
+
         [HttpGet("Contracts", Name = "GetRecords")]
         public ActionResult<List<ContractEventWithCareerInfo>> GetRecords()
         {
