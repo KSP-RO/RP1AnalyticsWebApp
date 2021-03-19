@@ -169,6 +169,7 @@ namespace RP1AnalyticsWebApp.Services
 
             careerLog.contractEventEntries = log.contractEventEntries;
             careerLog.facilityEventEntries = log.facilityEventEntries;
+            careerLog.techEventEntries = log.techEventEntries;
 
             _careerLogs.InsertOne(careerLog);
 
@@ -182,7 +183,8 @@ namespace RP1AnalyticsWebApp.Services
                                                       .Set(nameof(CareerLog.endDate), careerLogDto.periods[^1].endDate)
                                                       .Set(nameof(CareerLog.careerLogEntries), careerLogDto.periods)
                                                       .Set(nameof(CareerLog.contractEventEntries), careerLogDto.contractEvents)
-                                                      .Set(nameof(CareerLog.facilityEventEntries), careerLogDto.facilityEvents);
+                                                      .Set(nameof(CareerLog.facilityEventEntries), careerLogDto.facilityEvents)
+                                                      .Set(nameof(CareerLog.techEventEntries), careerLogDto.techEvents);
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
             return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.token == token, updateDef, opts);
