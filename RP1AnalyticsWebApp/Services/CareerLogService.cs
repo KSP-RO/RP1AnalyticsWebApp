@@ -12,10 +12,12 @@ namespace RP1AnalyticsWebApp.Services
     {
         private readonly IMongoCollection<CareerLog> _careerLogs;
         private readonly IContractSettings _contractSettings;
+        private readonly ITechTreeSettings _techTreeSettings;
 
-        public CareerLogService(ICareerLogDatabaseSettings dbSettings, IContractSettings contractSettings)
+        public CareerLogService(ICareerLogDatabaseSettings dbSettings, IContractSettings contractSettings, ITechTreeSettings techTreeSettings)
         {
             _contractSettings = contractSettings;
+            _techTreeSettings = techTreeSettings;
 
             var client = new MongoClient(dbSettings.ConnectionString);
             var database = client.GetDatabase(dbSettings.DatabaseName);
@@ -136,6 +138,20 @@ namespace RP1AnalyticsWebApp.Services
             return events;
         }
 
+        public List<TechEvent> GetTechUnlocksForCareer(string id)
+        {
+            var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
+            if (c == null) return null;
+            if (c.techEventEntries == null) return new List<TechEvent>(0);
+
+            return c.techEventEntries.Select(e => new TechEvent
+            {
+                NodeInternalName = e.nodeName,
+                NodeDisplayName = ResolveTechNodeName(e.nodeName),
+                Date = e.date
+            }).OrderBy(ce => ce.Date).ToList();
+        }
+
         public List<CareerListItem> GetCareerList(string userName = null)
         {
             var res = GetCareerListWithTokens(userName);
@@ -193,6 +209,11 @@ namespace RP1AnalyticsWebApp.Services
         private string ResolveContractName(string name)
         {
             return _contractSettings.ContractNameDict.TryGetValue(name, out string disp) ? disp : name;
+        }
+
+        private string ResolveTechNodeName(string id)
+        {
+            return _techTreeSettings.NodeTitleDict.TryGetValue(id, out string disp) ? disp : id;
         }
     }
 }

@@ -32,6 +32,9 @@ namespace RP1AnalyticsWebApp
             services.AddSingleton<IContractSettings>(sp =>
                 sp.GetRequiredService<IOptions<ContractSettings>>().Value);
 
+            services.AddSingleton<ITechTreeSettings>(sp =>
+                sp.GetRequiredService<IOptions<TechTreeSettings>>().Value);
+
             services.AddSingleton<CareerLogService>();
 
             services.AddIdentityMongoDbProvider<MongoUser, MongoRole>(identityOptions =>

@@ -1,0 +1,1170 @@
+[
+  {
+    "ID": "start",
+    "Title": "Start"
+  },
+  {
+    "ID": "unlockParts",
+    "Title": "Starting Parts"
+  },
+  {
+    "ID": "orphanParts",
+    "Title": "Non RP-1 Parts"
+  },
+  {
+    "ID": "ORPHANS",
+    "Title": "ORPHANS"
+  },
+  {
+    "ID": "supersonicDev",
+    "Title": "Supersonic Plane Development"
+  },
+  {
+    "ID": "supersonicFlightRP0",
+    "Title": "Supersonic Flight"
+  },
+  {
+    "ID": "matureSupersonic",
+    "Title": "Mature Supersonic Flight"
+  },
+  {
+    "ID": "highSpeedFlight",
+    "Title": "High Speed Flight"
+  },
+  {
+    "ID": "advancedJetEngines",
+    "Title": "Advanced Jet Engines"
+  },
+  {
+    "ID": "matureTurbofans",
+    "Title": "Mature Turbofans"
+  },
+  {
+    "ID": "refinedTurbofans",
+    "Title": "Refined Turbofans"
+  },
+  {
+    "ID": "scramjetEngines",
+    "Title": "Scramjet Engines"
+  },
+  {
+    "ID": "experimentalAircraft",
+    "Title": "Experimental Aircraft Engines"
+  },
+  {
+    "ID": "colonization2051Flight",
+    "Title": "2051-2099 Regular Flight"
+  },
+  {
+    "ID": "colonization2100Flight",
+    "Title": "2100-2149 Regular Flight"
+  },
+  {
+    "ID": "colonization2150Flight",
+    "Title": "2150+ Regular Flight"
+  },
+  {
+    "ID": "hypersonicFlightRP0",
+    "Title": "Hypersonic Flight"
+  },
+  {
+    "ID": "prototypeSpaceplanes",
+    "Title": "Prototype Spaceplaces"
+  },
+  {
+    "ID": "effectiveSpaceplanes",
+    "Title": "Effective Spaceplanes"
+  },
+  {
+    "ID": "spaceShuttles",
+    "Title": "Space Shuttles"
+  },
+  {
+    "ID": "improvedSpaceplanes",
+    "Title": "Improved Spaceplanes"
+  },
+  {
+    "ID": "advancedSpaceplanes",
+    "Title": "Advanced Spaceplanes"
+  },
+  {
+    "ID": "highTechSpaceplanes",
+    "Title": "High-Tech Spaceplanes"
+  },
+  {
+    "ID": "experimentalSpaceplanes",
+    "Title": "Experimental Spaceplanes"
+  },
+  {
+    "ID": "sstoSpaceplanes",
+    "Title": "SSTO Spaceplanes"
+  },
+  {
+    "ID": "colonization2100Spaceplanes",
+    "Title": "2100-2149 Spaceplanes"
+  },
+  {
+    "ID": "colonization2150Spaceplanes",
+    "Title": "2150+ Spaceplanes"
+  },
+  {
+    "ID": "basicCapsules",
+    "Title": "Basic Capsules"
+  },
+  {
+    "ID": "secondGenCapsules",
+    "Title": "Second Generation Capsules"
+  },
+  {
+    "ID": "lunarOrbiterCapsules",
+    "Title": "Lunar Orbiter Capsules"
+  },
+  {
+    "ID": "matureCapsules",
+    "Title": "Mature Capsules"
+  },
+  {
+    "ID": "improvedCapsules",
+    "Title": "Improved Capsules"
+  },
+  {
+    "ID": "advancedCapsules",
+    "Title": "Advanced Capsules"
+  },
+  {
+    "ID": "modernCapsules",
+    "Title": "Modern Capsules"
+  },
+  {
+    "ID": "capsulesNF",
+    "Title": "Near Future Capsules"
+  },
+  {
+    "ID": "highTechCapsules",
+    "Title": "High-Tech Capsules"
+  },
+  {
+    "ID": "colonization2100Command",
+    "Title": "2100-2149 Command Modules"
+  },
+  {
+    "ID": "colonization2150Command",
+    "Title": "2150+ Command Modules"
+  },
+  {
+    "ID": "spaceStationPrototypes",
+    "Title": "Space Station Prototypes"
+  },
+  {
+    "ID": "spaceStationDev",
+    "Title": "Space Station Development"
+  },
+  {
+    "ID": "earlySpaceStations",
+    "Title": "Early Space Stations"
+  },
+  {
+    "ID": "modularSpaceStations",
+    "Title": "Modular Space Stations"
+  },
+  {
+    "ID": "largeScaleOrbitalCon",
+    "Title": "Large Scale Orbital Construction"
+  },
+  {
+    "ID": "improvedOrbitalConstruction",
+    "Title": "Improved Orbital Construction"
+  },
+  {
+    "ID": "inflatableHabitats",
+    "Title": "Inflatable Habitats"
+  },
+  {
+    "ID": "improvedHabitats",
+    "Title": "Improved Habitats"
+  },
+  {
+    "ID": "advancedHabitats",
+    "Title": "Advanced Habitats"
+  },
+  {
+    "ID": "largeScaleHabitats",
+    "Title": "Large Scale Habitats"
+  },
+  {
+    "ID": "colonization2100SpaceStations",
+    "Title": "2100-2149 Space Stations"
+  },
+  {
+    "ID": "colonization2150SpaceStations",
+    "Title": "2150+ Space Stations"
+  },
+  {
+    "ID": "earlyFlightControl",
+    "Title": "Early Flight Control"
+  },
+  {
+    "ID": "stabilityRP0",
+    "Title": "Stability"
+  },
+  {
+    "ID": "improvedFlightControl",
+    "Title": "Improved Flight Control"
+  },
+  {
+    "ID": "earlyDocking",
+    "Title": "Early Docking Procedures"
+  },
+  {
+    "ID": "dockingCrewTransfer",
+    "Title": "Docking and Crew Transfer"
+  },
+  {
+    "ID": "spaceStationControl",
+    "Title": "Space Station Attitude Control"
+  },
+  {
+    "ID": "largeSpaceplaneControl",
+    "Title": "Large Spaceplane Control"
+  },
+  {
+    "ID": "standardDockingPorts",
+    "Title": "Standardized Docking Ports"
+  },
+  {
+    "ID": "largeStationControl",
+    "Title": "Large Station Attitude Control"
+  },
+  {
+    "ID": "largeDockingPorts",
+    "Title": "Large Docking Ports"
+  },
+  {
+    "ID": "gridFins",
+    "Title": "Grid Fins"
+  },
+  {
+    "ID": "flightControlNF",
+    "Title": "Near Future Flight Control"
+  },
+  {
+    "ID": "colonization2051Control",
+    "Title": "2051-2099 Control"
+  },
+  {
+    "ID": "colonization2100Control",
+    "Title": "2100-2149 Control"
+  },
+  {
+    "ID": "colonization2150Control",
+    "Title": "2150+ Control"
+  },
+  {
+    "ID": "entryDescentLanding",
+    "Title": "Entry, Descent and Landing"
+  },
+  {
+    "ID": "humanRatedEDL",
+    "Title": "Human Rated EDL"
+  },
+  {
+    "ID": "earlyLanding",
+    "Title": "Early Landing"
+  },
+  {
+    "ID": "lunarRatedHeatshields",
+    "Title": "Lunar Rated Heatshields"
+  },
+  {
+    "ID": "lunarLanding",
+    "Title": "Lunar Landing"
+  },
+  {
+    "ID": "improvedLandingEngines",
+    "Title": "Improved Landing Engines"
+  },
+  {
+    "ID": "advancedUncrewedLanding",
+    "Title": "Advanced Uncrewed Landing"
+  },
+  {
+    "ID": "interplanetaryRovers",
+    "Title": "Interplanetary Rovers"
+  },
+  {
+    "ID": "largeRoverDesigns",
+    "Title": "Large Rover Designs"
+  },
+  {
+    "ID": "reusability",
+    "Title": "Reusability"
+  },
+  {
+    "ID": "advancedLanding",
+    "Title": "Advanced Landing"
+  },
+  {
+    "ID": "SIAD",
+    "Title": "Supersonic Inflatable Aerodynamic Decelerator"
+  },
+  {
+    "ID": "HIAD",
+    "Title": "Hypersonic Inflatable Aerodynamic Decelerator"
+  },
+  {
+    "ID": "colonization2051EDL",
+    "Title": "2051-2099 EDL"
+  },
+  {
+    "ID": "colonization2100EDL",
+    "Title": "2100-2149 EDL"
+  },
+  {
+    "ID": "colonization2150EDL",
+    "Title": "2150+ EDL"
+  },
+  {
+    "ID": "prototypeHydrolox",
+    "Title": "Prototype Hydrolox Engines"
+  },
+  {
+    "ID": "earlyHydrolox",
+    "Title": "Early Hydrolox Engines"
+  },
+  {
+    "ID": "improvedHydrolox",
+    "Title": "Improved Hydrolox Engines"
+  },
+  {
+    "ID": "largeHydrolox",
+    "Title": "Large Hydrolox Engines"
+  },
+  {
+    "ID": "hydrolox1968",
+    "Title": "1968 Hydrolox Engines"
+  },
+  {
+    "ID": "hydrolox1972",
+    "Title": "1972-1975 Hydrolox Engines"
+  },
+  {
+    "ID": "hydrolox1976",
+    "Title": "1976-1980 Hydrolox Engines"
+  },
+  {
+    "ID": "hydrolox1981",
+    "Title": "1981-1985 Hydrolox Engines"
+  },
+  {
+    "ID": "hydrolox1986",
+    "Title": "1986-1991 Hydrolox Engines"
+  },
+  {
+    "ID": "hydrolox1992",
+    "Title": "1992-1997 Hydrolox Engines"
+  },
+  {
+    "ID": "hydrolox1998",
+    "Title": "1998-2008 Hydrolox Engines"
+  },
+  {
+    "ID": "hydrolox2009",
+    "Title": "2009-2018 Hydrolox Engines"
+  },
+  {
+    "ID": "hydroloxNF",
+    "Title": "Near Future Hydrolox Engines"
+  },
+  {
+    "ID": "colonization2051Hydrolox",
+    "Title": "2051-2099 Hydrolox Engines"
+  },
+  {
+    "ID": "colonization2100Hydrolox",
+    "Title": "2100-2149  Hydrolox Engines"
+  },
+  {
+    "ID": "colonization2150Hydrolox",
+    "Title": "2150+  Hydrolox Engines"
+  },
+  {
+    "ID": "rocketryTesting",
+    "Title": "Post-War Rocketry Testing"
+  },
+  {
+    "ID": "earlyRocketry",
+    "Title": "Early Rocketry"
+  },
+  {
+    "ID": "basicRocketryRP0",
+    "Title": "Basic Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1956",
+    "Title": "1956-1957 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1958",
+    "Title": "1958 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1959",
+    "Title": "1959 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1960",
+    "Title": "1960 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1961",
+    "Title": "1961 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1962",
+    "Title": "1962 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1963",
+    "Title": "1963 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1964",
+    "Title": "1964 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1965",
+    "Title": "1965 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1966",
+    "Title": "1966 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1967",
+    "Title": "1967-1968 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1970",
+    "Title": "1970-1971 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1972",
+    "Title": "1972-1975 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1976",
+    "Title": "1976-1980 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1981",
+    "Title": "1981-1985 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1986",
+    "Title": "1986-1991 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1992",
+    "Title": "1992-1997 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry1998",
+    "Title": "1998-2003 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry2004",
+    "Title": "2004-2008 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry2009",
+    "Title": "2009-2013 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketry2014",
+    "Title": "2014-2018 Orbital Rocketry"
+  },
+  {
+    "ID": "orbitalRocketryNF",
+    "Title": "Near Future Orbital Rocketry"
+  },
+  {
+    "ID": "colonization2051Orbital",
+    "Title": "2051-2099 Orbital Rocketry"
+  },
+  {
+    "ID": "colonization2100Orbital",
+    "Title": "2100-2149  Orbital Rocketry"
+  },
+  {
+    "ID": "colonization2150Orbital",
+    "Title": "2150+  Orbital Rocketry"
+  },
+  {
+    "ID": "firstStagedCombustion",
+    "Title": "First Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion1964",
+    "Title": "1964 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion1966",
+    "Title": "1966 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion1967",
+    "Title": "1967-1968 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion1969",
+    "Title": "1969 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion1970",
+    "Title": "1970-1971 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion1972",
+    "Title": "1972-1980 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion1981",
+    "Title": "1981-1985 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion1986",
+    "Title": "1986-1991 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion1992",
+    "Title": "1992-1997 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion1998",
+    "Title": "1998-2003 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion2004",
+    "Title": "2004-2008 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion2009",
+    "Title": "2009-2013 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustion2014",
+    "Title": "2014-2018 Staged Combustion Engines"
+  },
+  {
+    "ID": "stagedCombustionNF",
+    "Title": "Near Future Staged Combustion Engines"
+  },
+  {
+    "ID": "colonization2051Staged",
+    "Title": "2051-2099 Staged Combustion"
+  },
+  {
+    "ID": "colonization2100Staged",
+    "Title": "2100-2149  Staged Combustion"
+  },
+  {
+    "ID": "colonization2150Staged",
+    "Title": "2150+  Staged Combustion"
+  },
+  {
+    "ID": "earlySolids",
+    "Title": "Early Solid Rocket Engines"
+  },
+  {
+    "ID": "basicSolids",
+    "Title": "Basic Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1956",
+    "Title": "1956-1957 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1958",
+    "Title": "1958 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1959",
+    "Title": "1959-1960 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1962",
+    "Title": "1962-1963 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1964",
+    "Title": "1964-1965 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1966",
+    "Title": "1966 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1967",
+    "Title": "1967-1968 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1969",
+    "Title": "1969-1971 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1972",
+    "Title": "1972-1975 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1976",
+    "Title": "1976-1980 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1981",
+    "Title": "1981-1985 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1986",
+    "Title": "1986-1991 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1992",
+    "Title": "1992-1997 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids1998",
+    "Title": "1998-2008 Solid Rocket Engines"
+  },
+  {
+    "ID": "solids2009",
+    "Title": "2009-2018 Solid Rocket Engines"
+  },
+  {
+    "ID": "solidsNF",
+    "Title": "Near Future Solid Rocket Engines"
+  },
+  {
+    "ID": "colonization2051Solid",
+    "Title": "2051-2099 Solids"
+  },
+  {
+    "ID": "colonization2100Solid",
+    "Title": "2100-2149 Solids"
+  },
+  {
+    "ID": "colonization2150Solid",
+    "Title": "2150+ Solids"
+  },
+  {
+    "ID": "earlyElecPropulsion",
+    "Title": "Early Electric Propulsion"
+  },
+  {
+    "ID": "basicElecPropulsion",
+    "Title": "Basic Electric Propulsion"
+  },
+  {
+    "ID": "improvedElecPropulsion",
+    "Title": "Improved Electric Propulsion"
+  },
+  {
+    "ID": "advancedElecPropulsion",
+    "Title": "Advanced Electric Propulsion"
+  },
+  {
+    "ID": "colonization2051ElecProp",
+    "Title": "2051-2099 Electric Propulsion"
+  },
+  {
+    "ID": "colonization2100ElecProp",
+    "Title": "2100-2149 Electric Propulsion"
+  },
+  {
+    "ID": "colonization2150ElecProp",
+    "Title": "2150+ Electric Propulsion"
+  },
+  {
+    "ID": "prototypeNuclearPropulsion",
+    "Title": "Prototype Nuclear Propulsion"
+  },
+  {
+    "ID": "earlyNuclearPropulsion",
+    "Title": "Early Nuclear Propulsion"
+  },
+  {
+    "ID": "basicNuclearPropulsion",
+    "Title": "Basic Nuclear Propulsion"
+  },
+  {
+    "ID": "improvedNuclearPropulsion",
+    "Title": "Improved Nuclear Propulsion"
+  },
+  {
+    "ID": "advancedNuclearPropulsion",
+    "Title": "Advanced Nuclear Propulsion"
+  },
+  {
+    "ID": "efficientNuclearPropulsion",
+    "Title": "Efficient Nuclear Propulsion"
+  },
+  {
+    "ID": "nuclearPropulsionNF",
+    "Title": "Near Future Nuclear Propulsion"
+  },
+  {
+    "ID": "nuclearPropulsionNF2",
+    "Title": "Advanced Near Future Nuclear Propulsion"
+  },
+  {
+    "ID": "colonization2051NuclearProp",
+    "Title": "2051-2099 Nuclear Propulsion"
+  },
+  {
+    "ID": "colonization2100NuclearProp",
+    "Title": "2100-2149 Nuclear Propulsion"
+  },
+  {
+    "ID": "colonization2150NuclearProp",
+    "Title": "2150+ Nuclear Propulsion"
+  },
+  {
+    "ID": "crewSurvivability",
+    "Title": "Crew Survivability"
+  },
+  {
+    "ID": "earlyLifeSupport",
+    "Title": "Early Life Support and ISRU"
+  },
+  {
+    "ID": "lifeSupportISRU",
+    "Title": "Life Support and ISRU"
+  },
+  {
+    "ID": "basicLifeSupport",
+    "Title": "Basic Life Support and ISRU"
+  },
+  {
+    "ID": "improvedLifeSupport",
+    "Title": "Improved Life Support and ISRU"
+  },
+  {
+    "ID": "longTermLifeSupport",
+    "Title": "Long-Life Support and ISRU"
+  },
+  {
+    "ID": "advancedLifeSupport",
+    "Title": "Long-Term Life Support and ISRU"
+  },
+  {
+    "ID": "efficientLifeSupport",
+    "Title": "Efficient Life Support and ISRU"
+  },
+  {
+    "ID": "lifeSupportNF",
+    "Title": "Near Future Life Support and ISRU"
+  },
+  {
+    "ID": "colonization2051LifeSupport",
+    "Title": "2051-2099 Life Support and ISRU"
+  },
+  {
+    "ID": "colonization2100LifeSupport",
+    "Title": "2100-2149 Life Support and ISRU"
+  },
+  {
+    "ID": "colonization2150LifeSupport",
+    "Title": "2150+ Life Support and ISRU"
+  },
+  {
+    "ID": "postWarMaterialsScience",
+    "Title": "Post-War Materials Science"
+  },
+  {
+    "ID": "earlyMaterialsScience",
+    "Title": "Early Materials Science"
+  },
+  {
+    "ID": "materialsScienceSatellite",
+    "Title": "Satellite Era Materials Science"
+  },
+  {
+    "ID": "materialsScienceHuman",
+    "Title": "Early Human Spaceflight Materials Science"
+  },
+  {
+    "ID": "materialsScienceAdvCapsules",
+    "Title": "Advanced Capsules Era Materials Science"
+  },
+  {
+    "ID": "materialsScienceLunar",
+    "Title": "Lunar Exploration Era Materials Science"
+  },
+  {
+    "ID": "materialsScienceSpaceStation",
+    "Title": "Space Station Era Materials Science"
+  },
+  {
+    "ID": "materialsScienceSpaceplanes",
+    "Title": "Spaceplanes Era Materials Science"
+  },
+  {
+    "ID": "materialsScienceLongTerm",
+    "Title": "Long-Term Space Habitation Era Materials Science"
+  },
+  {
+    "ID": "materialsScienceInternational",
+    "Title": "International Cooperation Era Materials Science"
+  },
+  {
+    "ID": "materialsScienceCommercial",
+    "Title": "Commercial Spaceflight Era Materials Science"
+  },
+  {
+    "ID": "materialsScienceNF",
+    "Title": "Near Future Era Materials Science"
+  },
+  {
+    "ID": "materialsScienceColonization",
+    "Title": "Colonization Era Materials Science"
+  },
+  {
+    "ID": "electronicsSatellite",
+    "Title": "Satellite Era Electronics Research"
+  },
+  {
+    "ID": "electronicsHuman",
+    "Title": "Early Human Spaceflight Electronics Research"
+  },
+  {
+    "ID": "electronicsAdvCapsules",
+    "Title": "Advanced Capsules Era Electronics Research"
+  },
+  {
+    "ID": "electronicsLunar",
+    "Title": "Lunar Exploration Era Electronics Research"
+  },
+  {
+    "ID": "electronicsSpaceStation",
+    "Title": "Space Station Era Electronics Research"
+  },
+  {
+    "ID": "electronicsSpaceplanes",
+    "Title": "Spaceplanes Era Electronics Research"
+  },
+  {
+    "ID": "electronicsLongTerm",
+    "Title": "Long-Term Space Habitation Era Electronics Research"
+  },
+  {
+    "ID": "electronicsInternational",
+    "Title": "International Cooperation Era Electronics Research"
+  },
+  {
+    "ID": "electronicsCommercial",
+    "Title": "Commercial Spaceflight Era Electronics Research"
+  },
+  {
+    "ID": "electronicsNF",
+    "Title": "Near Future Era Electronics Research"
+  },
+  {
+    "ID": "electronicsColonization",
+    "Title": "Colonization Era Electronics Research"
+  },
+  {
+    "ID": "firstRTG",
+    "Title": "First RTGs"
+  },
+  {
+    "ID": "earlyRTG",
+    "Title": "Early RTGs"
+  },
+  {
+    "ID": "nuclearFissionReactors",
+    "Title": "Small Nuclear Fission Reactors"
+  },
+  {
+    "ID": "improvedRTG",
+    "Title": "Improved RTGs"
+  },
+  {
+    "ID": "multihundredWattRTG",
+    "Title": "Multi-Hundred Watt RTGs"
+  },
+  {
+    "ID": "gphsRTG",
+    "Title": "GPHS-RTGs"
+  },
+  {
+    "ID": "improvedNuclearPower",
+    "Title": "Improved Nuclear Power Generation"
+  },
+  {
+    "ID": "advancedNuclearPower",
+    "Title": "Advanced Nuclear Power Generation"
+  },
+  {
+    "ID": "modernNuclearPower",
+    "Title": "Modern Nuclear Power Generation"
+  },
+  {
+    "ID": "nuclearPowerNF",
+    "Title": "Near Future Nuclear Power Generation"
+  },
+  {
+    "ID": "colonization2051NuclearPower",
+    "Title": "2051-2099 Nuclear Power"
+  },
+  {
+    "ID": "colonization2100NuclearPower",
+    "Title": "2100-2149 Nuclear Power"
+  },
+  {
+    "ID": "colonization2150NuclearPower",
+    "Title": "2150+ Nuclear Power"
+  },
+  {
+    "ID": "primitiveSolarPanels",
+    "Title": "Primitive Solar Panels"
+  },
+  {
+    "ID": "earlyPower",
+    "Title": "Early Power Generation and Storage"
+  },
+  {
+    "ID": "basicPower",
+    "Title": "Basic Power Generation and Storage"
+  },
+  {
+    "ID": "improvedPower",
+    "Title": "Improved Power Generation and Storage"
+  },
+  {
+    "ID": "lunarRatedPower",
+    "Title": "Lunar Rated Power Generation"
+  },
+  {
+    "ID": "spaceStationSolarPanels",
+    "Title": "Space Station Solar Panels"
+  },
+  {
+    "ID": "maturePower",
+    "Title": "Mature Power Generation and Storage"
+  },
+  {
+    "ID": "largeScaleSolarArrays",
+    "Title": "Large Scale Solar Arrays"
+  },
+  {
+    "ID": "advancedPower",
+    "Title": "Advanced Power Generation and Storage"
+  },
+  {
+    "ID": "modernPower",
+    "Title": "Modern Power Generation and Storage"
+  },
+  {
+    "ID": "powerNF",
+    "Title": "Near Future Power Generation and Storage"
+  },
+  {
+    "ID": "colonization2051Power",
+    "Title": "2051-2099 Power Generation and Storage"
+  },
+  {
+    "ID": "colonization2100Power",
+    "Title": "2100-2149 Power Generation and Storage"
+  },
+  {
+    "ID": "colonization2150Power",
+    "Title": "2150+ Power Generation and Storage"
+  },
+  {
+    "ID": "lunarRangeComms",
+    "Title": "Lunar Range Communications"
+  },
+  {
+    "ID": "digitalComms",
+    "Title": "Digital Communications"
+  },
+  {
+    "ID": "interplanetaryComms",
+    "Title": "Interplanetary Communications"
+  },
+  {
+    "ID": "improvedComms",
+    "Title": "Improved Communications"
+  },
+  {
+    "ID": "advancedComms",
+    "Title": "Advanced Communications"
+  },
+  {
+    "ID": "deepSpaceComms",
+    "Title": "Deep Space Communications"
+  },
+  {
+    "ID": "highDataRateComms",
+    "Title": "High Data Rate Communications"
+  },
+  {
+    "ID": "largeScaleComms",
+    "Title": "Large Scale Communications"
+  },
+  {
+    "ID": "massiveScaleComms",
+    "Title": "Massive Scale Communications"
+  },
+  {
+    "ID": "efficientComms",
+    "Title": "Efficient Communications"
+  },
+  {
+    "ID": "modernComms",
+    "Title": "Modern Communications"
+  },
+  {
+    "ID": "commsNF",
+    "Title": "Near Future Communications"
+  },
+  {
+    "ID": "colonization2051Comms",
+    "Title": "2051-2099 Communications"
+  },
+  {
+    "ID": "colonization2100Comms",
+    "Title": "2100-2149 Communications"
+  },
+  {
+    "ID": "colonization2150Comms",
+    "Title": "2150+ Communications"
+  },
+  {
+    "ID": "postWarAvionics",
+    "Title": "Early Tracking Systems"
+  },
+  {
+    "ID": "avionicsPrototypes",
+    "Title": "Avionics Prototypes"
+  },
+  {
+    "ID": "earlyAvionics",
+    "Title": "Early Avionics and Probes"
+  },
+  {
+    "ID": "basicAvionics",
+    "Title": "Basic Avionics and Probes"
+  },
+  {
+    "ID": "interplanetaryProbes",
+    "Title": "Early Interplanetary Avionics and Probes"
+  },
+  {
+    "ID": "improvedAvionics",
+    "Title": "Improved Avionics"
+  },
+  {
+    "ID": "matureAvionics",
+    "Title": "Mature Avionics and Probes"
+  },
+  {
+    "ID": "largeScaleAvionics",
+    "Title": "Large Scale Avionics"
+  },
+  {
+    "ID": "advancedAvionics",
+    "Title": "Advanced Avionics and Probes"
+  },
+  {
+    "ID": "nextGenAvionics",
+    "Title": "Next Generation Avionics and Probes"
+  },
+  {
+    "ID": "longTermAvionics",
+    "Title": "Long-Term Space Habitation Era Avionics and Probes"
+  },
+  {
+    "ID": "internationalAvionics",
+    "Title": "International Era Avionics and Probes"
+  },
+  {
+    "ID": "modernAvionics",
+    "Title": "Modern Avionics and Probes"
+  },
+  {
+    "ID": "avionicsNF",
+    "Title": "Near Future Avionics and Probes"
+  },
+  {
+    "ID": "colonization2051Avionics",
+    "Title": "2051-2099 Avionics and Probes"
+  },
+  {
+    "ID": "colonization2100Avionics",
+    "Title": "2100-2149 Avionics and Probes"
+  },
+  {
+    "ID": "colonization2150Avionics",
+    "Title": "2150+ Avionics and Probes"
+  },
+  {
+    "ID": "earlyScience",
+    "Title": "Early Science"
+  },
+  {
+    "ID": "scienceSatellite",
+    "Title": "Satellite Era Science"
+  },
+  {
+    "ID": "scienceHuman",
+    "Title": "Early Human Spaceflight Era Science"
+  },
+  {
+    "ID": "scienceAdvCapsules",
+    "Title": "Interplanetary Era Science"
+  },
+  {
+    "ID": "scienceLunar",
+    "Title": "Lunar Exploration Era Science"
+  },
+  {
+    "ID": "surfaceScience",
+    "Title": "Surface Science"
+  },
+  {
+    "ID": "deepSpaceScience",
+    "Title": "Deep Space Science Experiments"
+  },
+  {
+    "ID": "scienceExploration",
+    "Title": "Exploration Era Science"
+  },
+  {
+    "ID": "sampleReturnScience",
+    "Title": "Sample Return Science Experiments"
+  },
+  {
+    "ID": "advancedScience",
+    "Title": "Advanced Science Experiments"
+  },
+  {
+    "ID": "advancedSurfaceScience",
+    "Title": "Advanced Surface Experiments"
+  },
+  {
+    "ID": "scienceNF",
+    "Title": "Near Future Science"
+  },
+  {
+    "ID": "colonization2051Science",
+    "Title": "2051-2099 Science"
+  },
+  {
+    "ID": "colonization2100Science",
+    "Title": "2100-2149 Science"
+  },
+  {
+    "ID": "colonization2150Science",
+    "Title": "2150+ Science"
+  }
+]
