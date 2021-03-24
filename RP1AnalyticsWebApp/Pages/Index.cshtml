@@ -12,20 +12,31 @@
     </select>
 </div>
 
-<div id="contracts" class="contracts-app" v-cloak>
-    <template v-if="isVisible">
-        <h5>Completed contracts</h5>
-        <ul class="collection">
-            <li class="collection-item" v-for="item in contracts">
-                {{ item.contractDisplayName }} - {{ formatDate(item.date) }}
-            </li>
-        </ul>
-    </template>
+<ul class="tabs">
+    <li class="tab col s3"><a href="#milestones" class="active">Contracts</a></li>
+    <li class="tab col s3"><a href="#repeatables">Repeatables</a></li>
+    <li class="tab col s3"><a href="#tech">Tech</a></li>
+</ul>
+
+<div id="appWrapper">
+    <div id="milestones" class="contracts-app">
+        <milestone-contracts :contracts="milestones"></milestone-contracts>
+    </div>
+
+    <div id="repeatables" class="contracts-app">
+        <repeatable-contracts :contracts="repeatables"></repeatable-contracts>
+    </div>
+
+    <div id="tech" class="contracts-app">
+        <tech-unlocks :events="techEvents"></tech-unlocks>
+    </div>
 </div>
 
 <div id="chart"></div>
 
 @section Scripts {
-    <script src="~/js/contractsApp.js" asp-append-version="true"></script>
+    <script src="~/js/components/milestone-contracts.js" asp-append-version="true"></script>
+    <script src="~/js/components/repeatable-contracts.js" asp-append-version="true"></script>
+    <script src="~/js/components/tech-unlocks.js" asp-append-version="true"></script>
     <script src="~/js/careerLog.js" asp-append-version="true"></script>
 }

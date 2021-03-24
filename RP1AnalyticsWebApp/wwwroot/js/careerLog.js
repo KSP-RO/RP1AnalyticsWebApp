@@ -3,8 +3,26 @@
     const intFormatter = new Intl.NumberFormat('en-GB', { maximumFractionDigits: 0 });
     const floatFormatter = new Intl.NumberFormat('en-GB', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-    const app = Vue.createApp(Contracts);
-    const vm = app.mount('#contracts');
+    const app = Vue.createApp({
+        data() {
+            return {
+                milestones: null,
+                repeatables: null,
+                techEvents: null
+            };
+        },
+        methods: {
+            reset() {
+                this.milestones = null;
+                this.repeatables = null;
+                this.techEvents = null;
+            }
+        }
+    });
+    app.component('milestone-contracts', MilestoneContracts);
+    app.component('repeatable-contracts', RepeatableContracts);
+    app.component('tech-unlocks', TechUnlocks);
+    const vm = app.mount('#appWrapper');
 
     let contractEvents = null;
     let chart = null;
@@ -29,13 +47,22 @@
 
     window.careerSelectionChanged = getCareerLogs;
 
+    const elems = document.querySelectorAll('.tabs');
+    M.Tabs.init(elems, {
+        onShow: tabChanged
+    });
+
+    function tabChanged(tabEl) {
+        let id = tabEl.id;
+    }
+
     function getCareerLogs(careerId) {
         console.log(`Getting Logs for ${careerId}...`);
 
         if (!careerId) {
             contractEvents = null;
             document.getElementById('chart').classList.toggle('hide', true);
-            vm.contracts = null;
+            vm.reset();
         }
         else {
             chart?.destroy();
@@ -49,7 +76,21 @@
             fetch(`/api/careerlogs/${careerId}/completedmilestones`)
                 .then((res) => res.json())
                 .then((jsonContracts) => {
-                    vm.contracts = jsonContracts;
+                    vm.milestones = jsonContracts;
+                })
+                .catch((error) => alert(error));
+
+            fetch(`/api/careerlogs/${careerId}/completedRepeatables`)
+                .then((res) => res.json())
+                .then((jsonContracts) => {
+                    vm.repeatables = jsonContracts;
+                })
+                .catch((error) => alert(error));
+
+            fetch(`/api/careerlogs/${careerId}/tech`)
+                .then((res) => res.json())
+                .then((jsonItems) => {
+                    vm.techEvents = jsonItems;
                 })
                 .catch((error) => alert(error));
 

@@ -21,15 +21,8 @@
 
 <div id="modal1" class="modal">
     <div class="modal-content">
-        <div id="contracts" class="contracts-app" v-cloak>
-            <template v-if="isVisible">
-                <h5>{{contracts[0].contractDisplayName}}</h5>
-                <ul class="collection">
-                    <li class="collection-item" v-for="item in contracts">
-                        {{ item.careerName }} - {{ formatDate(item.date) }}
-                    </li>
-                </ul>
-            </template>
+        <div id="careerDates" class="contracts-app" v-cloak>
+            <career-dates :items="items"></career-dates>
         </div>
     </div>
     <div class="modal-footer">
@@ -38,6 +31,6 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/contractsApp.js" asp-append-version="true"></script>
+    <script src="~/js/components/career-dates.js" asp-append-version="true"></script>
     <script src="~/js/records.js" asp-append-version="true"></script>
 }
