@@ -20,17 +20,18 @@
 
 <div id="appWrapper">
     <div id="milestones" class="contracts-app">
-        <milestone-contracts :contracts="milestones"></milestone-contracts>
+        <milestone-contracts :contracts="milestones" :is-loading="isLoadingMilestones"></milestone-contracts>
     </div>
 
     <div id="repeatables" class="contracts-app">
-        <repeatable-contracts :contracts="repeatables"></repeatable-contracts>
+        <repeatable-contracts :contracts="repeatables" :is-loading="isLoadingRepeatables"></repeatable-contracts>
     </div>
 
     <div id="tech" class="contracts-app">
-        <tech-unlocks :events="techEvents"></tech-unlocks>
+        <tech-unlocks :events="techEvents" :is-loading="isLoadingTechEvents"></tech-unlocks>
     </div>
 </div>
+
 
 <div id="chart"></div>
 
@@ -38,5 +39,6 @@
     <script src="~/js/components/milestone-contracts.js" asp-append-version="true"></script>
     <script src="~/js/components/repeatable-contracts.js" asp-append-version="true"></script>
     <script src="~/js/components/tech-unlocks.js" asp-append-version="true"></script>
+    <script src="~/js/components/loading-spinner.js" asp-append-version="true"></script>
     <script src="~/js/careerLog.js" asp-append-version="true"></script>
 }

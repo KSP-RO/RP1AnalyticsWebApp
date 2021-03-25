@@ -1,8 +1,8 @@
 ﻿const MilestoneContracts = {
-    props: ['contracts'],
+    props: ['contracts', 'isLoading'],
     computed: {
         isVisible() {
-            return !!this.contracts;
+            return this.contracts && !this.isLoading;
         }
     },
     methods: {
@@ -18,5 +18,6 @@
                     {{ item.contractDisplayName }} - {{ formatDate(item.date) }}
                 </li>
             </ul>
-        </div>`
+        </div>
+        <loading-spinner v-if="isLoading"></loading-spinner>`
 };

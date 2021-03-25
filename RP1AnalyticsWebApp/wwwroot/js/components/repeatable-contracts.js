@@ -1,8 +1,8 @@
 ﻿const RepeatableContracts = {
-    props: ['contracts'],
+    props: ['contracts', 'isLoading'],
     computed: {
         isVisible() {
-            return !!this.contracts;
+            return this.contracts && !this.isLoading;
         }
     },
     methods: {
@@ -11,10 +11,13 @@
         }
     },
     template: `
-        <h5>Repeatable contract completions</h5>
-        <ul class="collection">
-            <li class="collection-item" v-for="item in contracts">
-                {{ item.contractDisplayName }} - {{ item.count }}
-            </li>
-        </ul>`
+        <div v-if="isVisible">
+            <h5>Repeatable contract completions</h5>
+            <ul class="collection">
+                <li class="collection-item" v-for="item in contracts">
+                    {{ item.contractDisplayName }} - {{ item.count }}
+                </li>
+            </ul>
+        </div>
+        <loading-spinner v-if="isLoading"></loading-spinner>`
 };

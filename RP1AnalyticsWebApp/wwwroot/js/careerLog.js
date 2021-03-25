@@ -7,21 +7,28 @@
         data() {
             return {
                 milestones: null,
+                isLoadingMilestones: false,
                 repeatables: null,
-                techEvents: null
+                isLoadingRepeatables: false,
+                techEvents: null,
+                isLoadingTechEvents: false
             };
         },
         methods: {
             reset() {
                 this.milestones = null;
+                this.isLoadingMilestones = false;
                 this.repeatables = null;
+                this.isLoadingRepeatables = false;
                 this.techEvents = null;
+                this.isLoadingTechEvents = false;
             }
         }
     });
     app.component('milestone-contracts', MilestoneContracts);
     app.component('repeatable-contracts', RepeatableContracts);
     app.component('tech-unlocks', TechUnlocks);
+    app.component('loading-spinner', LoadingSpinner);
     const vm = app.mount('#appWrapper');
 
     let contractEvents = null;
@@ -73,23 +80,29 @@
                 .then(() => document.getElementById('chart').classList.toggle('hide', false))
                 .catch((error) => alert(error));
 
+            vm.isLoadingMilestones = true;
             fetch(`/api/careerlogs/${careerId}/completedmilestones`)
                 .then((res) => res.json())
                 .then((jsonContracts) => {
+                    vm.isLoadingMilestones = false;
                     vm.milestones = jsonContracts;
                 })
                 .catch((error) => alert(error));
 
+            vm.isLoadingRepeatables = true;
             fetch(`/api/careerlogs/${careerId}/completedRepeatables`)
                 .then((res) => res.json())
                 .then((jsonContracts) => {
+                    vm.isLoadingRepeatables = false;
                     vm.repeatables = jsonContracts;
                 })
                 .catch((error) => alert(error));
 
+            vm.isLoadingTechEvents = true;
             fetch(`/api/careerlogs/${careerId}/tech`)
                 .then((res) => res.json())
                 .then((jsonItems) => {
+                    vm.isLoadingTechEvents = false;
                     vm.techEvents = jsonItems;
                 })
                 .catch((error) => alert(error));

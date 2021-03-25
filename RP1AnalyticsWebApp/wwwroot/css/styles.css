@@ -6,6 +6,10 @@
     padding: 6px 12px;
 }
 
+.contracts-app .preloader-wrapper {
+    margin: 2rem 10rem;
+}
+
 .apexcharts-tooltip-series-group.contract-info {
     order: 999;
     display: flex;
