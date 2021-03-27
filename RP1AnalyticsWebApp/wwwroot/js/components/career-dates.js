@@ -7,16 +7,27 @@
     },
     methods: {
         formatDate(date) {
+            console.log("called me and working")
             return date ? moment.utc(date).format('YYYY-MM-DD') : '';
         }
     },
     template: `
         <div v-if="isVisible">
-            <h5>{{items[0].contractDisplayName}}</h5>
-            <ul class="collection">
-                <li class="collection-item" v-for="item in items">
-                    {{ item.careerName }} - {{ formatDate(item.date) }}
-                </li>
-            </ul>
+        <h2 class="subtitle">{{items[0].contractDisplayName}}</h2>
+            <table class="table is-bordered is-fullwidth is-hoverable">
+            <thead>
+                <tr>
+                    <th>Name</th> 
+                    <th>Completion Date</th> 
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in contracts">
+                    <td>{{ item.careerName }}</td>
+                    <td>{{ formatDate(item.date) }}</td>
+                </tr> 
+            </tbody>
+            </table>
+ 
         </div>`
 };

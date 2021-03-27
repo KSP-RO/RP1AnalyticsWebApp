@@ -4,20 +4,32 @@
     ViewData["Title"] = "Records";
 }
 
-<h5>Records</h5>
 
-<table class="striped">
-    <tbody>
+<div class="container mt-4 mb-4">
+    <h2 class="subtitle">Records</h2>
+    <table class="table is-bordered is-fullwidth is-hoverable">
+        <thead>
+        <tr>
+            <th>Contract Name</th>
+            <th>Completion Date</th>
+            <th>Career Log</th>
+        </tr>
+        </thead>
+        <tbody>
         @foreach (var r in Model.Records)
         {
             <tr>
-                <td><a href="#modal1" class="modal-trigger" onclick="getContracts('@r.ContractInternalName');">@r.ContractDisplayName</a></td>
+                <td>
+                    <a href="#modal1" class="modal-trigger" onclick="getContracts('@r.ContractInternalName');">@r.ContractDisplayName</a>
+                </td>
                 <td>@($"{r.Date:yyyy-MM-dd}")</td>
-                <td><a href="/?careerId=@r.CareerId">@r.CareerName</a></td>
+                <td>
+                    <a href="/?careerId=@r.CareerId">@r.CareerName</a>
+                </td>
             </tr>
         }
-    </tbody>
-</table>
+        </tbody>
+    </table></div>
 
 <div id="modal1" class="modal">
     <div class="modal-content">

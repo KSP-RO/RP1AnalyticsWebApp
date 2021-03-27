@@ -1,7 +1,7 @@
 ﻿(() => {
-    const ContractEventTypes = Object.freeze({ 'Accept': 0, 'Complete': 1, 'Fail': 2, 'Cancel': 3 });
-    const intFormatter = new Intl.NumberFormat('en-GB', { maximumFractionDigits: 0 });
-    const floatFormatter = new Intl.NumberFormat('en-GB', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const ContractEventTypes = Object.freeze({'Accept': 0, 'Complete': 1, 'Fail': 2, 'Cancel': 3});
+    const intFormatter = new Intl.NumberFormat('en-GB', {maximumFractionDigits: 0});
+    const floatFormatter = new Intl.NumberFormat('en-GB', {minimumFractionDigits: 1, maximumFractionDigits: 1});
 
     const app = Vue.createApp({
         data() {
@@ -11,7 +11,8 @@
                 repeatables: null,
                 isLoadingRepeatables: false,
                 techEvents: null,
-                isLoadingTechEvents: false
+                isLoadingTechEvents: false,
+                activeTab: 'milestones'
             };
         },
         methods: {
@@ -22,9 +23,13 @@
                 this.isLoadingRepeatables = false;
                 this.techEvents = null;
                 this.isLoadingTechEvents = false;
+            },
+            handleChangeActive(tabName) {
+                this.activeTab = tabName;
             }
         }
     });
+    app.component('selection-tab', SelectionTab);
     app.component('milestone-contracts', MilestoneContracts);
     app.component('repeatable-contracts', RepeatableContracts);
     app.component('tech-unlocks', TechUnlocks);
@@ -53,16 +58,7 @@
     }
 
     window.careerSelectionChanged = getCareerLogs;
-
-    const elems = document.querySelectorAll('.tabs');
-    M.Tabs.init(elems, {
-        onShow: tabChanged
-    });
-
-    function tabChanged(tabEl) {
-        let id = tabEl.id;
-    }
-
+    
     function getCareerLogs(careerId) {
         console.log(`Getting Logs for ${careerId}...`);
 
@@ -70,8 +66,7 @@
             contractEvents = null;
             document.getElementById('chart').classList.toggle('hide', true);
             vm.reset();
-        }
-        else {
+        } else {
             chart?.destroy();
 
             fetch(`/api/careerlogs/${careerId}`)
@@ -273,7 +268,7 @@
                     min: 0,
                     labels: {
                         show: false,
-                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                        formatter: (val) => val && val.toLocaleString('en-GB', {maximumFractionDigits: 0})
                     }
                 },
                 {
@@ -281,7 +276,7 @@
                     min: 0,
                     labels: {
                         show: false,
-                        formatter: (val) => val && val.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+                        formatter: (val) => val && val.toLocaleString('en-GB', {maximumFractionDigits: 0})
                     }
                 },
                 {
@@ -368,7 +363,15 @@
         }
 
         const oldFn = chart.w.globals.tooltip.tooltipLabels.drawSeriesTexts;
-        chart.w.globals.tooltip.tooltipLabels.drawSeriesTexts = ({ shared = true, ttItems, i = 0, j = null, y1, y2, e }) => {
+        chart.w.globals.tooltip.tooltipLabels.drawSeriesTexts = ({
+                                                                     shared = true,
+                                                                     ttItems,
+                                                                     i = 0,
+                                                                     j = null,
+                                                                     y1,
+                                                                     y2,
+                                                                     e
+                                                                 }) => {
             if (monthIdx !== j && contractEvents) {
                 monthIdx = j;
 
@@ -387,7 +390,7 @@
                     createTooltipContractRow('Failed', fail);
             }
 
-            oldFn.apply(chart.w.globals.tooltip.tooltipLabels, [{ shared, ttItems, i, j, y1, y2, e }]);
+            oldFn.apply(chart.w.globals.tooltip.tooltipLabels, [{shared, ttItems, i, j, y1, y2, e}]);
         };
     }
 

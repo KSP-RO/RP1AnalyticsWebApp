@@ -1,23 +1,35 @@
 ﻿const TechUnlocks = {
-    props: ['events', 'isLoading'],
-    computed: {
-        isVisible() {
-            return this.events && !this.isLoading;
-        }
-    },
+    props: ['events', 'isLoading', 'activeTab'],
     methods: {
         formatDate(date) {
             return date ? moment.utc(date).format('YYYY-MM-DD') : '';
         }
     },
+    computed: {
+        isVisible() {
+            return this.activeTab === 'tech';
+        }
+    },
     template: `
-        <div v-if="isVisible">
-            <h5>Tech research dates</h5>
-            <ul class="collection">
-                <li class="collection-item" v-for="item in events">
-                    {{ item.nodeDisplayName }} - {{ formatDate(item.date) }}
-                </li>
-            </ul>
+        <div v-show="isVisible">
+            <h2 class="subtitle">Unlocked Technologies</h2>
+            
+            <table class="table is-bordered is-fullwidth is-hoverable">
+            <thead>
+                <tr>
+                    <th>Name</th> 
+                    <th>Completion Date</th> 
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in events">
+                    <td>{{ item.nodeDisplayName }}</td>
+                    <td>{{ formatDate(item.date) }}</td>
+                </tr> 
+            </tbody>
+            </table>
         </div>
-        <loading-spinner v-if="isLoading"></loading-spinner>`
+        <div v-if="isLoading" class="columns mt-4 is-centered is-vcentered">
+            <loading-spinner></loading-spinner>
+        </div>`
 };

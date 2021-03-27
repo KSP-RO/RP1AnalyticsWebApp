@@ -5,30 +5,37 @@
     ViewData["Title"] = "RP-1 Analytics";
 }
 
-<div>
-    <label for="Career">Select a career</label>
-    <select asp-for="Career" asp-items="Model.Careers" onchange="careerSelectionChanged(this.value);" class="browser-default">
-        <option value=""></option>
-    </select>
+
+<div class="box columns is-centered">
+    <div class="field">
+        <div class="control has-icons-left">
+            <div class="select is-rounded">
+                <select asp-for="Career" asp-items="Model.Careers" onchange="careerSelectionChanged(this.value);" class="browser-default">
+                    <option value="Select a career" disabled selected>Select a career</option>
+                </select>
+            </div>
+            <div class="icon is-small is-left">
+                <i class="fas fa-database"></i>
+              </div>
+        </div>
+    </div>
 </div>
-
-<ul class="tabs">
-    <li class="tab col s3"><a href="#milestones" class="active">Contracts</a></li>
-    <li class="tab col s3"><a href="#repeatables">Repeatables</a></li>
-    <li class="tab col s3"><a href="#tech">Tech</a></li>
-</ul>
-
 <div id="appWrapper">
+   
+    <div id="selection-tab" class="selection-tab">
+        <selection-tab :active="activeTab" v-on:change-active="handleChangeActive"></selection-tab>
+    </div>
+    
     <div id="milestones" class="contracts-app">
-        <milestone-contracts :contracts="milestones" :is-loading="isLoadingMilestones"></milestone-contracts>
+        <milestone-contracts :active-tab="activeTab" :contracts="milestones" :is-loading="isLoadingMilestones"></milestone-contracts>
     </div>
 
     <div id="repeatables" class="contracts-app">
-        <repeatable-contracts :contracts="repeatables" :is-loading="isLoadingRepeatables"></repeatable-contracts>
+        <repeatable-contracts :active-tab="activeTab" :contracts="repeatables" :is-loading="isLoadingRepeatables"></repeatable-contracts>
     </div>
 
     <div id="tech" class="contracts-app">
-        <tech-unlocks :events="techEvents" :is-loading="isLoadingTechEvents"></tech-unlocks>
+        <tech-unlocks :active-tab="activeTab" :events="techEvents" :is-loading="isLoadingTechEvents"></tech-unlocks>
     </div>
 </div>
 
@@ -36,6 +43,7 @@
 <div id="chart"></div>
 
 @section Scripts {
+    <script src="~/js/components/selection-tab.js" asp-append-version="true"></script>
     <script src="~/js/components/milestone-contracts.js" asp-append-version="true"></script>
     <script src="~/js/components/repeatable-contracts.js" asp-append-version="true"></script>
     <script src="~/js/components/tech-unlocks.js" asp-append-version="true"></script>
