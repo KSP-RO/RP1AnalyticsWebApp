@@ -1,23 +1,35 @@
 ﻿const MilestoneContracts = {
-    props: ['contracts', 'isLoading'],
-    computed: {
-        isVisible() {
-            return this.contracts && !this.isLoading;
-        }
-    },
+    props: ['contracts', 'isLoading', 'activeTab'],
     methods: {
         formatDate(date) {
             return date ? moment.utc(date).format('YYYY-MM-DD') : '';
         }
     },
+    computed: {
+      isVisible() {
+          return this.activeTab === 'milestones' && this.contracts;
+      }  
+    },
     template: `
-        <div v-if="isVisible">
-            <h5>Completed milestones</h5>
-            <ul class="collection">
-                <li class="collection-item" v-for="item in contracts">
-                    {{ item.contractDisplayName }} - {{ formatDate(item.date) }}
-                </li>
-            </ul>
+        <div v-show="isVisible">
+            <h2 class="subtitle">Completed Milestones</h2>
+            
+            <table class="table is-bordered is-fullwidth is-hoverable">
+            <thead>
+                <tr>
+                    <th>Name</th> 
+                    <th>Completion Date</th> 
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in contracts">
+                    <td>{{ item.contractDisplayName }}</td>
+                    <td>{{ formatDate(item.date) }}</td>
+                </tr> 
+            </tbody>
+            </table>
         </div>
-        <loading-spinner v-if="isLoading"></loading-spinner>`
+        <div v-if="isLoading" class="columns mt-4 is-centered is-vcentered">
+            <loading-spinner></loading-spinner>
+        </div>`
 };
