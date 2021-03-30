@@ -18,7 +18,7 @@
             <li v-bind:class="{ 'is-active': active === 'tech' }">
                 <a @click="$emit('change-active', 'tech')">
                     <span class="icon is-small"><i class="fas fa-tools" aria-hidden="true"></i></span>
-                    <span>Tech</span>
+                    <span>Tech Unlocks</span>
                 </a>
             </li>
         </ul>

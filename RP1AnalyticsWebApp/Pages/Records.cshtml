@@ -29,17 +29,17 @@
             </tr>
         }
         </tbody>
-    </table></div>
+    </table>
+</div>
 
 <div id="modal1" class="modal">
+    <div class="modal-background"></div>
     <div class="modal-content">
-        <div id="careerDates" class="contracts-app" v-cloak>
+        <div id="careerDates" class="contracts-app">
             <career-dates :items="items"></career-dates>
         </div>
     </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat"><i class="left material-icons">close</i>Close</a>
-    </div>
+    <button onclick="handleClose();" class="modal-close is-large" aria-label="close"></button>
 </div>
 
 @section Scripts {
