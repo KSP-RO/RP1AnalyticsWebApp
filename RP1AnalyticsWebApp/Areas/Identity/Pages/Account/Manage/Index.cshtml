@@ -5,16 +5,15 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+<partial name="_StatusMessage" model="Model.StatusMessage"/>
 
-<div class="row">
-    <h5>How to submit your career</h5>
-    <ol>
-        <li>Ensure that you have the <a href="https://github.com/KSP-RO/RP-0/tree/NetworkSpyware">NetworkSpyware</a> RP-1 branch installed</li>
+<div class="box container mt-4 ml-4">
+    <h2 class="subtitle">How to submit your career</h2>
+    <ol class="ml-4">
         <li>Create a career below</li>
         <li>
             Open up the ingame RP-1 UI, switch to the "Career Log" tab and fill in the following data:
-            <ul class="browser-default">
+            <ul>
                 <li>Server URL - https://rp1careerlog.azurewebsites.net/api/CareerLogs/</li>
                 <li>Token - the value after your career name in the table below</li>
             </ul>
@@ -23,36 +22,43 @@
     </ol>
 </div>
 
-<div class="row">
-    <h5>Careers</h5>
-    <table class="striped">
+<div class="ml-4 box">
+    <h2 class="subtitle">Careers</h2>
+    <table class="table is-bordered is-fullwidth">
         <thead>
-            <tr>
-                <th>Name</th>
-                <th>Token</th>
-            </tr>
+        <tr>
+            <th>Name</th>
+            <th>Token</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var c in Model.Careers)
-            {
-                <tr>
-                    <td><a href="/?careerId=@c.Id">@c.name</a></td>
-                    <td>@c.token</td>
-                </tr>
-            }
+        @foreach (var c in Model.Careers)
+        {
+            <tr>
+                <td>
+                    <a href="/?careerId=@c.Id">@c.name</a>
+                </td>
+                <td>@c.token</td>
+            </tr>
+        }
         </tbody>
     </table>
-</div>
 
-<div class="row">
-    <h5>Add new career</h5>
-    <form id="profile-form" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="Input.CareerName"></label>
-            <input asp-for="Input.CareerName" class="form-control" />
-            <span asp-validation-for="Input.CareerName" class="text-danger"></span>
-        </div>
-        <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
-    </form>
+
+    <div class="pt-5">
+        <h2 class="subtitle">Add a new career</h2>
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="field">
+                <label class="label" asp-for="Input.CareerName"></label>
+                <div class="control">
+                    <input asp-for="Input.CareerName" class="input is-info form-control"/>
+                    <span asp-validation-for="Input.CareerName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="control">
+                <button id="update-profile-button" type="submit" class="button is-info">Save</button>
+            </div>
+        </form>
+    </div>
 </div>
