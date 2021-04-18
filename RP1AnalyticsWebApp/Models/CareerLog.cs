@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace RP1AnalyticsWebApp.Models
 {
+    [BsonIgnoreExtraElements]
     public class CareerLog
     {
         [BsonId]
