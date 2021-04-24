@@ -14,6 +14,7 @@ namespace RP1AnalyticsWebApp.Models
         public DifficultyLevel DifficultyLevel { get; set; }
         public ConfigurableStart ConfigurableStart { get; set; }
 
+        public FailureModel FailureModel { get; set; }
         public string DescriptionText { get; set; }
     }
 
@@ -41,5 +42,11 @@ namespace RP1AnalyticsWebApp.Models
         Y1959,
         Y1961,
         Y1963
+    }
+
+    public enum FailureModel
+    {
+        TestFlight,
+        TestLite
     }
 }

@@ -58,34 +58,60 @@
                 </div>
             </div>
 
-            <div class="field">
-                <label class="label" asp-for="Input.DifficultyLevel"></label>
-                <div class="select">
-                    <select asp-for="Input.DifficultyLevel" asp-items="Html.GetEnumSelectList<DifficultyLevel>()">
-                    </select>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                            <label class="label" asp-for="Input.DifficultyLevel"></label>
+                            <div class="select is-fullwidth">
+                                <select asp-for="Input.DifficultyLevel" asp-items="Html.GetEnumSelectList<DifficultyLevel>()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                            <label class="label" asp-for="Input.CareerPlaystyle"></label>
+                            <div class="select is-fullwidth">
+                                <select asp-for="Input.CareerPlaystyle" asp-items="Html.GetEnumSelectList<CareerPlaystyle>()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="field">
-                <label class="label" asp-for="Input.CareerPlaystyle"></label>
-                <div class="select">
-                    <select asp-for="Input.CareerPlaystyle" asp-items="Html.GetEnumSelectList<CareerPlaystyle>()">
-                    </select>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                            <label class="label" asp-for="Input.FailureModel"></label>
+                            <div class="select is-fullwidth">
+                                <select asp-for="Input.FailureModel" asp-items="Html.GetEnumSelectList<FailureModel>()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <div class="field">
+                        <label class="label" asp-for="Input.ConfigurableStart"></label>
+                        <div class="select is-fullwidth">
+                            <select asp-for="Input.ConfigurableStart" asp-items="Html.GetEnumSelectList<ConfigurableStart>()">
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="field">
-                <label class="label" asp-for="Input.ConfigurableStart"></label>
-                <div class="select">
-                    <select asp-for="Input.ConfigurableStart" asp-items="Html.GetEnumSelectList<ConfigurableStart>()">
-                    </select>
-                </div>
-            </div>
-
             <div class="field">
                 <label class="label" asp-for="Input.DescriptionText"></label>
                 <textarea class="textarea" asp-for="Input.DescriptionText" cols="150" rows="10"></textarea>
             </div>
+
             <div class="control">
                 <button id="update-profile-button" type="submit" class="button is-info">Save</button>
             </div>
