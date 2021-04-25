@@ -100,10 +100,10 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
         {
             return new CareerLogMeta
             {
-                CareerPlaystyle = Enum.GetName(typeof(CareerPlaystyle), Input.CareerPlaystyle),
-                DifficultyLevel = Enum.GetName(typeof(DifficultyLevel), Input.DifficultyLevel),
-                ConfigurableStart = Enum.GetName(typeof(ConfigurableStart), Input.ConfigurableStart),
-                FailureModel = Enum.GetName(typeof(FailureModel), Input.FailureModel),
+                CareerPlaystyle = Input.CareerPlaystyle,
+                DifficultyLevel = Input.DifficultyLevel,
+                ConfigurableStart = Input.ConfigurableStart,
+                FailureModel = Input.FailureModel,
                 DescriptionText = Input.DescriptionText
             };
         }
