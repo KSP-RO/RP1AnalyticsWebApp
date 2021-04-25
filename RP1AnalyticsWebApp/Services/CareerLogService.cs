@@ -174,7 +174,7 @@ namespace RP1AnalyticsWebApp.Services
                 token = Guid.NewGuid().ToString("N"),
                 name = log.name,
                 userLogin = log.userLogin,
-                careerLogMeta = log.careerLogMeta
+                careerLogMeta = log.careerLogMeta              
             };
 
             if (log.careerLogEntries != null)

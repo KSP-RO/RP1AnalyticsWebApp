@@ -6,11 +6,13 @@ namespace RP1AnalyticsWebApp.Models
     [BsonIgnoreExtraElements]
     public class CareerLogMeta
     {
-        public string CareerPlaystyle { get; set; }
-        public string DifficultyLevel { get; set; }
-        public string ConfigurableStart { get; set; }
+        [BsonRepresentation(BsonType.String)] public CareerPlaystyle CareerPlaystyle { get; set; }
 
-        public string FailureModel { get; set; }
+        [BsonRepresentation(BsonType.String)] public DifficultyLevel DifficultyLevel { get; set; }
+
+        [BsonRepresentation(BsonType.String)] public ConfigurableStart ConfigurableStart { get; set; }
+
+        [BsonRepresentation(BsonType.String)] public FailureModel FailureModel { get; set; }
         public string DescriptionText { get; set; }
     }
 
@@ -32,7 +34,7 @@ namespace RP1AnalyticsWebApp.Models
 
     public enum ConfigurableStart
     {
-        NONE,
+        None,
         Y1955,
         Y1957,
         Y1959,
