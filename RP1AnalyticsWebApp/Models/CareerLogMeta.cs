@@ -6,11 +6,11 @@ namespace RP1AnalyticsWebApp.Models
     [BsonIgnoreExtraElements]
     public class CareerLogMeta
     {
-        public CareerPlaystyle CareerPlaystyle { get; set; }
-        public DifficultyLevel DifficultyLevel { get; set; }
-        public ConfigurableStart ConfigurableStart { get; set; }
+        public string CareerPlaystyle { get; set; }
+        public string DifficultyLevel { get; set; }
+        public string ConfigurableStart { get; set; }
 
-        public FailureModel FailureModel { get; set; }
+        public string FailureModel { get; set; }
         public string DescriptionText { get; set; }
     }
 

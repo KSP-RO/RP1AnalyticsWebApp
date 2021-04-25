@@ -84,6 +84,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+
             _careerLogService.Create(new CareerLog
             {
                 name = Input.CareerName,
@@ -99,10 +100,11 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
         {
             return new CareerLogMeta
             {
-                CareerPlaystyle = Input.CareerPlaystyle,
-                DifficultyLevel = Input.DifficultyLevel,
-                DescriptionText = Input.DescriptionText,
-                ConfigurableStart = Input.ConfigurableStart
+                CareerPlaystyle = Enum.GetName(typeof(CareerPlaystyle), Input.CareerPlaystyle),
+                DifficultyLevel = Enum.GetName(typeof(DifficultyLevel), Input.DifficultyLevel),
+                ConfigurableStart = Enum.GetName(typeof(ConfigurableStart), Input.ConfigurableStart),
+                FailureModel = Enum.GetName(typeof(FailureModel), Input.FailureModel),
+                DescriptionText = Input.DescriptionText
             };
         }
     }
