@@ -16,16 +16,20 @@
             </div>
             <div class="icon is-small is-left">
                 <i class="fas fa-database"></i>
-              </div>
+            </div>
         </div>
     </div>
 </div>
 <div id="appWrapper">
-   
+
+    <div>
+        <meta-information :title="careerTitle" :meta="careerLogMeta"></meta-information>
+    </div>
+
+
     <div id="selection-tab" class="selection-tab">
         <selection-tab :active="activeTab" v-on:change-active="handleChangeActive"></selection-tab>
     </div>
-    
     <div id="milestones" class="contracts-app">
         <milestone-contracts :active-tab="activeTab" :contracts="milestones" :is-loading="isLoadingMilestones"></milestone-contracts>
     </div>
@@ -43,10 +47,12 @@
 <div id="chart"></div>
 
 @section Scripts {
+    <script src="~/js/components/meta-information.js" asp-append-version="true"></script>
     <script src="~/js/components/selection-tab.js" asp-append-version="true"></script>
     <script src="~/js/components/milestone-contracts.js" asp-append-version="true"></script>
     <script src="~/js/components/repeatable-contracts.js" asp-append-version="true"></script>
     <script src="~/js/components/tech-unlocks.js" asp-append-version="true"></script>
     <script src="~/js/components/loading-spinner.js" asp-append-version="true"></script>
     <script src="~/js/careerLog.js" asp-append-version="true"></script>
+
 }
