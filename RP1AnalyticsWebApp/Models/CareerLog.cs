@@ -21,6 +21,7 @@ namespace RP1AnalyticsWebApp.Models
         public List<ContractEventDto> contractEventEntries { get; set; }
         public List<FacilityConstructionEventDto> facilityEventEntries { get; set; }
         public List<TechResearchEventDto> techEventEntries { get; set; }
+        public CareerLogMeta careerLogMeta { get; set; }
 
         public void RemoveNonPublicData()
         {

@@ -6,6 +6,8 @@
     const app = Vue.createApp({
         data() {
             return {
+                careerTitle: null,
+                careerLogMeta: null,
                 milestones: null,
                 isLoadingMilestones: false,
                 repeatables: null,
@@ -34,6 +36,7 @@
     app.component('repeatable-contracts', RepeatableContracts);
     app.component('tech-unlocks', TechUnlocks);
     app.component('loading-spinner', LoadingSpinner);
+    app.component('meta-information', MetaInformation);
     const vm = app.mount('#appWrapper');
 
     let contractEvents = null;
@@ -58,7 +61,7 @@
     }
 
     window.careerSelectionChanged = getCareerLogs;
-    
+
     function getCareerLogs(careerId) {
         console.log(`Getting Logs for ${careerId}...`);
 
@@ -68,6 +71,15 @@
             vm.reset();
         } else {
             chart?.destroy();
+
+            fetch(`/api/careerlogs/${careerId}`)
+                .then((res) => res.json())
+                .then((jsonLogs) => {
+                    console.log(jsonLogs);
+                    vm.careerLogMeta = jsonLogs.careerLogMeta;
+                    vm.careerTitle = jsonLogs.name;
+                });
+
 
             fetch(`/api/careerlogs/${careerId}`)
                 .then((res) => res.json())

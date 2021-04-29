@@ -1,4 +1,5 @@
-﻿using AspNetCore.Identity.Mongo.Model;
+﻿using System;
+using AspNetCore.Identity.Mongo.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -19,7 +20,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
         public List<CareerListItem> Careers => _careerLogService.GetCareerListWithTokens(User.Identity.Name);
 
         public IndexModel(UserManager<MongoUser> userManager, SignInManager<MongoUser> signInManager,
-                          CareerLogService careerLogService)
+            CareerLogService careerLogService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -28,17 +29,27 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
         public string Username { get; set; }
 
-        [TempData]
-        public string StatusMessage { get; set; }
+        [TempData] public string StatusMessage { get; set; }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+        [BindProperty] public InputModel Input { get; set; }
 
         public class InputModel
         {
             [Required]
             [Display(Name = "Career name")]
             public string CareerName { get; set; }
+
+
+            [Display(Name = "Playstyle")] public CareerPlaystyle CareerPlaystyle { get; set; }
+
+            [Display(Name = "Difficulty")] public DifficultyLevel DifficultyLevel { get; set; }
+
+            [Display(Name = "Failure Mod")] public FailureModel FailureModel { get; set; }
+
+            [Display(Name = "Configurable Start (leave at 'NONE' if unused)")]
+            public ConfigurableStart ConfigurableStart { get; set; }
+
+            [Display(Name = "Description")] public string DescriptionText { get; set; }
         }
 
         private async Task LoadAsync(MongoUser user)
@@ -73,14 +84,28 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+
             _careerLogService.Create(new CareerLog
             {
                 name = Input.CareerName,
-                userLogin = Username
+                userLogin = Username,
+                careerLogMeta = CreateCareerLogMeta()
             });
 
             StatusMessage = "A new career was created successfully";
             return RedirectToPage();
+        }
+
+        private CareerLogMeta CreateCareerLogMeta()
+        {
+            return new CareerLogMeta
+            {
+                CareerPlaystyle = Input.CareerPlaystyle,
+                DifficultyLevel = Input.DifficultyLevel,
+                ConfigurableStart = Input.ConfigurableStart,
+                FailureModel = Input.FailureModel,
+                DescriptionText = Input.DescriptionText
+            };
         }
     }
 }

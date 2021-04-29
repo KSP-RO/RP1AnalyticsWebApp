@@ -1,4 +1,5 @@
 ﻿@page
+@using RP1AnalyticsWebApp.Models
 @model IndexModel
 @{
     ViewData["Title"] = "Profile";
@@ -29,16 +30,33 @@
         <tr>
             <th>Name</th>
             <th>Token</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         @foreach (var c in Model.Careers)
         {
             <tr>
-                <td>
+                <td class="is-vcentered">
                     <a href="/?careerId=@c.Id">@c.name</a>
+                </td >
+                <td class="is-vcentered">@c.token</td>
+                <td class="is-vcentered">
+                    <div class="buttons are-small">
+                        <button class="button is-info is-small">
+                            <span class="icon is-small">
+                                <i class="fa fa-edit"></i>
+                            </span>
+                            <span>Edit</span>
+                        </button>
+                        <button class="button is-black is-small">
+                            <span class="icon is-small">
+                                <i class="fa fa-eye-slash"></i>
+                            </span>
+                            <span>Hide</span>
+                        </button>
+                    </div>
                 </td>
-                <td>@c.token</td>
             </tr>
         }
         </tbody>
@@ -56,6 +74,61 @@
                     <span asp-validation-for="Input.CareerName" class="text-danger"></span>
                 </div>
             </div>
+
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                            <label class="label" asp-for="Input.DifficultyLevel"></label>
+                            <div class="select is-fullwidth">
+                                <select asp-for="Input.DifficultyLevel" asp-items="Html.GetEnumSelectList<DifficultyLevel>()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                            <label class="label" asp-for="Input.CareerPlaystyle"></label>
+                            <div class="select is-fullwidth">
+                                <select asp-for="Input.CareerPlaystyle" asp-items="Html.GetEnumSelectList<CareerPlaystyle>()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                            <label class="label" asp-for="Input.FailureModel"></label>
+                            <div class="select is-fullwidth">
+                                <select asp-for="Input.FailureModel" asp-items="Html.GetEnumSelectList<FailureModel>()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <div class="field">
+                        <label class="label" asp-for="Input.ConfigurableStart"></label>
+                        <div class="select is-fullwidth">
+                            <select asp-for="Input.ConfigurableStart" asp-items="Html.GetEnumSelectList<ConfigurableStart>()">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" asp-for="Input.DescriptionText"></label>
+                <textarea class="textarea" asp-for="Input.DescriptionText" cols="150" rows="10"></textarea>
+            </div>
+
             <div class="control">
                 <button id="update-profile-button" type="submit" class="button is-info">Save</button>
             </div>
