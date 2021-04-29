@@ -1,10 +1,15 @@
 ﻿@page
 @using RP1AnalyticsWebApp.Models
+
+
+
 @model IndexModel
 @{
     ViewData["Title"] = "Profile";
     ViewData["ActivePage"] = ManageNavPages.Index;
+
 }
+
 
 <partial name="_StatusMessage" model="Model.StatusMessage"/>
 
@@ -15,7 +20,7 @@
         <li>
             Open up the ingame RP-1 UI, switch to the "Career Log" tab and fill in the following data:
             <ul>
-                <li>Server URL - https://rp1careerlog.azurewebsites.net/api/CareerLogs/</li>
+                <li>Server URL - <span style="background: lightgray;" class="is-family-code">https://rp1careerlog.azurewebsites.net/api/CareerLogs/</span></li>
                 <li>Token - the value after your career name in the table below</li>
             </ul>
         </li>
@@ -42,20 +47,26 @@
                 </td >
                 <td class="is-vcentered">@c.token</td>
                 <td class="is-vcentered">
-                    <div class="buttons are-small">
-                        <button class="button is-info is-small">
-                            <span class="icon is-small">
-                                <i class="fa fa-edit"></i>
-                            </span>
-                            <span>Edit</span>
-                        </button>
-                        <button class="button is-black is-small">
-                            <span class="icon is-small">
-                                <i class="fa fa-eye-slash"></i>
-                            </span>
-                            <span>Hide</span>
-                        </button>
-                    </div>
+                    @* <div class="buttons are-small"> *@
+                    @*     <button class="button is-info is-small"> *@
+                    @*         <span class="icon is-small"> *@
+                    @*             <i class="fa fa-edit"></i> *@
+                    @*         </span> *@
+                    @*         <span>Edit</span> *@
+                    @*     </button> *@
+                    @*     <button data-career-id="@c.token" class="button is-black is-small"> *@
+                    @*         <span class="icon is-small"> *@
+                    @*             <i class="fa fa-eye-slash"></i> *@
+                    @*         </span> *@
+                    @*         <span>Hide</span> *@
+                    @*     </button> *@
+                    @*     <button data-career-id="@c.token" class="button is-danger is-small"> *@
+                    @*         <span class="icon is-small"> *@
+                    @*             <i class="fa fa-trash"></i> *@
+                    @*         </span> *@
+                    @*         <span>Delete</span> *@
+                    @*     </button> *@
+                    @* </div> *@
                 </td>
             </tr>
         }
@@ -135,3 +146,5 @@
         </form>
     </div>
 </div>
+
+
