@@ -48,8 +48,8 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
             CareerLog = _careerLogService.GetByToken(RouteData.Values["token"].ToString());
 
-            InitFieldValues();
-
+            if (CareerLog.careerLogMeta != null) InitFieldValues();
+            else Input.CareerName = CareerLog.name;
 
             await LoadAsync(user);
             return Page();
@@ -62,6 +62,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
             return new RedirectToPageResult("Index");
         }
+
         private CareerLogMeta CreateCareerLogMeta()
         {
             return new CareerLogMeta
