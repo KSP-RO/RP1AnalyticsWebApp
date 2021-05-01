@@ -10,7 +10,6 @@
 
 }
 
-
 <partial name="_StatusMessage" model="Model.StatusMessage"/>
 
 <div class="box container mt-4 ml-4">
@@ -27,6 +26,7 @@
         <li>Click the "Export to web" button</li>
     </ol>
 </div>
+
 
 <div class="ml-4 box">
     <h2 class="subtitle">Careers</h2>
@@ -47,26 +47,33 @@
                 </td >
                 <td class="is-vcentered">@c.token</td>
                 <td class="is-vcentered">
-                    @* <div class="buttons are-small"> *@
-                    @*     <button class="button is-info is-small"> *@
-                    @*         <span class="icon is-small"> *@
-                    @*             <i class="fa fa-edit"></i> *@
-                    @*         </span> *@
-                    @*         <span>Edit</span> *@
-                    @*     </button> *@
-                    @*     <button data-career-id="@c.token" class="button is-black is-small"> *@
-                    @*         <span class="icon is-small"> *@
-                    @*             <i class="fa fa-eye-slash"></i> *@
-                    @*         </span> *@
-                    @*         <span>Hide</span> *@
-                    @*     </button> *@
-                    @*     <button data-career-id="@c.token" class="button is-danger is-small"> *@
-                    @*         <span class="icon is-small"> *@
-                    @*             <i class="fa fa-trash"></i> *@
-                    @*         </span> *@
-                    @*         <span>Delete</span> *@
-                    @*     </button> *@
-                    @* </div> *@
+                    <div class="buttons are-small">
+                        <a class="button is-info is-small" asp-route-token="@c.token" asp-page="EditCareer">
+                            <span class="icon is-small">
+                                <i class="fa fa-edit"></i>
+                            </span>
+                            <span>Edit Information</span>
+                        </a>
+                        @* <button class="button is-black is-small"> *@
+                        @*     <span class="icon is-small"> *@
+                        @*         <i class="fa fa-eye-slash"></i> *@
+                        @*     </span> *@
+                        @*     <span>Hide</span> *@
+                        @* </button> *@
+                        <form method="post">
+                            <button
+                                onclick="return confirm('Do you really want to delete this career log?')"
+                                type="submit"
+                                class="button is-danger is-small"
+                                asp-route-token="@c.token"
+                                asp-page-handler="delete">
+                                <span class="icon is-small">
+                                    <i class="fa fa-trash"></i>
+                                </span>
+                                <span>Delete</span>
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
         }
@@ -76,7 +83,7 @@
 
     <div class="pt-5">
         <h2 class="subtitle">Add a new career</h2>
-        <form id="profile-form" method="post">
+        <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="field">
                 <label class="label" asp-for="Input.CareerName"></label>
@@ -146,5 +153,3 @@
         </form>
     </div>
 </div>
-
-

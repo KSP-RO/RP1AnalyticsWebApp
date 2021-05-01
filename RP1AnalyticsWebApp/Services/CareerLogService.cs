@@ -14,7 +14,8 @@ namespace RP1AnalyticsWebApp.Services
         private readonly IContractSettings _contractSettings;
         private readonly ITechTreeSettings _techTreeSettings;
 
-        public CareerLogService(ICareerLogDatabaseSettings dbSettings, IContractSettings contractSettings, ITechTreeSettings techTreeSettings)
+        public CareerLogService(ICareerLogDatabaseSettings dbSettings, IContractSettings contractSettings,
+            ITechTreeSettings techTreeSettings)
         {
             _contractSettings = contractSettings;
             _techTreeSettings = techTreeSettings;
@@ -61,15 +62,17 @@ namespace RP1AnalyticsWebApp.Services
                 ContractDisplayName = ResolveContractName(name),
                 Type = ContractEventType.Complete,
                 Date = c.contractEventEntries.FirstOrDefault(e => e.type == ContractEventType.Complete &&
-                                                                  string.Equals(e.internalName, name, StringComparison.OrdinalIgnoreCase))?.date
+                                                                  string.Equals(e.internalName, name,
+                                                                      StringComparison.OrdinalIgnoreCase))?.date
             }).Where(ce => ce.Date.HasValue).OrderBy(ce => ce.Date).ToList();
         }
 
         public List<ContractEventWithCount> GetRepeatableContractCompletionCountsForCareer(string id)
         {
             var proj = BsonDocument.Parse("{ contractEventEntries: 1, name: 1, _id: 1 }");
-            var gProj = BsonDocument.Parse("{ _id: \"$contractEventEntries.internalName\", ContractInternalName: { $first: \"$contractEventEntries.internalName\" }, " +
-                                           "CareerId: { $first: \"$_id\" }, CareerName: { $first: \"$name\" }, Date: { $min: \"$contractEventEntries.date\" }, Count: { $sum: 1 } }");
+            var gProj = BsonDocument.Parse(
+                "{ _id: \"$contractEventEntries.internalName\", ContractInternalName: { $first: \"$contractEventEntries.internalName\" }, " +
+                "CareerId: { $first: \"$_id\" }, CareerName: { $first: \"$name\" }, Date: { $min: \"$contractEventEntries.date\" }, Count: { $sum: 1 } }");
 
             var result = _careerLogs
                 .Aggregate()
@@ -81,8 +84,9 @@ namespace RP1AnalyticsWebApp.Services
                 .As<ContractEventWithCount>()
                 .ToList();
 
-            var repeatables = result.Where(r => _contractSettings.RepeatableContractNames.Contains(r.ContractInternalName))
-                                    .ToList();
+            var repeatables = result
+                .Where(r => _contractSettings.RepeatableContractNames.Contains(r.ContractInternalName))
+                .ToList();
             foreach (var item in repeatables)
             {
                 item.ContractDisplayName = ResolveContractName(item.ContractInternalName);
@@ -95,8 +99,9 @@ namespace RP1AnalyticsWebApp.Services
         public List<ContractEventWithCareerInfo> GetRecords()
         {
             var proj = BsonDocument.Parse("{ contractEventEntries: 1, name: 1 }");
-            var gProj = BsonDocument.Parse("{ _id: \"$contractEventEntries.internalName\", ContractInternalName: { $first: \"$contractEventEntries.internalName\" }, " +
-                                           "CareerId: { $first: \"$_id\" }, CareerName: { $first: \"$name\" }, Date: { $min: \"$contractEventEntries.date\" } }");
+            var gProj = BsonDocument.Parse(
+                "{ _id: \"$contractEventEntries.internalName\", ContractInternalName: { $first: \"$contractEventEntries.internalName\" }, " +
+                "CareerId: { $first: \"$_id\" }, CareerName: { $first: \"$name\" }, Date: { $min: \"$contractEventEntries.date\" } }");
 
             var result = _careerLogs
                 .Aggregate()
@@ -118,7 +123,8 @@ namespace RP1AnalyticsWebApp.Services
             return result;
         }
 
-        public List<ContractEventWithCareerInfo> GetEventsForContract(string contract, ContractEventType evtType = ContractEventType.Complete)
+        public List<ContractEventWithCareerInfo> GetEventsForContract(string contract,
+            ContractEventType evtType = ContractEventType.Complete)
         {
             var projection = Builders<CareerLog>.Projection.Expression(c => new ContractEventWithCareerInfo
             {
@@ -130,9 +136,10 @@ namespace RP1AnalyticsWebApp.Services
                 Date = c.contractEventEntries.First(ce => ce.internalName == contract && ce.type == evtType).date
             });
 
-            var events = _careerLogs.Find(entry => entry.contractEventEntries.Any(ce => ce.internalName == contract && ce.type == evtType))
-                                    .Project(projection)
-                                    .ToList();
+            var events = _careerLogs.Find(entry =>
+                    entry.contractEventEntries.Any(ce => ce.internalName == contract && ce.type == evtType))
+                .Project(projection)
+                .ToList();
             // Cannot use server-side sort here. https://stackoverflow.com/q/56988743
             events.Sort((a, b) => a.Date.Value.CompareTo(b.Date.Value));
             return events;
@@ -161,8 +168,9 @@ namespace RP1AnalyticsWebApp.Services
 
         public List<CareerListItem> GetCareerListWithTokens(string userName = null)
         {
-            var filter = !string.IsNullOrWhiteSpace(userName) ? Builders<CareerLog>.Filter.Where(c => c.userLogin == userName) :
-                                                                FilterDefinition<CareerLog>.Empty;
+            var filter = !string.IsNullOrWhiteSpace(userName)
+                ? Builders<CareerLog>.Filter.Where(c => c.userLogin == userName)
+                : FilterDefinition<CareerLog>.Empty;
             var p = Builders<CareerLog>.Projection.Expression(c => new CareerListItem(c));
             return _careerLogs.Find(filter).Project(p).ToList();
         }
@@ -174,7 +182,7 @@ namespace RP1AnalyticsWebApp.Services
                 token = Guid.NewGuid().ToString("N"),
                 name = log.name,
                 userLogin = log.userLogin,
-                careerLogMeta = log.careerLogMeta              
+                careerLogMeta = log.careerLogMeta
             };
 
             if (log.careerLogEntries != null)
@@ -196,13 +204,14 @@ namespace RP1AnalyticsWebApp.Services
         public CareerLog Update(string token, CareerLogDto careerLogDto)
         {
             careerLogDto.TrimEmptyPeriod();
-            var updateDef = Builders<CareerLog>.Update.Set(nameof(CareerLog.startDate), careerLogDto.periods[0].startDate)
-                                                      .Set(nameof(CareerLog.endDate), careerLogDto.periods[^1].endDate)
-                                                      .Set(nameof(CareerLog.careerLogEntries), careerLogDto.periods)
-                                                      .Set(nameof(CareerLog.contractEventEntries), careerLogDto.contractEvents)
-                                                      .Set(nameof(CareerLog.facilityEventEntries), careerLogDto.facilityEvents)
-                                                      .Set(nameof(CareerLog.techEventEntries), careerLogDto.techEvents);
-            var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
+            var updateDef = Builders<CareerLog>.Update
+                .Set(nameof(CareerLog.startDate), careerLogDto.periods[0].startDate)
+                .Set(nameof(CareerLog.endDate), careerLogDto.periods[^1].endDate)
+                .Set(nameof(CareerLog.careerLogEntries), careerLogDto.periods)
+                .Set(nameof(CareerLog.contractEventEntries), careerLogDto.contractEvents)
+                .Set(nameof(CareerLog.facilityEventEntries), careerLogDto.facilityEvents)
+                .Set(nameof(CareerLog.techEventEntries), careerLogDto.techEvents);
+            var opts = new FindOneAndUpdateOptions<CareerLog> {ReturnDocument = ReturnDocument.After};
 
             return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.token == token, updateDef, opts);
         }
@@ -215,6 +224,25 @@ namespace RP1AnalyticsWebApp.Services
         private string ResolveTechNodeName(string id)
         {
             return _techTreeSettings.NodeTitleDict.TryGetValue(id, out string disp) ? disp : id;
+        }
+
+        public CareerLog GetByToken(string token)
+        {
+            return _careerLogs.Find(entry => entry.token == token).FirstOrDefault();
+        }
+
+        public void DeleteByToken(string token)
+        {
+            Console.WriteLine("delete called: " + token);
+            _careerLogs.DeleteOne(entry => entry.token == token);
+        }
+
+        public CareerLog UpdateMetaByToken(string token, CareerLogMeta meta)
+        {
+            var updateDefinition = Builders<CareerLog>.Update.Set(nameof(CareerLog.careerLogMeta), meta);
+            var opts = new FindOneAndUpdateOptions<CareerLog> {ReturnDocument = ReturnDocument.After};
+
+            return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.token == token, updateDefinition, opts);
         }
     }
 }
