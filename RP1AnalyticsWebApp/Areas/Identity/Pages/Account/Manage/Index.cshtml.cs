@@ -96,6 +96,16 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             return RedirectToPage();
         }
 
+        public RedirectToPageResult OnPostDelete(string token)
+        {
+            Console.WriteLine("token, " + token);
+            Console.WriteLine("delete called from button");
+            _careerLogService.DeleteByToken(token);
+
+            return new RedirectToPageResult("Index");
+        }
+
+
         private CareerLogMeta CreateCareerLogMeta()
         {
             return new CareerLogMeta

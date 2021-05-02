@@ -1,9 +1,13 @@
 ﻿@page
 @using RP1AnalyticsWebApp.Models
+
+
+
 @model IndexModel
 @{
     ViewData["Title"] = "Profile";
     ViewData["ActivePage"] = ManageNavPages.Index;
+
 }
 
 <partial name="_StatusMessage" model="Model.StatusMessage"/>
@@ -15,13 +19,14 @@
         <li>
             Open up the ingame RP-1 UI, switch to the "Career Log" tab and fill in the following data:
             <ul>
-                <li>Server URL - https://rp1careerlog.azurewebsites.net/api/CareerLogs/</li>
+                <li>Server URL - <span style="background: lightgray;" class="is-family-code">https://rp1careerlog.azurewebsites.net/api/CareerLogs/</span></li>
                 <li>Token - the value after your career name in the table below</li>
             </ul>
         </li>
         <li>Click the "Export to web" button</li>
     </ol>
 </div>
+
 
 <div class="ml-4 box">
     <h2 class="subtitle">Careers</h2>
@@ -43,18 +48,32 @@
                 <td class="is-vcentered">@c.token</td>
                 <td class="is-vcentered">
                     <div class="buttons are-small">
-                        <button class="button is-info is-small">
+                        <a class="button is-info is-small" asp-route-token="@c.token" asp-page="EditCareer">
                             <span class="icon is-small">
                                 <i class="fa fa-edit"></i>
                             </span>
-                            <span>Edit</span>
-                        </button>
-                        <button class="button is-black is-small">
-                            <span class="icon is-small">
-                                <i class="fa fa-eye-slash"></i>
-                            </span>
-                            <span>Hide</span>
-                        </button>
+                            <span>Edit Information</span>
+                        </a>
+                        @* <button class="button is-black is-small"> *@
+                        @*     <span class="icon is-small"> *@
+                        @*         <i class="fa fa-eye-slash"></i> *@
+                        @*     </span> *@
+                        @*     <span>Hide</span> *@
+                        @* </button> *@
+                        <form method="post">
+                            <button
+                                onclick="return confirm('Do you really want to delete this career log?')"
+                                type="submit"
+                                class="button is-danger is-small"
+                                asp-route-token="@c.token"
+                                asp-page-handler="delete">
+                                <span class="icon is-small">
+                                    <i class="fa fa-trash"></i>
+                                </span>
+                                <span>Delete</span>
+                                
+                            </button>
+                        </form>
                     </div>
                 </td>
             </tr>
@@ -65,7 +84,7 @@
 
     <div class="pt-5">
         <h2 class="subtitle">Add a new career</h2>
-        <form id="profile-form" method="post">
+        <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="field">
                 <label class="label" asp-for="Input.CareerName"></label>
