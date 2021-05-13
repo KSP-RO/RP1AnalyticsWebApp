@@ -11,8 +11,8 @@
         public CareerListItem(CareerLog c)
         {
             Id = c.Id;
-            name = c.name;
-            token = c.token;
+            name = c.Name;
+            token = c.Token;
         }
     }
 }

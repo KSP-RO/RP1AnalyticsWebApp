@@ -48,8 +48,8 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
             CareerLog = _careerLogService.GetByToken(RouteData.Values["token"].ToString());
 
-            if (CareerLog.careerLogMeta != null) InitFieldValues();
-            else Input.CareerName = CareerLog.name;
+            if (CareerLog.CareerLogMeta != null) InitFieldValues();
+            else Input.CareerName = CareerLog.Name;
 
             await LoadAsync(user);
             return Page();
@@ -77,11 +77,11 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
         private void InitFieldValues()
         {
-            Input.CareerName = CareerLog.name;
-            Input.DifficultyLevel = CareerLog.careerLogMeta.DifficultyLevel;
-            Input.FailureModel = CareerLog.careerLogMeta.FailureModel;
-            Input.CareerPlaystyle = CareerLog.careerLogMeta.CareerPlaystyle;
-            Input.DescriptionText = CareerLog.careerLogMeta.DescriptionText;
+            Input.CareerName = CareerLog.Name;
+            Input.DifficultyLevel = CareerLog.CareerLogMeta.DifficultyLevel;
+            Input.FailureModel = CareerLog.CareerLogMeta.FailureModel;
+            Input.CareerPlaystyle = CareerLog.CareerLogMeta.CareerPlaystyle;
+            Input.DescriptionText = CareerLog.CareerLogMeta.DescriptionText;
         }
     }
 }

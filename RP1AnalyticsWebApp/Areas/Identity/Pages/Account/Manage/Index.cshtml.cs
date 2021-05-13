@@ -87,10 +87,10 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
             _careerLogService.Create(new CareerLog
             {
-                name = Input.CareerName,
-                userLogin = Username,
-                eligibleForRecords = true,
-                careerLogMeta = CreateCareerLogMeta()
+                Name = Input.CareerName,
+                UserLogin = Username,
+                EligibleForRecords = true,
+                CareerLogMeta = CreateCareerLogMeta()
             });
 
             StatusMessage = "A new career was created successfully";
