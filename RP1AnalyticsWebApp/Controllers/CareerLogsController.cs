@@ -65,14 +65,14 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet("{id:length(24)}/Contracts", Name = "GetCareerContracts")]
-        public ActionResult<List<ContractEvent>> GetCareerContracts(string id)
+        public ActionResult<List<BaseContractEvent>> GetCareerContracts(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerContracts", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<ContractEvent> contractEvents = _careerLogService.GetContractsForCareer(id);
+            List<BaseContractEvent> contractEvents = _careerLogService.GetContractsForCareer(id);
             if (contractEvents == null)
             {
                 return NotFound();
@@ -82,14 +82,14 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet("{id:length(24)}/CompletedMilestones", Name = "GetCareerCompletedMilestones")]
-        public ActionResult<List<ContractEvent>> GetCareerCompletedMilestones(string id)
+        public ActionResult<List<BaseContractEvent>> GetCareerCompletedMilestones(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerCompletedMilestones", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<ContractEvent> contractEvents = _careerLogService.GetCompletedMilestonesForCareer(id);
+            List<BaseContractEvent> contractEvents = _careerLogService.GetCompletedMilestonesForCareer(id);
             if (contractEvents == null)
             {
                 return NotFound();
@@ -169,10 +169,10 @@ namespace RP1AnalyticsWebApp.Controllers
         {
             _telemetry.TrackEvent("CareerLogsController-CreateCareer", new Dictionary<string, string>
             {
-                { nameof(CareerLog.name), log.name }
+                { nameof(CareerLog.Name), log.Name }
             });
 
-            log.userLogin = User.Identity.Name;
+            log.UserLogin = User.Identity.Name;
 
             CareerLog res = _careerLogService.Create(log);
             return CreatedAtRoute("CreateCareer", res);

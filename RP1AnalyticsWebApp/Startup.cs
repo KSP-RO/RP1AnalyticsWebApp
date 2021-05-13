@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson.Serialization.Conventions;
 using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.Services;
 
@@ -37,6 +38,13 @@ namespace RP1AnalyticsWebApp
 
             services.AddSingleton<ITechTreeSettings>(sp =>
                 sp.GetRequiredService<IOptions<TechTreeSettings>>().Value);
+
+            var pack = new ConventionPack
+            {
+                new CamelCaseElementNameConvention()
+            };
+            ConventionRegistry.Register("CustomConventions", pack,
+               t => t.FullName.StartsWith("RP1AnalyticsWebApp.Models."));
 
             services.AddSingleton<CareerLogService>();
 

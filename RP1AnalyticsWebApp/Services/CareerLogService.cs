@@ -35,35 +35,35 @@ namespace RP1AnalyticsWebApp.Services
             return _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
         }
 
-        public List<ContractEvent> GetContractsForCareer(string id)
+        public List<BaseContractEvent> GetContractsForCareer(string id)
         {
             var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
             if (c == null) return null;
-            if (c.contractEventEntries == null) return new List<ContractEvent>(0);
+            if (c.ContractEventEntries == null) return new List<BaseContractEvent>(0);
 
-            return c.contractEventEntries.Select(ce => new ContractEvent
+            return c.ContractEventEntries.Select(ce => new BaseContractEvent
             {
-                ContractInternalName = ce.internalName,
-                ContractDisplayName = ResolveContractName(ce.internalName),
-                Type = ce.type,
-                Date = ce.date
+                ContractInternalName = ce.InternalName,
+                ContractDisplayName = ResolveContractName(ce.InternalName),
+                Type = ce.Type,
+                Date = ce.Date
             }).ToList();
         }
 
-        public List<ContractEvent> GetCompletedMilestonesForCareer(string id)
+        public List<BaseContractEvent> GetCompletedMilestonesForCareer(string id)
         {
             var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
             if (c == null) return null;
-            if (c.contractEventEntries == null) return new List<ContractEvent>(0);
+            if (c.ContractEventEntries == null) return new List<BaseContractEvent>(0);
 
-            return _contractSettings.MilestoneContractNames.Select(name => new ContractEvent
+            return _contractSettings.MilestoneContractNames.Select(name => new BaseContractEvent
             {
                 ContractInternalName = name,
                 ContractDisplayName = ResolveContractName(name),
                 Type = ContractEventType.Complete,
-                Date = c.contractEventEntries.FirstOrDefault(e => e.type == ContractEventType.Complete &&
-                                                                  string.Equals(e.internalName, name,
-                                                                      StringComparison.OrdinalIgnoreCase))?.date
+                Date = c.ContractEventEntries.FirstOrDefault(e => e.Type == ContractEventType.Complete &&
+                                                                  string.Equals(e.InternalName, name,
+                                                                      StringComparison.OrdinalIgnoreCase))?.Date
             }).Where(ce => ce.Date.HasValue).OrderBy(ce => ce.Date).ToList();
         }
 
@@ -71,13 +71,13 @@ namespace RP1AnalyticsWebApp.Services
         {
             var result = _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
-                .SelectMany(c => c.contractEventEntries, (c, e) => new
+                .SelectMany(c => c.ContractEventEntries, (c, e) => new
                 {
                     CareerId = c.Id,
-                    CareerName = c.name,
-                    ContractInternalName = e.internalName,
-                    EventType = e.type,
-                    EventDate = e.date
+                    CareerName = c.Name,
+                    ContractInternalName = e.InternalName,
+                    EventType = e.Type,
+                    EventDate = e.Date
                 })
                 .Where(c => c.EventType == ContractEventType.Complete)
                 .GroupBy(c => c.ContractInternalName)
@@ -106,14 +106,14 @@ namespace RP1AnalyticsWebApp.Services
         public List<ContractEventWithCareerInfo> GetRecords()
         {
             var result = _careerLogs.AsQueryable()
-                .Where(c => c.eligibleForRecords)
-                .SelectMany(c => c.contractEventEntries, (c, e) => new
+                .Where(c => c.EligibleForRecords)
+                .SelectMany(c => c.ContractEventEntries, (c, e) => new
                 {
                     CareerId = c.Id,
-                    CareerName = c.name,
-                    ContractInternalName = e.internalName,
-                    EventType = e.type,
-                    EventDate = e.date
+                    CareerName = c.Name,
+                    ContractInternalName = e.InternalName,
+                    EventType = e.Type,
+                    EventDate = e.Date
                 })
                 .Where(c => c.EventType == ContractEventType.Complete)
                 .OrderBy(c => c.EventDate)
@@ -143,15 +143,15 @@ namespace RP1AnalyticsWebApp.Services
             var projection = Builders<CareerLog>.Projection.Expression(c => new ContractEventWithCareerInfo
             {
                 CareerId = c.Id,
-                CareerName = c.name,
+                CareerName = c.Name,
                 ContractInternalName = contract,
                 ContractDisplayName = ResolveContractName(contract),
                 Type = evtType,
-                Date = c.contractEventEntries.First(ce => ce.internalName == contract && ce.type == evtType).date
+                Date = c.ContractEventEntries.First(ce => ce.InternalName == contract && ce.Type == evtType).Date
             });
 
             var events = _careerLogs.Find(entry =>
-                    entry.contractEventEntries.Any(ce => ce.internalName == contract && ce.type == evtType))
+                    entry.ContractEventEntries.Any(ce => ce.InternalName == contract && ce.Type == evtType))
                 .Project(projection)
                 .ToList();
             // Cannot use server-side sort here. https://stackoverflow.com/q/56988743
@@ -163,13 +163,13 @@ namespace RP1AnalyticsWebApp.Services
         {
             var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
             if (c == null) return null;
-            if (c.techEventEntries == null) return new List<TechEvent>(0);
+            if (c.TechEventEntries == null) return new List<TechEvent>(0);
 
-            return c.techEventEntries.Select(e => new TechEvent
+            return c.TechEventEntries.Select(e => new TechEvent
             {
-                NodeInternalName = e.nodeName,
-                NodeDisplayName = ResolveTechNodeName(e.nodeName),
-                Date = e.date
+                NodeInternalName = e.NodeName,
+                NodeDisplayName = ResolveTechNodeName(e.NodeName),
+                Date = e.Date
             }).OrderBy(ce => ce.Date).ToList();
         }
 
@@ -177,13 +177,9 @@ namespace RP1AnalyticsWebApp.Services
         {
             var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
             if (c == null) return null;
-            if (c.launchEventEntries == null) return new List<LaunchEvent>(0);
+            if (c.LaunchEventEntries == null) return new List<LaunchEvent>(0);
 
-            return c.launchEventEntries.Select(e => new LaunchEvent
-            {
-                VesselName = e.vesselName,
-                Date = e.date
-            }).OrderBy(e => e.Date).ToList();
+            return c.LaunchEventEntries.OrderBy(e => e.Date).ToList();
         }
 
         public List<CareerListItem> GetCareerList(string userName = null)
@@ -196,7 +192,7 @@ namespace RP1AnalyticsWebApp.Services
         public List<CareerListItem> GetCareerListWithTokens(string userName = null)
         {
             var filter = !string.IsNullOrWhiteSpace(userName)
-                ? Builders<CareerLog>.Filter.Where(c => c.userLogin == userName)
+                ? Builders<CareerLog>.Filter.Where(c => c.UserLogin == userName)
                 : FilterDefinition<CareerLog>.Empty;
             var p = Builders<CareerLog>.Projection.Expression(c => new CareerListItem(c));
             return _careerLogs.Find(filter).Project(p).ToList();
@@ -206,24 +202,24 @@ namespace RP1AnalyticsWebApp.Services
         {
             var careerLog = new CareerLog
             {
-                token = Guid.NewGuid().ToString("N"),
-                name = log.name,
-                userLogin = log.userLogin,
-                eligibleForRecords = log.eligibleForRecords,
-                careerLogMeta = log.careerLogMeta
+                Token = Guid.NewGuid().ToString("N"),
+                Name = log.Name,
+                UserLogin = log.UserLogin,
+                EligibleForRecords = log.EligibleForRecords,
+                CareerLogMeta = log.CareerLogMeta
             };
 
-            if (log.careerLogEntries != null)
+            if (log.CareerLogEntries != null)
             {
-                careerLog.startDate = log.careerLogEntries[0].startDate;
-                careerLog.endDate = log.careerLogEntries[^1].endDate;
-                careerLog.careerLogEntries = log.careerLogEntries;
+                careerLog.StartDate = log.CareerLogEntries[0].StartDate;
+                careerLog.EndDate = log.CareerLogEntries[^1].EndDate;
+                careerLog.CareerLogEntries = log.CareerLogEntries;
             }
 
-            careerLog.contractEventEntries = log.contractEventEntries;
-            careerLog.facilityEventEntries = log.facilityEventEntries;
-            careerLog.techEventEntries = log.techEventEntries;
-            careerLog.launchEventEntries = log.launchEventEntries;
+            careerLog.ContractEventEntries = log.ContractEventEntries;
+            careerLog.FacilityEventEntries = log.FacilityEventEntries;
+            careerLog.TechEventEntries = log.TechEventEntries;
+            careerLog.LaunchEventEntries = log.LaunchEventEntries;
 
             _careerLogs.InsertOne(careerLog);
 
@@ -233,17 +229,24 @@ namespace RP1AnalyticsWebApp.Services
         public CareerLog Update(string token, CareerLogDto careerLogDto)
         {
             careerLogDto.TrimEmptyPeriod();
-            var updateDef = Builders<CareerLog>.Update
-                .Set(nameof(CareerLog.startDate), careerLogDto.periods[0].startDate)
-                .Set(nameof(CareerLog.endDate), careerLogDto.periods[^1].endDate)
-                .Set(nameof(CareerLog.careerLogEntries), careerLogDto.periods)
-                .Set(nameof(CareerLog.contractEventEntries), careerLogDto.contractEvents)
-                .Set(nameof(CareerLog.facilityEventEntries), careerLogDto.facilityEvents)
-                .Set(nameof(CareerLog.techEventEntries), careerLogDto.techEvents)
-                .Set(nameof(CareerLog.launchEventEntries), careerLogDto.launchEvents);
-            var opts = new FindOneAndUpdateOptions<CareerLog> {ReturnDocument = ReturnDocument.After};
 
-            return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.token == token, updateDef, opts);
+            var periods = careerLogDto.Periods.Select(c => new CareerLogPeriod(c)).ToList();
+            var contracts = careerLogDto.ContractEvents.Select(c => new ContractEvent(c)).ToList();
+            var facilities = careerLogDto.FacilityEvents.Select(f => new FacilityConstructionEvent(f)).ToList();
+            var tech = careerLogDto.TechEvents.Select(t => new TechResearchEvent(t)).ToList();
+            var launches = careerLogDto.LaunchEvents.Select(l => new LaunchEvent(l)).ToList();
+
+            var updateDef = Builders<CareerLog>.Update
+                .Set(nameof(CareerLog.StartDate), periods[0].StartDate)
+                .Set(nameof(CareerLog.EndDate), periods[^1].EndDate)
+                .Set(nameof(CareerLog.CareerLogEntries), periods)
+                .Set(nameof(CareerLog.ContractEventEntries), contracts)
+                .Set(nameof(CareerLog.FacilityEventEntries), facilities)
+                .Set(nameof(CareerLog.TechEventEntries), tech)
+                .Set(nameof(CareerLog.LaunchEventEntries), launches);
+            var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
+
+            return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Token == token, updateDef, opts);
         }
 
         private string ResolveContractName(string name)
@@ -258,21 +261,21 @@ namespace RP1AnalyticsWebApp.Services
 
         public CareerLog GetByToken(string token)
         {
-            return _careerLogs.Find(entry => entry.token == token).FirstOrDefault();
+            return _careerLogs.Find(entry => entry.Token == token).FirstOrDefault();
         }
 
         public void DeleteByToken(string token)
         {
             Console.WriteLine("delete called: " + token);
-            _careerLogs.DeleteOne(entry => entry.token == token);
+            _careerLogs.DeleteOne(entry => entry.Token == token);
         }
 
         public CareerLog UpdateMetaByToken(string token, CareerLogMeta meta)
         {
-            var updateDefinition = Builders<CareerLog>.Update.Set(nameof(CareerLog.careerLogMeta), meta);
+            var updateDefinition = Builders<CareerLog>.Update.Set(nameof(CareerLog.CareerLogMeta), meta);
             var opts = new FindOneAndUpdateOptions<CareerLog> {ReturnDocument = ReturnDocument.After};
 
-            return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.token == token, updateDefinition, opts);
+            return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Token == token, updateDefinition, opts);
         }
     }
 }
