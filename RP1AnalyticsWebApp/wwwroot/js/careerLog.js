@@ -14,6 +14,8 @@
                 isLoadingRepeatables: false,
                 techEvents: null,
                 isLoadingTechEvents: false,
+                launches: null,
+                isLoadingLaunches: false,
                 activeTab: 'milestones'
             };
         },
@@ -24,7 +26,7 @@
                 this.repeatables = null;
                 this.isLoadingRepeatables = false;
                 this.techEvents = null;
-                this.isLoadingTechEvents = false;
+                this.isLoadingLaunches = false;
             },
             handleChangeActive(tabName) {
                 this.activeTab = tabName;
@@ -35,6 +37,7 @@
     app.component('milestone-contracts', MilestoneContracts);
     app.component('repeatable-contracts', RepeatableContracts);
     app.component('tech-unlocks', TechUnlocks);
+    app.component('launches', Launches);
     app.component('loading-spinner', LoadingSpinner);
     app.component('meta-information', MetaInformation);
     const vm = app.mount('#appWrapper');
@@ -111,6 +114,15 @@
                 .then((jsonItems) => {
                     vm.isLoadingTechEvents = false;
                     vm.techEvents = jsonItems;
+                })
+                .catch((error) => alert(error));
+
+            vm.isLoadingLaunches = true;
+            fetch(`/api/careerlogs/${careerId}/launches`)
+                .then((res) => res.json())
+                .then((jsonItems) => {
+                    vm.isLoadingLaunches = false;
+                    vm.launches = jsonItems;
                 })
                 .catch((error) => alert(error));
 

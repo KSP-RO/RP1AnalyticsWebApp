@@ -159,6 +159,19 @@ namespace RP1AnalyticsWebApp.Services
             }).OrderBy(ce => ce.Date).ToList();
         }
 
+        public List<LaunchEvent> GetLaunchesForCareer(string id)
+        {
+            var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
+            if (c == null) return null;
+            if (c.launchEventEntries == null) return new List<LaunchEvent>(0);
+
+            return c.launchEventEntries.Select(e => new LaunchEvent
+            {
+                VesselName = e.vesselName,
+                Date = e.date
+            }).OrderBy(e => e.Date).ToList();
+        }
+
         public List<CareerListItem> GetCareerList(string userName = null)
         {
             var res = GetCareerListWithTokens(userName);

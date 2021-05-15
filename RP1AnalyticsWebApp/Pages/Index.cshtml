@@ -41,6 +41,10 @@
     <div id="tech" class="contracts-app">
         <tech-unlocks :active-tab="activeTab" :events="techEvents" :is-loading="isLoadingTechEvents"></tech-unlocks>
     </div>
+
+    <div id="tech" class="contracts-app">
+        <launches :active-tab="activeTab" :launches="launches" :is-loading="isLoadingLaunches"></launches>
+    </div>
 </div>
 
 
@@ -52,6 +56,7 @@
     <script src="~/js/components/milestone-contracts.js" asp-append-version="true"></script>
     <script src="~/js/components/repeatable-contracts.js" asp-append-version="true"></script>
     <script src="~/js/components/tech-unlocks.js" asp-append-version="true"></script>
+    <script src="~/js/components/launches.js" asp-append-version="true"></script>
     <script src="~/js/components/loading-spinner.js" asp-append-version="true"></script>
     <script src="~/js/careerLog.js" asp-append-version="true"></script>
 

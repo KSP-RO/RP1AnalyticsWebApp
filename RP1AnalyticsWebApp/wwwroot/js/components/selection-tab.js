@@ -21,6 +21,12 @@
                     <span>Tech Unlocks</span>
                 </a>
             </li>
+            <li v-bind:class="{ 'is-active': active === 'launches' }">
+                <a @click="$emit('change-active', 'launches')">
+                    <span class="icon is-small"><i class="fas fa-rocket" aria-hidden="true"></i></span>
+                    <span>Launches</span>
+                </a>
+            </li>
         </ul>
     </div>`
     
