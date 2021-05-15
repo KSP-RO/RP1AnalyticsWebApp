@@ -1,0 +1,29 @@
+﻿@page
+@model RP1AnalyticsWebApp.Pages.migrateModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Migrate";
+}
+
+<form method="post" style="margin-top: 1em;">
+    <div>
+        <button type="submit" class="button is-info is-small" asp-page-handler="FindEmptyCareers">Find empty careers</button>
+        <button type="submit" class="button is-danger is-small" asp-page-handler="UpdateSchema">Update schema</button>
+        <button type="submit" class="button is-danger is-small" asp-page-handler="CopyDB">Copy DB</button>
+        <button type="submit" class="button is-danger is-small" asp-page-handler="FillVersions">Fill versions</button>
+    </div>
+
+        @if (Model.EmptyCareers != null)
+        {
+            <div style="margin-top: 1em;">
+                <h3 class="title is-4">Empty careers:</h3>
+                <ul>
+                    @foreach (string item in Model.EmptyCareers)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+                <button type="submit" class="button is-danger is-small" asp-page-handler="PruneEmptyCareers">Prune empty careers</button>
+            </div>
+        }
+</form>
