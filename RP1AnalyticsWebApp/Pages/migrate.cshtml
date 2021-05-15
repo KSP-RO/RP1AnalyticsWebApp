@@ -1,0 +1,58 @@
+﻿@page
+@model RP1AnalyticsWebApp.Pages.migrateModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Migrate";
+}
+
+<form method="post" style="margin-top: 1em;">
+    <div>
+        <button type="submit" class="button is-info is-small" asp-page-handler="FindEmptyCareers">Find empty careers</button>
+        <button type="submit" class="button is-info is-small" asp-page-handler="FindAutocompletedPrograms">Find autocompleted programs</button>
+        <button type="submit" class="button is-danger is-small" asp-page-handler="UpdateSchema">Update schema</button>
+        @if (Model.CanMigrateDB)
+        {
+            <button type="submit" class="button is-danger is-small" asp-page-handler="CopyDB">Copy DB</button>
+        }
+        <button type="submit" class="button is-danger is-small" asp-page-handler="FillVersions">Fill versions</button>
+        <button type="submit" class="button is-danger is-small" asp-page-handler="PruneInvalidContracts">Prune invalid contracts</button>
+    </div>
+
+        @if (Model.EmptyCareers != null)
+        {
+            <div style="margin-top: 1em;">
+                <h3 class="title is-4">Empty careers:</h3>
+                <ul>
+                    @foreach (var item in Model.EmptyCareers)
+                    {
+                        <li><a href="/?careerId=@item.Id">@item.Name</a></li>
+                    }
+                </ul>
+                <button type="submit" class="button is-danger is-small" asp-page-handler="PruneEmptyCareers">Prune empty careers</button>
+            </div>
+        }
+
+        @if (Model.AutocompletedPrograms != null)
+        {
+            <div style="margin-top: 1em;">
+                <h3 class="title is-4">Programs likely completed by configurable start:</h3>
+                <p>@Model.AutocompletedPrograms.Sum(c => c.Programs.Count) programs in @Model.AutocompletedPrograms.Count careers</p>
+                <ul style="margin-top: 0.5em;">
+                    @foreach (var item in Model.AutocompletedPrograms)
+                    {
+                        <li style="margin-bottom: 0.5em;">
+                            <a href="/?careerId=@item.Career.Id">@item.Career.Name</a>
+                            <span>(@item.Career.UserLogin, configurable start: @(item.Career.CareerLogMeta?.ConfigurableStart.ToString() ?? "unknown"))</span>
+                            <ul style="margin-left: 1.5em;">
+                                @foreach (var p in item.Programs)
+                                {
+                                    <li>@p.Name: accepted @p.Accepted.ToString("s"), completed @p.Completed.Value.ToString("s")</li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
+                <button type="submit" class="button is-danger is-small" asp-page-handler="PruneAutocompletedPrograms">Prune autocompleted programs</button>
+            </div>
+        }
+</form>
