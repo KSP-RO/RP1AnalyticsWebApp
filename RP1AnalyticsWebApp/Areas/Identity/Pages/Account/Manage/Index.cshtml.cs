@@ -89,6 +89,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             {
                 name = Input.CareerName,
                 userLogin = Username,
+                eligibleForRecords = true,
                 careerLogMeta = CreateCareerLogMeta()
             });
 

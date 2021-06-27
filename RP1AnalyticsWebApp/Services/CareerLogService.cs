@@ -105,6 +105,7 @@ namespace RP1AnalyticsWebApp.Services
 
             var result = _careerLogs
                 .Aggregate()
+                .Match(BsonDocument.Parse("{ \"eligibleForRecords\": true }"))
                 .Project(proj)
                 .Unwind(nameof(CareerLog.contractEventEntries))
                 .Sort(BsonDocument.Parse("{ \"contractEventEntries.date\": 1 }"))
@@ -195,6 +196,7 @@ namespace RP1AnalyticsWebApp.Services
                 token = Guid.NewGuid().ToString("N"),
                 name = log.name,
                 userLogin = log.userLogin,
+                eligibleForRecords = log.eligibleForRecords,
                 careerLogMeta = log.careerLogMeta
             };
 
