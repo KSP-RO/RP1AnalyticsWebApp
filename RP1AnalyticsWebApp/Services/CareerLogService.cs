@@ -69,19 +69,26 @@ namespace RP1AnalyticsWebApp.Services
 
         public List<ContractEventWithCount> GetRepeatableContractCompletionCountsForCareer(string id)
         {
-            var proj = BsonDocument.Parse("{ contractEventEntries: 1, name: 1, _id: 1 }");
-            var gProj = BsonDocument.Parse(
-                "{ _id: \"$contractEventEntries.internalName\", ContractInternalName: { $first: \"$contractEventEntries.internalName\" }, " +
-                "CareerId: { $first: \"$_id\" }, CareerName: { $first: \"$name\" }, Date: { $min: \"$contractEventEntries.date\" }, Count: { $sum: 1 } }");
-
-            var result = _careerLogs
-                .Aggregate()
-                .Match(BsonDocument.Parse($"{{ \"_id\": ObjectId(\"{id}\") }}"))
-                .Project(proj)
-                .Unwind(nameof(CareerLog.contractEventEntries))
-                .Match(BsonDocument.Parse("{ \"contractEventEntries.type\": 1 }"))
-                .Group(gProj)
-                .As<ContractEventWithCount>()
+            var result = _careerLogs.AsQueryable()
+                .Where(c => c.Id == id)
+                .SelectMany(c => c.contractEventEntries, (c, e) => new
+                {
+                    CareerId = c.Id,
+                    CareerName = c.name,
+                    ContractInternalName = e.internalName,
+                    EventType = e.type,
+                    EventDate = e.date
+                })
+                .Where(c => c.EventType == ContractEventType.Complete)
+                .GroupBy(c => c.ContractInternalName)
+                .Select(g => new ContractEventWithCount
+                {
+                    ContractInternalName = g.Key,
+                    CareerId = g.First().CareerId,
+                    CareerName = g.First().CareerName,
+                    Date = g.Min(e => e.EventDate),
+                    Count = g.Count()
+                })
                 .ToList();
 
             var repeatables = result
@@ -98,21 +105,27 @@ namespace RP1AnalyticsWebApp.Services
 
         public List<ContractEventWithCareerInfo> GetRecords()
         {
-            var proj = BsonDocument.Parse("{ contractEventEntries: 1, name: 1 }");
-            var gProj = BsonDocument.Parse(
-                "{ _id: \"$contractEventEntries.internalName\", ContractInternalName: { $first: \"$contractEventEntries.internalName\" }, " +
-                "CareerId: { $first: \"$_id\" }, CareerName: { $first: \"$name\" }, Date: { $min: \"$contractEventEntries.date\" } }");
-
-            var result = _careerLogs
-                .Aggregate()
-                .Match(BsonDocument.Parse("{ \"eligibleForRecords\": true }"))
-                .Project(proj)
-                .Unwind(nameof(CareerLog.contractEventEntries))
-                .Sort(BsonDocument.Parse("{ \"contractEventEntries.date\": 1 }"))
-                .Match(BsonDocument.Parse("{ \"contractEventEntries.type\": 1 }"))
-                .Group(gProj)
-                .Sort(BsonDocument.Parse("{ \"Date\": 1 }"))
-                .As<ContractEventWithCareerInfo>()
+            var result = _careerLogs.AsQueryable()
+                .Where(c => c.eligibleForRecords)
+                .SelectMany(c => c.contractEventEntries, (c, e) => new
+                {
+                    CareerId = c.Id,
+                    CareerName = c.name,
+                    ContractInternalName = e.internalName,
+                    EventType = e.type,
+                    EventDate = e.date
+                })
+                .Where(c => c.EventType == ContractEventType.Complete)
+                .OrderBy(c => c.EventDate)
+                .GroupBy(c => c.ContractInternalName)
+                .Select(g => new ContractEventWithCareerInfo
+                {
+                    ContractInternalName = g.Key,
+                    CareerId = g.First().CareerId,
+                    CareerName = g.First().CareerName,
+                    Date = g.Min(e => e.EventDate)
+                })
+                .OrderBy(c => c.Date)
                 .ToList();
 
             result.ForEach(r =>
