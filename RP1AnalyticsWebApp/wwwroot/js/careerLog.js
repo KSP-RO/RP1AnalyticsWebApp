@@ -144,6 +144,13 @@
         return arr;
     }
 
+    function fixChartDTBug(data) {
+        const idx = data.findIndex(el => el === '1970-01-01T00:00:00Z');
+        if (idx > -1) data[idx] = '1970-01-01T00:00:01Z';
+
+        return data;
+    }
+
     function getFundsEarned(careerLogs) {
         let totals = [];
         let total = 0;
@@ -284,7 +291,7 @@
             ],
             xaxis: {
                 type: 'datetime',
-                categories: getValuesForField(careerPeriods, 'startDate')
+                categories: fixChartDTBug(getValuesForField(careerPeriods, 'startDate'))
             },
             yaxis: [
                 {
