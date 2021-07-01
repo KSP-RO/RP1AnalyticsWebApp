@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo.Model;
 using Microsoft.AspNetCore.Identity;
@@ -71,7 +72,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 DescriptionText = Input.DescriptionText,
                 ModRecency = Input.ModRecency,
                 VersionTag = Input.ModVersion,
-                CreationDate = Input.CreationDate
+                CreationDate = DateTime.SpecifyKind(Input.CreationDate, DateTimeKind.Utc)
             };
         }
 
