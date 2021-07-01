@@ -1,4 +1,4 @@
-﻿@page
+@page
 @using RP1AnalyticsWebApp.Models
 
 
@@ -71,7 +71,7 @@
                                     <i class="fa fa-trash"></i>
                                 </span>
                                 <span>Delete</span>
-                                
+
                             </button>
                         </form>
                     </div>
@@ -143,6 +143,40 @@
                     </div>
                 </div>
             </div>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                            <label class="label" asp-for="Input.ModRecency"></label>
+                            <div class="select is-fullwidth">
+                                <select asp-for="Input.ModRecency" asp-items="Html.GetEnumSelectList<ModRecency>()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label" asp-for="Input.ModVersion"></label>
+                        <input class="input" type="number" step=".01" asp-for="Input.ModVersion"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label" asp-for="Input.CreationDate"></label>
+                        <input
+                            class="input"
+                            type="date"
+                            value="@DateTime.Today.ToString("yyyy-MM-dd")"
+                            asp-for="Input.CreationDate"/>
+                    </div>
+                </div>
+                <div class="column"></div>
+            </div>
+
             <div class="field">
                 <label class="label" asp-for="Input.DescriptionText"></label>
                 <textarea class="textarea" asp-for="Input.DescriptionText" cols="150" rows="10"></textarea>

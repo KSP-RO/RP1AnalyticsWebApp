@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Routing;
 using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.Services;
 
@@ -71,7 +68,10 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 DifficultyLevel = Input.DifficultyLevel,
                 ConfigurableStart = Input.ConfigurableStart,
                 FailureModel = Input.FailureModel,
-                DescriptionText = Input.DescriptionText
+                DescriptionText = Input.DescriptionText,
+                ModRecency = Input.ModRecency,
+                VersionTag = Input.ModVersion,
+                CreationDate = Input.CreationDate
             };
         }
 
@@ -82,6 +82,9 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             Input.FailureModel = CareerLog.CareerLogMeta.FailureModel;
             Input.CareerPlaystyle = CareerLog.CareerLogMeta.CareerPlaystyle;
             Input.DescriptionText = CareerLog.CareerLogMeta.DescriptionText;
+            Input.ModRecency = CareerLog.CareerLogMeta.ModRecency;
+            Input.ModVersion = CareerLog.CareerLogMeta.VersionTag;
+            Input.CreationDate = CareerLog.CareerLogMeta.CreationDate;
         }
     }
 }
