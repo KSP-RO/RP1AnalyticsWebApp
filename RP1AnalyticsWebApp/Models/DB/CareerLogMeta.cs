@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+using System;
+using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -23,6 +24,15 @@ namespace RP1AnalyticsWebApp.Models
         [BsonRepresentation(BsonType.String)]
         public FailureModel FailureModel { get; set; }
 
-        public string DescriptionText { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [BsonRepresentation(BsonType.String)]
+        public ModRecency ModRecency { get; set; }
+
+        [BsonRepresentation(BsonType.Double)] public double VersionTag { get; set; }
+
+        [BsonRepresentation(BsonType.DateTime)]
+        public DateTime CreationDate { get; set; }
+
+        [BsonRepresentation(BsonType.String)] public string DescriptionText { get; set; }
     }
 }

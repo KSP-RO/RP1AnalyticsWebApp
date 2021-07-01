@@ -1,13 +1,13 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.Services;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 
 namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 {
@@ -50,6 +50,14 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             public ConfigurableStart ConfigurableStart { get; set; }
 
             [Display(Name = "Description")] public string DescriptionText { get; set; }
+
+            [Display(Name = "Mod Recency")] public ModRecency ModRecency { get; set; }
+
+            [Display(Name = "Installation Date")]
+            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
+            public DateTime CreationDate { get; set; }
+
+            [Display(Name = "RP-1 Version")] public double ModVersion { get; set; }
         }
 
         private async Task LoadAsync(MongoUser user)
@@ -93,14 +101,13 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 CareerLogMeta = CreateCareerLogMeta()
             });
 
+
             StatusMessage = "A new career was created successfully";
             return RedirectToPage();
         }
 
         public RedirectToPageResult OnPostDelete(string token)
         {
-            Console.WriteLine("token, " + token);
-            Console.WriteLine("delete called from button");
             _careerLogService.DeleteByToken(token);
 
             return new RedirectToPageResult("Index");
@@ -115,7 +122,10 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 DifficultyLevel = Input.DifficultyLevel,
                 ConfigurableStart = Input.ConfigurableStart,
                 FailureModel = Input.FailureModel,
-                DescriptionText = Input.DescriptionText
+                DescriptionText = Input.DescriptionText,
+                VersionTag = Input.ModVersion,
+                ModRecency = Input.ModRecency,
+                CreationDate = Input.CreationDate
             };
         }
     }
