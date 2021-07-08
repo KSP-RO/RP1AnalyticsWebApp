@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo.Model;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -44,7 +43,6 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-
             CareerLog = _careerLogService.GetByToken(RouteData.Values["token"].ToString());
 
             if (CareerLog.CareerLogMeta != null) InitFieldValues();
@@ -64,16 +62,6 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
         public CareerLogMeta CreateCareerLogMeta()
         {
-            var versionTagString = "";
-            try
-            {
-                versionTagString = Input.ModVersion.ToString();
-            }
-            catch (Exception e)
-            {
-                versionTagString = "0.0.0";
-            }
-
             return new CareerLogMeta
             {
                 CareerPlaystyle = Input.CareerPlaystyle,
@@ -82,7 +70,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 FailureModel = Input.FailureModel,
                 DescriptionText = Input.DescriptionText,
                 ModRecency = Input.ModRecency,
-                VersionTag = versionTagString,
+                VersionTag = Input.ModVersion?.ToString(),
                 CreationDate = Input.CreationDate.HasValue ? DateTime.SpecifyKind(Input.CreationDate.Value, DateTimeKind.Utc) : (DateTime?)null
             };
         }
