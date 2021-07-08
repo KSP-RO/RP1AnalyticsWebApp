@@ -241,7 +241,7 @@
             name: 'Contracts',
             y: 0,
             text: getValuesForField(careerPeriods, 'startDate').map(genContractTooltip),
-            hovertemplate: "%{text}",
+            hovertemplate: '%{text}',
             type: 'scatter',
             showlegend: false,
             marker: {
@@ -269,7 +269,7 @@
             grid: {
                 columns: 1,
                 subplots: [['xy'], ['xy2'], ['xy3']],
-                ygap: 0.05,
+                ygap: 0.1,
             },
             xaxis: {
                 title: 'Date',
@@ -298,7 +298,10 @@
                 size: 14,
             },
             margin: {
-                b: 140,
+                t: 40,
+                r: 20,
+                b: 200,
+                l: 80,
             },
         };
 

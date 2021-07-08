@@ -15,7 +15,7 @@
 }
 
 #chart {
-    margin: 10px 0 50px 0;
+    margin: 10px 0 0 0;
     height: max(min(calc(100vh * 0.875), 1000px), 350px);
 }
 
