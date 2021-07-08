@@ -57,7 +57,8 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
             public DateTime CreationDate { get; set; }
 
-            [Display(Name = "RP-1 Version")] public double ModVersion { get; set; }
+            [Display(Name = "RP-1 Version (X.Y.Z)")]
+            public Version ModVersion { get; set; }
         }
 
         private async Task LoadAsync(MongoUser user)
@@ -114,8 +115,18 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
         }
 
 
-        private CareerLogMeta CreateCareerLogMeta()
+        protected CareerLogMeta CreateCareerLogMeta()
         {
+            var versionTagString = "";
+            try
+            {
+                versionTagString = Input.ModVersion.ToString();
+            }
+            catch (Exception e)
+            {
+                versionTagString = "0.0.0";
+            }
+
             return new CareerLogMeta
             {
                 CareerPlaystyle = Input.CareerPlaystyle,
@@ -123,9 +134,9 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 ConfigurableStart = Input.ConfigurableStart,
                 FailureModel = Input.FailureModel,
                 DescriptionText = Input.DescriptionText,
-                VersionTag = Input.ModVersion,
                 ModRecency = Input.ModRecency,
-                CreationDate = Input.CreationDate
+                VersionTag = versionTagString,
+                CreationDate = DateTime.SpecifyKind(Input.CreationDate, DateTimeKind.Utc)
             };
         }
     }

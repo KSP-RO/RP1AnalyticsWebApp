@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo.Model;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -61,8 +62,18 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             return new RedirectToPageResult("Index");
         }
 
-        private CareerLogMeta CreateCareerLogMeta()
+        public CareerLogMeta CreateCareerLogMeta()
         {
+            var versionTagString = "";
+            try
+            {
+                versionTagString = Input.ModVersion.ToString();
+            }
+            catch (Exception e)
+            {
+                versionTagString = "0.0.0";
+            }
+
             return new CareerLogMeta
             {
                 CareerPlaystyle = Input.CareerPlaystyle,
@@ -71,7 +82,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 FailureModel = Input.FailureModel,
                 DescriptionText = Input.DescriptionText,
                 ModRecency = Input.ModRecency,
-                VersionTag = Input.ModVersion,
+                VersionTag = versionTagString,
                 CreationDate = DateTime.SpecifyKind(Input.CreationDate, DateTimeKind.Utc)
             };
         }
@@ -84,7 +95,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             Input.CareerPlaystyle = CareerLog.CareerLogMeta.CareerPlaystyle;
             Input.DescriptionText = CareerLog.CareerLogMeta.DescriptionText;
             Input.ModRecency = CareerLog.CareerLogMeta.ModRecency;
-            Input.ModVersion = CareerLog.CareerLogMeta.VersionTag;
+            Input.ModVersion = new Version(CareerLog.CareerLogMeta.VersionTag);
             Input.CreationDate = CareerLog.CareerLogMeta.CreationDate;
         }
     }

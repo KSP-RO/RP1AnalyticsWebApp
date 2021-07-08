@@ -81,7 +81,8 @@
                 <div class="column">
                     <div class="field">
                         <label class="label" asp-for="Input.ModVersion"></label>
-                        <input class="input" type="number" step=".01" asp-for="Input.ModVersion"/>
+                        <input class="input" type="text" asp-for="Input.ModVersion"/>
+                        <span asp-validation-for="Input.ModVersion" class="text-danger"></span>
                     </div>
                 </div>
             </div>
