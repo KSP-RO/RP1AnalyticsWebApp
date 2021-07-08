@@ -84,11 +84,18 @@
                 });
 
 
-            fetch(`/api/careerlogs/${careerId}`)
-                .then((res) => res.json())
-                .then((jsonLogs) => drawChart(jsonLogs))
-                .then(() => document.getElementById('chart').classList.toggle('hide', false))
-                .catch((error) => alert(error));
+            Promise.all([
+                fetch(`/api/careerlogs/${careerId}`)
+                    .then((res) => res.json())
+                    .catch((error) => alert(error)),
+                fetch(`/api/careerlogs/${careerId}/contracts`)
+                    .then((res) => res.json())
+                    .then((jsonContracts) => {
+                        contractEvents = jsonContracts;
+                    })
+                    .catch((error) => alert(error))
+            ]).then((values) => drawChart(values[0]))
+              .then(() => document.getElementById('chart').classList.toggle('hide', false))
 
             vm.isLoadingMilestones = true;
             fetch(`/api/careerlogs/${careerId}/completedmilestones`)
@@ -123,13 +130,6 @@
                 .then((jsonItems) => {
                     vm.isLoadingLaunches = false;
                     vm.launches = jsonItems;
-                })
-                .catch((error) => alert(error));
-
-            fetch(`/api/careerlogs/${careerId}/contracts`)
-                .then((res) => res.json())
-                .then((jsonContracts) => {
-                    contractEvents = jsonContracts;
                 })
                 .catch((error) => alert(error));
         }
