@@ -39,7 +39,6 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Career name")]
             public string CareerName { get; set; }
 
-
             [Display(Name = "Playstyle")] public CareerPlaystyle CareerPlaystyle { get; set; }
 
             [Display(Name = "Difficulty")] public DifficultyLevel DifficultyLevel { get; set; }
@@ -93,7 +92,6 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-
             _careerLogService.Create(new CareerLog
             {
                 Name = Input.CareerName,
@@ -114,19 +112,8 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             return new RedirectToPageResult("Index");
         }
 
-
         protected CareerLogMeta CreateCareerLogMeta()
         {
-            var versionTagString = "";
-            try
-            {
-                versionTagString = Input.ModVersion.ToString();
-            }
-            catch (Exception e)
-            {
-                versionTagString = "0.0.0";
-            }
-
             return new CareerLogMeta
             {
                 CareerPlaystyle = Input.CareerPlaystyle,
@@ -135,7 +122,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 FailureModel = Input.FailureModel,
                 DescriptionText = Input.DescriptionText,
                 ModRecency = Input.ModRecency,
-                VersionTag = versionTagString,
+                VersionTag = Input.ModVersion?.ToString(),
                 CreationDate = Input.CreationDate.HasValue ? DateTime.SpecifyKind(Input.CreationDate.Value, DateTimeKind.Utc) : (DateTime?)null
             };
         }
