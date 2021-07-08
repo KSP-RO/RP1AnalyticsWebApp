@@ -83,7 +83,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 DescriptionText = Input.DescriptionText,
                 ModRecency = Input.ModRecency,
                 VersionTag = versionTagString,
-                CreationDate = DateTime.SpecifyKind(Input.CreationDate, DateTimeKind.Utc)
+                CreationDate = Input.CreationDate.HasValue ? DateTime.SpecifyKind(Input.CreationDate.Value, DateTimeKind.Utc) : (DateTime?)null
             };
         }
 
@@ -95,7 +95,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             Input.CareerPlaystyle = CareerLog.CareerLogMeta.CareerPlaystyle;
             Input.DescriptionText = CareerLog.CareerLogMeta.DescriptionText;
             Input.ModRecency = CareerLog.CareerLogMeta.ModRecency;
-            Input.ModVersion = new Version(CareerLog.CareerLogMeta.VersionTag);
+            Input.ModVersion = string.IsNullOrWhiteSpace(CareerLog.CareerLogMeta.VersionTag) ? null : new Version(CareerLog.CareerLogMeta.VersionTag);
             Input.CreationDate = CareerLog.CareerLogMeta.CreationDate;
         }
     }

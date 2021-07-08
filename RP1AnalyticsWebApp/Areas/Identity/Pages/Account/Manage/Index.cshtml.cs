@@ -54,8 +54,8 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Mod Recency")] public ModRecency ModRecency { get; set; }
 
             [Display(Name = "Installation Date")]
-            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
-            public DateTime CreationDate { get; set; }
+            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+            public DateTime? CreationDate { get; set; }
 
             [Display(Name = "RP-1 Version (X.Y.Z)")]
             public Version ModVersion { get; set; }
@@ -136,7 +136,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 DescriptionText = Input.DescriptionText,
                 ModRecency = Input.ModRecency,
                 VersionTag = versionTagString,
-                CreationDate = DateTime.SpecifyKind(Input.CreationDate, DateTimeKind.Utc)
+                CreationDate = Input.CreationDate.HasValue ? DateTime.SpecifyKind(Input.CreationDate.Value, DateTimeKind.Utc) : (DateTime?)null
             };
         }
     }
