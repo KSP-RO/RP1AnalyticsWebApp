@@ -1,7 +1,5 @@
 ﻿(() => {
     const ContractEventTypes = Object.freeze({'Accept': 0, 'Complete': 1, 'Fail': 2, 'Cancel': 3});
-    const intFormatter = new Intl.NumberFormat('en-GB', {maximumFractionDigits: 0});
-    const floatFormatter = new Intl.NumberFormat('en-GB', {minimumFractionDigits: 1, maximumFractionDigits: 1});
 
     const app = Vue.createApp({
         data() {
@@ -47,15 +45,6 @@
     let tooltipDiv = null;
     let monthIdx = -1;
 
-    window.addEventListener('resize', () => {
-        if (!chart) return;
-        chart.updateOptions({
-            chart: {
-                height: calculateChartHeight()
-            }
-        });
-    });
-
     const urlParams = new URLSearchParams(window.location.search);
     const initialCareerId = urlParams.get('careerId');
     if (initialCareerId) {
@@ -73,8 +62,6 @@
             document.getElementById('chart').classList.toggle('hide', true);
             vm.reset();
         } else {
-            chart?.destroy();
-
             fetch(`/api/careerlogs/${careerId}`)
                 .then((res) => res.json())
                 .then((jsonLogs) => {
@@ -144,13 +131,6 @@
         return arr;
     }
 
-    function fixChartDTBug(data) {
-        const idx = data.findIndex(el => el === '1970-01-01T00:00:00Z');
-        if (idx > -1) data[idx] = '1970-01-01T00:00:01Z';
-
-        return data;
-    }
-
     function getFundsEarned(careerLogs) {
         let totals = [];
         let total = 0;
@@ -208,229 +188,175 @@
         const careerPeriods = careerLog.careerLogEntries;
         if (!careerPeriods) return;
 
-        const options = {
-            chart: {
-                type: 'line',
-                height: calculateChartHeight(),
-                width: '100%',
-                events: {
-                    legendClick: function (chartContext, seriesIndex, config) {
-                        window.setTimeout(appendCustomTooltipDiv, 0);
-                    }
-                }
-            },
-            markers: {
-                size: 1,
-                colors: undefined,
-                strokeColors: '#fff',
-                strokeWidth: 1,
-                strokeOpacity: 0.2,
-                strokeDashArray: 0,
-                fillOpacity: 1,
-                shape: 'circle',
-                radius: 1,
-                offsetX: 0,
-                offsetY: 0,
-                discrete: [
-                    {
-                        seriesIndex: 0,
-                        dataPointIndex: getFirstSciSatMonth(careerLog).index,
-                        fillColor: 'red',
-                        size: 5
-                    }
-                ]
-            },
-            stroke: {
-                show: true,
-                curve: 'straight',
-                lineCap: 'butt',
-                colors: undefined,
-                width: 3,
-                dashArray: 0
-            },
-            grid: {
-                row: {
-                    colors: ['#f3f3f3', 'transparent'],
-                    opacity: 0.5
-                }
-            },
-            tooltip: {
-                x: {
-                    format: 'yyyy-MM'
-                }
-            },
-            series: [
-                {
-                    name: 'Current Funds',
-                    data: getValuesForField(careerPeriods, 'currentFunds')
-                },
-                {
-                    name: 'Funds Earned',
-                    data: getFundsEarned(careerPeriods)
-                },
-                {
-                    name: 'Advance Funds',
-                    data: getValuesForField(careerPeriods, 'advanceFunds')
-                },
-                {
-                    name: 'Reward Funds',
-                    data: getValuesForField(careerPeriods, 'rewardFunds')
-                },
-                {
-                    name: 'Science Earned',
-                    data: getValuesForField(careerPeriods, 'scienceEarned')
-                },
-                {
-                    name: 'VAB Upgrades',
-                    data: getVabUpgrades(careerPeriods)
-                },
-                {
-                    name: 'RnD Upgrades',
-                    data: getValuesForField(careerPeriods, 'rndUpgrades')
-                }
-            ],
-            xaxis: {
-                type: 'datetime',
-                categories: fixChartDTBug(getValuesForField(careerPeriods, 'startDate'))
-            },
-            yaxis: [
-                {
-                    seriesName: 'Current Funds',
-                    min: 0,
-                    labels: {
-                        show: false,
-                        formatter: (val) => val && val.toLocaleString('en-GB', {maximumFractionDigits: 0})
-                    }
-                },
-                {
-                    seriesName: 'Current Funds',
-                    min: 0,
-                    labels: {
-                        show: false,
-                        formatter: (val) => val && val.toLocaleString('en-GB', {maximumFractionDigits: 0})
-                    }
-                },
-                {
-                    seriesName: 'Current Funds',
-                    showAlways: true,
-                    min: 0,
-                    title: {
-                        text: 'Funds $'
-                    },
-                    axisTicks: {
-                        show: true
-                    },
-                    axisBorder: {
-                        show: true
-                    },
-                    labels: {
-                        formatter: (val) => val && intFormatter.format(val)
-                    }
-                },
-                {
-                    seriesName: 'Current Funds',
-                    min: 0,
-                    showAlways: true,
-                    labels: {
-                        show: false,
-                        formatter: (val) => val && intFormatter.format(val)
-                    }
-                },
-                {
-                    seriesName: 'Science Earned',
-                    title: {
-                        text: 'Sci'
-                    },
-                    show: false,
-                    labels: {
-                        formatter: (val) => val && floatFormatter.format(val)
-                    }
-                },
-                {
-                    seriesName: 'VAB Upgrades',
-                    showAlways: true,
-                    opposite: true,
-                    axisTicks: {
-                        show: true
-                    },
-                    axisBorder: {
-                        show: true
-                    },
-                    title: {
-                        text: 'Upgrade Points'
-                    },
-                    labels: {
-                        formatter: (val) => val && intFormatter.format(val)
-                    }
-                },
-                {
-                    seriesName: 'VAB Upgrades',
-                    showAlways: true,
-                    labels: {
-                        show: false,
-                        formatter: (val) => val && intFormatter.format(val)
-                    }
-                }
-            ]
+        const currentFundsTrace = {
+            name: 'Current Funds',
+            y: getValuesForField(careerPeriods, 'currentFunds'),
+            type: 'scattergl',
+            mode: 'lines',
+        };
+        const advanceFundsTrace = {
+            name: 'Advance Funds',
+            y: getValuesForField(careerPeriods, 'advanceFunds'),
+            type: 'scattergl',
+            mode: 'lines',
+            visible: 'legendonly',
+        };
+        const rewardFundsTrace = {
+            name: 'Reward Funds',
+            y: getValuesForField(careerPeriods, 'rewardFunds'),
+            type: 'scattergl',
+            mode: 'lines',
+            visible: 'legendonly',
+        };
+        const earnedFundsTrace = {
+            name: 'Earned Funds',
+            y: getFundsEarned(careerPeriods),
+            type: 'scattergl',
+            mode: 'lines',
+            visible: 'legendonly',
         };
 
-        chart = new ApexCharts(document.querySelector('#chart'), options);
-        chart.render();
-        chart.hideSeries('Funds Earned');
-        chart.hideSeries('Advance Funds');
-        chart.hideSeries('Reward Funds');
+        const scienceTrace = {
+            name: 'Science Earned',
+            y: getValuesForField(careerPeriods, 'scienceEarned'),
+            yaxis: 'y2',
+            type: 'scattergl',
+            mode: 'lines',
+        };
 
-        appendCustomTooltipDiv();
-    }
-
-    function appendCustomTooltipDiv() {
-        tooltipDiv = document.createElement('div');
-        tooltipDiv.className = 'apexcharts-tooltip-series-group apexcharts-active contract-info';
-        tooltipDiv.style.cssText = 'order: 999; display: flex;';
-
-        const tooltipEl = chart.w.globals.tooltip.getElTooltip();
-        if (!tooltipEl.contains(tooltipDiv)) {
-            tooltipEl.appendChild(tooltipDiv);
+        const vabUpgradesTrace = {
+            name: 'VAB Upgrades',
+            y: getVabUpgrades(careerPeriods),
+            yaxis: 'y3',
+            type: 'scattergl',
+            mode: 'lines',
+        }
+        const rndUpgradesTrace = {
+            name: 'RnD Upgrades',
+            y: getValuesForField(careerPeriods, 'rndUpgrades'),
+            yaxis: 'y3',
+            type: 'scattergl',
+            mode: 'lines',
         }
 
-        const oldFn = chart.w.globals.tooltip.tooltipLabels.drawSeriesTexts;
-        chart.w.globals.tooltip.tooltipLabels.drawSeriesTexts = ({
-                                                                     shared = true,
-                                                                     ttItems,
-                                                                     i = 0,
-                                                                     j = null,
-                                                                     y1,
-                                                                     y2,
-                                                                     e
-                                                                 }) => {
-            if (monthIdx !== j && contractEvents) {
-                monthIdx = j;
-
-                const sDate = chart.opts.xaxis.categories[monthIdx];
-                const dtStart = moment.utc(sDate);
-                const dtEnd = dtStart.clone().add(1, 'months');
-
-                const complete = contractEvents.filter(c => c.type === ContractEventTypes.Complete &&
-                    moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
-                const accept = contractEvents.filter(c => c.type === ContractEventTypes.Accept &&
-                    moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
-                const fail = contractEvents.filter(c => c.type === ContractEventTypes.Fail &&
-                    moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
-                tooltipDiv.innerHTML = createTooltipContractRow('Completed', complete) +
-                    createTooltipContractRow('Accepted', accept) +
-                    createTooltipContractRow('Failed', fail);
+        // A fake 'trace' for displaying contract status in the hover text.
+        const contractsTrace = {
+            name: 'Contracts',
+            y: 0,
+            text: getValuesForField(careerPeriods, 'startDate').map(genContractTooltip),
+            hovertemplate: "%{text}",
+            type: 'scatter',
+            showlegend: false,
+            marker: {
+                color: '#fff0'
             }
+        }
 
-            oldFn.apply(chart.w.globals.tooltip.tooltipLabels, [{shared, ttItems, i, j, y1, y2, e}]);
+        const traces = [
+            currentFundsTrace,
+            advanceFundsTrace,
+            rewardFundsTrace,
+            earnedFundsTrace,
+            scienceTrace,
+            vabUpgradesTrace,
+            rndUpgradesTrace,
+            contractsTrace,
+        ];
+        traces.forEach(t => {
+            t.x = getValuesForField(careerPeriods, 'startDate');
+            t.connectgaps = true;
+        });
+
+        const layout = {
+            hovermode: 'x unified',
+            grid: {
+                columns: 1,
+                subplots: [['xy'], ['xy2'], ['xy3']],
+                ygap: 0.05,
+            },
+            xaxis: {
+                title: 'Date',
+                type: 'date',
+                autorange: true,
+            },
+            yaxis: {
+                title: 'Funds',
+                autorange: true,
+                type: 'linear',
+                hoverformat: '.4s',
+            },
+            yaxis2: {
+                title: 'Science',
+                autorange: true,
+                type: 'linear',
+                hoverformat: '.1f',
+            },
+            yaxis3: {
+                title: 'Upgrade Points',
+                autorange: true,
+                type: 'linear',
+            },
+            font: {
+                family: 'Poppins',
+                size: 14,
+            },
+            margin: {
+                b: 140,
+            },
         };
+
+        const firstSciSatMonth = getFirstSciSatMonth(careerLog);
+        if (firstSciSatMonth.month) {
+            layout.annotations = [{
+                x: firstSciSatMonth.month,
+                y: getValuesForField(careerPeriods, 'currentFunds')[firstSciSatMonth.index],
+                yref: 'y',
+                text: 'FSO',
+                arrowhead: 6,
+                ax: 0,
+                ay: -60,
+            }];
+        }
+
+        const config = {
+            responsive: true,
+        };
+
+        const plotDiv = document.querySelector('#chart');
+        chart = Plotly.react(plotDiv, traces, layout, config);
+        // Display hover for all subplots.
+        plotDiv.on('plotly_hover', (eventData) => {
+            if (eventData.xvals) {
+                Plotly.Fx.hover(
+                    plotDiv,
+                    { xval: eventData.xvals[0] },
+                    ['xy', 'xy2', 'xy3']
+                );
+            }
+        });
     }
 
-    function createTooltipContractRow(title, contracts) {
-        const res = contracts.reduce((acc, c) => acc + (acc === '' ? '' : '; ') + c.contractDisplayName, '');
-        return res ? `<div class="contract-group"><span>${title}:</span>${res}</div>` : '';
-    }
+    function genContractTooltip(xaxis) {
+        const dtStart = moment.utc(xaxis);
+        const dtEnd = dtStart.clone().add(1, 'months');
+        const complete = contractEvents.filter(c => c.type === ContractEventTypes.Complete &&
+            moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
+        const accept = contractEvents.filter(c => c.type === ContractEventTypes.Accept &&
+            moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
+        const fail = contractEvents.filter(c => c.type === ContractEventTypes.Fail &&
+            moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
 
-    function calculateChartHeight() {
-        return Math.max(Math.min(window.innerHeight * 0.85, 1000), 300);
+        const contractList = genTooltipContractRow('Completed', complete)
+            + genTooltipContractRow('Accepted', accept)
+            + genTooltipContractRow('Failed', fail);
+        return contractList ? `<span style='font-size:12px;'>${contractList}</span>` : 'N/A';
+    };
+
+    function genTooltipContractRow(title, contracts) {
+        const res = contracts.reduce(
+            (acc, c) => acc + '<br>    ' + c.contractDisplayName,
+            ''
+        );
+        return res ? `<br><i>${title} :</i>${res}` : '';
     }
 })();
