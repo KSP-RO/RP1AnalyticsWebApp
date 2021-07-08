@@ -41,9 +41,6 @@
     const vm = app.mount('#appWrapper');
 
     let contractEvents = null;
-    let chart = null;
-    let tooltipDiv = null;
-    let monthIdx = -1;
 
     const urlParams = new URLSearchParams(window.location.search);
     const initialCareerId = urlParams.get('careerId');
@@ -323,7 +320,7 @@
         };
 
         const plotDiv = document.querySelector('#chart');
-        chart = Plotly.react(plotDiv, traces, layout, config);
+        Plotly.react(plotDiv, traces, layout, config);
         // Display hover for all subplots.
         plotDiv.on('plotly_hover', (eventData) => {
             if (eventData.xvals) {
