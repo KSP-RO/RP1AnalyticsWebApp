@@ -44,10 +44,10 @@
 
     let hoverCurrentSubplotOnly = false;
     document.addEventListener('keydown', event => {
-        hoverCurrentSubplotOnly = event.altKey;
+        hoverCurrentSubplotOnly = event.ctrlKey;
     });
     document.addEventListener('keyup', event => {
-        hoverCurrentSubplotOnly = event.altKey;
+        hoverCurrentSubplotOnly = event.ctrlKey;
     });
 
 
