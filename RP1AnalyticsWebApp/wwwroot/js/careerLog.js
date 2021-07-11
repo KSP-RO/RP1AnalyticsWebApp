@@ -42,6 +42,15 @@
 
     let contractEvents = null;
 
+    let hoverCurrentSubplotOnly = false;
+    document.addEventListener('keydown', event => {
+        hoverCurrentSubplotOnly = event.altKey;
+    });
+    document.addEventListener('keyup', event => {
+        hoverCurrentSubplotOnly = event.altKey;
+    });
+
+
     const urlParams = new URLSearchParams(window.location.search);
     const initialCareerId = urlParams.get('careerId');
     if (initialCareerId) {
@@ -326,6 +335,7 @@
         Plotly.react(plotDiv, traces, layout, config);
         // Display hover for all subplots.
         plotDiv.on('plotly_hover', (eventData) => {
+            if (hoverCurrentSubplotOnly) return;
             if (eventData.xvals) {
                 Plotly.Fx.hover(
                     plotDiv,
