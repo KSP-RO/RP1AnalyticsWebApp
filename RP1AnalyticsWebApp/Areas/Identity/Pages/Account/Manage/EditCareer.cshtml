@@ -7,6 +7,17 @@
     ViewData["Title"] = "Edit Career Info";
 }
 
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+    <script>
+        const simplemde = new SimpleMDE({ element: document.getElementById("description") });
+    </script>
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+
 <div class="box">
     <div class="mb-4 has-text-centered">
         <h3 class="title">@Model.Input.CareerName</h3>
@@ -100,7 +111,7 @@
 
             <div class="field">
                 <label class="label" asp-for="Input.DescriptionText"></label>
-                <textarea class="textarea" asp-for="Input.DescriptionText" cols="150" rows="10"></textarea>
+                <textarea id="description" asp-for="Input.DescriptionText" cols="150" rows="10"></textarea>
             </div>
 
             <div class="control">

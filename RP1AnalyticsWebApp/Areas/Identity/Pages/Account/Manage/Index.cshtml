@@ -1,6 +1,14 @@
 @page
 @using RP1AnalyticsWebApp.Models
 
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+    <script>
+        const simplemde = new SimpleMDE({ element: document.getElementById("description") });
+    </script>
+}
 
 
 @model IndexModel
@@ -11,6 +19,8 @@
 }
 
 <partial name="_StatusMessage" model="Model.StatusMessage"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 
 <div class="box container mt-4 ml-4">
     <h2 class="subtitle">How to submit your career</h2>
@@ -168,7 +178,7 @@
                 <div class="column">
                     <div class="field">
                         <label class="label" asp-for="Input.CreationDate"></label>
-                        <input class="input" type="date" asp-for="Input.CreationDate" />
+                        <input class="input" type="date" asp-for="Input.CreationDate"/>
                     </div>
                 </div>
                 <div class="column"></div>
@@ -176,12 +186,14 @@
 
             <div class="field">
                 <label class="label" asp-for="Input.DescriptionText"></label>
-                <textarea class="textarea" asp-for="Input.DescriptionText" cols="150" rows="10"></textarea>
+                <textarea id="description" class="textarea" asp-for="Input.DescriptionText" cols="150" rows="10"></textarea>
             </div>
 
             <div class="control">
                 <button id="update-profile-button" type="submit" class="button is-info">Save</button>
             </div>
         </form>
+
+
     </div>
 </div>
