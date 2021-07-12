@@ -9,6 +9,10 @@
         },
         dateFormatted() {
             return this.meta.creationDate ? this.meta.creationDate.split("T")[0] : '?';
+        },
+        descriptionShowdown() {
+            const converter = new showdown.Converter();
+            return converter.makeHtml(this.meta.descriptionText);
         }
     },
 
@@ -49,7 +53,7 @@
 
         <div class="pt-4 block">
             <div class="subtitle">Notes and Remarks</div>
-                <p>{{meta.descriptionText}}</p>
+                <p v-html="descriptionShowdown"></p>
             </div>
         </div>
     </div>

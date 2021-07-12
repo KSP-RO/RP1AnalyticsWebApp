@@ -78,7 +78,6 @@
             fetch(`/api/careerlogs/${careerId}`)
                 .then((res) => res.json())
                 .then((jsonLogs) => {
-                    console.log(jsonLogs);
                     vm.careerLogMeta = jsonLogs.careerLogMeta;
                     vm.careerTitle = jsonLogs.name;
                 });
