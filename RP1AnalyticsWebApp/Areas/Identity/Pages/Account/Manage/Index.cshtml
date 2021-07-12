@@ -6,7 +6,11 @@
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 
     <script>
-        const simplemde = new SimpleMDE({ element: document.getElementById("description") });
+        const simplemde = new SimpleMDE({
+            element: document.getElementById('description'),
+            hideIcons: ['image'],
+            spellChecker: false
+        });
     </script>
 }
 
