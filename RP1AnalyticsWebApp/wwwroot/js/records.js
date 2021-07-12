@@ -24,7 +24,6 @@
                 .then((jsonContracts) => {
                     vm.items = jsonContracts;
                     modal.classList.add("is-active");
-                    console.log(this.items);
                 })
                 .catch((error) => alert(error));
         }

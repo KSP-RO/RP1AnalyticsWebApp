@@ -12,8 +12,6 @@
         },
         descriptionShowdown() {
             const converter = new showdown.Converter();
-            console.log(converter);
-            console.log(this.meta.descriptionText);
             return converter.makeHtml(this.meta.descriptionText);
         }
     },
