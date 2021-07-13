@@ -1,9 +1,9 @@
-﻿using AspNetCore.Identity.Mongo.Model;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using RP1AnalyticsWebApp.Models;
 using System.Threading.Tasks;
 
 namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account
@@ -11,10 +11,10 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {
-        private readonly SignInManager<MongoUser> _signInManager;
+        private readonly SignInManager<WebAppUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
-        public LogoutModel(SignInManager<MongoUser> signInManager, ILogger<LogoutModel> logger)
+        public LogoutModel(SignInManager<WebAppUser> signInManager, ILogger<LogoutModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;

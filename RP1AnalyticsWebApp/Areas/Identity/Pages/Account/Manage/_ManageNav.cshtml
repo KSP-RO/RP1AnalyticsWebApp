@@ -1,4 +1,4 @@
-﻿@inject SignInManager<MongoUser> SignInManager
+﻿@inject SignInManager<WebAppUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

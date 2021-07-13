@@ -21,9 +21,27 @@
 
 }
 
-<partial name="_StatusMessage" model="Model.StatusMessage"/>
+<partial name="_StatusMessage" model="Model.StatusMessage" />
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+
+<div class="box container mt-4 ml-4">
+    <h2 class="subtitle">Account information</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="field">
+            <label class="label" asp-for="Form.AccountInput.PreferredName"></label>
+            <div class="control">
+                <input asp-for="Form.AccountInput.PreferredName" placeholder="@Model.Username" class="input is-info form-control" />
+                <span asp-validation-for="Form.AccountInput.PreferredName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="control">
+            <button type="submit" asp-page-handler="Account" class="button is-info">Save</button>
+        </div>
+    </form>
+</div>
 
 <div class="box container mt-4 ml-4">
     <h2 class="subtitle">How to submit your career</h2>
@@ -40,57 +58,55 @@
     </ol>
 </div>
 
-
 <div class="ml-4 box">
     <h2 class="subtitle">Careers</h2>
     <table class="table is-bordered is-fullwidth">
         <thead>
-        <tr>
-            <th>Name</th>
-            <th>Token</th>
-            <th>Actions</th>
-        </tr>
+            <tr>
+                <th>Name</th>
+                <th>Token</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var c in Model.Careers)
-        {
-            <tr>
-                <td class="is-vcentered">
-                    <a href="/?careerId=@c.Id">@c.name</a>
-                </td >
-                <td class="is-vcentered">@c.token</td>
-                <td class="is-vcentered">
-                    <div class="buttons are-small">
-                        <a class="button is-info is-small" asp-route-token="@c.token" asp-page="EditCareer">
-                            <span class="icon is-small">
-                                <i class="fa fa-edit"></i>
-                            </span>
-                            <span>Edit Information</span>
-                        </a>
-                        @* <button class="button is-black is-small"> *@
-                        @*     <span class="icon is-small"> *@
-                        @*         <i class="fa fa-eye-slash"></i> *@
-                        @*     </span> *@
-                        @*     <span>Hide</span> *@
-                        @* </button> *@
-                        <form method="post">
-                            <button
-                                onclick="return confirm('Do you really want to delete this career log?')"
-                                type="submit"
-                                class="button is-danger is-small"
-                                asp-route-token="@c.token"
-                                asp-page-handler="delete">
+            @foreach (var c in Model.Careers)
+            {
+                <tr>
+                    <td class="is-vcentered">
+                        <a href="/?careerId=@c.Id">@c.name</a>
+                    </td>
+                    <td class="is-vcentered">@c.token</td>
+                    <td class="is-vcentered">
+                        <div class="buttons are-small">
+                            <a class="button is-info is-small" asp-route-token="@c.token" asp-page="EditCareer">
                                 <span class="icon is-small">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa fa-edit"></i>
                                 </span>
-                                <span>Delete</span>
+                                <span>Edit Information</span>
+                            </a>
+                            @* <button class="button is-black is-small"> *@
+                            @*     <span class="icon is-small"> *@
+                            @*         <i class="fa fa-eye-slash"></i> *@
+                            @*     </span> *@
+                            @*     <span>Hide</span> *@
+                            @* </button> *@
+                            <form method="post">
+                                <button onclick="return confirm('Do you really want to delete this career log?')"
+                                        type="submit"
+                                        class="button is-danger is-small"
+                                        asp-route-token="@c.token"
+                                        asp-page-handler="delete">
+                                    <span class="icon is-small">
+                                        <i class="fa fa-trash"></i>
+                                    </span>
+                                    <span>Delete</span>
 
-                            </button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-        }
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 
@@ -99,10 +115,10 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="field">
-                <label class="label" asp-for="Input.CareerName"></label>
+                <label class="label" asp-for="Form.CareerInput.CareerName"></label>
                 <div class="control">
-                    <input asp-for="Input.CareerName" class="input is-info form-control"/>
-                    <span asp-validation-for="Input.CareerName" class="text-danger"></span>
+                    <input asp-for="Form.CareerInput.CareerName" class="input is-info form-control" />
+                    <span asp-validation-for="Form.CareerInput.CareerName" class="text-danger"></span>
                 </div>
             </div>
 
@@ -110,9 +126,9 @@
                 <div class="column">
                     <div class="field">
                         <div class="control is-expanded">
-                            <label class="label" asp-for="Input.DifficultyLevel"></label>
+                            <label class="label" asp-for="Form.CareerInput.DifficultyLevel"></label>
                             <div class="select is-fullwidth">
-                                <select asp-for="Input.DifficultyLevel" asp-items="Html.GetEnumSelectList<DifficultyLevel>()">
+                                <select asp-for="Form.CareerInput.DifficultyLevel" asp-items="Html.GetEnumSelectList<DifficultyLevel>()">
                                 </select>
                             </div>
                         </div>
@@ -122,9 +138,9 @@
                 <div class="column">
                     <div class="field">
                         <div class="control is-expanded">
-                            <label class="label" asp-for="Input.CareerPlaystyle"></label>
+                            <label class="label" asp-for="Form.CareerInput.CareerPlaystyle"></label>
                             <div class="select is-fullwidth">
-                                <select asp-for="Input.CareerPlaystyle" asp-items="Html.GetEnumSelectList<CareerPlaystyle>()">
+                                <select asp-for="Form.CareerInput.CareerPlaystyle" asp-items="Html.GetEnumSelectList<CareerPlaystyle>()">
                                 </select>
                             </div>
                         </div>
@@ -136,9 +152,9 @@
                 <div class="column">
                     <div class="field">
                         <div class="control is-expanded">
-                            <label class="label" asp-for="Input.FailureModel"></label>
+                            <label class="label" asp-for="Form.CareerInput.FailureModel"></label>
                             <div class="select is-fullwidth">
-                                <select asp-for="Input.FailureModel" asp-items="Html.GetEnumSelectList<FailureModel>()">
+                                <select asp-for="Form.CareerInput.FailureModel" asp-items="Html.GetEnumSelectList<FailureModel>()">
                                 </select>
                             </div>
                         </div>
@@ -147,9 +163,9 @@
 
                 <div class="column">
                     <div class="field">
-                        <label class="label" asp-for="Input.ConfigurableStart"></label>
+                        <label class="label" asp-for="Form.CareerInput.ConfigurableStart"></label>
                         <div class="select is-fullwidth">
-                            <select asp-for="Input.ConfigurableStart" asp-items="Html.GetEnumSelectList<ConfigurableStart>()">
+                            <select asp-for="Form.CareerInput.ConfigurableStart" asp-items="Html.GetEnumSelectList<ConfigurableStart>()">
                             </select>
                         </div>
                     </div>
@@ -159,9 +175,9 @@
                 <div class="column">
                     <div class="field">
                         <div class="control is-expanded">
-                            <label class="label" asp-for="Input.ModRecency"></label>
+                            <label class="label" asp-for="Form.CareerInput.ModRecency"></label>
                             <div class="select is-fullwidth">
-                                <select asp-for="Input.ModRecency" asp-items="Html.GetEnumSelectList<ModRecency>()">
+                                <select asp-for="Form.CareerInput.ModRecency" asp-items="Html.GetEnumSelectList<ModRecency>()">
                                 </select>
                             </div>
                         </div>
@@ -169,9 +185,9 @@
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label" asp-for="Input.ModVersion"></label>
-                        <input class="input" type="text" asp-for="Input.ModVersion"/>
-                        <span asp-validation-for="Input.ModVersion" class="text-danger"></span>
+                        <label class="label" asp-for="Form.CareerInput.ModVersion"></label>
+                        <input class="input" type="text" asp-for="Form.CareerInput.ModVersion" />
+                        <span asp-validation-for="Form.CareerInput.ModVersion" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -179,20 +195,20 @@
             <div class="columns">
                 <div class="column">
                     <div class="field">
-                        <label class="label" asp-for="Input.CreationDate"></label>
-                        <input class="input" type="date" asp-for="Input.CreationDate"/>
+                        <label class="label" asp-for="Form.CareerInput.CreationDate"></label>
+                        <input class="input" type="date" asp-for="Form.CareerInput.CreationDate" />
                     </div>
                 </div>
                 <div class="column"></div>
             </div>
 
             <div class="field">
-                <label class="label" asp-for="Input.DescriptionText"></label>
-                <textarea id="description" class="textarea" asp-for="Input.DescriptionText" cols="150" rows="10"></textarea>
+                <label class="label" asp-for="Form.CareerInput.DescriptionText"></label>
+                <textarea id="description" class="textarea" asp-for="Form.CareerInput.DescriptionText" cols="150" rows="10"></textarea>
             </div>
 
             <div class="control">
-                <button id="update-profile-button" type="submit" class="button is-info">Save</button>
+                <button id="update-profile-button" type="submit" asp-page-handler="Career" class="button is-info">Save</button>
             </div>
         </form>
     </div>

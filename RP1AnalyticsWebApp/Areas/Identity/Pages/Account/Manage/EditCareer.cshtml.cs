@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using AspNetCore.Identity.Mongo.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,24 +11,23 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
     public partial class EditCareerModel : PageModel
     {
         public string Username { get; set; }
-        [BindProperty] public IndexModel.InputModel Input { get; set; }
-        private readonly UserManager<MongoUser> _userManager;
-        private readonly SignInManager<MongoUser> _signInManager;
+        [BindProperty] public IndexModel.CareerInputModel Input { get; set; }
+        private readonly UserManager<WebAppUser> _userManager;
+        private readonly SignInManager<WebAppUser> _signInManager;
         private readonly CareerLogService _careerLogService;
 
         public CareerLog CareerLog { get; private set; }
 
-        public EditCareerModel(UserManager<MongoUser> userManager, SignInManager<MongoUser> signInManager,
+        public EditCareerModel(UserManager<WebAppUser> userManager, SignInManager<WebAppUser> signInManager,
             CareerLogService careerLogService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _careerLogService = careerLogService;
-            Input = new IndexModel.InputModel();
+            Input = new IndexModel.CareerInputModel();
         }
 
-
-        private async Task LoadAsync(MongoUser user)
+        private async Task LoadAsync(WebAppUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             Username = userName;

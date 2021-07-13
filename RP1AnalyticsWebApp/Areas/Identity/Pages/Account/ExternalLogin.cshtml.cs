@@ -1,9 +1,9 @@
-﻿using AspNetCore.Identity.Mongo.Model;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using RP1AnalyticsWebApp.Models;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -12,13 +12,13 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<MongoUser> _signInManager;
-        private readonly UserManager<MongoUser> _userManager;
+        private readonly SignInManager<WebAppUser> _signInManager;
+        private readonly UserManager<WebAppUser> _userManager;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
-            SignInManager<MongoUser> signInManager,
-            UserManager<MongoUser> userManager,
+            SignInManager<WebAppUser> signInManager,
+            UserManager<WebAppUser> userManager,
             ILogger<ExternalLoginModel> logger)
         {
             _signInManager = signInManager;
@@ -85,7 +85,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account
                 }
 
                 string userName = info.Principal.FindFirst(ClaimTypes.Name).Value;
-                var user = new MongoUser { UserName = userName };
+                var user = new WebAppUser { UserName = userName };
 
                 var userRes = await _userManager.CreateAsync(user);
                 if (userRes.Succeeded)
