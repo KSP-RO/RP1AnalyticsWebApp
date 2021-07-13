@@ -24,9 +24,12 @@ namespace RP1AnalyticsWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages()
-                .AddRazorRuntimeCompilation();
-            
+            services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeAreaFolder("Admin", "/", "RequireAdministratorRole");
+            })
+            .AddRazorRuntimeCompilation();
+
             services.Configure<CareerLogDatabaseSettings>(
                 Configuration.GetSection(nameof(CareerLogDatabaseSettings)));
 
@@ -67,6 +70,14 @@ namespace RP1AnalyticsWebApp
                     options.ClientId = Configuration["Authentication:GitHub:ClientId"];
                     options.ClientSecret = Configuration["Authentication:GitHub:ClientSecret"];
                 });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdministratorRole",
+                     policy => policy.RequireRole(Constants.Roles.Admin));
+            });
+
+            services.AddHostedService<StartupHostedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

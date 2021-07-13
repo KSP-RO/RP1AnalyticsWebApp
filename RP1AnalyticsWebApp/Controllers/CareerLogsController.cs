@@ -164,7 +164,7 @@ namespace RP1AnalyticsWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [Authorize]
+        [Authorize(Roles = Constants.Roles.Member)]
         public ActionResult<CareerLog> CreateCareer(CareerLog log)
         {
             _telemetry.TrackEvent("CareerLogsController-CreateCareer", new Dictionary<string, string>

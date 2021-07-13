@@ -136,6 +136,11 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            if (!await _userManager.IsInRoleAsync(user, Constants.Roles.Member))
+            {
+                return StatusCode(403);
+            }
+
             await LoadAsync(user);
 
             _careerLogService.Create(new CareerLog
