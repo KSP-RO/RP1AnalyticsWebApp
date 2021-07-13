@@ -25,191 +25,204 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 
-<div class="box container mt-4 ml-4">
-    <h2 class="subtitle">Account information</h2>
-    <form method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="field">
-            <label class="label" asp-for="Form.AccountInput.PreferredName"></label>
-            <div class="control">
-                <input asp-for="Form.AccountInput.PreferredName" placeholder="@Model.Username" class="input is-info form-control" />
-                <span asp-validation-for="Form.AccountInput.PreferredName" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="control">
-            <button type="submit" asp-page-handler="Account" class="button is-info">Save</button>
-        </div>
-    </form>
-</div>
-
-<div class="box container mt-4 ml-4">
-    <h2 class="subtitle">How to submit your career</h2>
-    <ol class="ml-4">
-        <li>Create a career below</li>
-        <li>
-            Open up the ingame RP-1 UI, switch to the "Career Log" tab and fill in the following data:
-            <ul>
-                <li>Server URL - <span style="background: lightgray;" class="is-family-code">https://rp1careerlog.azurewebsites.net/api/CareerLogs/</span></li>
-                <li>Token - the value after your career name in the table below</li>
-            </ul>
-        </li>
-        <li>Click the "Export to web" button</li>
-    </ol>
-</div>
-
-<div class="ml-4 box">
-    <h2 class="subtitle">Careers</h2>
-    <table class="table is-bordered is-fullwidth">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Token</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var c in Model.Careers)
-            {
-                <tr>
-                    <td class="is-vcentered">
-                        <a href="/?careerId=@c.Id">@c.name</a>
-                    </td>
-                    <td class="is-vcentered">@c.token</td>
-                    <td class="is-vcentered">
-                        <div class="buttons are-small">
-                            <a class="button is-info is-small" asp-route-token="@c.token" asp-page="EditCareer">
-                                <span class="icon is-small">
-                                    <i class="fa fa-edit"></i>
-                                </span>
-                                <span>Edit Information</span>
-                            </a>
-                            @* <button class="button is-black is-small"> *@
-                            @*     <span class="icon is-small"> *@
-                            @*         <i class="fa fa-eye-slash"></i> *@
-                            @*     </span> *@
-                            @*     <span>Hide</span> *@
-                            @* </button> *@
-                            <form method="post">
-                                <button onclick="return confirm('Do you really want to delete this career log?')"
-                                        type="submit"
-                                        class="button is-danger is-small"
-                                        asp-route-token="@c.token"
-                                        asp-page-handler="delete">
-                                    <span class="icon is-small">
-                                        <i class="fa fa-trash"></i>
-                                    </span>
-                                    <span>Delete</span>
-
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <div class="pt-5">
-        <h2 class="subtitle">Add a new career</h2>
+@if (User.IsInRole(Constants.Roles.Member))
+{
+    <div class="box container mt-4 ml-4">
+        <h2 class="subtitle">Account information</h2>
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="field">
-                <label class="label" asp-for="Form.CareerInput.CareerName"></label>
+                <label class="label" asp-for="Form.AccountInput.PreferredName"></label>
                 <div class="control">
-                    <input asp-for="Form.CareerInput.CareerName" class="input is-info form-control" />
-                    <span asp-validation-for="Form.CareerInput.CareerName" class="text-danger"></span>
+                    <input asp-for="Form.AccountInput.PreferredName" placeholder="@Model.Username" class="input is-info form-control" />
+                    <span asp-validation-for="Form.AccountInput.PreferredName" class="text-danger"></span>
                 </div>
-            </div>
-
-            <div class="columns">
-                <div class="column">
-                    <div class="field">
-                        <div class="control is-expanded">
-                            <label class="label" asp-for="Form.CareerInput.DifficultyLevel"></label>
-                            <div class="select is-fullwidth">
-                                <select asp-for="Form.CareerInput.DifficultyLevel" asp-items="Html.GetEnumSelectList<DifficultyLevel>()">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="column">
-                    <div class="field">
-                        <div class="control is-expanded">
-                            <label class="label" asp-for="Form.CareerInput.CareerPlaystyle"></label>
-                            <div class="select is-fullwidth">
-                                <select asp-for="Form.CareerInput.CareerPlaystyle" asp-items="Html.GetEnumSelectList<CareerPlaystyle>()">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="columns">
-                <div class="column">
-                    <div class="field">
-                        <div class="control is-expanded">
-                            <label class="label" asp-for="Form.CareerInput.FailureModel"></label>
-                            <div class="select is-fullwidth">
-                                <select asp-for="Form.CareerInput.FailureModel" asp-items="Html.GetEnumSelectList<FailureModel>()">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="column">
-                    <div class="field">
-                        <label class="label" asp-for="Form.CareerInput.ConfigurableStart"></label>
-                        <div class="select is-fullwidth">
-                            <select asp-for="Form.CareerInput.ConfigurableStart" asp-items="Html.GetEnumSelectList<ConfigurableStart>()">
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    <div class="field">
-                        <div class="control is-expanded">
-                            <label class="label" asp-for="Form.CareerInput.ModRecency"></label>
-                            <div class="select is-fullwidth">
-                                <select asp-for="Form.CareerInput.ModRecency" asp-items="Html.GetEnumSelectList<ModRecency>()">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="field">
-                        <label class="label" asp-for="Form.CareerInput.ModVersion"></label>
-                        <input class="input" type="text" asp-for="Form.CareerInput.ModVersion" />
-                        <span asp-validation-for="Form.CareerInput.ModVersion" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="columns">
-                <div class="column">
-                    <div class="field">
-                        <label class="label" asp-for="Form.CareerInput.CreationDate"></label>
-                        <input class="input" type="date" asp-for="Form.CareerInput.CreationDate" />
-                    </div>
-                </div>
-                <div class="column"></div>
-            </div>
-
-            <div class="field">
-                <label class="label" asp-for="Form.CareerInput.DescriptionText"></label>
-                <textarea id="description" class="textarea" asp-for="Form.CareerInput.DescriptionText" cols="150" rows="10"></textarea>
             </div>
 
             <div class="control">
-                <button id="update-profile-button" type="submit" asp-page-handler="Career" class="button is-info">Save</button>
+                <button type="submit" asp-page-handler="Account" class="button is-info">Save</button>
             </div>
         </form>
     </div>
-</div>
+
+    <div class="box container mt-4 ml-4">
+        <h2 class="subtitle">How to submit your career</h2>
+        <ol class="ml-4">
+            <li>Create a career below</li>
+            <li>
+                Open up the ingame RP-1 UI, switch to the "Career Log" tab and fill in the following data:
+                <ul>
+                    <li>Server URL - <span style="background: lightgray;" class="is-family-code">https://rp1careerlog.azurewebsites.net/api/CareerLogs/</span></li>
+                    <li>Token - the value after your career name in the table below</li>
+                </ul>
+            </li>
+            <li>Click the "Export to web" button</li>
+        </ol>
+    </div>
+
+    <div class="ml-4 box">
+        <h2 class="subtitle">Careers</h2>
+        <table class="table is-bordered is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Token</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Careers)
+                {
+                    <tr>
+                        <td class="is-vcentered">
+                            <a href="/?careerId=@c.Id">@c.name</a>
+                        </td>
+                        <td class="is-vcentered">@c.token</td>
+                        <td class="is-vcentered">
+                            <div class="buttons are-small">
+                                <a class="button is-info is-small" asp-route-token="@c.token" asp-page="EditCareer">
+                                    <span class="icon is-small">
+                                        <i class="fa fa-edit"></i>
+                                    </span>
+                                    <span>Edit Information</span>
+                                </a>
+                                @* <button class="button is-black is-small"> *@
+                                @*     <span class="icon is-small"> *@
+                                @*         <i class="fa fa-eye-slash"></i> *@
+                                @*     </span> *@
+                                @*     <span>Hide</span> *@
+                                @* </button> *@
+                                <form method="post">
+                                    <button onclick="return confirm('Do you really want to delete this career log?')"
+                                            type="submit"
+                                            class="button is-danger is-small"
+                                            asp-route-token="@c.token"
+                                            asp-page-handler="delete">
+                                        <span class="icon is-small">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                        <span>Delete</span>
+
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="pt-5">
+            <h2 class="subtitle">Add a new career</h2>
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="field">
+                    <label class="label" asp-for="Form.CareerInput.CareerName"></label>
+                    <div class="control">
+                        <input asp-for="Form.CareerInput.CareerName" class="input is-info form-control" />
+                        <span asp-validation-for="Form.CareerInput.CareerName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <div class="control is-expanded">
+                                <label class="label" asp-for="Form.CareerInput.DifficultyLevel"></label>
+                                <div class="select is-fullwidth">
+                                    <select asp-for="Form.CareerInput.DifficultyLevel" asp-items="Html.GetEnumSelectList<DifficultyLevel>()">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="field">
+                            <div class="control is-expanded">
+                                <label class="label" asp-for="Form.CareerInput.CareerPlaystyle"></label>
+                                <div class="select is-fullwidth">
+                                    <select asp-for="Form.CareerInput.CareerPlaystyle" asp-items="Html.GetEnumSelectList<CareerPlaystyle>()">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <div class="control is-expanded">
+                                <label class="label" asp-for="Form.CareerInput.FailureModel"></label>
+                                <div class="select is-fullwidth">
+                                    <select asp-for="Form.CareerInput.FailureModel" asp-items="Html.GetEnumSelectList<FailureModel>()">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" asp-for="Form.CareerInput.ConfigurableStart"></label>
+                            <div class="select is-fullwidth">
+                                <select asp-for="Form.CareerInput.ConfigurableStart" asp-items="Html.GetEnumSelectList<ConfigurableStart>()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <div class="control is-expanded">
+                                <label class="label" asp-for="Form.CareerInput.ModRecency"></label>
+                                <div class="select is-fullwidth">
+                                    <select asp-for="Form.CareerInput.ModRecency" asp-items="Html.GetEnumSelectList<ModRecency>()">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" asp-for="Form.CareerInput.ModVersion"></label>
+                            <input class="input" type="text" asp-for="Form.CareerInput.ModVersion" />
+                            <span asp-validation-for="Form.CareerInput.ModVersion" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" asp-for="Form.CareerInput.CreationDate"></label>
+                            <input class="input" type="date" asp-for="Form.CareerInput.CreationDate" />
+                        </div>
+                    </div>
+                    <div class="column"></div>
+                </div>
+
+                <div class="field">
+                    <label class="label" asp-for="Form.CareerInput.DescriptionText"></label>
+                    <textarea id="description" class="textarea" asp-for="Form.CareerInput.DescriptionText" cols="150" rows="10"></textarea>
+                </div>
+
+                <div class="control">
+                    <button id="update-profile-button" type="submit" asp-page-handler="Career" class="button is-info">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="box container mt-4 ml-4">
+        <h2 class="subtitle">How to submit your career</h2>
+        <ol class="ml-4">
+            <li>Ask on the KSP-RO Discord to get assigned a member role</li>
+            <li>Instructions will appear here after that's done</li>
+        </ol>
+    </div>
+}

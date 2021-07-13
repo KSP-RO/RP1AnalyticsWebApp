@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,6 +9,7 @@ using RP1AnalyticsWebApp.Services;
 
 namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Roles = Constants.Roles.Member)]
     public partial class EditCareerModel : PageModel
     {
         public string Username { get; set; }
