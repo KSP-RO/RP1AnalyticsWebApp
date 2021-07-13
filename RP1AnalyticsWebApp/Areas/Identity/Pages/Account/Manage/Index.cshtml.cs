@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using AspNetCore.Identity.Mongo.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,13 +12,13 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<MongoUser> _userManager;
-        private readonly SignInManager<MongoUser> _signInManager;
+        private readonly UserManager<WebAppUser> _userManager;
+        private readonly SignInManager<WebAppUser> _signInManager;
         private readonly CareerLogService _careerLogService;
 
         public List<CareerListItem> Careers => _careerLogService.GetCareerListWithTokens(User.Identity.Name);
 
-        public IndexModel(UserManager<MongoUser> userManager, SignInManager<MongoUser> signInManager,
+        public IndexModel(UserManager<WebAppUser> userManager, SignInManager<WebAppUser> signInManager,
             CareerLogService careerLogService)
         {
             _userManager = userManager;
@@ -31,9 +30,16 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
         [TempData] public string StatusMessage { get; set; }
 
-        [BindProperty] public InputModel Input { get; set; }
+        [BindProperty]
+        public FormModel Form { get; set; }
 
-        public class InputModel
+        public class FormModel
+        {
+            public CareerInputModel CareerInput { get; set; }
+            public AccountInfoInputModel AccountInput { get; set; }
+        }
+
+        public class CareerInputModel
         {
             [Required]
             [Display(Name = "Career name")]
@@ -60,7 +66,14 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             public Version ModVersion { get; set; }
         }
 
-        private async Task LoadAsync(MongoUser user)
+        public class AccountInfoInputModel
+        {
+            [Display(Name = "Preferred name")]
+            [StringLength(20)]
+            public string PreferredName { get; set; }
+        }
+
+        private async Task LoadAsync(WebAppUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             Username = userName;
@@ -75,11 +88,48 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             }
 
             await LoadAsync(user);
+
+            if (!string.IsNullOrWhiteSpace(user.PreferredName))
+            {
+                Form = new FormModel
+                {
+                    AccountInput = new AccountInfoInputModel
+                    {
+                        PreferredName = user.PreferredName
+                    }
+                };
+            }
+
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAccountAsync()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            string prefName = Form.AccountInput.PreferredName;
+            user.PreferredName = string.IsNullOrWhiteSpace(prefName) ? null : prefName;
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostCareerAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -87,19 +137,14 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             }
 
             await LoadAsync(user);
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
 
             _careerLogService.Create(new CareerLog
             {
-                Name = Input.CareerName,
+                Name = Form.CareerInput.CareerName,
                 UserLogin = Username,
                 EligibleForRecords = true,
                 CareerLogMeta = CreateCareerLogMeta()
             });
-
 
             StatusMessage = "A new career was created successfully";
             return RedirectToPage();
@@ -116,14 +161,14 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
         {
             return new CareerLogMeta
             {
-                CareerPlaystyle = Input.CareerPlaystyle,
-                DifficultyLevel = Input.DifficultyLevel,
-                ConfigurableStart = Input.ConfigurableStart,
-                FailureModel = Input.FailureModel,
-                DescriptionText = Input.DescriptionText,
-                ModRecency = Input.ModRecency,
-                VersionTag = Input.ModVersion?.ToString(),
-                CreationDate = Input.CreationDate.HasValue ? DateTime.SpecifyKind(Input.CreationDate.Value, DateTimeKind.Utc) : (DateTime?)null
+                CareerPlaystyle = Form.CareerInput.CareerPlaystyle,
+                DifficultyLevel = Form.CareerInput.DifficultyLevel,
+                ConfigurableStart = Form.CareerInput.ConfigurableStart,
+                FailureModel = Form.CareerInput.FailureModel,
+                DescriptionText = Form.CareerInput.DescriptionText,
+                ModRecency = Form.CareerInput.ModRecency,
+                VersionTag = Form.CareerInput.ModVersion?.ToString(),
+                CreationDate = Form.CareerInput.CreationDate.HasValue ? DateTime.SpecifyKind(Form.CareerInput.CreationDate.Value, DateTimeKind.Utc) : (DateTime?)null
             };
         }
     }

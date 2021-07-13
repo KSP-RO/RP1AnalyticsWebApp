@@ -1,5 +1,5 @@
-﻿@inject SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> SignInManager
-@inject UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> UserManager
+﻿@inject SignInManager<Models.WebAppUser> SignInManager
+@inject UserManager<Models.WebAppUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {

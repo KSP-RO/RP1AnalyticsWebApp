@@ -48,9 +48,11 @@ namespace RP1AnalyticsWebApp
 
             services.AddSingleton<CareerLogService>();
 
-            services.AddIdentityMongoDbProvider<MongoUser, MongoRole>(identityOptions =>
+            services.AddIdentityMongoDbProvider<WebAppUser, MongoRole>(identityOptions =>
             {
-            }, mongoIdentityOptions => {
+            },
+            mongoIdentityOptions =>
+            {
                 mongoIdentityOptions.ConnectionString = Configuration["CareerLogDatabaseSettings:ConnectionString"];
             });
 
