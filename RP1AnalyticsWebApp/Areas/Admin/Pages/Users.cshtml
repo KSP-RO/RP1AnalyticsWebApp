@@ -1,0 +1,40 @@
+﻿@page
+@model RP1AnalyticsWebApp.Areas.Admin.Pages.UsersModel
+@{
+    ViewData["Title"] = "User management";
+}
+
+<div class="ml-4 box">
+    <h2 class="subtitle">Users</h2>
+    <form method="post">
+        <table class="table is-bordered is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Login</th>
+                    <th>Preferred Name</th>
+                    <th>Roles</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in Model.Users)
+                {
+                    <tr>
+                        <td class="is-vcentered">@u.UserName</td>
+                        <td class="is-vcentered">@u.PreferredName</td>
+                        <td class="is-vcentered">
+                            <div class="buttons are-small">
+                                @foreach (var r in Model.Roles)
+                                {
+                                    <button type="submit" class="button is-small @(u.Roles.Contains(r.Id.ToString()) ? "is-success" : "")"
+                                            asp-route-user="@u.UserName" asp-route-role="@r.Name" asp-page-handler='@(u.Roles.Contains(r.Id.ToString()) ? "RemoveRole" : "AddRole")'>
+                                        <span>@r.Name</span>
+                                    </button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+</div>
