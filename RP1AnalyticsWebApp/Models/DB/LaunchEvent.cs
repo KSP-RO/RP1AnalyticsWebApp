@@ -6,6 +6,8 @@ namespace RP1AnalyticsWebApp.Models
     {
         public DateTime Date { get; set; }
         public string VesselName { get; set; }
+        public string VesselUID { get; set; }
+        public string LaunchID { get; set; }
 
         public LaunchEvent()
         {
@@ -15,6 +17,8 @@ namespace RP1AnalyticsWebApp.Models
         {
             Date = l.Date;
             VesselName = l.VesselName;
+            VesselUID = l.VesselUID;
+            LaunchID = l.LaunchID;
         }
     }
 }
