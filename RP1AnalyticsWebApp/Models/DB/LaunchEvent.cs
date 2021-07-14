@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace RP1AnalyticsWebApp.Models
 {
@@ -6,6 +7,10 @@ namespace RP1AnalyticsWebApp.Models
     {
         public DateTime Date { get; set; }
         public string VesselName { get; set; }
+        public string VesselUID { get; set; }
+        public string LaunchID { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public EditorFacility? BuiltAt { get; set; }
 
         public LaunchEvent()
         {
@@ -15,6 +20,9 @@ namespace RP1AnalyticsWebApp.Models
         {
             Date = l.Date;
             VesselName = l.VesselName;
+            VesselUID = l.VesselUID;
+            LaunchID = l.LaunchID;
+            BuiltAt = l.BuiltAt == EditorFacility.None ? null : l.BuiltAt;
         }
     }
 }
