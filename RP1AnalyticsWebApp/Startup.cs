@@ -1,5 +1,6 @@
 using AspNetCore.Identity.Mongo;
 using AspNetCore.Identity.Mongo.Model;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -63,6 +64,7 @@ namespace RP1AnalyticsWebApp
             services.AddRazorPages();
             services.AddApplicationInsightsTelemetry();
             services.AddSwaggerGen();
+            services.AddSingleton<ITelemetryInitializer, CustomTelemetryInitializer>();
 
             services.AddAuthentication()
                 .AddGitHub(options =>

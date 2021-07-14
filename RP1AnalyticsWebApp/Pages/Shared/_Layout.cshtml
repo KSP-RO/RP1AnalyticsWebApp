@@ -48,6 +48,11 @@
             <hr class="navbar-divider">
             <a class="navbar-item is-uppercase has-text-weight-medium" asp-page="/Records">Records</a>
             <hr class="navbar-divider">
+            @if (User.IsInRole(Constants.Roles.Admin))
+            {
+                <a class="navbar-item is-uppercase has-text-weight-medium" asp-area="Admin" asp-page="/Users">Users</a>
+                <hr class="navbar-divider">
+            }
         </div>
 
         <div class="navbar-end">
