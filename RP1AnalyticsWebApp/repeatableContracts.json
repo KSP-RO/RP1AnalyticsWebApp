@@ -14,6 +14,8 @@
   "TundraRepeatComSats",
   "SoundingRocketDifficult",
   "SoundingRocketIntermediate",
+  "DownrangeIntermediate",
+  "DownrangeDifficult",
   "SoundingRocketLow",
   "CrewedFlightLow",
   "CrewedReachSpace",
