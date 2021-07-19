@@ -417,11 +417,7 @@
   },
   {
     "Name": "second_OrbitRecover",
-    "Title": "Reach Orbit & Return Safely to Earth (Moderate)"
-  },
-  {
-    "Name": "third_OrbitRecover",
-    "Title": "Reach Orbit & Return Safely to Earth (Extreme)"
+    "Title": "Reach Orbit & Return Safely to Earth"
   },
   {
     "Name": "Rendezvous",
@@ -470,6 +466,10 @@
   {
     "Name": "first_MoonImpact",
     "Title": "Lunar Impactor (Uncrewed)"
+  },
+  {
+    "Name": "landingMoonFarSide",
+    "Title": "Far Side Lunar Landing (Uncrewed)"
   },
   {
     "Name": "landingMoon",
@@ -732,56 +732,32 @@
     "Title": "Triton Sample Return"
   },
   {
-    "Name": "RP0_SCANSat_Average_Biome",
-    "Title": "Conduct Biome SCANsat survey."
+    "Name": "RP0_SCANSat_Earth_AltimetryLoRes",
+    "Title": "Conduct Low Resolution Altimetry SCANsat survey of Earth"
   },
   {
-    "Name": "RP0_SCANSat_Average_HiRes",
-    "Title": "Conduct a High Resolution SAR SCANsat survey."
+    "Name": "RP0_SCANSat_Mars_AltimetryLoRes_Early",
+    "Title": "Conduct a Partial Low Resolution Altimetry SCANsat survey of Mars"
   },
   {
-    "Name": "RP0_SCANSat_Average_LoRes",
-    "Title": "Conduct Low Resolution SCANsat survey."
+    "Name": "RP0_SCANSat_Mars_AltimetryLoRes",
+    "Title": "Conduct Low Resolution Altimetry SCANsat survey of the Mars"
   },
   {
-    "Name": "RP0_SCANSat_Earth",
-    "Title": "Conduct SCANsat survey of Earth"
+    "Name": "RP0_SCANSat_Moon_AltimetryLoRes_Early",
+    "Title": "Conduct a Partial Low Resolution Altimetry SCANsat survey of the Moon"
   },
   {
-    "Name": "RP0_SCANSat_GasGiant_Biome",
-    "Title": "Conduct Biome SCANsat survey."
+    "Name": "RP0_SCANSat_Moon_AltimetryLoRes",
+    "Title": "Conduct Low Resolution Altimetry SCANsat survey of the Moon"
   },
   {
-    "Name": "RP0_SCANSat_Hard_Biome",
-    "Title": "Conduct Biome SCANsat survey."
+    "Name": "RP0_SCANSat_Venus_AltimetryLoRes_Early",
+    "Title": "Conduct a Partial Low Resolution Altimetry SCANsat survey of Venus"
   },
   {
-    "Name": "RP0_SCANSat_Hard_HiRes",
-    "Title": "Conduct a High Resolution SAR SCANsat survey."
-  },
-  {
-    "Name": "RP0_SCANSat_Hard_LoRes",
-    "Title": "Conduct Low Resolution SCANsat survey."
-  },
-  {
-    "Name": "RP0_SCANSat_JupiterMoons",
-    "Title": "Conduct SCANsat survey of a moon of Jupiter"
-  },
-  {
-    "Name": "RP0_SCANSat_Moon",
-    "Title": "Conduct SCANsat survey of the Moon"
-  },
-  {
-    "Name": "RP0_SCANSat_NeptuneMoons",
-    "Title": "Conduct SCANsat survey of a moon of Neptune"
-  },
-  {
-    "Name": "RP0_SCANSat_SaturnMoons",
-    "Title": "Conduct SCANsat survey of a moon of Saturn"
-  },
-  {
-    "Name": "RP0_SCANSat_UranusMoons",
-    "Title": "Conduct SCANsat survey of a moon of Uranus"
+    "Name": "RP0_SCANSat_Venus_AltimetryLoRes",
+    "Title": "Conduct Low Resolution Altimetry SCANsat survey of the Venus"
   },
   {
     "Name": "DownrangeDifficult",
@@ -902,5 +878,157 @@
   {
     "Name": "RocketPlaneDevelopment",
     "Title": "Experimental rocketplanes"
+  },
+  {
+    "Name": "third_OrbitRecover",
+    "Title": "Reach Orbit & Return Safely to Earth (Extreme)"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_LoRes.Venus",
+    "Title": "Conduct Low Resolution SCANsat survey of Venus"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_LoRes.Mars",
+    "Title": "Conduct Low Resolution SCANsat survey of Mars"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_LoRes.Vesta",
+    "Title": "Conduct Low Resolution SCANsat survey of Vesta"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_LoRes.Ceres",
+    "Title": "Conduct Low Resolution SCANsat survey of Ceres"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_LoRes.Phobos",
+    "Title": "Conduct Low Resolution SCANsat survey of Phobos"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_LoRes.Deimos",
+    "Title": "Conduct Low Resolution SCANsat survey of Deimos"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_Biome.Venus",
+    "Title": "Conduct a Biome SCANsat survey of the Venus"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_Biome.Mars",
+    "Title": "Conduct a Biome SCANsat survey of the Mars"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_Biome.Vesta",
+    "Title": "Conduct a Biome SCANsat survey of the Vesta"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_Biome.Ceres",
+    "Title": "Conduct a Biome SCANsat survey of the Ceres"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_Biome.Phobos",
+    "Title": "Conduct a Biome SCANsat survey of the Phobos"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_Biome.Deimos",
+    "Title": "Conduct a Biome SCANsat survey of the Deimos"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_HiRes.Venus",
+    "Title": "Conduct a High Resolution SAR SCANsat survey of Venus"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_HiRes.Mars",
+    "Title": "Conduct a High Resolution SAR SCANsat survey of Mars"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_HiRes.Vesta",
+    "Title": "Conduct a High Resolution SAR SCANsat survey of Vesta"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_HiRes.Ceres",
+    "Title": "Conduct a High Resolution SAR SCANsat survey of Ceres"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_HiRes.Phobos",
+    "Title": "Conduct a High Resolution SAR SCANsat survey of Phobos"
+  },
+  {
+    "Name": "RP0_SCANSat_Average_HiRes.Deimos",
+    "Title": "Conduct a High Resolution SAR SCANsat survey of Deimos"
+  },
+  {
+    "Name": "RP0_SCANSat_Earth.AltimetryLoRes",
+    "Title": "Conduct a Low Resolution SCANsat survey of Earth"
+  },
+  {
+    "Name": "RP0_SCANSat_Earth.Biome",
+    "Title": "Conduct a Biome SCANsat survey of Earth"
+  },
+  {
+    "Name": "RP0_SCANSat_Earth.AltimetryHiRes",
+    "Title": "Conduct a High Resolution SCANsat survey of Earth"
+  },
+  {
+    "Name": "RP0_SCANSat_Moon.AltimetryLoRes",
+    "Title": "Conduct a Low Resolution SCANsat survey of the Moon"
+  },
+  {
+    "Name": "RP0_SCANSat_Moon.Biome",
+    "Title": "Conduct a Biome SCANsat survey of the Moon"
+  },
+  {
+    "Name": "RP0_SCANSat_Moon.AltimetryHiRes",
+    "Title": "Conduct a High Resolution SCANsat survey of the Moon"
+  },
+  {
+    "Name": "RP0_SCANSat_GasGiant_Biome.Jupiter",
+    "Title": "Conduct a Biome SCANsat survey of Jupiter"
+  },
+  {
+    "Name": "RP0_SCANSat_GasGiant_Biome.Saturn",
+    "Title": "Conduct a Biome SCANsat survey of Saturn"
+  },
+  {
+    "Name": "RP0_SCANSat_GasGiant_Biome.Uranus",
+    "Title": "Conduct a Biome SCANsat survey of Uranus"
+  },
+  {
+    "Name": "RP0_SCANSat_GasGiant_Biome.Neptune",
+    "Title": "Conduct a Biome SCANsat survey of Neptune"
+  },
+  {
+    "Name": "RP0_SCANSat_Hard_LoRes.Mercury",
+    "Title": "Conduct Low Resolution SCANsat survey of Mercury"
+  },
+  {
+    "Name": "RP0_SCANSat_Hard_LoRes.Pluto",
+    "Title": "Conduct Low Resolution SCANsat survey of Pluto"
+  },
+  {
+    "Name": "RP0_SCANSat_Hard_LoRes.Charon",
+    "Title": "Conduct Low Resolution SCANsat survey of Charon"
+  },
+  {
+    "Name": "RP0_SCANSat_Hard_Biome.Mercury",
+    "Title": "Conduct a Biome SCANsat survey of Mercury"
+  },
+  {
+    "Name": "RP0_SCANSat_Hard_Biome.Pluto",
+    "Title": "Conduct a Biome SCANsat survey of Pluto"
+  },
+  {
+    "Name": "RP0_SCANSat_Hard_Biome.Charon",
+    "Title": "Conduct a Biome SCANsat survey of Charon"
+  },
+  {
+    "Name": "RP0_SCANSat_Hard_HiRes.Mercury",
+    "Title": "Conduct a High Resolution SAR SCANsat survey of Mercury"
+  },
+  {
+    "Name": "RP0_SCANSat_Hard_HiRes.Pluto",
+    "Title": "Conduct a High Resolution SAR SCANsat survey of Pluto"
+  },
+  {
+    "Name": "RP0_SCANSat_Hard_HiRes.Charon",
+    "Title": "Conduct a High Resolution SAR SCANsat survey of Charon"
   }
 ]
