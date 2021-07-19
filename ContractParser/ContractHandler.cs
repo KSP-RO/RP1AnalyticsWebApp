@@ -61,8 +61,7 @@ namespace ContractParser
                     if (block.type != BlockType.ContractType)
                         continue;
 
-                    var c = new Contract(block.content);
-
+                    var c = Contract.TryParseContract(block);
                     if (c != null)
                         contractsFound.Add(c);
                 }

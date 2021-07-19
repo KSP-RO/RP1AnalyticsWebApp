@@ -8,6 +8,7 @@ namespace ContractParser
         Requirement,
         Behaviour,
         Parameter,
+        DataExpand,
         Unknown
     }
     public class ConfigBlock
@@ -30,6 +31,8 @@ namespace ContractParser
                 type = BlockType.Behaviour;
             else if (block[0][0].Contains("REQUIREMENT"))
                 type = BlockType.Requirement;
+            else if (block[0][0].Contains("DATA_EXPAND"))
+                type = BlockType.DataExpand;
             else
                 type = BlockType.Unknown;
 
