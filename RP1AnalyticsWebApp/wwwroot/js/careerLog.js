@@ -28,7 +28,9 @@
                 this.repeatables = null;
                 this.isLoadingRepeatables = false;
                 this.techEvents = null;
+                this.isLoadingTechEvents = false;
                 this.isLoadingLaunches = false;
+                this.launches = null;
             },
             handleChangeActive(tabName) {
                 this.activeTab = tabName;
@@ -54,7 +56,6 @@
         hoverCurrentSubplotOnly = event.ctrlKey;
     });
 
-
     const urlParams = new URLSearchParams(window.location.search);
     const initialCareerId = urlParams.get('careerId');
     if (initialCareerId) {
@@ -71,23 +72,22 @@
             contractEvents = null;
             document.getElementById('chart').classList.toggle('hide', true);
             vm.reset();
-        } else {
-            fetch(`/api/careerlogs/${careerId}`)
-                .then((res) => res.json())
-                .then((jsonLogs) => {
-                    vm.careerLogMeta = jsonLogs.careerLogMeta;
-                    vm.careerTitle = jsonLogs.name;
-                });
-
-
+        }
+        else {
             Promise.all([
                 fetch(`/api/careerlogs/${careerId}`)
                     .then((res) => res.json())
+                    .then((jsonLogs) => {
+                        vm.careerLogMeta = jsonLogs.careerLogMeta;
+                        vm.careerTitle = jsonLogs.name;
+                        return jsonLogs;
+                    })
                     .catch((error) => alert(error)),
                 fetch(`/api/careerlogs/${careerId}/contracts`)
                     .then((res) => res.json())
                     .then((jsonContracts) => {
                         contractEvents = jsonContracts;
+                        return jsonContracts;
                     })
                     .catch((error) => alert(error))
             ]).then((values) => drawChart(values[0]))
