@@ -1,5 +1,9 @@
 ﻿(() => {
-    const ContractEventTypes = Object.freeze({'Accept': 0, 'Complete': 1, 'Fail': 2, 'Cancel': 3});
+    const ContractEventTypes = Object.freeze({ 'Accept': 0, 'Complete': 1, 'Fail': 2, 'Cancel': 3 });
+    const MilestonesToShowOnChart = Object.freeze({
+        'first_OrbitScience': 'FSO', 'first_MoonImpact': 'Lunar Impactor', 'first_OrbitCrewed': 'Crewed Orbit',
+        'first_MoonLandingCrewed': 'Crewed Moon', 'MarsLandingCrew': 'Crewed Mars'
+    });
 
     const app = Vue.createApp({
         data() {
@@ -158,23 +162,24 @@
         return vabUpgrades;
     }
 
-    function getFirstSciSatMonth(careerLog) {
+    function getCompletionDatesAndIndexesForContracts(careerLog, contracts) {
+        let arr = [];
         for (let i = 0; i < careerLog.contractEventEntries.length - 1; i++) {
             let entry = careerLog.contractEventEntries[i];
-            if (entry.internalName === 'first_OrbitScience' && entry.type === ContractEventTypes.Complete) {
-                const dt = moment.utc(entry.date);
+            if (entry.type === ContractEventTypes.Complete &&
+                contracts.find(c => entry.internalName === c) &&
+                !arr.find(el => el.contract === entry.internalName)) {
 
+                const dt = moment.utc(entry.date);
                 const tmp = getLogPeriodForDate(careerLog.careerLogEntries, dt);
-                return {
+                arr.push({
+                    contract: entry.internalName,
                     month: dt.format('YYYY-MM'),
                     index: tmp.index
-                };
+                });
             }
         }
-        return {
-            month: null,
-            index: -1
-        };
+        return arr;
     }
 
     function getLogPeriodForDate(periods, dt) {
@@ -313,17 +318,21 @@
             },
         };
 
-        const firstSciSatMonth = getFirstSciSatMonth(careerLog);
-        if (firstSciSatMonth.month) {
-            layout.annotations = [{
-                x: firstSciSatMonth.month,
-                y: getValuesForField(careerPeriods, 'currentFunds')[firstSciSatMonth.index],
-                yref: 'y',
-                text: 'FSO',
-                arrowhead: 6,
-                ax: 0,
-                ay: -60,
-            }];
+        const annotations = [];
+        const contractNames = Object.keys(MilestonesToShowOnChart);
+        const completionArr = getCompletionDatesAndIndexesForContracts(careerLog, contractNames);
+        completionArr.forEach(el => annotations.push({
+            x: el.month,
+            y: getValuesForField(careerPeriods, 'currentFunds')[el.index],
+            yref: 'y',
+            text: MilestonesToShowOnChart[el.contract],
+            arrowhead: 6,
+            ax: 0,
+            ay: -35,
+        }));
+
+        if (annotations.length > 0) {
+            layout.annotations = annotations;
         }
 
         const config = {
