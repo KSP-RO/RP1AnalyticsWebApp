@@ -7,6 +7,7 @@
 
     let contractEvents = null;
     let hoverCurrentSubplotOnly = false;
+    let hoverListenerSetUp = false;
 
     const app = Vue.createApp({
         data() {
@@ -364,17 +365,21 @@
 
         const plotDiv = document.querySelector('#chart');
         Plotly.react(plotDiv, traces, layout, config);
-        // Display hover for all subplots.
-        plotDiv.on('plotly_hover', (eventData) => {
-            if (hoverCurrentSubplotOnly) return;
-            if (eventData.xvals) {
-                Plotly.Fx.hover(
-                    plotDiv,
-                    { xval: eventData.xvals[0] },
-                    ['xy', 'xy2', 'xy3']
-                );
-            }
-        });
+
+        if (!hoverListenerSetUp) {
+            // Display hover for all subplots.
+            plotDiv.on('plotly_hover', (eventData) => {
+                if (hoverCurrentSubplotOnly) return;
+                if (eventData.xvals) {
+                    Plotly.Fx.hover(
+                        plotDiv,
+                        { xval: eventData.xvals[0] },
+                        ['xy', 'xy2', 'xy3']
+                    );
+                }
+            });
+            hoverListenerSetUp = true;
+        }
     }
 
     function genContractTooltip(xaxis) {
