@@ -5,6 +5,9 @@
         'first_MoonLandingCrewed': 'Crewed Moon', 'MarsLandingCrew': 'Crewed Mars'
     });
 
+    let contractEvents = null;
+    let hoverCurrentSubplotOnly = false;
+
     const app = Vue.createApp({
         data() {
             return {
@@ -23,6 +26,8 @@
         },
         methods: {
             reset() {
+                this.careerLogMeta = null;
+                this.careerTitle = null;
                 this.milestones = null;
                 this.isLoadingMilestones = false;
                 this.repeatables = null;
@@ -46,16 +51,6 @@
     app.component('meta-information', MetaInformation);
     const vm = app.mount('#appWrapper');
 
-    let contractEvents = null;
-
-    let hoverCurrentSubplotOnly = false;
-    document.addEventListener('keydown', event => {
-        hoverCurrentSubplotOnly = event.ctrlKey;
-    });
-    document.addEventListener('keyup', event => {
-        hoverCurrentSubplotOnly = event.ctrlKey;
-    });
-
     const urlParams = new URLSearchParams(window.location.search);
     const initialCareerId = urlParams.get('careerId');
     if (initialCareerId) {
@@ -63,7 +58,35 @@
         getCareerLogs(initialCareerId);
     }
 
-    window.careerSelectionChanged = getCareerLogs;
+    bindEvents();
+
+    function bindEvents() {
+        document.addEventListener('keydown', event => {
+            hoverCurrentSubplotOnly = event.ctrlKey;
+        });
+        document.addEventListener('keyup', event => {
+            hoverCurrentSubplotOnly = event.ctrlKey;
+        });
+
+        window.onpopstate = event => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialCareerId = urlParams.get('careerId');
+            document.getElementById('Career').value = initialCareerId;
+            if (initialCareerId) {
+                getCareerLogs(initialCareerId);
+            }
+            else {
+                vm.reset();
+            }
+        }
+
+        window.careerSelectionChanged = (careerId) => {
+            const url = new URL(window.location);
+            url.searchParams.set('careerId', careerId);
+            window.history.pushState({}, '', url);
+            getCareerLogs(careerId);
+        }
+    }
 
     function getCareerLogs(careerId) {
         console.log(`Getting Logs for ${careerId}...`);
