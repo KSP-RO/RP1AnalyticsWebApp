@@ -185,7 +185,7 @@ namespace RP1AnalyticsWebApp.Services
         public List<CareerListItem> GetCareerList(string userName = null)
         {
             var res = GetCareerListWithTokens(userName);
-            res.ForEach(c => c.token = null);
+            res.ForEach(c => c.Token = null);
             return res;
         }
 

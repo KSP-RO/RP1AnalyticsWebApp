@@ -10,7 +10,7 @@
     <div class="field">
         <div class="control has-icons-left">
             <div class="select is-rounded">
-                <select asp-for="Career" asp-items="Model.Careers" onchange="careerSelectionChanged(this.value);" class="browser-default">
+                <select asp-for="Career" asp-items="Model.CareersGroupedByUser" onchange="careerSelectionChanged(this.value);" class="browser-default">
                     <option value="Select a career" disabled selected>Select a career</option>
                 </select>
             </div>
@@ -25,7 +25,6 @@
     <div class="pb-5">
         <meta-information :title="careerTitle" :meta="careerLogMeta"></meta-information>
     </div>
-
 
     <div id="selection-tab" class="selection-tab">
         <selection-tab :active="activeTab" v-on:change-active="handleChangeActive"></selection-tab>

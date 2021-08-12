@@ -75,12 +75,12 @@
                 {
                     <tr>
                         <td class="is-vcentered">
-                            <a href="/?careerId=@c.Id">@c.name</a>
+                            <a href="/?careerId=@c.Id">@c.Name</a>
                         </td>
-                        <td class="is-vcentered">@c.token</td>
+                        <td class="is-vcentered">@c.Token</td>
                         <td class="is-vcentered">
                             <div class="buttons are-small">
-                                <a class="button is-info is-small" asp-route-token="@c.token" asp-page="EditCareer">
+                                <a class="button is-info is-small" asp-route-token="@c.Token" asp-page="EditCareer">
                                     <span class="icon is-small">
                                         <i class="fa fa-edit"></i>
                                     </span>
@@ -96,7 +96,7 @@
                                     <button onclick="return confirm('Do you really want to delete this career log?')"
                                             type="submit"
                                             class="button is-danger is-small"
-                                            asp-route-token="@c.token"
+                                            asp-route-token="@c.Token"
                                             asp-page-handler="delete">
                                         <span class="icon is-small">
                                             <i class="fa fa-trash"></i>
