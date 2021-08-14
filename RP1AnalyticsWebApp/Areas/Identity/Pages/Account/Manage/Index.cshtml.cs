@@ -42,6 +42,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
         public class CareerInputModel
         {
             [Required]
+            [MaxLength(60)]
             [Display(Name = "Career name")]
             public string CareerName { get; set; }
 

@@ -269,10 +269,11 @@ namespace RP1AnalyticsWebApp.Services
             _careerLogs.DeleteOne(entry => entry.Token == token);
         }
 
-        public CareerLog UpdateMetaByToken(string token, CareerLogMeta meta)
+        public CareerLog UpdateMetaByToken(string token, string careerName, CareerLogMeta meta)
         {
-            var updateDefinition = Builders<CareerLog>.Update.Set(nameof(CareerLog.CareerLogMeta), meta);
-            var opts = new FindOneAndUpdateOptions<CareerLog> {ReturnDocument = ReturnDocument.After};
+            var updateDefinition = Builders<CareerLog>.Update.Set(nameof(CareerLog.CareerLogMeta), meta)
+                                                             .Set(nameof(CareerLog.Name), careerName);
+            var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
             return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Token == token, updateDefinition, opts);
         }

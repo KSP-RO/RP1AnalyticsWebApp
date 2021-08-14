@@ -55,6 +55,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
         public RedirectToPageResult OnPost()
         {
             _careerLogService.UpdateMetaByToken(RouteData.Values["token"].ToString(),
+                Input.CareerName,
                 CreateCareerLogMeta());
 
             return new RedirectToPageResult("Index");
