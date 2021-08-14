@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.ApplicationInsights;
-using MongoDB.Bson;
+﻿using Microsoft.AspNetCore.Identity;
 using MongoDB.Driver;
 using RP1AnalyticsWebApp.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RP1AnalyticsWebApp.Services
 {
@@ -13,12 +12,17 @@ namespace RP1AnalyticsWebApp.Services
         private readonly IMongoCollection<CareerLog> _careerLogs;
         private readonly IContractSettings _contractSettings;
         private readonly ITechTreeSettings _techTreeSettings;
+        private readonly UserManager<WebAppUser> _userManager;
+
+        private List<WebAppUser> _allUsers;
+        private List<WebAppUser> AllUsers => _allUsers ??= _userManager.Users.ToList();
 
         public CareerLogService(ICareerLogDatabaseSettings dbSettings, IContractSettings contractSettings,
-            ITechTreeSettings techTreeSettings)
+            ITechTreeSettings techTreeSettings, UserManager<WebAppUser> userManager)
         {
             _contractSettings = contractSettings;
             _techTreeSettings = techTreeSettings;
+            _userManager = userManager;
 
             var client = new MongoClient(dbSettings.ConnectionString);
             var database = client.GetDatabase(dbSettings.DatabaseName);
@@ -111,6 +115,7 @@ namespace RP1AnalyticsWebApp.Services
                 {
                     CareerId = c.Id,
                     CareerName = c.Name,
+                    UserLogin = c.UserLogin,
                     ContractInternalName = e.InternalName,
                     EventType = e.Type,
                     EventDate = e.Date
@@ -122,6 +127,7 @@ namespace RP1AnalyticsWebApp.Services
                 {
                     ContractInternalName = g.Key,
                     CareerId = g.First().CareerId,
+                    UserLogin = g.First().UserLogin,
                     CareerName = g.First().CareerName,
                     Date = g.Min(e => e.EventDate)
                 })
@@ -131,6 +137,7 @@ namespace RP1AnalyticsWebApp.Services
             result.ForEach(r =>
             {
                 r.ContractDisplayName = ResolveContractName(r.ContractInternalName);
+                r.UserPreferredName = GetUserPreferredName(r.UserLogin);
                 r.Type = ContractEventType.Complete;
             });
 
@@ -144,6 +151,8 @@ namespace RP1AnalyticsWebApp.Services
             {
                 CareerId = c.Id,
                 CareerName = c.Name,
+                UserLogin = c.UserLogin,
+                UserPreferredName = GetUserPreferredName(c.UserLogin),
                 ContractInternalName = contract,
                 ContractDisplayName = ResolveContractName(contract),
                 Type = evtType,
@@ -249,16 +258,6 @@ namespace RP1AnalyticsWebApp.Services
             return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Token == token, updateDef, opts);
         }
 
-        private string ResolveContractName(string name)
-        {
-            return _contractSettings.ContractNameDict.TryGetValue(name, out string disp) ? disp : name;
-        }
-
-        private string ResolveTechNodeName(string id)
-        {
-            return _techTreeSettings.NodeTitleDict.TryGetValue(id, out string disp) ? disp : id;
-        }
-
         public CareerLog GetByToken(string token)
         {
             return _careerLogs.Find(entry => entry.Token == token).FirstOrDefault();
@@ -276,6 +275,21 @@ namespace RP1AnalyticsWebApp.Services
             var opts = new FindOneAndUpdateOptions<CareerLog> {ReturnDocument = ReturnDocument.After};
 
             return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Token == token, updateDefinition, opts);
+        }
+
+        private string ResolveContractName(string name)
+        {
+            return _contractSettings.ContractNameDict.TryGetValue(name, out string disp) ? disp : name;
+        }
+
+        private string ResolveTechNodeName(string id)
+        {
+            return _techTreeSettings.NodeTitleDict.TryGetValue(id, out string disp) ? disp : id;
+        }
+
+        private string GetUserPreferredName(string username)
+        {
+            return AllUsers.FirstOrDefault(u => u.UserName == username)?.PreferredName ?? username;
         }
     }
 }

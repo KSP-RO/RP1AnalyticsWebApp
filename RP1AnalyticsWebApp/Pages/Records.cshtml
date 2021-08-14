@@ -12,7 +12,8 @@
         <tr>
             <th>Contract Name</th>
             <th>Completion Date</th>
-            <th>Career Log</th>
+            <th>User</th>
+            <th>Career</th>
         </tr>
         </thead>
         <tbody>
@@ -23,6 +24,7 @@
                     <a href="#modal1" class="modal-trigger" onclick="getContracts('@r.ContractInternalName');">@r.ContractDisplayName</a>
                 </td>
                 <td>@($"{r.Date:yyyy-MM-dd}")</td>
+                <td>@($"{r.UserPreferredName}")</td>
                 <td>
                     <a href="/?careerId=@r.CareerId">@r.CareerName</a>
                 </td>

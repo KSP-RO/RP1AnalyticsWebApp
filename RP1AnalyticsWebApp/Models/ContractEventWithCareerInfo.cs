@@ -9,5 +9,7 @@ namespace RP1AnalyticsWebApp.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string CareerId { get; set; }
         public string CareerName { get; set; }
+        public string UserLogin { get; set; }
+        public string UserPreferredName { get; set; }
     }
 }

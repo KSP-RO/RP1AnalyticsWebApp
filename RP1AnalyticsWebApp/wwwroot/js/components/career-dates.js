@@ -16,12 +16,14 @@
             <table class="table is-bordered is-fullwidth is-hoverable">
             <thead>
                 <tr>
-                    <th>Name</th> 
-                    <th>Completion Date</th> 
+                    <th>User</th>
+                    <th>Career</th>
+                    <th>Completion Date</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="item in items">
+                    <td>{{ item.userPreferredName }}</td>
                     <td>{{ item.careerName }}</td>
                     <td>{{ formatDate(item.date) }}</td>
                 </tr> 

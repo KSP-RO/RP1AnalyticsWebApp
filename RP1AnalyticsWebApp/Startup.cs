@@ -50,7 +50,7 @@ namespace RP1AnalyticsWebApp
             ConventionRegistry.Register("CustomConventions", pack,
                t => t.FullName.StartsWith("RP1AnalyticsWebApp.Models."));
 
-            services.AddSingleton<CareerLogService>();
+            services.AddTransient<CareerLogService>();
 
             services.AddIdentityMongoDbProvider<WebAppUser, MongoRole>(identityOptions =>
             {
