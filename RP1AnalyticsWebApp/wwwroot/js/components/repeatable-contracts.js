@@ -2,7 +2,10 @@
     props: ['contracts', 'isLoading', 'activeTab'],
     computed: {
         isVisible() {
-            return this.activeTab === 'repeatables';
+            return this.activeTab === 'repeatables' && !this.isLoading;
+        },
+        isSpinnerShown() {
+            return this.isLoading && this.activeTab === 'repeatables';
         }
     },
     methods: {
@@ -29,7 +32,7 @@
             </tbody>
             </table>
         </div>
-        <div v-if="isLoading" class="columns mt-4 is-centered is-vcentered">
+        <div v-if="isSpinnerShown" class="columns mt-4 is-centered is-vcentered">
             <loading-spinner></loading-spinner>
         </div>`
 };

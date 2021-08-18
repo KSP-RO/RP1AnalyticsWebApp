@@ -14,6 +14,7 @@
             return {
                 careerTitle: null,
                 careerLogMeta: null,
+                isLoadingCareerMeta: false,
                 milestones: null,
                 isLoadingMilestones: false,
                 repeatables: null,
@@ -28,6 +29,7 @@
         methods: {
             reset() {
                 this.careerLogMeta = null;
+                this.isLoadingCareerMeta = false;
                 this.careerTitle = null;
                 this.milestones = null;
                 this.isLoadingMilestones = false;
@@ -98,10 +100,12 @@
             vm.reset();
         }
         else {
+            vm.isLoadingCareerMeta = true;
             Promise.all([
                 fetch(`/api/careerlogs/${careerId}`)
                     .then((res) => res.json())
                     .then((jsonLogs) => {
+                        vm.isLoadingCareerMeta = false;
                         vm.careerLogMeta = jsonLogs.careerLogMeta;
                         vm.careerTitle = jsonLogs.name;
                         return jsonLogs;

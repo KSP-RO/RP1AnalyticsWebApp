@@ -7,13 +7,16 @@
     },
     computed: {
         isVisible() {
-            return this.activeTab === 'launches';
+            return this.activeTab === 'launches' && !this.isLoading;
+        },
+        isSpinnerShown() {
+            return this.isLoading && this.activeTab === 'launches';
         }
     },
     template: `
         <div v-show="isVisible">
             <h2 class="subtitle">Launches</h2>
-            
+
             <table class="table is-bordered is-fullwidth is-hoverable">
             <thead>
                 <tr>
@@ -29,7 +32,7 @@
             </tbody>
             </table>
         </div>
-        <div v-if="isLoading" class="columns mt-4 is-centered is-vcentered">
+        <div v-if="isSpinnerShown" class="columns mt-4 is-centered is-vcentered">
             <loading-spinner></loading-spinner>
         </div>`
 };

@@ -7,7 +7,10 @@
     },
     computed: {
         isVisible() {
-            return this.activeTab === 'tech';
+            return this.activeTab === 'tech' && !this.isLoading;
+        },
+        isSpinnerShown() {
+            return this.isLoading && this.activeTab === 'tech';
         }
     },
     template: `
@@ -29,7 +32,7 @@
             </tbody>
             </table>
         </div>
-        <div v-if="isLoading" class="columns mt-4 is-centered is-vcentered">
+        <div v-if="isSpinnerShown" class="columns mt-4 is-centered is-vcentered">
             <loading-spinner></loading-spinner>
         </div>`
 };
