@@ -94,9 +94,10 @@
     function getCareerLogs(careerId) {
         console.log(`Getting Logs for ${careerId}...`);
 
+        document.getElementById('chart').classList.toggle('is-invisible', true);
+
         if (!careerId) {
             contractEvents = null;
-            document.getElementById('chart').classList.toggle('hide', true);
             vm.reset();
         }
         else {
@@ -119,7 +120,7 @@
                     })
                     .catch((error) => alert(error))
             ]).then((values) => drawChart(values[0]))
-              .then(() => document.getElementById('chart').classList.toggle('hide', false))
+              .then(() => document.getElementById('chart').classList.toggle('is-invisible', false))
 
             vm.isLoadingMilestones = true;
             fetch(`/api/careerlogs/${careerId}/completedmilestones`)
