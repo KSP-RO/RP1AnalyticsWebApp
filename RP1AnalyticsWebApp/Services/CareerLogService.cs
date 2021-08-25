@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using RP1AnalyticsWebApp.Models;
 using System;
 using System.Collections.Generic;
@@ -200,11 +201,19 @@ namespace RP1AnalyticsWebApp.Services
 
         public List<CareerListItem> GetCareerListWithTokens(string userName = null)
         {
-            var filter = !string.IsNullOrWhiteSpace(userName)
-                ? Builders<CareerLog>.Filter.Where(c => c.UserLogin == userName)
-                : FilterDefinition<CareerLog>.Empty;
-            var p = Builders<CareerLog>.Projection.Expression(c => new CareerListItem(c));
-            return _careerLogs.Find(filter).Project(p).ToList();
+            var q = _careerLogs.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(userName))
+            {
+                q = q.Where(c => c.UserLogin == userName);
+            }
+
+            return q.Select(c => new CareerListItem
+            {
+                Id = c.Id,
+                Name = c.Name,
+                User = c.UserLogin,
+                Token = c.Token
+            }).ToList();
         }
 
         public CareerLog Create(CareerLog log)

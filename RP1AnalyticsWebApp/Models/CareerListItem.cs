@@ -10,6 +10,10 @@
 
         public string Token { get; set; }
 
+        public CareerListItem()
+        {
+        }
+
         public CareerListItem(CareerLog c)
         {
             Id = c.Id;
