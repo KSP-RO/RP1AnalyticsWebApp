@@ -404,8 +404,13 @@
     };
 
     function genTooltipContractRow(title, contracts) {
-        const res = contracts.reduce(
-            (acc, c) => acc + '<br>    ' + c.contractDisplayName,
+        const groupedMap = contracts.reduce(
+            (entryMap, e) => entryMap.set(e.contractInternalName, [...entryMap.get(e.contractInternalName) || [], e]),
+            new Map()
+        );
+
+        const res = Array.from(groupedMap.values()).reduce(
+            (acc, entry) => acc + '<br>    ' + (entry.length > 1 ? entry.length + "x " : '') + entry[0].contractDisplayName,
             ''
         );
         return res ? `<br><i>${title} :</i>${res}` : '';
