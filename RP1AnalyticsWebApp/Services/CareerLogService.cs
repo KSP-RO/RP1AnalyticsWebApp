@@ -42,7 +42,14 @@ namespace RP1AnalyticsWebApp.Services
 
         public List<BaseContractEvent> GetContractsForCareer(string id)
         {
-            var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
+            var c = _careerLogs.AsQueryable()
+                .Where(c => c.Id == id)
+                .Select(c => new
+                {
+                    c.ContractEventEntries
+                })
+                .FirstOrDefault();
+
             if (c == null) return null;
             if (c.ContractEventEntries == null) return new List<BaseContractEvent>(0);
 
@@ -57,7 +64,13 @@ namespace RP1AnalyticsWebApp.Services
 
         public List<BaseContractEvent> GetCompletedMilestonesForCareer(string id)
         {
-            var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
+            var c = _careerLogs.AsQueryable()
+                .Where(c => c.Id == id)
+                .Select(c => new
+                {
+                    c.ContractEventEntries
+                })
+                .FirstOrDefault();
             if (c == null) return null;
             if (c.ContractEventEntries == null) return new List<BaseContractEvent>(0);
 
@@ -148,30 +161,43 @@ namespace RP1AnalyticsWebApp.Services
         public List<ContractEventWithCareerInfo> GetEventsForContract(string contract,
             ContractEventType evtType = ContractEventType.Complete)
         {
-            var projection = Builders<CareerLog>.Projection.Expression(c => new ContractEventWithCareerInfo
+            string contractDispName = ResolveContractName(contract);
+
+            var events = _careerLogs.AsQueryable()
+                .Where(entry => entry.ContractEventEntries.Any(ce => ce.InternalName == contract && ce.Type == evtType))
+                .Select(c => new ContractEventWithCareerInfo
+                {
+                    CareerId = c.Id,
+                    CareerName = c.Name,
+                    UserLogin = c.UserLogin,
+                    Date = c.ContractEventEntries.Where(ce => ce.InternalName == contract && ce.Type == evtType)
+                                                 .Min(ce => ce.Date)
+                })
+                .ToList();
+
+            events.ForEach(entry =>
             {
-                CareerId = c.Id,
-                CareerName = c.Name,
-                UserLogin = c.UserLogin,
-                UserPreferredName = GetUserPreferredName(c.UserLogin),
-                ContractInternalName = contract,
-                ContractDisplayName = ResolveContractName(contract),
-                Type = evtType,
-                Date = c.ContractEventEntries.First(ce => ce.InternalName == contract && ce.Type == evtType).Date
+                entry.Type = evtType;
+                entry.ContractInternalName = contract;
+                entry.UserPreferredName = GetUserPreferredName(entry.UserLogin);
+                entry.ContractDisplayName = contractDispName;
             });
 
-            var events = _careerLogs.Find(entry =>
-                    entry.ContractEventEntries.Any(ce => ce.InternalName == contract && ce.Type == evtType))
-                .Project(projection)
-                .ToList();
-            // Cannot use server-side sort here. https://stackoverflow.com/q/56988743
             events.Sort((a, b) => a.Date.Value.CompareTo(b.Date.Value));
+
             return events;
         }
 
         public List<TechEvent> GetTechUnlocksForCareer(string id)
         {
-            var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
+            var c = _careerLogs.AsQueryable()
+                .Where(c => c.Id == id)
+                .Select(c => new
+                {
+                    c.TechEventEntries
+                })
+                .FirstOrDefault();
+
             if (c == null) return null;
             if (c.TechEventEntries == null) return new List<TechEvent>(0);
 
@@ -185,7 +211,14 @@ namespace RP1AnalyticsWebApp.Services
 
         public List<LaunchEvent> GetLaunchesForCareer(string id)
         {
-            var c = _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
+            var c = _careerLogs.AsQueryable()
+                .Where(c => c.Id == id)
+                .Select(c => new
+                {
+                    c.LaunchEventEntries
+                })
+                .FirstOrDefault();
+
             if (c == null) return null;
             if (c.LaunchEventEntries == null) return new List<LaunchEvent>(0);
 
@@ -274,7 +307,6 @@ namespace RP1AnalyticsWebApp.Services
 
         public void DeleteByToken(string token)
         {
-            Console.WriteLine("delete called: " + token);
             _careerLogs.DeleteOne(entry => entry.Token == token);
         }
 
