@@ -1,16 +1,19 @@
 ﻿const Launches = {
-    props: ['launches', 'isLoading', 'activeTab'],
+    mixins: [DataTabMixin],
     methods: {
-        formatDate(date) {
-            return date ? moment.utc(date).format('YYYY-MM-DD') : '';
+        queryData(careerId) {
+            fetch(`/api/careerlogs/${careerId}/launches`)
+                .then(res => res.json())
+                .then(jsonItems => {
+                    this.isLoading = false;
+                    this.items = jsonItems;
+                })
+                .catch(error => alert(error));
         }
     },
     computed: {
-        isVisible() {
-            return this.activeTab === 'launches' && !this.isLoading;
-        },
-        isSpinnerShown() {
-            return this.isLoading && this.activeTab === 'launches';
+        tabName() {
+            return 'launches';
         }
     },
     template: `
@@ -25,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in launches">
+                <tr v-for="item in items">
                     <td>{{ item.vesselName }}</td>
                     <td>{{ formatDate(item.date) }}</td>
                 </tr>

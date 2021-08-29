@@ -1,16 +1,19 @@
 ﻿const MilestoneContracts = {
-    props: ['contracts', 'isLoading', 'activeTab'],
+    mixins: [DataTabMixin],
     methods: {
-        formatDate(date) {
-            return date ? moment.utc(date).format('YYYY-MM-DD') : '';
+        queryData(careerId) {
+            fetch(`/api/careerlogs/${careerId}/completedmilestones`)
+                .then(res => res.json())
+                .then(jsonContracts => {
+                    this.isLoading = false;
+                    this.items = jsonContracts;
+                })
+                .catch(error => alert(error));
         }
     },
     computed: {
-        isVisible() {
-            return this.activeTab === 'milestones' && !this.isLoading && this.contracts;
-        },
-        isSpinnerShown() {
-            return this.isLoading && this.activeTab === 'milestones';
+        tabName() {
+            return 'milestones';
         }
     },
     template: `
@@ -20,15 +23,15 @@
             <table class="table is-bordered is-fullwidth is-hoverable">
             <thead>
                 <tr>
-                    <th>Name</th> 
-                    <th>Completion Date</th> 
+                    <th>Name</th>
+                    <th>Completion Date</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in contracts">
+                <tr v-for="item in items">
                     <td>{{ item.contractDisplayName }}</td>
                     <td>{{ formatDate(item.date) }}</td>
-                </tr> 
+                </tr>
             </tbody>
             </table>
         </div>

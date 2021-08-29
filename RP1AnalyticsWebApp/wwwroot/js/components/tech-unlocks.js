@@ -1,16 +1,19 @@
 ﻿const TechUnlocks = {
-    props: ['events', 'isLoading', 'activeTab'],
+    mixins: [DataTabMixin],
     methods: {
-        formatDate(date) {
-            return date ? moment.utc(date).format('YYYY-MM-DD') : '';
+        queryData(careerId) {
+            fetch(`/api/careerlogs/${careerId}/tech`)
+                .then(res => res.json())
+                .then(jsonItems => {
+                    this.isLoading = false;
+                    this.items = jsonItems;
+                })
+                .catch(error => alert(error));
         }
     },
     computed: {
-        isVisible() {
-            return this.activeTab === 'tech' && !this.isLoading;
-        },
-        isSpinnerShown() {
-            return this.isLoading && this.activeTab === 'tech';
+        tabName() {
+            return 'tech';
         }
     },
     template: `
@@ -20,12 +23,12 @@
             <table class="table is-bordered is-fullwidth is-hoverable">
             <thead>
                 <tr>
-                    <th>Name</th> 
-                    <th>Completion Date</th> 
+                    <th>Name</th>
+                    <th>Completion Date</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in events">
+                <tr v-for="item in items">
                     <td>{{ item.nodeDisplayName }}</td>
                     <td>{{ formatDate(item.date) }}</td>
                 </tr> 

@@ -1,16 +1,19 @@
 ﻿const RepeatableContracts = {
-    props: ['contracts', 'isLoading', 'activeTab'],
-    computed: {
-        isVisible() {
-            return this.activeTab === 'repeatables' && !this.isLoading;
-        },
-        isSpinnerShown() {
-            return this.isLoading && this.activeTab === 'repeatables';
+    mixins: [DataTabMixin],
+    methods: {
+        queryData(careerId) {
+            fetch(`/api/careerlogs/${careerId}/completedRepeatables`)
+                .then(res => res.json())
+                .then(jsonContracts => {
+                    this.isLoading = false;
+                    this.items = jsonContracts;
+                })
+                .catch(error => alert(error));
         }
     },
-    methods: {
-        formatDate(date) {
-            return date ? moment.utc(date).format('YYYY-MM-DD') : '';
+    computed: {
+        tabName() {
+            return 'repeatables';
         }
     },
     template: `
@@ -25,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in contracts">
+                <tr v-for="item in items">
                     <td>{{ item.contractDisplayName }}</td>
                     <td>{{ item.count }}</td>
                 </tr> 

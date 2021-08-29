@@ -12,33 +12,19 @@
     const app = Vue.createApp({
         data() {
             return {
+                careerId: null,
                 careerTitle: null,
                 careerLogMeta: null,
                 isLoadingCareerMeta: false,
-                milestones: null,
-                isLoadingMilestones: false,
-                repeatables: null,
-                isLoadingRepeatables: false,
-                techEvents: null,
-                isLoadingTechEvents: false,
-                launches: null,
-                isLoadingLaunches: false,
                 activeTab: 'milestones'
             };
         },
         methods: {
             reset() {
+                this.careerId = null;
                 this.careerLogMeta = null;
                 this.isLoadingCareerMeta = false;
                 this.careerTitle = null;
-                this.milestones = null;
-                this.isLoadingMilestones = false;
-                this.repeatables = null;
-                this.isLoadingRepeatables = false;
-                this.techEvents = null;
-                this.isLoadingTechEvents = false;
-                this.isLoadingLaunches = false;
-                this.launches = null;
             },
             handleChangeActive(tabName) {
                 this.activeTab = tabName;
@@ -101,7 +87,9 @@
             vm.reset();
         }
         else {
+            vm.careerId = careerId;
             vm.isLoadingCareerMeta = true;
+
             Promise.all([
                 fetch(`/api/careerlogs/${careerId}`)
                     .then((res) => res.json())
@@ -121,42 +109,6 @@
                     .catch((error) => alert(error))
             ]).then((values) => drawChart(values[0]))
               .then(() => document.getElementById('chart').classList.toggle('is-invisible', false))
-
-            vm.isLoadingMilestones = true;
-            fetch(`/api/careerlogs/${careerId}/completedmilestones`)
-                .then((res) => res.json())
-                .then((jsonContracts) => {
-                    vm.isLoadingMilestones = false;
-                    vm.milestones = jsonContracts;
-                })
-                .catch((error) => alert(error));
-
-            vm.isLoadingRepeatables = true;
-            fetch(`/api/careerlogs/${careerId}/completedRepeatables`)
-                .then((res) => res.json())
-                .then((jsonContracts) => {
-                    vm.isLoadingRepeatables = false;
-                    vm.repeatables = jsonContracts;
-                })
-                .catch((error) => alert(error));
-
-            vm.isLoadingTechEvents = true;
-            fetch(`/api/careerlogs/${careerId}/tech`)
-                .then((res) => res.json())
-                .then((jsonItems) => {
-                    vm.isLoadingTechEvents = false;
-                    vm.techEvents = jsonItems;
-                })
-                .catch((error) => alert(error));
-
-            vm.isLoadingLaunches = true;
-            fetch(`/api/careerlogs/${careerId}/launches`)
-                .then((res) => res.json())
-                .then((jsonItems) => {
-                    vm.isLoadingLaunches = false;
-                    vm.launches = jsonItems;
-                })
-                .catch((error) => alert(error));
         }
     }
 
