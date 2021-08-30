@@ -225,6 +225,22 @@ namespace RP1AnalyticsWebApp.Services
             return c.LaunchEventEntries.OrderBy(e => e.Date).ToList();
         }
 
+        public List<FacilityConstructionEvent> GetFacilityConstructionsForCareer(string id)
+        {
+            var c = _careerLogs.AsQueryable()
+                .Where(c => c.Id == id)
+                .Select(c => new
+                {
+                    c.FacilityEventEntries
+                })
+                .FirstOrDefault();
+
+            if (c == null) return null;
+            if (c.FacilityEventEntries == null) return new List<FacilityConstructionEvent>(0);
+
+            return c.FacilityEventEntries.OrderBy(e => e.Date).ToList();
+        }
+
         public List<CareerListItem> GetCareerList(string userName = null)
         {
             var res = GetCareerListWithTokens(userName);

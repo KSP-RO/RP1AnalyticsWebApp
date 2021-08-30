@@ -36,6 +36,7 @@
     app.component('repeatable-contracts', RepeatableContracts);
     app.component('tech-unlocks', TechUnlocks);
     app.component('launches', Launches);
+    app.component('facilities', Facilities);
     app.component('loading-spinner', LoadingSpinner);
     app.component('meta-information', MetaInformation);
     const vm = app.mount('#appWrapper');

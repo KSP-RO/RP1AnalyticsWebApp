@@ -27,6 +27,12 @@
                     <span>Launches</span>
                 </a>
             </li>
+            <li v-bind:class="{ 'is-active': active === 'facilities' }">
+                <a @click="$emit('change-active', 'facilities')">
+                    <span class="icon is-small"><i class="fas fa-industry" aria-hidden="true"></i></span>
+                    <span>Facilities</span>
+                </a>
+            </li>
         </ul>
     </div>`
     

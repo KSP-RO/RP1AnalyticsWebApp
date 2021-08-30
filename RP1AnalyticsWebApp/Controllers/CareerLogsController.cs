@@ -160,6 +160,18 @@ namespace RP1AnalyticsWebApp.Controllers
             return events;
         }
 
+        [HttpGet("{id:length(24)}/Facilities", Name = "GetFacilityConstructionsForCareer")]
+        public ActionResult<List<FacilityConstructionEvent>> GetFacilityConstructionsForCareer(string id)
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetFacilityConstructionsForCareer", new Dictionary<string, string>
+            {
+                { nameof(id), id }
+            });
+
+            List<FacilityConstructionEvent> events = _careerLogService.GetFacilityConstructionsForCareer(id);
+            return events;
+        }
+
         [HttpPost(Name = "CreateCareer")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

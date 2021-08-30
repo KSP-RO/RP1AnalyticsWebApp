@@ -6,6 +6,10 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.contracts-app h2 {
+    margin-top: 0.75rem;
+}
+
 .contracts-app .collection .collection-item {
     padding: 6px 12px;
 }
