@@ -28,6 +28,9 @@
             },
             handleChangeActive(tabName) {
                 this.activeTab = tabName;
+                const url = new URL(window.location);
+                url.searchParams.set('tab', tabName);
+                window.history.replaceState({}, '', url);
             }
         }
     });
@@ -46,6 +49,11 @@
     if (initialCareerId) {
         document.getElementById('Career').value = initialCareerId;
         getCareerLogs(initialCareerId);
+    }
+
+    const tabId = urlParams.get('tab');
+    if (tabId) {
+        vm.activeTab = tabId;
     }
 
     bindEvents();
@@ -67,6 +75,11 @@
             }
             else {
                 vm.reset();
+            }
+
+            const tabId = urlParams.get('tab');
+            if (tabId) {
+                vm.activeTab = tabId;
             }
         }
 
