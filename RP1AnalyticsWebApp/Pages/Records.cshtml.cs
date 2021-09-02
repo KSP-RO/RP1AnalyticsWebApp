@@ -9,7 +9,7 @@ namespace RP1AnalyticsWebApp
     {
         private readonly CareerLogService _careerLogService;
 
-        public List<ContractEventWithCareerInfo> Records => _careerLogService.GetRecords();
+        public List<ContractRecord> Records => _careerLogService.GetRecords();
 
         public RecordsModel(CareerLogService careerLogService)
         {

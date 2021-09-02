@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.OData.Query;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using RP1AnalyticsWebApp.Models;
@@ -30,14 +31,50 @@ namespace RP1AnalyticsWebApp.Services
             _careerLogs = database.GetCollection<CareerLog>(dbSettings.CareerLogsCollectionName);
         }
 
-        public List<CareerLog> Get()
+        public List<CareerLog> Get(ODataQueryOptions<CareerLog> queryOptions = null)
         {
-            return _careerLogs.Find(FilterDefinition<CareerLog>.Empty).ToList();
+            var q = _careerLogs.AsQueryable();
+            if (queryOptions != null)
+            {
+                q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q,
+                    new ODataQuerySettings
+                    {
+                        HandleNullPropagation = HandleNullPropagationOption.False
+                    },
+                    AllowedQueryOptions.Supported ^ AllowedQueryOptions.Filter);
+            }
+            return q.ToList();
         }
 
         public CareerLog Get(string id)
         {
             return _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
+        }
+
+        public List<CareerLogPeriod> GetCareerPeriods(string id, ODataQueryOptions<CareerLogPeriod> queryOptions = null)
+        {
+            var q = _careerLogs.AsQueryable()
+                               .Where(c => c.Id == id)
+                               .SelectMany(c => c.CareerLogEntries);
+            if (queryOptions != null)
+            {
+                q = (IMongoQueryable<CareerLogPeriod>)queryOptions.ApplyTo(q,
+                    new ODataQuerySettings
+                    {
+                        HandleNullPropagation = HandleNullPropagationOption.False
+                    },
+                    AllowedQueryOptions.Supported ^ AllowedQueryOptions.Filter);
+            }
+            return q.ToList();
+        }
+
+        public CareerLogPeriod GetCareerPeriod(string careerId, DateTime startDate)
+        {
+            var q = _careerLogs.AsQueryable()
+                               .Where(c => c.Id == careerId)
+                               .SelectMany(c => c.CareerLogEntries)
+                               .Where(p => p.StartDate == startDate);
+            return q.FirstOrDefault();
         }
 
         public List<BaseContractEvent> GetContractsForCareer(string id)
@@ -121,9 +158,18 @@ namespace RP1AnalyticsWebApp.Services
             return repeatables;
         }
 
-        public List<ContractEventWithCareerInfo> GetRecords()
+        public List<ContractRecord> GetRecords(ODataQueryOptions<CareerLog> queryOptions = null)
         {
-            var result = _careerLogs.AsQueryable()
+            var q = _careerLogs.AsQueryable();
+            if (queryOptions != null)
+            {
+                q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
+                {
+                    HandleNullPropagation = HandleNullPropagationOption.False
+                });
+            }
+
+            var result = q
                 .Where(c => c.EligibleForRecords)
                 .SelectMany(c => c.ContractEventEntries, (c, e) => new
                 {
@@ -137,7 +183,7 @@ namespace RP1AnalyticsWebApp.Services
                 .Where(c => c.EventType == ContractEventType.Complete)
                 .OrderBy(c => c.EventDate)
                 .GroupBy(c => c.ContractInternalName)
-                .Select(g => new ContractEventWithCareerInfo
+                .Select(g => new ContractRecord
                 {
                     ContractInternalName = g.Key,
                     CareerId = g.First().CareerId,
@@ -152,28 +198,66 @@ namespace RP1AnalyticsWebApp.Services
             {
                 r.ContractDisplayName = ResolveContractName(r.ContractInternalName);
                 r.UserPreferredName = GetUserPreferredName(r.UserLogin);
-                r.Type = ContractEventType.Complete;
             });
 
             return result;
         }
 
+        public List<ContractEventWithCareerInfo> GetAllContractEvents(ODataQueryOptions<CareerLog> queryOptions = null)
+        {
+            var q = _careerLogs.AsQueryable();
+            if (queryOptions != null)
+            {
+                q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
+                {
+                    HandleNullPropagation = HandleNullPropagationOption.False
+                });
+            }
+
+            var events = q.SelectMany(c => c.ContractEventEntries, (c, e) => new ContractEventWithCareerInfo
+            {
+                CareerId = c.Id,
+                CareerName = c.Name,
+                UserLogin = c.UserLogin,
+                ContractInternalName = e.InternalName,
+                Date = e.Date,
+                Type = e.Type
+            })
+            .ToList();
+
+            events.ForEach(entry =>
+            {
+                entry.UserPreferredName = GetUserPreferredName(entry.UserLogin);
+                entry.ContractDisplayName = ResolveContractName(entry.ContractInternalName);
+            });
+
+            return events;
+        }
+
         public List<ContractEventWithCareerInfo> GetEventsForContract(string contract,
-            ContractEventType evtType = ContractEventType.Complete)
+            ContractEventType evtType = ContractEventType.Complete, ODataQueryOptions<CareerLog> queryOptions = null)
         {
             string contractDispName = ResolveContractName(contract);
 
-            var events = _careerLogs.AsQueryable()
-                .Where(entry => entry.ContractEventEntries.Any(ce => ce.InternalName == contract && ce.Type == evtType))
-                .Select(c => new ContractEventWithCareerInfo
+            var q = _careerLogs.AsQueryable();
+            if (queryOptions != null)
+            {
+                q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
                 {
-                    CareerId = c.Id,
-                    CareerName = c.Name,
-                    UserLogin = c.UserLogin,
-                    Date = c.ContractEventEntries.Where(ce => ce.InternalName == contract && ce.Type == evtType)
-                                                 .Min(ce => ce.Date)
-                })
-                .ToList();
+                    HandleNullPropagation = HandleNullPropagationOption.False
+                });
+            }
+
+            var events = q.Where(entry => entry.ContractEventEntries.Any(ce => ce.InternalName == contract && ce.Type == evtType))
+                          .Select(c => new ContractEventWithCareerInfo
+                          {
+                              CareerId = c.Id,
+                              CareerName = c.Name,
+                              UserLogin = c.UserLogin,
+                              Date = c.ContractEventEntries.Where(ce => ce.InternalName == contract && ce.Type == evtType)
+                                                           .Min(ce => ce.Date)
+                          })
+                          .ToList();
 
             events.ForEach(entry =>
             {
@@ -256,13 +340,51 @@ namespace RP1AnalyticsWebApp.Services
                 q = q.Where(c => c.UserLogin == userName);
             }
 
-            return q.Select(c => new CareerListItem
+            var items = q.Select(c => new CareerListItem
             {
                 Id = c.Id,
                 Name = c.Name,
                 User = c.UserLogin,
                 Token = c.Token
             }).ToList();
+
+            items.ForEach(item =>
+            {
+                item.UserPreferredName = GetUserPreferredName(item.User);
+            });
+
+            return items;
+        }
+
+        public List<CareerListItem> GetCareerList(ODataQueryOptions<CareerLog> queryOptions)
+        {
+            var res = GetCareerListWithTokens(queryOptions);
+            res.ForEach(c => c.Token = null);
+            return res;
+        }
+
+        public List<CareerListItem> GetCareerListWithTokens(ODataQueryOptions<CareerLog> queryOptions)
+        {
+            var q = _careerLogs.AsQueryable();
+            q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
+            {
+                HandleNullPropagation = HandleNullPropagationOption.False
+            });
+
+            var items = q.Select(c => new CareerListItem
+            {
+                Id = c.Id,
+                Name = c.Name,
+                User = c.UserLogin,
+                Token = c.Token
+            }).ToList();
+
+            items.ForEach(item =>
+            {
+                item.UserPreferredName = GetUserPreferredName(item.User);
+            });
+
+            return items;
         }
 
         public CareerLog Create(CareerLog log)

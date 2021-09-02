@@ -12,8 +12,9 @@
       <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.2.0" />
       <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.7" />
+      <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.2" />
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-      <PackageReference Include="MongoDB.Driver" Version="2.12.4" />
+      <PackageReference Include="MongoDB.Driver" Version="2.13.1" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
     </ItemGroup>
 

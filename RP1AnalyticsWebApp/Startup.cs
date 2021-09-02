@@ -10,6 +10,9 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.Services;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 
 namespace RP1AnalyticsWebApp
 {
@@ -60,7 +63,9 @@ namespace RP1AnalyticsWebApp
                 mongoIdentityOptions.ConnectionString = Configuration["CareerLogDatabaseSettings:ConnectionString"];
             });
 
-            services.AddControllers();
+            services.AddControllers()
+                    .AddOData(opt => opt.AddRouteComponents("odata", GetEdmModel())
+                                        .Filter());
             services.AddRazorPages();
             services.AddApplicationInsightsTelemetry();
             services.AddSwaggerGen();
@@ -118,6 +123,45 @@ namespace RP1AnalyticsWebApp
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
+        }
+
+        private static IEdmModel GetEdmModel()
+        {
+            var builder = new ODataConventionModelBuilder();
+
+            var careerLog = builder.EntityType<CareerLog>();
+            careerLog.HasMany(c => c.CareerLogEntries);
+            careerLog.HasMany(c => c.LaunchEventEntries);
+            //careerLog.HasMany(c => c.ContractEventEntries);
+            //careerLog.HasMany(c => c.FacilityEventEntries);
+            //careerLog.HasMany(c => c.TechEventEntries);
+
+            var clp = builder.EntityType<CareerLogPeriod>();
+            clp.HasKey(o => o.StartDate);
+
+            var le = builder.EntityType<LaunchEvent>();
+            le.HasKey(o => o.LaunchID);
+
+            var cr = builder.EntityType<ContractRecord>();
+            cr.HasKey(o => o.CareerId);
+
+            var ce = builder.EntityType<ContractEventWithCareerInfo>();
+            ce.HasKey(o => o.ContractInternalName);
+
+
+            builder.EntitySet<CareerLog>("careers");
+
+            builder.EntitySet<CareerLogPeriod>("careerLogEntries");
+
+            builder.EntitySet<CareerListItem>("careerListItems");
+
+            builder.EntitySet<ContractRecord>("records");
+
+            builder.EntitySet<ContractEventWithCareerInfo>("contracts");
+
+            builder.EnableLowerCamelCase();
+
+            return builder.GetEdmModel();
         }
     }
 }

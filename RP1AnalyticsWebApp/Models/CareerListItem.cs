@@ -8,18 +8,8 @@
 
         public string User { get; set; }
 
+        public string UserPreferredName { get; set; }
+
         public string Token { get; set; }
-
-        public CareerListItem()
-        {
-        }
-
-        public CareerListItem(CareerLog c)
-        {
-            Id = c.Id;
-            Name = c.Name;
-            User = c.UserLogin;
-            Token = c.Token;
-        }
     }
 }
