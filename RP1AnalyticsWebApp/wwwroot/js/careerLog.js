@@ -122,7 +122,7 @@
                     })
                     .catch((error) => alert(error))
             ]).then((values) => drawChart(values[0]))
-              .then(() => document.getElementById('chart').classList.toggle('is-invisible', false))
+              .then((chartDrawn) => document.getElementById('chart').classList.toggle('is-invisible', !chartDrawn))
         }
     }
 
@@ -191,7 +191,7 @@
 
     function drawChart(careerLog) {
         const careerPeriods = careerLog.careerLogEntries;
-        if (!careerPeriods) return;
+        if (!careerPeriods) return false;
 
         const currentFundsTrace = {
             name: 'Current Funds',
@@ -351,6 +351,8 @@
             });
             hoverListenerSetUp = true;
         }
+
+        return true;
     }
 
     function genContractTooltip(xaxis) {
