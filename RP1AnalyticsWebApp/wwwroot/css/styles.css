@@ -10,6 +10,10 @@
     margin: 0;    /*align navbar to the left instead of the default right*/
 }
 
+#navbar .navbar-item.active-filter {
+    color: springgreen;
+}
+
 .contracts-app h2 {
     margin-top: 0.75rem;
 }

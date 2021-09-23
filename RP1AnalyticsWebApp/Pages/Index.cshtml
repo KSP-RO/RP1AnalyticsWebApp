@@ -5,22 +5,12 @@
     ViewData["Title"] = "RP-1 Analytics";
 }
 
-
-<div class="box columns is-centered">
-    <div class="field">
-        <div class="control has-icons-left">
-            <div class="select is-rounded">
-                <select asp-for="Career" asp-items="Model.CareersGroupedByUser" onchange="careerSelectionChanged(this.value);" class="browser-default">
-                    <option value="Select a career" disabled selected>Select a career</option>
-                </select>
-            </div>
-            <div class="icon is-small is-left">
-                <i class="fas fa-database"></i>
-            </div>
+<div id="appWrapper">
+    <div class="box columns is-centered">
+        <div class="field">
+            <career-select :selected-career="careerId" :filters="filters" v-on:career-changed="handleCareerChange"></career-select>
         </div>
     </div>
-</div>
-<div id="appWrapper">
 
     <div class="pb-5">
         <meta-information :title="careerTitle" :meta="careerLogMeta" :is-loading="isLoadingCareerMeta"></meta-information>
@@ -54,6 +44,7 @@
 <div id="chart"></div>
 
 @section Scripts {
+    <script src="~/js/components/career-select.js" asp-append-version="true"></script>
     <script src="~/js/components/data-tab-mixin.js" asp-append-version="true"></script>
     <script src="~/js/components/meta-information.js" asp-append-version="true"></script>
     <script src="~/js/components/selection-tab.js" asp-append-version="true"></script>

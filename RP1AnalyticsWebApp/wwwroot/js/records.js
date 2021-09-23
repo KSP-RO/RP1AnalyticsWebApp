@@ -2,37 +2,30 @@
     const app = Vue.createApp({
         data() {
             return {
-                items: null
+                contractName: null,
+                filters: null
             };
+        },
+        methods: {
+            showContractLeaderboard(contract) {
+                if (this.contractName === contract.contractInternalName) {
+                    this.$refs.modal.isVisible = true;
+                }
+                this.contractName = contract.contractInternalName;
+            },
+            handleFiltersChange(filters) {
+                this.filters = filters;
+            }
         }
     });
+    app.component('records-table', RecordsTable);
+    app.component('contract-leaderboard-modal', ContractLeaderboardModal);
     app.component('career-dates', CareerDates);
-    const vm = app.mount('#careerDates');
+    const vm = app.mount('#app');
 
+    vm.handleFiltersChange(vmFilters.filters);
 
-    window.getContracts = getContracts;
-
-    function getContracts(contractName) {
-        vm.items = null;
-        if (contractName) {
-
-            const modal = document.querySelector('#modal1');
-
-            vm.contracts = null;
-            fetch(`/api/careerlogs/contracts/${contractName}`)
-                .then((res) => res.json())
-                .then((jsonContracts) => {
-                    vm.items = jsonContracts;
-                    modal.classList.add("is-active");
-                })
-                .catch((error) => alert(error));
-        }
+    window.filtersChanged = filters => {
+        vm.handleFiltersChange(filters);
     }
-
-    window.handleClose = handleClose;
-
-    function handleClose() {
-        document.querySelector('#modal1').classList.remove("is-active");
-    }
-
 })();

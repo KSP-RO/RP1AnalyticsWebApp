@@ -72,6 +72,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 DescriptionText = Input.DescriptionText,
                 ModRecency = Input.ModRecency,
                 VersionTag = Input.ModVersion?.ToString(),
+                VersionSort = CreateSortableVersion(Input.ModVersion),
                 CreationDate = Input.CreationDate.HasValue ? DateTime.SpecifyKind(Input.CreationDate.Value, DateTimeKind.Utc) : (DateTime?)null
             };
         }
@@ -86,6 +87,14 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             Input.ModRecency = CareerLog.CareerLogMeta.ModRecency;
             Input.ModVersion = string.IsNullOrWhiteSpace(CareerLog.CareerLogMeta.VersionTag) ? null : new Version(CareerLog.CareerLogMeta.VersionTag);
             Input.CreationDate = CareerLog.CareerLogMeta.CreationDate;
+        }
+
+        private static int? CreateSortableVersion(Version version)
+        {
+            if (version == null) return null;
+
+            // 3 digits per component. Thus version 1.22.333 becomes 001022333
+            return version.Major * 1000000 + version.Minor * 1000 + version.Build;
         }
     }
 }

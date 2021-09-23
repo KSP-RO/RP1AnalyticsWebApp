@@ -16,7 +16,8 @@
                 careerTitle: null,
                 careerLogMeta: null,
                 isLoadingCareerMeta: false,
-                activeTab: 'milestones'
+                activeTab: 'milestones',
+                filters: null
             };
         },
         methods: {
@@ -25,15 +26,26 @@
                 this.careerLogMeta = null;
                 this.isLoadingCareerMeta = false;
                 this.careerTitle = null;
+                this.filters = null;
             },
             handleChangeActive(tabName) {
                 this.activeTab = tabName;
                 const url = new URL(window.location);
                 url.searchParams.set('tab', tabName);
                 window.history.replaceState({}, '', url);
+            },
+            handleCareerChange(careerId) {
+                const url = new URL(window.location);
+                url.searchParams.set('careerId', careerId);
+                window.history.pushState({}, '', url);
+                getCareerLogs(careerId);
+            },
+            handleFiltersChange(filters) {
+                this.filters = filters;
             }
         }
     });
+    app.component('career-select', CareerSelect);
     app.component('selection-tab', SelectionTab);
     app.component('milestone-contracts', MilestoneContracts);
     app.component('repeatable-contracts', RepeatableContracts);
@@ -47,7 +59,6 @@
     const urlParams = new URLSearchParams(window.location.search);
     const initialCareerId = urlParams.get('careerId');
     if (initialCareerId) {
-        document.getElementById('Career').value = initialCareerId;
         getCareerLogs(initialCareerId);
     }
 
@@ -57,6 +68,7 @@
     }
 
     bindEvents();
+    vm.handleFiltersChange(vmFilters.filters);
 
     function bindEvents() {
         document.addEventListener('keydown', event => {
@@ -69,7 +81,6 @@
         window.onpopstate = event => {
             const urlParams = new URLSearchParams(window.location.search);
             const initialCareerId = urlParams.get('careerId');
-            document.getElementById('Career').value = initialCareerId;
             if (initialCareerId) {
                 getCareerLogs(initialCareerId);
             }
@@ -83,11 +94,8 @@
             }
         }
 
-        window.careerSelectionChanged = (careerId) => {
-            const url = new URL(window.location);
-            url.searchParams.set('careerId', careerId);
-            window.history.pushState({}, '', url);
-            getCareerLogs(careerId);
+        window.filtersChanged = filters => {
+            vm.handleFiltersChange(filters);
         }
     }
 

@@ -4,47 +4,15 @@
     ViewData["Title"] = "Records";
 }
 
-
-<div class="container mt-4 mb-4">
+<div id="app" class="container mt-4 mb-4">
     <h2 class="subtitle">Records</h2>
-    <table class="table is-bordered is-fullwidth is-hoverable">
-        <thead>
-        <tr>
-            <th>Contract Name</th>
-            <th>Completion Date</th>
-            <th>User</th>
-            <th>Career</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var r in Model.Records)
-        {
-            <tr>
-                <td>
-                    <a href="#modal1" class="modal-trigger" onclick="getContracts('@r.ContractInternalName');">@r.ContractDisplayName</a>
-                </td>
-                <td>@($"{r.Date:yyyy-MM-dd}")</td>
-                <td>@($"{r.UserPreferredName}")</td>
-                <td>
-                    <a href="/?careerId=@r.CareerId">@r.CareerName</a>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
-
-<div id="modal1" class="modal">
-    <div class="modal-background" onclick="handleClose()"></div>
-    <div class="modal-content">
-        <div id="careerDates" class="contracts-app">
-            <career-dates :items="items"></career-dates>
-        </div>
-    </div>
-    <button onclick="handleClose();" class="modal-close is-large" aria-label="close"></button>
+    <records-table :filters="filters" v-on:contract-clicked="showContractLeaderboard"></records-table>
+    <contract-leaderboard-modal ref="modal" :contract-name="contractName" :filters="filters"></contract-leaderboard-modal>
 </div>
 
 @section Scripts {
     <script src="~/js/components/career-dates.js" asp-append-version="true"></script>
+    <script src="~/js/components/contract-leaderboard-modal.js" asp-append-version="true"></script>
+    <script src="~/js/components/records-table.js" asp-append-version="true"></script>
     <script src="~/js/records.js" asp-append-version="true"></script>
 }

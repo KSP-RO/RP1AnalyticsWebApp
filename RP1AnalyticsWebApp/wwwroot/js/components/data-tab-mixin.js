@@ -23,7 +23,6 @@
             }
         }
     },
-
     methods: {
         formatDate(date) {
             return date ? moment.utc(date).format('YYYY-MM-DD') : '';

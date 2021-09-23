@@ -28,11 +28,16 @@ namespace RP1AnalyticsWebApp.Models
         [BsonRepresentation(BsonType.String)]
         public ModRecency ModRecency { get; set; }
 
-        [BsonRepresentation(BsonType.String)] public string VersionTag { get; set; }
+        [BsonRepresentation(BsonType.String)]
+        public string VersionTag { get; set; }
+
+        [BsonRepresentation(BsonType.Int32)]
+        public int? VersionSort { get; set; }
 
         [BsonRepresentation(BsonType.DateTime)]
         public DateTime? CreationDate { get; set; }
 
-        [BsonRepresentation(BsonType.String)] public string DescriptionText { get; set; }
+        [BsonRepresentation(BsonType.String)]
+        public string DescriptionText { get; set; }
     }
 }
