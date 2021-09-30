@@ -40,9 +40,14 @@
         <a class="navbar-item" href="https://github.com/KSP-RO">
             <img alt="rp-1 logo" src="https://github.com/KSP-RO/RP-0/raw/master/Source/RP-1%20Logo.png?v=4&s=50" width="28" height="28">
         </a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
     </div>
 
-    <div id="navbar" class="navbar-menu is-active">
+    <div id="navbar" class="navbar-menu">
         <div class="navbar-start">
             <a class="navbar-item is-uppercase has-text-weight-medium" asp-page="/Index">Logs</a>
             <hr class="navbar-divider">
@@ -67,6 +72,7 @@
 
 <div class="container">
     @RenderBody()
+    <script src="~/js/navbar.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </div>
 </body>
