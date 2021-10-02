@@ -174,6 +174,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 DescriptionText = Form.CareerInput.DescriptionText,
                 ModRecency = Form.CareerInput.ModRecency,
                 VersionTag = Form.CareerInput.ModVersion?.ToString(),
+                VersionSort = CareerLogMeta.CreateSortableVersion(Form.CareerInput.ModVersion),
                 CreationDate = Form.CareerInput.CreationDate.HasValue ? DateTime.SpecifyKind(Form.CareerInput.CreationDate.Value, DateTimeKind.Utc) : (DateTime?)null
             };
         }

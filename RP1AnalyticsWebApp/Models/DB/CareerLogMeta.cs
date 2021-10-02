@@ -39,5 +39,13 @@ namespace RP1AnalyticsWebApp.Models
 
         [BsonRepresentation(BsonType.String)]
         public string DescriptionText { get; set; }
+
+        public static int? CreateSortableVersion(Version version)
+        {
+            if (version == null) return null;
+
+            // 3 digits per component. Thus version 1.22.333 becomes 001022333
+            return version.Major * 1000000 + version.Minor * 1000 + version.Build;
+        }
     }
 }
