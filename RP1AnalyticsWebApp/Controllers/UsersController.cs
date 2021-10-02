@@ -27,7 +27,9 @@ namespace RP1AnalyticsWebApp.Controllers
             {
                 UserName = u.UserName,
                 PreferredName = u.PreferredName
-            }).ToList();
+            }).ToList()
+              .OrderBy(u => string.IsNullOrWhiteSpace(u.PreferredName) ? u.UserName : u.PreferredName)
+              .ToList();
         }
     }
 }
