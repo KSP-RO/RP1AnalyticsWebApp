@@ -50,6 +50,8 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Difficulty")] public DifficultyLevel DifficultyLevel { get; set; }
 
+            [Display(Name = "Tech national pathway")] public CareerNationality Nationality { get; set; }
+
             [Display(Name = "Failure Mod")] public FailureModel FailureModel { get; set; }
 
             [Display(Name = "Configurable Start (leave at 'NONE' if unused)")]
@@ -169,6 +171,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             {
                 CareerPlaystyle = Form.CareerInput.CareerPlaystyle,
                 DifficultyLevel = Form.CareerInput.DifficultyLevel,
+                Nationality = Form.CareerInput.Nationality,
                 ConfigurableStart = Form.CareerInput.ConfigurableStart,
                 FailureModel = Form.CareerInput.FailureModel,
                 DescriptionText = Form.CareerInput.DescriptionText,

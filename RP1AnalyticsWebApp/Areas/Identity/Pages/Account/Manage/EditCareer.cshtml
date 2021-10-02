@@ -57,9 +57,9 @@
                 <div class="column">
                     <div class="field">
                         <div class="control is-expanded">
-                            <label class="label" asp-for="Input.CareerPlaystyle"></label>
+                            <label class="label" asp-for="Input.Nationality"></label>
                             <div class="select is-fullwidth">
-                                <select asp-for="Input.CareerPlaystyle" asp-items="Html.GetEnumSelectList<CareerPlaystyle>()">
+                                <select asp-for="Input.Nationality" asp-items="Html.GetEnumSelectList<CareerNationality>()">
                                 </select>
                             </div>
                         </div>
@@ -68,6 +68,18 @@
             </div>
 
             <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                            <label class="label" asp-for="Input.CareerPlaystyle"></label>
+                            <div class="select is-fullwidth">
+                                <select asp-for="Input.CareerPlaystyle" asp-items="Html.GetEnumSelectList<CareerPlaystyle>()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="column">
                     <div class="field">
                         <div class="control is-expanded">
@@ -79,7 +91,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="columns">
                 <div class="column">
                     <div class="field">
                         <label class="label" asp-for="Input.ConfigurableStart"></label>
@@ -89,9 +103,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="columns">
                 <div class="column">
                     <div class="field">
                         <div class="control is-expanded">
@@ -103,25 +115,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="column">
-                    <div class="field">
-                        <label class="label" asp-for="Input.ModVersion"></label>
-                        <input class="input" type="text" asp-for="Input.ModVersion"/>
-                        <span asp-validation-for="Input.ModVersion" class="text-danger"></span>
-                    </div>
-                </div>
             </div>
 
             <div class="columns">
                 <div class="column">
                     <div class="field">
-                        <label class="label" asp-for="Input.CreationDate"></label>
-                        <input class="input" type="date" asp-for="Input.CreationDate"/>
+                        <label class="label" asp-for="Input.ModVersion"></label>
+                        <input class="input" type="text" asp-for="Input.ModVersion" />
+                        <span asp-validation-for="Input.ModVersion" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="column"></div>
-            </div>
 
+                <div class="column">
+                    <div class="field">
+                        <label class="label" asp-for="Input.CreationDate"></label>
+                        <input class="input" type="date" asp-for="Input.CreationDate" />
+                    </div>
+                </div>
+            </div>
 
             <div class="field">
                 <label class="label" asp-for="Input.DescriptionText"></label>

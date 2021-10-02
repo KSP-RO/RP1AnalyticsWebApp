@@ -86,12 +86,6 @@
                                     </span>
                                     <span>Edit Information</span>
                                 </a>
-                                @* <button class="button is-black is-small"> *@
-                                @*     <span class="icon is-small"> *@
-                                @*         <i class="fa fa-eye-slash"></i> *@
-                                @*     </span> *@
-                                @*     <span>Hide</span> *@
-                                @* </button> *@
                                 <form method="post">
                                     <button onclick="return confirm('Do you really want to delete this career log?')"
                                             type="submit"
@@ -140,9 +134,9 @@
                     <div class="column">
                         <div class="field">
                             <div class="control is-expanded">
-                                <label class="label" asp-for="Form.CareerInput.CareerPlaystyle"></label>
+                                <label class="label" asp-for="Form.CareerInput.Nationality"></label>
                                 <div class="select is-fullwidth">
-                                    <select asp-for="Form.CareerInput.CareerPlaystyle" asp-items="Html.GetEnumSelectList<CareerPlaystyle>()">
+                                    <select asp-for="Form.CareerInput.Nationality" asp-items="Html.GetEnumSelectList<CareerNationality>()">
                                     </select>
                                 </div>
                             </div>
@@ -151,6 +145,18 @@
                 </div>
 
                 <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <div class="control is-expanded">
+                                <label class="label" asp-for="Form.CareerInput.CareerPlaystyle"></label>
+                                <div class="select is-fullwidth">
+                                    <select asp-for="Form.CareerInput.CareerPlaystyle" asp-items="Html.GetEnumSelectList<CareerPlaystyle>()">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="column">
                         <div class="field">
                             <div class="control is-expanded">
@@ -162,7 +168,8 @@
                             </div>
                         </div>
                     </div>
-
+                </div>
+                <div class="columns">
                     <div class="column">
                         <div class="field">
                             <label class="label" asp-for="Form.CareerInput.ConfigurableStart"></label>
@@ -172,8 +179,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="columns">
+
                     <div class="column">
                         <div class="field">
                             <div class="control is-expanded">
@@ -185,6 +191,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="columns">
                     <div class="column">
                         <div class="field">
                             <label class="label" asp-for="Form.CareerInput.ModVersion"></label>
@@ -192,16 +201,13 @@
                             <span asp-validation-for="Form.CareerInput.ModVersion" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
 
-                <div class="columns">
                     <div class="column">
                         <div class="field">
                             <label class="label" asp-for="Form.CareerInput.CreationDate"></label>
                             <input class="input" type="date" asp-for="Form.CareerInput.CreationDate" />
                         </div>
                     </div>
-                    <div class="column"></div>
                 </div>
 
                 <div class="field">

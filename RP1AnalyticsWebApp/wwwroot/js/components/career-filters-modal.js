@@ -21,6 +21,9 @@
             if (!copy.playstyle)
                 copy.playstyle = '';
 
+            if (!copy.nationality)
+                copy.nationality = '';
+
             return copy;
         }
     },
@@ -146,6 +149,27 @@
                                             <option value="Normal">Normal</option>
                                             <option value="Historic">Historic</option>
                                             <option value="Caveman">Caveman</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Tech national pathway</label>
+                                <div class="control">
+                                    <span class="select">
+                                        <select v-model="localFilters.nationality">
+                                            <option value="">Any</option>
+                                            <option value="Mix">Mixed</option>
+                                            <option value="US">US</option>
+                                            <option value="RU">Soviet/Russia</option>
+                                            <option value="EU">ESA</option>
+                                            <option value="UK">UK</option>
+                                            <option value="JP">Japan</option>
+                                            <option value="CN">China</option>
                                         </select>
                                     </span>
                                 </div>

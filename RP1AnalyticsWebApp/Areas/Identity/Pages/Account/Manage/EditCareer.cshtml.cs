@@ -67,6 +67,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             {
                 CareerPlaystyle = Input.CareerPlaystyle,
                 DifficultyLevel = Input.DifficultyLevel,
+                Nationality = Input.Nationality,
                 ConfigurableStart = Input.ConfigurableStart,
                 FailureModel = Input.FailureModel,
                 DescriptionText = Input.DescriptionText,
@@ -81,6 +82,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
         {
             Input.CareerName = CareerLog.Name;
             Input.DifficultyLevel = CareerLog.CareerLogMeta.DifficultyLevel;
+            Input.Nationality = CareerLog.CareerLogMeta.Nationality ?? CareerNationality.Mix;
             Input.FailureModel = CareerLog.CareerLogMeta.FailureModel;
             Input.CareerPlaystyle = CareerLog.CareerLogMeta.CareerPlaystyle;
             Input.DescriptionText = CareerLog.CareerLogMeta.DescriptionText;

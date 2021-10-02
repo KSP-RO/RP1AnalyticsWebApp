@@ -14,6 +14,10 @@ namespace RP1AnalyticsWebApp.Models
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         [BsonRepresentation(BsonType.String)]
+        public CareerNationality? Nationality { get; set; }
+
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [BsonRepresentation(BsonType.String)]
         public DifficultyLevel DifficultyLevel { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]

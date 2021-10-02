@@ -31,7 +31,8 @@
                     (this.filters.ingameDateOp && this.filters.ingameDate && this.filters.ingameDate !== '1951-01-01') ||
                      (this.filters.rp1verOp && this.filters.rp1ver) ||
                      this.filters.difficulty ||
-                     this.filters.playstyle);
+                     this.filters.playstyle ||
+                     this.filters.nationality);
             }
         },
         mounted: function () {
@@ -81,6 +82,10 @@
 
         if (filters.playstyle) {
             arr.push(`CareerLogMeta/CareerPlaystyle eq '${filters.playstyle}'`);
+        }
+
+        if (filters.nationality) {
+            arr.push(`CareerLogMeta/Nationality eq '${filters.nationality}'`);
         }
 
         if (arr.length === 0) return '';
