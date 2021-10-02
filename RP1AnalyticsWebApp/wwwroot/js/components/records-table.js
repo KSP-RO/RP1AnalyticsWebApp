@@ -34,7 +34,7 @@
         }
     },
     template: `
-        <table class="table is-bordered is-fullwidth is-hoverable">
+        <table class="table is-bordered is-fullwidth is-hoverable" v-show="!isLoading">
             <thead>
                 <tr>
                     <th>Contract Name</th>
@@ -55,5 +55,8 @@
                     </td>
                 </tr>
             </tbody>
-        </table>`
+        </table>
+        <div v-if="isLoading" class="columns mt-4 is-centered is-vcentered">
+            <loading-spinner></loading-spinner>
+        </div>`
 };

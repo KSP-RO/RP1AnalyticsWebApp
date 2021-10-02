@@ -18,6 +18,7 @@
             }
         }
     });
+    app.component('loading-spinner', LoadingSpinner);
     app.component('records-table', RecordsTable);
     app.component('contract-leaderboard-modal', ContractLeaderboardModal);
     app.component('career-dates', CareerDates);
