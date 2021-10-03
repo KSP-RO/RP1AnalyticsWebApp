@@ -52,7 +52,7 @@
             <li>
                 Open up the ingame RP-1 UI, switch to the "Career Log" tab and fill in the following data:
                 <ul>
-                    <li>Server URL - <span style="background: lightgray;" class="is-family-code">https://rp1careerlog.azurewebsites.net/api/CareerLogs/</span></li>
+                    <li>Server URL - <span class="copy-url is-family-code">@($"{Request.Scheme}://{Request.Host}/api/CareerLogs/")</span></li>
                     <li>Token - the value after your career name in the table below</li>
                 </ul>
             </li>
