@@ -426,8 +426,8 @@ namespace RP1AnalyticsWebApp.Services
             var launches = careerLogDto.LaunchEvents.Select(l => new LaunchEvent(l)).ToList();
 
             var updateDef = Builders<CareerLog>.Update
-                .Set(nameof(CareerLog.StartDate), periods[0].StartDate)
-                .Set(nameof(CareerLog.EndDate), periods[^1].EndDate)
+                .Set(nameof(CareerLog.StartDate), periods.FirstOrDefault()?.StartDate ?? Constants.CareerEpoch)
+                .Set(nameof(CareerLog.EndDate), periods.LastOrDefault()?.EndDate ?? Constants.CareerEpoch)
                 .Set(nameof(CareerLog.CareerLogEntries), periods)
                 .Set(nameof(CareerLog.ContractEventEntries), contracts)
                 .Set(nameof(CareerLog.FacilityEventEntries), facilities)
