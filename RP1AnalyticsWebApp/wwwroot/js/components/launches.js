@@ -9,6 +9,11 @@
                     this.items = jsonItems;
                 })
                 .catch(error => alert(error));
+        },
+        getVesselIcon(launch) {
+            if (launch.builtAt === 'VAB') return 'fa-rocket';
+            if (launch.builtAt === 'SPH') return 'fa-plane';
+            return '';
         }
     },
     computed: {
@@ -23,12 +28,14 @@
             <table class="table is-bordered is-fullwidth is-hoverable">
             <thead>
                 <tr>
+                    <th class="is-narrow"></th>
                     <th>Vessel Name</th>
                     <th>Date</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="item in items">
+                    <td><span class="icon is-small"><i class="fas" :class="getVesselIcon(item)" aria-hidden="true"></i></span></td>
                     <td>{{ item.vesselName }}</td>
                     <td>{{ formatDate(item.date) }}</td>
                 </tr>
