@@ -16,7 +16,7 @@
                     this.isLoading = false;
 
                     const groupedMap = odataResp.value.reduce(
-                        (entryMap, e) => entryMap.set(e.user, [...entryMap.get(e.user) || [], e]),
+                        (entryMap, e) => entryMap.set(this.getPlayerName(e), [...entryMap.get(this.getPlayerName(e)) || [], e]),
                         new Map()
                     );
 
@@ -27,6 +27,9 @@
         careerChanged(careerId) {
             this.$emit('update:selectedCareer', careerId);
             this.$emit('careerChanged', careerId);
+        },
+        getPlayerName(entry) {
+            return entry.userPreferredName ? entry.userPreferredName : entry.user;
         }
     },
     watch: {
