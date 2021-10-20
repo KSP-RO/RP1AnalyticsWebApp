@@ -6,6 +6,8 @@ namespace RP1AnalyticsWebApp.Models
     {
         public DateTime Date { get; set; }
         public string NodeName { get; set; }
+        public double? YearMult { get; set; }
+        public double? ResearchRate { get; set; }
 
         public TechResearchEvent()
         {
@@ -15,6 +17,8 @@ namespace RP1AnalyticsWebApp.Models
         {
             Date = t.Date;
             NodeName = t.NodeName;
+            YearMult = t.YearMult == default ? null : t.YearMult;
+            ResearchRate = t.ResearchRate == default ? null : t.ResearchRate;
         }
     }
 }

@@ -289,7 +289,9 @@ namespace RP1AnalyticsWebApp.Services
             {
                 NodeInternalName = e.NodeName,
                 NodeDisplayName = ResolveTechNodeName(e.NodeName),
-                Date = e.Date
+                Date = e.Date,
+                YearMult = e.YearMult,
+                ResearchRate = e.ResearchRate
             }).OrderBy(ce => ce.Date).ToList();
         }
 
