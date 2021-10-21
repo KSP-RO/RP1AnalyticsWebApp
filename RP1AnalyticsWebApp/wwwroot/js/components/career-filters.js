@@ -61,18 +61,29 @@
         }
 
         if (filters.rp1verOp && filters.rp1ver) {
-            let sortableVer = 0;
             const split = filters.rp1ver.split('.');
             const mults = [1000000, 1000, 1];
-            for (let i = 0; i < 3; i++) {
-                if (i >= split.length) break;
-                const num = parseInt(split[i]);
-                if (!isNaN(num)) {
-                    sortableVer += num * mults[i];
-                }
-            }
 
-            arr.push(`CareerLogMeta/VersionSort ${filters.rp1verOp} ${sortableVer}`);
+            if (filters.rp1verOp === 'eq' && split.length === 2) {
+                const num1 = parseInt(split[0]);
+                const num2 = parseInt(split[1]);
+                const verLowerBound = num1 * mults[0] + num2 * mults[1];
+                const verUpperBound = num1 * mults[0] + (num2 + 1) * mults[1];
+
+                arr.push(`CareerLogMeta/VersionSort ge ${verLowerBound} and CareerLogMeta/VersionSort lt ${verUpperBound}`);
+            }
+            else {
+                let sortableVer = 0;
+                for (let i = 0; i < 3; i++) {
+                    if (i >= split.length) break;
+                    const num = parseInt(split[i]);
+                    if (!isNaN(num)) {
+                        sortableVer += num * mults[i];
+                    }
+                }
+
+                arr.push(`CareerLogMeta/VersionSort ${filters.rp1verOp} ${sortableVer}`);
+            }
         }
 
         if (filters.difficulty) {
