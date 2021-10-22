@@ -9,6 +9,9 @@
                     this.items = jsonItems;
                 })
                 .catch(error => alert(error));
+        },
+        formatFloat(val) {
+            return typeof val === 'number' ? val.toFixed(2) : '';
         }
     },
     computed: {
@@ -24,12 +27,14 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Rate Multiplier</th>
                     <th>Completion Date</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="item in items">
                     <td>{{ item.nodeDisplayName }}</td>
+                    <td>{{ formatFloat(item.yearMult) }}</td>
                     <td>{{ formatDate(item.date) }}</td>
                 </tr> 
             </tbody>
