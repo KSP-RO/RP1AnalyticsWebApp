@@ -19,7 +19,7 @@
                 @foreach (var u in Model.Users)
                 {
                     <tr>
-                        <td class="is-vcentered">@u.UserName</td>
+                        <td class="is-vcentered"><a href="https://github.com/@u.UserName">@u.UserName</a></td>
                         <td class="is-vcentered">@u.PreferredName</td>
                         <td class="is-vcentered">
                             <div class="buttons are-small">
