@@ -206,27 +206,27 @@
             y: getValuesForField(careerPeriods, 'currentFunds'),
             type: 'scattergl',
             mode: 'lines',
+            visible: 'legendonly'
         };
         const advanceFundsTrace = {
             name: 'Advance Funds',
             y: getValuesForField(careerPeriods, 'advanceFunds'),
             type: 'scattergl',
             mode: 'lines',
-            visible: 'legendonly',
+            visible: 'legendonly'
         };
         const rewardFundsTrace = {
             name: 'Reward Funds',
             y: getValuesForField(careerPeriods, 'rewardFunds'),
             type: 'scattergl',
             mode: 'lines',
-            visible: 'legendonly',
+            visible: 'legendonly'
         };
         const earnedFundsTrace = {
             name: 'Earned Funds',
             y: getFundsEarned(careerPeriods),
             type: 'scattergl',
-            mode: 'lines',
-            visible: 'legendonly',
+            mode: 'lines'
         };
 
         const scienceTrace = {
@@ -234,7 +234,7 @@
             y: getValuesForField(careerPeriods, 'scienceEarned'),
             yaxis: 'y2',
             type: 'scattergl',
-            mode: 'lines',
+            mode: 'lines'
         };
 
         const vabUpgradesTrace = {
@@ -242,14 +242,14 @@
             y: getVabUpgrades(careerPeriods),
             yaxis: 'y3',
             type: 'scattergl',
-            mode: 'lines',
+            mode: 'lines'
         }
         const rndUpgradesTrace = {
             name: 'RnD Upgrades',
             y: getValuesForField(careerPeriods, 'rndUpgrades'),
             yaxis: 'y3',
             type: 'scattergl',
-            mode: 'lines',
+            mode: 'lines'
         }
 
         // A fake 'trace' for displaying contract status in the hover text.
@@ -266,14 +266,14 @@
         }
 
         const traces = [
-            currentFundsTrace,
+            earnedFundsTrace,
             advanceFundsTrace,
             rewardFundsTrace,
-            earnedFundsTrace,
+            currentFundsTrace,
             scienceTrace,
             vabUpgradesTrace,
             rndUpgradesTrace,
-            contractsTrace,
+            contractsTrace
         ];
         traces.forEach(t => {
             t.x = getValuesForField(careerPeriods, 'startDate');
@@ -285,40 +285,40 @@
             grid: {
                 columns: 1,
                 subplots: [['xy'], ['xy2'], ['xy3']],
-                ygap: 0.1,
+                ygap: 0.1
             },
             xaxis: {
                 title: 'Date',
                 type: 'date',
-                autorange: true,
+                autorange: true
             },
             yaxis: {
                 title: 'Funds',
                 autorange: true,
                 type: 'linear',
-                hoverformat: '.4s',
+                hoverformat: '.4s'
             },
             yaxis2: {
                 title: 'Science',
                 autorange: true,
                 type: 'linear',
-                hoverformat: '.1f',
+                hoverformat: '.1f'
             },
             yaxis3: {
                 title: 'Upgrade Points',
                 autorange: true,
-                type: 'linear',
+                type: 'linear'
             },
             font: {
                 family: 'Poppins',
-                size: 14,
+                size: 14
             },
             margin: {
                 t: 40,
                 r: 20,
                 b: 200,
-                l: 80,
-            },
+                l: 80
+            }
         };
 
         const annotations = [];
@@ -331,7 +331,7 @@
             text: MilestonesToShowOnChart[el.contract],
             arrowhead: 6,
             ax: 0,
-            ay: -35,
+            ay: -35
         }));
 
         if (annotations.length > 0) {
@@ -339,7 +339,7 @@
         }
 
         const config = {
-            responsive: true,
+            responsive: true
         };
 
         const plotDiv = document.querySelector('#chart');
