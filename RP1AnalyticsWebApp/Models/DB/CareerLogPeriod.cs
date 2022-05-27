@@ -22,7 +22,8 @@ namespace RP1AnalyticsWebApp.Models
         public double EntryCosts { get; set; }
         public double ConstructionFees { get; set; }
         public double OtherFees { get; set; }
-        public double fundsGainMult { get; set; }
+        public double FundsGainMult { get; set; }
+        public double Reputation { get; set; }
 
         public CareerLogPeriod()
         {
@@ -48,7 +49,8 @@ namespace RP1AnalyticsWebApp.Models
             EntryCosts = c.EntryCosts;
             ConstructionFees = c.ConstructionFees;
             OtherFees = c.OtherFees;
-            fundsGainMult = c.FundsGainMult;
+            FundsGainMult = c.FundsGainMult;
+            Reputation = c.Reputation;
         }
     }
 }
