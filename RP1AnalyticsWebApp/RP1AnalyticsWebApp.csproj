@@ -5,6 +5,7 @@
         <RootNamespace>RP1AnalyticsWebApp</RootNamespace>
         <ApplicationInsightsResourceId>/subscriptions/4b00baf6-7f57-4be8-a64f-dbd94e553f28/resourcegroups/RP1CareerLog/providers/microsoft.insights/components/RP1CareerLog</ApplicationInsightsResourceId>
         <UserSecretsId>23129407-713f-4ed9-af75-39dffc62a42d</UserSecretsId>
+        <Version>2.0.0</Version>
     </PropertyGroup>
 
     <ItemGroup>
