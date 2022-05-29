@@ -15,7 +15,7 @@ namespace RP1AnalyticsWebApp.Models
             if (Periods == null || Periods.Count == 0) return;
             int idx = Periods.Count - 1;
             var p = Periods[idx];
-            if (p.VabUpgrades == 0 && p.SphUpgrades == 0 && p.RndUpgrades == 0)
+            if (p.NumEngineers == 0 && p.NumResearchers == 0)    // Probably not the best check if the player can fire all their personnel
             {
                 Periods.RemoveAt(idx);
             }

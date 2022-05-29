@@ -6,9 +6,10 @@ namespace RP1AnalyticsWebApp.Models
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int VabUpgrades { get; set; }
-        public int SphUpgrades { get; set; }
-        public int RndUpgrades { get; set; }
+        public int NumEngineers { get; set; }
+        public int NumResearchers { get; set; }
+        public double EfficiencyEngineers { get; set; }
+        public double EfficiencyResearchers { get; set; }
         public double CurrentFunds { get; set; }
         public double CurrentSci { get; set; }
         public double ScienceEarned { get; set; }

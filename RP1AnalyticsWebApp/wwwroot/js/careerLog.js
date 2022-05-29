@@ -237,16 +237,16 @@
             mode: 'lines'
         };
 
-        const vabUpgradesTrace = {
-            name: 'VAB Upgrades',
-            y: getVabUpgrades(careerPeriods),
+        const engineersTrace = {
+            name: 'Engineers',
+            y: getValuesForField(careerPeriods, 'numEngineers'),
             yaxis: 'y3',
             type: 'scattergl',
             mode: 'lines'
         }
-        const rndUpgradesTrace = {
-            name: 'RnD Upgrades',
-            y: getValuesForField(careerPeriods, 'rndUpgrades'),
+        const researchersTrace = {
+            name: 'Researchers',
+            y: getValuesForField(careerPeriods, 'numResearchers'),
             yaxis: 'y3',
             type: 'scattergl',
             mode: 'lines'
@@ -271,8 +271,8 @@
             rewardFundsTrace,
             currentFundsTrace,
             scienceTrace,
-            vabUpgradesTrace,
-            rndUpgradesTrace,
+            engineersTrace,
+            researchersTrace,
             contractsTrace
         ];
         traces.forEach(t => {
@@ -305,7 +305,7 @@
                 hoverformat: '.1f'
             },
             yaxis3: {
-                title: 'Upgrade Points',
+                title: 'Personnel',
                 autorange: true,
                 type: 'linear'
             },
