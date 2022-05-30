@@ -251,6 +251,20 @@
             type: 'scattergl',
             mode: 'lines'
         }
+        const engEffTrace = {
+            name: 'Engineer Efficiency',
+            y: getValuesForField(careerPeriods, 'efficiencyEngineers'),
+            yaxis: 'y4',
+            type: 'scattergl',
+            mode: 'lines'
+        }
+        const rndEffTrace = {
+            name: 'Scientist Efficiency',
+            y: getValuesForField(careerPeriods, 'efficiencyResearchers'),
+            yaxis: 'y4',
+            type: 'scattergl',
+            mode: 'lines'
+        }
 
         // A fake 'trace' for displaying contract status in the hover text.
         const contractsTrace = {
@@ -273,6 +287,8 @@
             scienceTrace,
             engineersTrace,
             researchersTrace,
+            engEffTrace,
+            rndEffTrace,
             contractsTrace
         ];
         traces.forEach(t => {
@@ -308,6 +324,14 @@
                 title: 'Personnel',
                 autorange: true,
                 type: 'linear'
+            },
+            yaxis4: {
+                title: 'Efficiency',
+                tickformat: ',.0%',
+                range: [0, 1],
+                type: 'linear',
+                overlaying: 'y3',
+                side: 'right'
             },
             font: {
                 family: 'Poppins',
@@ -353,7 +377,7 @@
                     Plotly.Fx.hover(
                         plotDiv,
                         { xval: eventData.xvals[0] },
-                        ['xy', 'xy2', 'xy3']
+                        ['xy', 'xy2', 'xy3', 'xy4']
                     );
                 }
             });
