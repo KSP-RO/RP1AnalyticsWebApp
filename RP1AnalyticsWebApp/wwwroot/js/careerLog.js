@@ -242,28 +242,42 @@
             y: getValuesForField(careerPeriods, 'numEngineers'),
             yaxis: 'y3',
             type: 'scattergl',
-            mode: 'lines'
+            mode: 'lines',
+            line: {
+                color: 'red'
+            }
         }
         const researchersTrace = {
             name: 'Researchers',
             y: getValuesForField(careerPeriods, 'numResearchers'),
             yaxis: 'y3',
             type: 'scattergl',
-            mode: 'lines'
+            mode: 'lines',
+            line: {
+                color: 'blue'
+            }
         }
         const engEffTrace = {
             name: 'Engineer Efficiency',
             y: getValuesForField(careerPeriods, 'efficiencyEngineers'),
             yaxis: 'y4',
             type: 'scattergl',
-            mode: 'lines'
+            mode: 'lines',
+            line: {
+                color: 'red',
+                dash: 'dot'
+            }
         }
         const rndEffTrace = {
             name: 'Scientist Efficiency',
             y: getValuesForField(careerPeriods, 'efficiencyResearchers'),
             yaxis: 'y4',
             type: 'scattergl',
-            mode: 'lines'
+            mode: 'lines',
+            line: {
+                color: 'blue',
+                dash: 'dot'
+            }
         }
 
         // A fake 'trace' for displaying contract status in the hover text.
