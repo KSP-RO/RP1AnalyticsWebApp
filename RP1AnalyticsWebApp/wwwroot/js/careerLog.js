@@ -337,6 +337,7 @@
             yaxis3: {
                 title: 'Personnel',
                 autorange: true,
+                rangemode: 'nonnegative',
                 type: 'linear'
             },
             yaxis4: {
@@ -355,7 +356,8 @@
                 t: 40,
                 r: 20,
                 b: 200,
-                l: 80
+                l: 80,
+                pad: 4
             }
         };
 
