@@ -237,10 +237,18 @@
             mode: 'lines'
         };
 
+        const repTrace = {
+            name: 'Reputation',
+            y: getValuesForField(careerPeriods, 'reputation'),
+            yaxis: 'y3',
+            type: 'scattergl',
+            mode: 'lines'
+        };
+
         const engineersTrace = {
             name: 'Engineers',
             y: getValuesForField(careerPeriods, 'numEngineers'),
-            yaxis: 'y3',
+            yaxis: 'y4',
             type: 'scattergl',
             mode: 'lines',
             line: {
@@ -250,7 +258,7 @@
         const researchersTrace = {
             name: 'Researchers',
             y: getValuesForField(careerPeriods, 'numResearchers'),
-            yaxis: 'y3',
+            yaxis: 'y4',
             type: 'scattergl',
             mode: 'lines',
             line: {
@@ -260,7 +268,7 @@
         const engEffTrace = {
             name: 'Engineer Efficiency',
             y: getValuesForField(careerPeriods, 'efficiencyEngineers'),
-            yaxis: 'y4',
+            yaxis: 'y5',
             type: 'scattergl',
             mode: 'lines',
             line: {
@@ -271,7 +279,7 @@
         const rndEffTrace = {
             name: 'Scientist Efficiency',
             y: getValuesForField(careerPeriods, 'efficiencyResearchers'),
-            yaxis: 'y4',
+            yaxis: 'y5',
             type: 'scattergl',
             mode: 'lines',
             line: {
@@ -299,6 +307,7 @@
             rewardFundsTrace,
             currentFundsTrace,
             scienceTrace,
+            repTrace,
             engineersTrace,
             researchersTrace,
             engEffTrace,
@@ -314,7 +323,7 @@
             hovermode: 'x unified',
             grid: {
                 columns: 1,
-                subplots: [['xy'], ['xy2'], ['xy3']],
+                subplots: [['xy'], ['xy2'], ['xy3'], ['xy4']],
                 ygap: 0.1
             },
             xaxis: {
@@ -335,17 +344,23 @@
                 hoverformat: '.1f'
             },
             yaxis3: {
+                title: 'Reputation',
+                autorange: true,
+                type: 'linear',
+                hoverformat: '.1f'
+            },
+            yaxis4: {
                 title: 'Personnel',
                 autorange: true,
                 rangemode: 'nonnegative',
                 type: 'linear'
             },
-            yaxis4: {
+            yaxis5: {
                 title: 'Efficiency',
                 tickformat: ',.0%',
                 range: [0, 1],
                 type: 'linear',
-                overlaying: 'y3',
+                overlaying: 'y4',
                 side: 'right'
             },
             font: {
@@ -393,7 +408,7 @@
                     Plotly.Fx.hover(
                         plotDiv,
                         { xval: eventData.xvals[0] },
-                        ['xy', 'xy2', 'xy3', 'xy4']
+                        ['xy', 'xy2', 'xy3', 'xy4', 'xy5']
                     );
                 }
             });
