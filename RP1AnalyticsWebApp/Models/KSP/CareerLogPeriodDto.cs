@@ -23,5 +23,6 @@ namespace RP1AnalyticsWebApp.Models
         public double ConstructionFees { get; set; }
         public double OtherFees { get; set; }
         public double FundsGainMult { get; set; }
+        public int NumNautsKilled { get; set; }
     }
 }
