@@ -389,6 +389,21 @@
             ay: -35
         }));
 
+        careerPeriods.forEach((p, idx) => {
+            if (p.numNautsKilled > 0) {
+                const dt = moment.utc(p.startDate);
+                annotations.push({
+                    x: dt.format('YYYY-MM'),
+                    y: getValuesForField(careerPeriods, 'reputation')[idx],
+                    yref: 'y3',
+                    text: '💀',
+                    arrowhead: 6,
+                    ax: 0,
+                    ay: -25
+                });
+            }
+        });
+
         if (annotations.length > 0) {
             layout.annotations = annotations;
         }
