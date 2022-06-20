@@ -423,7 +423,9 @@ namespace RP1AnalyticsWebApp.Services
 
             var periods = careerLogDto.Periods.Select(c => new CareerLogPeriod(c)).ToList();
             var contracts = careerLogDto.ContractEvents.Select(c => new ContractEvent(c)).ToList();
-            var facilities = careerLogDto.FacilityEvents.Select(f => new FacilityConstructionEvent(f)).ToList();
+            var facilities = careerLogDto.FacilityEvents.Where(f => f.Facility < FacilityType.LaunchComplex)
+                                                        .Select(f => new FacilityConstructionEvent(f, careerLogDto.FacilityConstructions))
+                                                        .ToList();
             var tech = careerLogDto.TechEvents.Select(t => new TechResearchEvent(t)).ToList();
             var launches = careerLogDto.LaunchEvents.Select(l => new LaunchEvent(l)).ToList();
 

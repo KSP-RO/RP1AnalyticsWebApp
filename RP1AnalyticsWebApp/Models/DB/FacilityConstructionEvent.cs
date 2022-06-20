@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace RP1AnalyticsWebApp.Models
@@ -17,12 +19,14 @@ namespace RP1AnalyticsWebApp.Models
         {
         }
 
-        public FacilityConstructionEvent(FacilityConstructionEventDto f)
+        public FacilityConstructionEvent(FacilityConstructionEventDto f, List<FacilityConstructionDto> facilityConstructions)
         {
+            FacilityConstructionDto fc = facilityConstructions.FirstOrDefault(fc => fc.FacilityID == f.FacilityID);
+
             Date = f.Date;
-            Facility = f.Facility;
-            NewLevel = f.NewLevel;
-            Cost = f.Cost;
+            Facility = (SpaceCenterFacility)Enum.Parse(typeof(SpaceCenterFacility), f.Facility.ToString());
+            NewLevel = fc?.NewLevel ?? 0;
+            Cost = fc?.Cost ?? 0;
             State = f.State;
         }
     }
