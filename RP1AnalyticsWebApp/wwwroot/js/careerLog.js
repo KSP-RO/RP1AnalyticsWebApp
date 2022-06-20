@@ -148,21 +148,11 @@
         let total = 0;
 
         careerLogs.forEach((entry) => {
-            total += entry.advanceFunds + entry.rewardFunds + entry.otherFundsEarned;
+            total += entry.programFunds + entry.otherFundsEarned;
             totals.push(total);
         });
 
         return totals;
-    }
-
-    function getVabUpgrades(careerLogs) {
-        let vabUpgrades = [];
-
-        careerLogs.forEach((entry) => {
-            vabUpgrades.push(entry.vabUpgrades + entry.sphUpgrades);
-        });
-
-        return vabUpgrades;
     }
 
     function getCompletionDatesAndIndexesForContracts(careerLog, contracts) {
@@ -204,20 +194,6 @@
         const currentFundsTrace = {
             name: 'Current Funds',
             y: getValuesForField(careerPeriods, 'currentFunds'),
-            type: 'scattergl',
-            mode: 'lines',
-            visible: 'legendonly'
-        };
-        const advanceFundsTrace = {
-            name: 'Advance Funds',
-            y: getValuesForField(careerPeriods, 'advanceFunds'),
-            type: 'scattergl',
-            mode: 'lines',
-            visible: 'legendonly'
-        };
-        const rewardFundsTrace = {
-            name: 'Reward Funds',
-            y: getValuesForField(careerPeriods, 'rewardFunds'),
             type: 'scattergl',
             mode: 'lines',
             visible: 'legendonly'
@@ -303,8 +279,6 @@
 
         const traces = [
             earnedFundsTrace,
-            advanceFundsTrace,
-            rewardFundsTrace,
             currentFundsTrace,
             scienceTrace,
             repTrace,

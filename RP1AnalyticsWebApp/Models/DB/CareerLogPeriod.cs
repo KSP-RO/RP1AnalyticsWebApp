@@ -1,7 +1,9 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace RP1AnalyticsWebApp.Models
 {
+    [BsonIgnoreExtraElements]
     public class CareerLogPeriod
     {
         public DateTime StartDate { get; set; }
@@ -13,9 +15,7 @@ namespace RP1AnalyticsWebApp.Models
         public double CurrentFunds { get; set; }
         public double CurrentSci { get; set; }
         public double ScienceEarned { get; set; }
-        public double AdvanceFunds { get; set; }
-        public double RewardFunds { get; set; }
-        public double FailureFunds { get; set; }
+        public double ProgramFunds { get; set; }
         public double OtherFundsEarned { get; set; }
         public double LaunchFees { get; set; }
         public double MaintenanceFees { get; set; }
@@ -23,6 +23,9 @@ namespace RP1AnalyticsWebApp.Models
         public double EntryCosts { get; set; }
         public double ConstructionFees { get; set; }
         public double OtherFees { get; set; }
+        public double SubsidySize { get; set; }
+        public double SubsidyPaidOut { get; set; }
+        public double RepFromPrograms { get; set; }
         public double FundsGainMult { get; set; }
         public int NumNautsKilled { get; set; }
         public double Reputation { get; set; }
@@ -42,9 +45,7 @@ namespace RP1AnalyticsWebApp.Models
             CurrentFunds = c.CurrentFunds;
             CurrentSci = c.CurrentSci;
             ScienceEarned = c.ScienceEarned;
-            AdvanceFunds = c.AdvanceFunds;
-            RewardFunds = c.RewardFunds;
-            FailureFunds = c.FailureFunds;
+            ProgramFunds = c.ProgramFunds;
             OtherFundsEarned = c.OtherFundsEarned;
             LaunchFees = c.LaunchFees;
             MaintenanceFees = c.MaintenanceFees;
@@ -52,6 +53,9 @@ namespace RP1AnalyticsWebApp.Models
             EntryCosts = c.EntryCosts;
             ConstructionFees = c.ConstructionFees;
             OtherFees = c.OtherFees;
+            SubsidySize = c.SubsidySize;
+            SubsidyPaidOut = c.SubsidyPaidOut;
+            RepFromPrograms = c.RepFromPrograms;
             FundsGainMult = c.FundsGainMult;
             NumNautsKilled = c.NumNautsKilled;
             Reputation = c.Reputation;

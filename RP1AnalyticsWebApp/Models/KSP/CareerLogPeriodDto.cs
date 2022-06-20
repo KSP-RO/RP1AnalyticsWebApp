@@ -13,9 +13,7 @@ namespace RP1AnalyticsWebApp.Models
         public double CurrentFunds { get; set; }
         public double CurrentSci { get; set; }
         public double ScienceEarned { get; set; }
-        public double AdvanceFunds { get; set; }
-        public double RewardFunds { get; set; }
-        public double FailureFunds { get; set; }
+        public double ProgramFunds { get; set; }
         public double OtherFundsEarned { get; set; }
         public double LaunchFees { get; set; }
         public double MaintenanceFees { get; set; }
@@ -23,6 +21,9 @@ namespace RP1AnalyticsWebApp.Models
         public double EntryCosts { get; set; }
         public double ConstructionFees { get; set; }
         public double OtherFees { get; set; }
+        public double SubsidySize { get; set; }
+        public double SubsidyPaidOut { get; set; }
+        public double RepFromPrograms { get; set; }
         public double FundsGainMult { get; set; }
         public int NumNautsKilled { get; set; }
         public double Reputation { get; set; }

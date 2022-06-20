@@ -4,8 +4,13 @@ namespace RP1AnalyticsWebApp.Models
 {
     public class CareerLogDto
     {
+        public string JsonVer { get; set; }
+        public string RP1Ver { get; set; }
         public List<CareerLogPeriodDto> Periods { get; set; }
         public List<ContractEventDto> ContractEvents { get; set; }
+        public List<FacilityConstructionDto> FacilityConstructions { get; set; }
+        public List<LCDto> LCs { get; set; }
+        public List<LPConstructionDto> LPConstructions { get; set; }
         public List<FacilityConstructionEventDto> FacilityEvents { get; set; }
         public List<TechResearchEventDto> TechEvents { get; set; }
         public List<LaunchEventDto> LaunchEvents { get; set; }

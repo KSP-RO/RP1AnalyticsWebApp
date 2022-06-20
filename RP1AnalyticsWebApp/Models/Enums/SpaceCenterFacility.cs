@@ -1,5 +1,9 @@
 ﻿namespace RP1AnalyticsWebApp.Models
 {
+    /// <summary>
+    /// The KSP builtin facility type enum.
+    /// Does NOT support bitwise operations.
+    /// </summary>
     public enum SpaceCenterFacility
     {
         Administration = 0,

@@ -2,6 +2,8 @@
 {
     public enum ConstructionState
     {
-        Started, Completed
+        Started = 1,
+        Cancelled = 1 << 1,
+        Completed = 1 << 2
     }
 }
