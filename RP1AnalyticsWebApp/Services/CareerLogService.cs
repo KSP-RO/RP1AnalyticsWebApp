@@ -427,6 +427,7 @@ namespace RP1AnalyticsWebApp.Services
             var facilityConstructions = careerLogDto.FacilityConstructions.Select(fc => new FacilityConstruction(fc, careerLogDto.FacilityEvents));
             var tech = careerLogDto.TechEvents.Select(t => new TechResearchEvent(t)).ToList();
             var launches = careerLogDto.LaunchEvents.Select(l => new LaunchEvent(l)).ToList();
+            var programs = careerLogDto.Programs.Select(p => new Models.Program(p)).ToList();
             List<LC> lcs = ParseLCs(careerLogDto);
 
             var updateDef = Builders<CareerLog>.Update
@@ -435,8 +436,8 @@ namespace RP1AnalyticsWebApp.Services
                 .Set(nameof(CareerLog.LastUpdate), DateTime.UtcNow)
                 .Set(nameof(CareerLog.CareerLogEntries), periods)
                 .Set(nameof(CareerLog.ContractEventEntries), contracts)
+                .Set(nameof(CareerLog.Programs), programs)
                 .Set(nameof(CareerLog.LCs), lcs)
-                //.Set(nameof(CareerLog.FacilityEventEntries), facilities)
                 .Set(nameof(CareerLog.FacilityConstructions), facilityConstructions)
                 .Set(nameof(CareerLog.TechEventEntries), tech)
                 .Set(nameof(CareerLog.LaunchEventEntries), launches);
