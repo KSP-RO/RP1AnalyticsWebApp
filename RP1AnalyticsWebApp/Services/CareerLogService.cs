@@ -311,20 +311,20 @@ namespace RP1AnalyticsWebApp.Services
             return c.LaunchEventEntries.OrderBy(e => e.Date).ToList();
         }
 
-        public List<FacilityConstructionEvent> GetFacilityConstructionsForCareer(string id)
+        public List<FacilityConstruction> GetFacilityConstructionsForCareer(string id)
         {
             var c = _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
                 .Select(c => new
                 {
-                    c.FacilityEventEntries
+                    c.FacilityConstructions
                 })
                 .FirstOrDefault();
 
             if (c == null) return null;
-            if (c.FacilityEventEntries == null) return new List<FacilityConstructionEvent>(0);
+            if (c.FacilityConstructions == null) return new List<FacilityConstruction>(0);
 
-            return c.FacilityEventEntries.OrderBy(e => e.Date).ToList();
+            return c.FacilityConstructions.OrderBy(e => e.Started).ToList();
         }
 
         public List<CareerListItem> GetCareerList(string userName = null)
@@ -408,7 +408,8 @@ namespace RP1AnalyticsWebApp.Services
             }
 
             careerLog.ContractEventEntries = log.ContractEventEntries;
-            careerLog.FacilityEventEntries = log.FacilityEventEntries;
+            careerLog.LCs = log.LCs;
+            careerLog.FacilityConstructions = log.FacilityConstructions;
             careerLog.TechEventEntries = log.TechEventEntries;
             careerLog.LaunchEventEntries = log.LaunchEventEntries;
 
@@ -423,11 +424,10 @@ namespace RP1AnalyticsWebApp.Services
 
             var periods = careerLogDto.Periods.Select(c => new CareerLogPeriod(c)).ToList();
             var contracts = careerLogDto.ContractEvents.Select(c => new ContractEvent(c)).ToList();
-            var facilities = careerLogDto.FacilityEvents.Where(f => f.Facility < FacilityType.LaunchComplex)
-                                                        .Select(f => new FacilityConstructionEvent(f, careerLogDto.FacilityConstructions))
-                                                        .ToList();
+            var facilityConstructions = careerLogDto.FacilityConstructions.Select(fc => new FacilityConstruction(fc, careerLogDto.FacilityEvents));
             var tech = careerLogDto.TechEvents.Select(t => new TechResearchEvent(t)).ToList();
             var launches = careerLogDto.LaunchEvents.Select(l => new LaunchEvent(l)).ToList();
+            List<LC> lcs = ParseLCs(careerLogDto);
 
             var updateDef = Builders<CareerLog>.Update
                 .Set(nameof(CareerLog.StartDate), periods.FirstOrDefault()?.StartDate ?? Constants.CareerEpoch)
@@ -435,7 +435,9 @@ namespace RP1AnalyticsWebApp.Services
                 .Set(nameof(CareerLog.LastUpdate), DateTime.UtcNow)
                 .Set(nameof(CareerLog.CareerLogEntries), periods)
                 .Set(nameof(CareerLog.ContractEventEntries), contracts)
-                .Set(nameof(CareerLog.FacilityEventEntries), facilities)
+                .Set(nameof(CareerLog.LCs), lcs)
+                //.Set(nameof(CareerLog.FacilityEventEntries), facilities)
+                .Set(nameof(CareerLog.FacilityConstructions), facilityConstructions)
                 .Set(nameof(CareerLog.TechEventEntries), tech)
                 .Set(nameof(CareerLog.LaunchEventEntries), launches);
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
@@ -475,6 +477,26 @@ namespace RP1AnalyticsWebApp.Services
         private string GetUserPreferredName(string username)
         {
             return AllUsers.FirstOrDefault(u => u.UserName == username)?.PreferredName ?? username;
+        }
+
+        private static List<LC> ParseLCs(CareerLogDto careerLogDto)
+        {
+            var lcs = careerLogDto.LCs.Select(l => new LC(l, careerLogDto.FacilityEvents))
+                                      .OrderBy(l => l.ConstrEnded)
+                                      .ToList();
+            // Only one LC in a chain of modifications can be active
+            var groups = lcs.GroupBy(l => l.Id);
+            foreach (IGrouping<Guid, LC> group in groups)
+            {
+                LC[] arr = group.Where(l => l.State == LCState.Active).ToArray();
+                for (int i = arr.Length - 1; i >= 0; i--)
+                {
+                    var state = i == arr.Length - 1 ? LCState.Active : LCState.Modified;
+                    arr[i].State = state;
+                }
+            }
+
+            return lcs;
         }
     }
 }

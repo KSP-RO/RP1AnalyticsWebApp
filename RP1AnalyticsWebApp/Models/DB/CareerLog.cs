@@ -21,7 +21,8 @@ namespace RP1AnalyticsWebApp.Models
         public DateTime LastUpdate { get; set; }
         public List<CareerLogPeriod> CareerLogEntries { get; set; }
         public List<ContractEvent> ContractEventEntries { get; set; }
-        public List<FacilityConstructionEvent> FacilityEventEntries { get; set; }
+        public List<LC> LCs { get; set; }
+        public List<FacilityConstruction> FacilityConstructions { get; set; }
         public List<TechResearchEvent> TechEventEntries { get; set; }
         public List<LaunchEvent> LaunchEventEntries { get; set; }
         public CareerLogMeta CareerLogMeta { get; set; }

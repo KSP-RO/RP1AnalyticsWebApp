@@ -161,15 +161,15 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet("{id:length(24)}/Facilities", Name = "GetFacilityConstructionsForCareer")]
-        public ActionResult<List<FacilityConstructionEvent>> GetFacilityConstructionsForCareer(string id)
+        public ActionResult<List<FacilityConstruction>> GetFacilityConstructionsForCareer(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetFacilityConstructionsForCareer", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<FacilityConstructionEvent> events = _careerLogService.GetFacilityConstructionsForCareer(id);
-            return events;
+            List<FacilityConstruction> fcs = _careerLogService.GetFacilityConstructionsForCareer(id);
+            return fcs;
         }
 
         [HttpPost(Name = "CreateCareer")]

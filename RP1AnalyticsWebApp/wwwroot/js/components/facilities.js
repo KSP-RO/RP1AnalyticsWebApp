@@ -6,20 +6,7 @@
                 .then(res => res.json())
                 .then(jsonItems => {
                     this.isLoading = false;
-
-                    const groupedMap = jsonItems.reduce(
-                        (entryMap, e) => entryMap.set(e.facility + e.newLevel, [...entryMap.get(e.facility + e.newLevel) || [], e]),
-                        new Map()
-                    );
-
-                    this.items = Array.from(groupedMap.values()).map(e => {
-                        return {
-                            facility: e[0].facility,
-                            newLevel: e[0].newLevel,
-                            startDate: e[0].date,
-                            endDate: e.length > 1 ? e[1].date : null
-                        }
-                    });
+                    this.items = jsonItems.filter(e => e.state != 'ConstructionCancelled');
                 })
                 .catch(error => alert(error));
         }
@@ -46,8 +33,8 @@
                 <tr v-for="item in items">
                     <td>{{ item.facility }}</td>
                     <td>{{ item.newLevel + 1 }}</td>
-                    <td>{{ formatDate(item.startDate) }}</td>
-                    <td>{{ formatDate(item.endDate) }}</td>
+                    <td>{{ formatDate(item.started) }}</td>
+                    <td>{{ formatDate(item.ended) }}</td>
                 </tr>
             </tbody>
             </table>
