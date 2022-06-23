@@ -14,16 +14,18 @@ namespace RP1AnalyticsWebApp.Services
         private readonly IMongoCollection<CareerLog> _careerLogs;
         private readonly IContractSettings _contractSettings;
         private readonly ITechTreeSettings _techTreeSettings;
+        private readonly IProgramSettings _programSettings;
         private readonly UserManager<WebAppUser> _userManager;
 
         private List<WebAppUser> _allUsers;
         private List<WebAppUser> AllUsers => _allUsers ??= _userManager.Users.ToList();
 
         public CareerLogService(ICareerLogDatabaseSettings dbSettings, IContractSettings contractSettings,
-            ITechTreeSettings techTreeSettings, UserManager<WebAppUser> userManager)
+            ITechTreeSettings techTreeSettings, IProgramSettings programSettings, UserManager<WebAppUser> userManager)
         {
             _contractSettings = contractSettings;
             _techTreeSettings = techTreeSettings;
+            _programSettings = programSettings;
             _userManager = userManager;
 
             var client = new MongoClient(dbSettings.ConnectionString);
@@ -327,7 +329,7 @@ namespace RP1AnalyticsWebApp.Services
             return c.FacilityConstructions.OrderBy(e => e.Started).ToList();
         }
 
-        public List<Models.Program> GetProgramsForCareer(string id)
+        public List<ProgramItem> GetProgramsForCareer(string id)
         {
             var c = _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
@@ -338,9 +340,20 @@ namespace RP1AnalyticsWebApp.Services
                 .FirstOrDefault();
 
             if (c == null) return null;
-            if (c.Programs == null) return new List<Models.Program>(0);
+            if (c.Programs == null) return new List<ProgramItem>(0);
 
-            return c.Programs.OrderBy(e => e.Accepted).ToList();
+            return c.Programs.Select(p => new ProgramItem
+            {
+                Name = p.Name,
+                Title = _programSettings.ProgramNameDict.TryGetValue(p.Name, out string disp) ? disp : p.Name,
+                Accepted = p.Accepted,
+                ObjectivesCompleted = p.ObjectivesCompleted,
+                Completed = p.Completed,
+                NominalDurationYears = p.NominalDurationYears,
+                TotalFunding = p.TotalFunding,
+                FundsPaidOut = p.FundsPaidOut,
+                RepPenaltyAssessed = p.RepPenaltyAssessed
+            }).OrderBy(p => p.Accepted).ToList();
         }
 
         public List<CareerListItem> GetCareerList(string userName = null)

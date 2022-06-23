@@ -173,14 +173,14 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet("{id:length(24)}/Programs", Name = "GetProgramsForCareer")]
-        public ActionResult<List<Models.Program>> GetProgramsForCareer(string id)
+        public ActionResult<List<ProgramItem>> GetProgramsForCareer(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetProgramsForCareer", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<Models.Program> ps = _careerLogService.GetProgramsForCareer(id);
+            List<ProgramItem> ps = _careerLogService.GetProgramsForCareer(id);
             return ps;
         }
 

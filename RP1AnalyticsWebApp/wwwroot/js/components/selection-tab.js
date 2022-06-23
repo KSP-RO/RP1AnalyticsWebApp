@@ -15,6 +15,12 @@
                     <span>Repeatables</span>
                 </a>
             </li>
+            <li v-bind:class="{ 'is-active': active === 'programs' }">
+                <a @click="$emit('change-active', 'programs')">
+                    <span class="icon is-small"><i class="fas fa-university" aria-hidden="true"></i></span>
+                    <span>Programs</span>
+                </a>
+            </li>
             <li v-bind:class="{ 'is-active': active === 'tech' }">
                 <a @click="$emit('change-active', 'tech')">
                     <span class="icon is-small"><i class="fas fa-tools" aria-hidden="true"></i></span>

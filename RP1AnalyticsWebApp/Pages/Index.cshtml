@@ -27,6 +27,10 @@
         <repeatable-contracts :active-tab="activeTab" :career-id="careerId"></repeatable-contracts>
     </div>
 
+    <div id="programs" class="contracts-app">
+        <programs :active-tab="activeTab" :career-id="careerId"></programs>
+    </div>
+
     <div id="tech" class="contracts-app">
         <tech-unlocks :active-tab="activeTab" :career-id="careerId"></tech-unlocks>
     </div>
@@ -53,6 +57,7 @@
     <script src="~/js/components/tech-unlocks.js" asp-append-version="true"></script>
     <script src="~/js/components/launches.js" asp-append-version="true"></script>
     <script src="~/js/components/facilities.js" asp-append-version="true"></script>
+    <script src="~/js/components/programs.js" asp-append-version="true"></script>
     <script src="~/js/components/loading-spinner.js" asp-append-version="true"></script>
     <script src="~/js/careerLog.js" asp-append-version="true"></script>
 

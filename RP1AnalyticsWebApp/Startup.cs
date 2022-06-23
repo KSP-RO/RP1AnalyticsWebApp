@@ -46,6 +46,9 @@ namespace RP1AnalyticsWebApp
             services.AddSingleton<ITechTreeSettings>(sp =>
                 sp.GetRequiredService<IOptions<TechTreeSettings>>().Value);
 
+            services.AddSingleton<IProgramSettings>(sp =>
+                sp.GetRequiredService<IOptions<ProgramSettings>>().Value);
+
             var pack = new ConventionPack
             {
                 new CamelCaseElementNameConvention()
