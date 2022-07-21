@@ -10,6 +10,8 @@
 
         public string UserPreferredName { get; set; }
 
+        public string Race { get; set; }
+
         public string Token { get; set; }
     }
 }

@@ -1,0 +1,23 @@
+﻿@page
+@model RP1AnalyticsWebApp.Areas.Admin.Pages.RacesModel
+@{
+    ViewData["Title"] = "Race management";
+}
+
+<div id="app" class="ml-4 box">
+    <h2 class="subtitle">Careers</h2>
+    <race-management></race-management>
+</div>
+
+@section Scripts {
+    <script src="~/js/components/loading-spinner.js" asp-append-version="true"></script>
+    <script src="~/js/components/race-management.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        (() => {
+            const app = Vue.createApp();
+            app.component('loading-spinner', LoadingSpinner);
+            app.component('race-management', RaceManagement);
+            const vm = app.mount('#app');
+        })();
+    </script>
+}

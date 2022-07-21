@@ -62,6 +62,8 @@
             {
                 <a class="navbar-item is-uppercase has-text-weight-medium" asp-area="Admin" asp-page="/Users">Users</a>
                 <hr class="navbar-divider">
+                <a class="navbar-item is-uppercase has-text-weight-medium" asp-area="Admin" asp-page="/Races">Races</a>
+                <hr class="navbar-divider">
             }
             <a class="navbar-item is-uppercase has-text-weight-medium" :class="{ 'active-filter': hasActiveFilters }" title="Show career filters" v-on:click="toggleFilters">
                 <i class="fa fa-filter" aria-hidden="true"></i>

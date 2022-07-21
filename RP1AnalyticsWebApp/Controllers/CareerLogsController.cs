@@ -208,6 +208,14 @@ namespace RP1AnalyticsWebApp.Controllers
             return ls;
         }
 
+        [HttpGet("Races", Name = "GetRaces")]
+        public ActionResult<List<string>> GetRaces()
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetRaces");
+            List<string> res = _careerLogService.GetRaces();
+            return res;
+        }
+
         [HttpPost(Name = "CreateCareer")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -240,6 +248,25 @@ namespace RP1AnalyticsWebApp.Controllers
             if (res == null) return NotFound();
 
             return CreatedAtRoute("UpdateCareer", res);
+        }
+
+        [HttpPatch("{careerId:length(24)}/Race", Name = "UpdateRace")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [Authorize(Roles = Constants.Roles.Admin)]
+        public ActionResult<CareerLog> UpdateRace(string careerId, [FromBody] string race)
+        {
+            _telemetry.TrackEvent("CareerLogsController-UpdateRace", new Dictionary<string, string>
+            {
+                { nameof(careerId), careerId },
+                { nameof(race), race }
+            });
+
+            CareerLog c = _careerLogService.UpdateRace(careerId, race);
+            if (c == null) return NotFound();
+
+            return CreatedAtRoute("UpdateRace", c);
         }
 
         [HttpPatch("{careerId:length(24)}/Launches/{launchId:length(32)}", Name = "UpdateLaunch")]

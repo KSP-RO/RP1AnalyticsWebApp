@@ -312,6 +312,17 @@ namespace RP1AnalyticsWebApp.Services
             return result;
         }
 
+        public List<string> GetRaces()
+        {
+            var q = _careerLogs.AsQueryable();
+            var items = q.Where(c => c.Race != null)
+                         .Select(c => c.Race)
+                         .Distinct()
+                         .OrderBy(r => r)
+                         .ToList();
+            return items;
+        }
+
         public List<ContractEventWithCareerInfo> GetAllContractEvents(ODataQueryOptions<CareerLog> queryOptions = null)
         {
             var q = _careerLogs.AsQueryable();
@@ -526,7 +537,8 @@ namespace RP1AnalyticsWebApp.Services
                 Id = c.Id,
                 Name = c.Name,
                 User = c.UserLogin,
-                Token = c.Token
+                Token = c.Token,
+                Race = c.Race
             }).ToList();
 
             items.ForEach(item =>
@@ -557,7 +569,8 @@ namespace RP1AnalyticsWebApp.Services
                 Id = c.Id,
                 Name = c.Name,
                 User = c.UserLogin,
-                Token = c.Token
+                Token = c.Token,
+                Race = c.Race
             }).ToList();
 
             items.ForEach(item =>
@@ -651,6 +664,14 @@ namespace RP1AnalyticsWebApp.Services
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
             return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Token == token, updateDefinition, opts);
+        }
+
+        public CareerLog UpdateRace(string careerId, string race)
+        {
+            var updateDefinition = Builders<CareerLog>.Update.Set(nameof(CareerLog.Race), race);
+            var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
+
+            return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Id == careerId, updateDefinition, opts);
         }
 
         public void UpdateLaunch(string careerId, LaunchEvent launch)

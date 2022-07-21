@@ -3,7 +3,8 @@
     emits: ['update:isVisible', 'update:filters', 'applyFilters'],
     data() {
         return {
-            players: null
+            players: null,
+            races: null
         }
     },
     computed: {
@@ -50,11 +51,22 @@
                 })
                 .catch((error) => alert(error));
         },
+        queryRaces() {
+            fetch(`/api/careerlogs/races`)
+                .then((res) => res.json())
+                .then((jsonRaces) => {
+                    this.races = jsonRaces;
+                })
+                .catch((error) => alert(error));
+        },
     },
     watch: {
         isVisible(newIsVisible) {
             if (newIsVisible && !this.players)
                 this.queryPlayers();
+
+            if (newIsVisible && !this.races)
+                this.queryRaces();
         }
     },
     template: `
@@ -167,6 +179,23 @@
                                             <option value="Normal">Normal</option>
                                             <option value="Historic">Historic</option>
                                             <option value="Caveman">Caveman</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Race</label>
+                                <div class="control">
+                                    <span class="select">
+                                        <select v-model="localFilters.race">
+                                            <option value=""></option>
+                                            <option v-for="r in races" :value="r">
+                                                {{ r }}
+                                            </option>
                                         </select>
                                     </span>
                                 </div>
