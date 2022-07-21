@@ -203,6 +203,17 @@ namespace RP1AnalyticsWebApp.Services
             return result;
         }
 
+        public List<string> GetRaces()
+        {
+            var q = _careerLogs.AsQueryable();
+            var items = q.Where(c => c.Race != null)
+                         .Select(c => c.Race)
+                         .Distinct()
+                         .OrderBy(r => r)
+                         .ToList();
+            return items;
+        }
+
         public List<ContractEventWithCareerInfo> GetAllContractEvents(ODataQueryOptions<CareerLog> queryOptions = null)
         {
             var q = _careerLogs.AsQueryable();

@@ -19,6 +19,7 @@ namespace RP1AnalyticsWebApp.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime LastUpdate { get; set; }
+        public string Race { get; set; }
         public List<CareerLogPeriod> CareerLogEntries { get; set; }
         public List<ContractEvent> ContractEventEntries { get; set; }
         public List<FacilityConstructionEvent> FacilityEventEntries { get; set; }

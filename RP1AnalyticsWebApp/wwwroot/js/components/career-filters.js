@@ -28,7 +28,8 @@
             hasActiveFilters() {
                 return this.filters &&
                     (this.filters.player ||
-                    (this.filters.ingameDateOp && this.filters.ingameDate && this.filters.ingameDate !== '1951-01-01') ||
+                     this.filters.race ||
+                     (this.filters.ingameDateOp && this.filters.ingameDate && this.filters.ingameDate !== '1951-01-01') ||
                      (this.filters.rp1verOp && this.filters.rp1ver) ||
                      this.filters.difficulty ||
                      this.filters.playstyle);
@@ -54,6 +55,10 @@
         const arr = [];
         if (filters.player) {
             arr.push(`UserLogin eq '${filters.player}'`);
+        }
+
+        if (filters.race) {
+            arr.push(`Race eq '${filters.race}'`);
         }
 
         if (filters.ingameDateOp && filters.ingameDate && filters.ingameDate !== '1951-01-01') {

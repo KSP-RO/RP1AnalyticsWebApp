@@ -172,6 +172,14 @@ namespace RP1AnalyticsWebApp.Controllers
             return events;
         }
 
+        [HttpGet("Races", Name = "GetRaces")]
+        public ActionResult<List<string>> GetRaces()
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetRaces");
+            List<string> res = _careerLogService.GetRaces();
+            return res;
+        }
+
         [HttpPost(Name = "CreateCareer")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
