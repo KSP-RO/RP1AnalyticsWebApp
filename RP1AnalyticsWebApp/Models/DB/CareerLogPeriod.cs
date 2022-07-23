@@ -28,6 +28,7 @@ namespace RP1AnalyticsWebApp.Models
         public double RepFromPrograms { get; set; }
         public double FundsGainMult { get; set; }
         public int NumNautsKilled { get; set; }
+        public double Confidence { get; set; }
         public double Reputation { get; set; }
 
         public CareerLogPeriod()
@@ -58,6 +59,7 @@ namespace RP1AnalyticsWebApp.Models
             RepFromPrograms = c.RepFromPrograms;
             FundsGainMult = c.FundsGainMult;
             NumNautsKilled = c.NumNautsKilled;
+            Confidence = c.Confidence;
             Reputation = c.Reputation;
         }
     }
