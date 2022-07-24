@@ -222,6 +222,14 @@
             mode: 'lines'
         };
 
+        const confidenceTrace = {
+            name: 'Confidence',
+            y: getValuesForField(careerPeriods, 'confidence'),
+            yaxis: 'y3',
+            type: 'scattergl',
+            mode: 'lines'
+        };
+
         const engineersTrace = {
             name: 'Engineers',
             y: getValuesForField(careerPeriods, 'numEngineers'),
@@ -283,6 +291,7 @@
             currentFundsTrace,
             scienceTrace,
             repTrace,
+            confidenceTrace,
             engineersTrace,
             researchersTrace,
             engEffTrace,
