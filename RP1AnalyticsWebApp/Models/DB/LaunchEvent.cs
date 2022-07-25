@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace RP1AnalyticsWebApp.Models
@@ -11,6 +12,8 @@ namespace RP1AnalyticsWebApp.Models
         public string LaunchID { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public EditorFacility? BuiltAt { get; set; }
+
+        public List<FailureEvent> Failures { get; set; }
 
         public LaunchEvent()
         {

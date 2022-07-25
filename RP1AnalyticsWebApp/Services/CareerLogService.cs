@@ -456,6 +456,7 @@ namespace RP1AnalyticsWebApp.Services
             var facilityConstructions = careerLogDto.FacilityConstructions.Select(fc => new FacilityConstruction(fc, careerLogDto.FacilityEvents));
             var tech = careerLogDto.TechEvents.Select(t => new TechResearchEvent(t)).ToList();
             var launches = careerLogDto.LaunchEvents.Select(l => new LaunchEvent(l)).ToList();
+            AddFailuresToLaunches(careerLogDto.FailureEvents, launches);
             var programs = careerLogDto.Programs.Select(p => new Models.Program(p)).ToList();
             List<LC> lcs = ParseLCs(careerLogDto);
 
@@ -527,6 +528,17 @@ namespace RP1AnalyticsWebApp.Services
             }
 
             return lcs;
+        }
+
+        private static void AddFailuresToLaunches(List<FailureEventDto> failureDtos, List<LaunchEvent> launches)
+        {
+            foreach (LaunchEvent launch in launches)
+            {
+                var failures = failureDtos.Where(f => f.LaunchID == launch.LaunchID)
+                                          .Select(f => new FailureEvent(f))
+                                          .ToList();
+                launch.Failures = failures;
+            }
         }
     }
 }
