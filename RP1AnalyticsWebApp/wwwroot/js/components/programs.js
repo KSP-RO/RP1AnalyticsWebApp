@@ -24,6 +24,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Speed</th>
                     <th>Accepted</th>
                     <th>Objectives completed</th>
                     <th>Completed</th>
@@ -32,6 +33,7 @@
             <tbody>
                 <tr v-for="item in items">
                     <td>{{ item.title }}</td>
+                    <td>{{ item.speed }}</td>
                     <td>{{ formatDate(item.accepted) }}</td>
                     <td>{{ formatDate(item.objectivesCompleted) }}</td>
                     <td>{{ formatDate(item.completed) }}</td>
