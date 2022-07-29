@@ -14,6 +14,12 @@
             if (launch.builtAt === 'VAB') return 'fa-rocket';
             if (launch.builtAt === 'SPH') return 'fa-plane';
             return '';
+        },
+        hasFailures(launch) {
+            return launch.failures && launch.failures.length > 0;
+        },
+        getFailureIconTitle(launch) {
+            return `Had ${launch.failures.length} failure${launch.failures.length === 1 ? '' : 's'}`;
         }
     },
     computed: {
@@ -36,7 +42,12 @@
             <tbody>
                 <tr v-for="item in items">
                     <td><span class="icon is-small"><i class="fas" :class="getVesselIcon(item)" aria-hidden="true"></i></span></td>
-                    <td>{{ item.vesselName }}</td>
+                    <td>
+                        <span>{{ item.vesselName }}</span>
+                        <span v-if="hasFailures(item)" class="icon is-small inline-icon">
+                            <img src="images/agathorn.webp" alt="failure" :title="getFailureIconTitle(item)" />
+                        </span>
+                    </td>
                     <td>{{ formatDate(item.date) }}</td>
                 </tr>
             </tbody>

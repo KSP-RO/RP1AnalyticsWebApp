@@ -26,6 +26,11 @@
     margin: 2rem 10rem;
 }
 
+.contracts-app .inline-icon {
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
 #chart {
     margin: 10px 0 0 0;
     height: max(min(calc(100vh * 0.875), 1000px), 350px);
