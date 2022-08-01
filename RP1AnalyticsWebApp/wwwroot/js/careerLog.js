@@ -225,7 +225,7 @@
         const confidenceTrace = {
             name: 'Confidence',
             y: getValuesForField(careerPeriods, 'confidence'),
-            yaxis: 'y3',
+            yaxis: 'y4',
             type: 'scattergl',
             mode: 'lines'
         };
@@ -233,7 +233,7 @@
         const engineersTrace = {
             name: 'Engineers',
             y: getValuesForField(careerPeriods, 'numEngineers'),
-            yaxis: 'y4',
+            yaxis: 'y5',
             type: 'scattergl',
             mode: 'lines',
             line: {
@@ -243,7 +243,7 @@
         const researchersTrace = {
             name: 'Researchers',
             y: getValuesForField(careerPeriods, 'numResearchers'),
-            yaxis: 'y4',
+            yaxis: 'y5',
             type: 'scattergl',
             mode: 'lines',
             line: {
@@ -253,7 +253,7 @@
         const engEffTrace = {
             name: 'Engineer Efficiency',
             y: getValuesForField(careerPeriods, 'efficiencyEngineers'),
-            yaxis: 'y5',
+            yaxis: 'y6',
             type: 'scattergl',
             mode: 'lines',
             line: {
@@ -264,7 +264,7 @@
         const rndEffTrace = {
             name: 'Scientist Efficiency',
             y: getValuesForField(careerPeriods, 'efficiencyResearchers'),
-            yaxis: 'y5',
+            yaxis: 'y6',
             type: 'scattergl',
             mode: 'lines',
             line: {
@@ -307,7 +307,7 @@
             hovermode: 'x unified',
             grid: {
                 columns: 1,
-                subplots: [['xy'], ['xy2'], ['xy3'], ['xy4']],
+                subplots: [['xy'], ['xy2'], ['xy3'], ['xy4'], ['xy5']],
                 ygap: 0.1
             },
             xaxis: {
@@ -334,17 +334,26 @@
                 hoverformat: '.1f'
             },
             yaxis4: {
+                title: 'Confidence',
+                autorange: true,
+                showgrid: false,
+                type: 'linear',
+                hoverformat: '.1f',
+                overlaying: 'y3',
+                side: 'right'
+            },
+            yaxis5: {
                 title: 'Personnel',
                 autorange: true,
                 rangemode: 'nonnegative',
                 type: 'linear'
             },
-            yaxis5: {
+            yaxis6: {
                 title: 'Efficiency',
                 tickformat: ',.0%',
                 range: [0, 1],
                 type: 'linear',
-                overlaying: 'y4',
+                overlaying: 'y5',
                 side: 'right'
             },
             font: {
