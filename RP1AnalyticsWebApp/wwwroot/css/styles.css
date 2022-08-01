@@ -31,6 +31,10 @@
     vertical-align: middle;
 }
 
+tr.clickable {
+    cursor: pointer;
+}
+
 #chart {
     margin: 10px 0 0 0;
     height: max(min(calc(100vh * 0.875), 1000px), 350px);

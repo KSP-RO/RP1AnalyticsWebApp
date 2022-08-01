@@ -26,6 +26,9 @@
     methods: {
         formatDate(date) {
             return date ? moment.utc(date).format('YYYY-MM-DD') : '';
+        },
+        formatDatePlusTime(date) {
+            return date ? moment.utc(date).format('YYYY-MM-DD hh:mm:ss') : '';
         }
     },
     computed: {
