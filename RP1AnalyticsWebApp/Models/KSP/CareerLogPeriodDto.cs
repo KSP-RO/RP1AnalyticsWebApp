@@ -9,7 +9,6 @@ namespace RP1AnalyticsWebApp.Models
         public int NumEngineers { get; set; }
         public int NumResearchers { get; set; }
         public double EfficiencyEngineers { get; set; }
-        public double EfficiencyResearchers { get; set; }
         public double CurrentFunds { get; set; }
         public double CurrentSci { get; set; }
         public double ScienceEarned { get; set; }

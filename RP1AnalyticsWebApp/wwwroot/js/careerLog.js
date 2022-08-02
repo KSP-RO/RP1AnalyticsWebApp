@@ -261,17 +261,6 @@
                 dash: 'dot'
             }
         }
-        const rndEffTrace = {
-            name: 'Scientist Efficiency',
-            y: getValuesForField(careerPeriods, 'efficiencyResearchers'),
-            yaxis: 'y6',
-            type: 'scattergl',
-            mode: 'lines',
-            line: {
-                color: 'blue',
-                dash: 'dot'
-            }
-        }
 
         // A fake 'trace' for displaying contract status in the hover text.
         const contractsTrace = {
@@ -295,7 +284,6 @@
             engineersTrace,
             researchersTrace,
             engEffTrace,
-            rndEffTrace,
             contractsTrace
         ];
         traces.forEach(t => {
