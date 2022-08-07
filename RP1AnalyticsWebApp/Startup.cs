@@ -87,6 +87,11 @@ namespace RP1AnalyticsWebApp
                      policy => policy.RequireRole(Constants.Roles.Admin));
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+            });
+
             services.AddHostedService<StartupHostedService>();
         }
 
