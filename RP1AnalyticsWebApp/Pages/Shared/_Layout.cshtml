@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using RP1AnalyticsWebApp.Utilities
+@inject SignInManager<Models.WebAppUser> SignInManager
+@inject UserManager<Models.WebAppUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -81,6 +85,15 @@
     <script src="~/js/navbar.js" asp-append-version="true"></script>
     <script src="~/js/components/career-filters-modal.js" asp-append-version="true"></script>
     <script src="~/js/components/career-filters.js" asp-append-version="true"></script>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <script type="text/javascript">
+            const currentUser = {
+                'userName': '@User.Identity.Name',
+                'roles': @Json.Serialize(User.GetRoles())
+            };
+        </script>
+    }
     @RenderSection("Scripts", required: false)
 </div>
 </body>
