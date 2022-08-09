@@ -451,12 +451,18 @@ namespace RP1AnalyticsWebApp.Services
         {
             careerLogDto.TrimEmptyPeriod();
 
+            CareerLog existingItem = GetByToken(token);
+            if (existingItem == null) return null;
+
             var periods = careerLogDto.Periods.Select(c => new CareerLogPeriod(c)).ToList();
             var contracts = careerLogDto.ContractEvents.Select(c => new ContractEvent(c)).ToList();
             var facilityConstructions = careerLogDto.FacilityConstructions.Select(fc => new FacilityConstruction(fc, careerLogDto.FacilityEvents));
             var tech = careerLogDto.TechEvents.Select(t => new TechResearchEvent(t)).ToList();
+
             var launches = careerLogDto.LaunchEvents.Select(l => new LaunchEvent(l)).ToList();
             AddFailuresToLaunches(careerLogDto.FailureEvents, launches);
+            AddExistingMetadataToLaunches(launches, existingItem.LaunchEventEntries);
+
             var programs = careerLogDto.Programs.Select(p => new Models.Program(p)).ToList();
             List<LC> lcs = ParseLCs(careerLogDto);
 
@@ -493,6 +499,15 @@ namespace RP1AnalyticsWebApp.Services
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
             return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Token == token, updateDefinition, opts);
+        }
+
+        public void UpdateLaunch(string careerId, LaunchEvent launch)
+        {
+            var filterDef = Builders<CareerLog>.Filter.Where(c => c.Id == careerId && 
+                                                                  c.LaunchEventEntries.Any(l => l.LaunchID == launch.LaunchID));
+            var updateDef = Builders<CareerLog>.Update.Set(c => c.LaunchEventEntries[-1], launch);
+
+            _careerLogs.FindOneAndUpdate(filterDef, updateDef);
         }
 
         private string ResolveContractName(string name)
@@ -538,6 +553,18 @@ namespace RP1AnalyticsWebApp.Services
                                           .Select(f => new FailureEvent(f))
                                           .ToList();
                 launch.Failures = failures;
+            }
+        }
+
+        private static void AddExistingMetadataToLaunches(List<LaunchEvent> newLaunches, List<LaunchEvent> existingLaunches)
+        {
+            foreach (LaunchEvent eLaunch in existingLaunches.Where(l => l.Metadata != null))
+            {
+                LaunchEvent nLaunch = newLaunches.FirstOrDefault(l => l.LaunchID == eLaunch.LaunchID);
+                if (nLaunch != null)
+                {
+                    nLaunch.Metadata = eLaunch.Metadata;
+                }
             }
         }
     }

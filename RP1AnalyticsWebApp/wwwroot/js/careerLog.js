@@ -13,6 +13,7 @@
         data() {
             return {
                 careerId: null,
+                career: null,
                 careerTitle: null,
                 careerLogMeta: null,
                 isLoadingCareerMeta: false,
@@ -23,6 +24,7 @@
         methods: {
             reset() {
                 this.careerId = null;
+                this.career = null;
                 this.careerLogMeta = null;
                 this.isLoadingCareerMeta = false;
                 this.careerTitle = null;
@@ -43,7 +45,12 @@
             handleFiltersChange(filters) {
                 this.filters = filters;
             }
-        }
+        },
+        computed: {
+            canEdit() {
+                return this.career && currentUser && this.career.userLogin === currentUser.userName;
+            }
+        },
     });
     app.component('career-select', CareerSelect);
     app.component('selection-tab', SelectionTab);
@@ -120,6 +127,7 @@
                         vm.isLoadingCareerMeta = false;
                         vm.careerLogMeta = jsonLogs.careerLogMeta;
                         vm.careerTitle = jsonLogs.name;
+                        vm.career = jsonLogs;
                         return jsonLogs;
                     })
                     .catch((error) => alert(error)),

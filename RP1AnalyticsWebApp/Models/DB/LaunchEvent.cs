@@ -12,8 +12,8 @@ namespace RP1AnalyticsWebApp.Models
         public string LaunchID { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public EditorFacility? BuiltAt { get; set; }
-
         public List<FailureEvent> Failures { get; set; }
+        public LaunchMeta Metadata { get; set; }
 
         public LaunchEvent()
         {

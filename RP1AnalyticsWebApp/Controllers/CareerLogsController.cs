@@ -213,7 +213,36 @@ namespace RP1AnalyticsWebApp.Controllers
             });
 
             CareerLog res = _careerLogService.Update(token, careerLog);
+            if (res == null) return NotFound();
+
             return CreatedAtRoute("UpdateCareer", res);
+        }
+
+        [HttpPatch("{careerId:length(24)}/Launches/{launchId:length(32)}", Name = "UpdateLaunch")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [Authorize(Roles = Constants.Roles.Member)]
+        public ActionResult<LaunchEvent> UpdateLaunch(string careerId, string launchId, LaunchMeta meta)
+        {
+            _telemetry.TrackEvent("CareerLogsController-UpdateLaunch", new Dictionary<string, string>
+            {
+                { nameof(careerId), careerId },
+                { nameof(launchId), launchId }
+            });
+
+            // TODO: fetching the entire career log isn't particularly optimal
+            CareerLog c = _careerLogService.Get(careerId);
+            if (c == null) return NotFound();
+            if (c.UserLogin != User.Identity.Name) return Unauthorized();
+
+            LaunchEvent l = c.LaunchEventEntries.Find(l => l.LaunchID == launchId);
+            if (l == null) return NotFound();
+            l.Metadata = meta;
+
+            _careerLogService.UpdateLaunch(careerId, l);
+
+            return CreatedAtRoute("UpdateLaunch", l);
         }
     }
 }

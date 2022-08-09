@@ -1,5 +1,6 @@
 ﻿const Launches = {
     mixins: [DataTabMixin],
+    props: ['canEdit'],
     methods: {
         queryData(careerId) {
             fetch(`/api/careerlogs/${careerId}/launches`)
@@ -11,15 +12,54 @@
                 })
                 .catch(error => alert(error));
         },
+        saveLaunchMetaChanges(launch) {
+            fetch(`/api/careerlogs/${this.careerId}/launches/${launch.launchID}`, {
+                method: "PATCH",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(launch.metadata)
+            })
+            .catch(error => alert(error));
+        },
+        updateLaunchSuccessState(launch, isSuccess, event) {
+            const meta = launch.metadata = launch.metadata || {};
+            meta.success = meta.success === isSuccess ? null : isSuccess;
+            event.target.closest('button').blur();
+            this.saveLaunchMetaChanges(launch);
+        },
         getVesselIcon(launch) {
             if (launch.builtAt === 'VAB') return 'fa-rocket';
             if (launch.builtAt === 'SPH') return 'fa-plane';
             return '';
         },
+        getSuccessStyleForEdit(launch) {
+            if (launch.metadata && launch.metadata.success === true) return 'is-active';
+            return 'is-outlined';
+        },
+        getFailStyleForEdit(launch) {
+            if (launch.metadata && launch.metadata.success === false)
+                return 'is-active';
+            return 'is-outlined';
+        },
+        getSuccessStateIconForDisp(launch) {
+            if (!launch.metadata || launch.metadata.success == null)
+                return '';
+            if (launch.metadata.success)
+                return 'fa-check has-text-success';
+            return 'fa-xmark has-text-danger';
+        },
+        getSuccessStateTitle(launch) {
+            if (!launch.metadata || launch.metadata.success == null)
+                return '';
+            if (launch.metadata.success)
+                return 'Launch met all or at least part of its goals';
+            return 'Launch failed to meet its goals';
+        },
         hasFailures(launch) {
             return launch.failures && launch.failures.length > 0;
         },
-        getFailureIconTitle(launch) {
+        getTFFailureIconTitle(launch) {
             return `Had ${launch.failures.length} failure${launch.failures.length === 1 ? '' : 's'}`;
         },
         canOpen(launch) {
@@ -67,10 +107,33 @@
                         <tr @click="toggleVisibility(item)" :class="{ 'is-selected': item.visible, 'clickable': canOpen(item) }">
                             <td><span class="icon is-small"><i class="fas" :class="getVesselIcon(item)" aria-hidden="true"></i></span></td>
                             <td>
-                                <span>{{ item.vesselName }}</span>
-                                <span v-if="hasFailures(item)" class="icon is-small inline-icon">
-                                    <img src="images/agathorn.webp" alt="failure" :title="getFailureIconTitle(item)" />
-                                </span>
+                                <div class="success-fail-row">
+                                    <span>{{ item.vesselName }}</span>
+                                    <div class="success-fail-widget">
+                                        <span v-if="hasFailures(item)" class="icon inline-icon">
+                                            <img src="images/agathorn.webp" alt="failure" :title="getTFFailureIconTitle(item)" />
+                                        </span>
+                                        <div v-if="canEdit" class="buttons has-addons ml-2">
+                                            <button class="button is-small is-success"
+                                                title="Tag the launch as a success"
+                                                :class="getSuccessStyleForEdit(item)"
+                                                @click.stop="updateLaunchSuccessState(item, true, $event)">
+                                                <span class="icon is-small"><i class="fas fa-xl fa-check" aria-hidden="true"></i></span>
+                                            </button>
+                                            <button class="button is-small is-danger"
+                                                title="Tag the launch as a failure"
+                                                :class="getFailStyleForEdit(item)"
+                                                @click.stop="updateLaunchSuccessState(item, false, $event)">
+                                                <span class="icon is-small"><i class="fas fa-xl fa-xmark" aria-hidden="true"></i></span>
+                                            </button>
+                                        </div>
+                                        <span v-if="!canEdit" class="icon ml-2">
+                                            <i class="fas fa-xl" aria-hidden="true"
+                                                :class="getSuccessStateIconForDisp(item)" 
+                                                :title="getSuccessStateTitle(item)"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </td>
                             <td><span :title="formatDatePlusTime(item.date)">{{ formatDate(item.date) }}</span></td>
                         </tr>

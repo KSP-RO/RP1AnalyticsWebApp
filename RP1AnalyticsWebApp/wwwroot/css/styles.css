@@ -1,4 +1,4 @@
-﻿[v-cloak] {
+[v-cloak] {
     display: none
 }
 
@@ -43,6 +43,20 @@ tr.clickable {
 .copy-url {
     background: lightgray;
     user-select: all;
+}
+
+.success-fail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.success-fail-widget {
+    display: flex;
+}
+
+.success-fail-widget > * {
+    align-self: center;
 }
 
 /*Spinner by loading.io*/
