@@ -124,8 +124,10 @@
                 fetch(`/api/careerlogs/${careerId}`)
                     .then((res) => res.json())
                     .then((jsonLogs) => {
+                        const meta = jsonLogs.careerLogMeta;
+                        meta.lastUpdate = jsonLogs.lastUpdate;
                         vm.isLoadingCareerMeta = false;
-                        vm.careerLogMeta = jsonLogs.careerLogMeta;
+                        vm.careerLogMeta = meta;
                         vm.careerTitle = jsonLogs.name;
                         vm.career = jsonLogs;
                         return jsonLogs;
