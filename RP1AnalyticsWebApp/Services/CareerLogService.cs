@@ -329,6 +329,22 @@ namespace RP1AnalyticsWebApp.Services
             return c.FacilityConstructions.OrderBy(e => e.Started).ToList();
         }
 
+        public List<LC> GetLCsForCareer(string id)
+        {
+            var c = _careerLogs.AsQueryable()
+                .Where(c => c.Id == id)
+                .Select(c => new
+                {
+                    c.LCs
+                })
+                .FirstOrDefault();
+
+            if (c == null) return null;
+            if (c.LCs == null) return new List<LC>(0);
+
+            return c.LCs.OrderBy(e => e.ConstrStarted).ToList();
+        }
+
         public List<ProgramItem> GetProgramsForCareer(string id)
         {
             var c = _careerLogs.AsQueryable()

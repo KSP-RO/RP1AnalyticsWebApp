@@ -172,6 +172,18 @@ namespace RP1AnalyticsWebApp.Controllers
             return fcs;
         }
 
+        [HttpGet("{id:length(24)}/LCs", Name = "GetLCsForCareer")]
+        public ActionResult<List<LC>> GetLCsForCareer(string id)
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetLCsForCareer", new Dictionary<string, string>
+            {
+                { nameof(id), id }
+            });
+
+            List<LC> lcs = _careerLogService.GetLCsForCareer(id);
+            return lcs;
+        }
+
         [HttpGet("{id:length(24)}/Programs", Name = "GetProgramsForCareer")]
         public ActionResult<List<ProgramItem>> GetProgramsForCareer(string id)
         {
