@@ -216,12 +216,21 @@
             mode: 'lines'
         };
 
-        const scienceTrace = {
+        const sciEarnedTrace = {
             name: 'Science Earned',
             y: getValuesForField(careerPeriods, 'scienceEarned'),
             yaxis: 'y2',
             type: 'scattergl',
             mode: 'lines'
+        };
+
+        const curSciTrace = {
+            name: 'Current Science',
+            y: getValuesForField(careerPeriods, 'currentSci'),
+            yaxis: 'y2',
+            type: 'scattergl',
+            mode: 'lines',
+            visible: 'legendonly'
         };
 
         const repTrace = {
@@ -288,7 +297,8 @@
         const traces = [
             earnedFundsTrace,
             currentFundsTrace,
-            scienceTrace,
+            sciEarnedTrace,
+            curSciTrace,
             repTrace,
             confidenceTrace,
             engineersTrace,
