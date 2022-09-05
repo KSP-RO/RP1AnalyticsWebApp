@@ -574,6 +574,8 @@ namespace RP1AnalyticsWebApp.Services
 
         private static void AddExistingMetadataToLaunches(List<LaunchEvent> newLaunches, List<LaunchEvent> existingLaunches)
         {
+            if (existingLaunches == null) return;
+
             foreach (LaunchEvent eLaunch in existingLaunches.Where(l => l.Metadata != null))
             {
                 LaunchEvent nLaunch = newLaunches.FirstOrDefault(l => l.LaunchID == eLaunch.LaunchID);
