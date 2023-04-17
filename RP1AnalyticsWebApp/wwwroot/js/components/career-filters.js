@@ -29,6 +29,7 @@
                 return this.filters &&
                     (this.filters.player ||
                     (this.filters.ingameDateOp && this.filters.ingameDate && this.filters.ingameDate !== '1951-01-01') ||
+                    (this.filters.lastUpdateOp && this.filters.lastUpdate) ||
                      (this.filters.rp1verOp && this.filters.rp1ver) ||
                      this.filters.difficulty ||
                      this.filters.playstyle);
@@ -58,6 +59,10 @@
 
         if (filters.ingameDateOp && filters.ingameDate && filters.ingameDate !== '1951-01-01') {
             arr.push(`EndDate ${filters.ingameDateOp} ${filters.ingameDate}T00:00:00.00Z`);
+        }
+
+        if (filters.lastUpdateOp && filters.lastUpdate) {
+            arr.push(`LastUpdate ${filters.lastUpdateOp} ${filters.lastUpdate}T00:00:00.00Z`);
         }
 
         if (filters.rp1verOp && filters.rp1ver) {

@@ -15,6 +15,9 @@
             if (!copy.ingameDate)
                 copy.ingameDate = '1951-01-01';
 
+            if (!copy.lastUpdateOp)
+                copy.lastUpdateOp = 'ge';
+
             if (!copy.difficulty)
                 copy.difficulty = '';
 
@@ -94,6 +97,24 @@
                                 </p>
                                 <p class="control">
                                     <input class="input" type="date" v-model="localFilters.ingameDate" />
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <label class="label">Last update</label>
+                            <div class="field has-addons">
+                                <p class="control">
+                                    <span class="select">
+                                        <select v-model="localFilters.lastUpdateOp">
+                                            <option value="le">&le;</option>
+                                            <option value="ge">&ge;</option>
+                                        </select>
+                                    </span>
+                                </p>
+                                <p class="control">
+                                    <input class="input" type="date" v-model="localFilters.lastUpdate" />
                                 </p>
                             </div>
                         </div>
