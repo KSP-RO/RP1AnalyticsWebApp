@@ -1,5 +1,8 @@
 ﻿const Programs = {
     mixins: [DataTabMixin],
+    created: function () {
+        this.ProgramSpeeds = Object.freeze({ 0: 'Slow', 1: 'Normal', 2: 'Fast' });
+    },
     methods: {
         queryData(careerId) {
             fetch(`/api/careerlogs/${careerId}/programs`)
@@ -9,6 +12,10 @@
                     this.items = jsonItems;
                 })
                 .catch(error => alert(error));
+        },
+        mapSpeedToText(speed) {
+            if (speed == null) return '';
+            return this.ProgramSpeeds[speed];
         }
     },
     computed: {
@@ -33,7 +40,7 @@
             <tbody>
                 <tr v-for="item in items">
                     <td>{{ item.title }}</td>
-                    <td>{{ item.speed }}</td>
+                    <td>{{ mapSpeedToText(item.speed) }}</td>
                     <td>{{ formatDate(item.accepted) }}</td>
                     <td>{{ formatDate(item.objectivesCompleted) }}</td>
                     <td>{{ formatDate(item.completed) }}</td>

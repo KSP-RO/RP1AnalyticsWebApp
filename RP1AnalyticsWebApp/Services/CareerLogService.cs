@@ -368,7 +368,8 @@ namespace RP1AnalyticsWebApp.Services
                 NominalDurationYears = p.NominalDurationYears,
                 TotalFunding = p.TotalFunding,
                 FundsPaidOut = p.FundsPaidOut,
-                RepPenaltyAssessed = p.RepPenaltyAssessed
+                RepPenaltyAssessed = p.RepPenaltyAssessed,
+                Speed = p.Speed
             }).OrderBy(p => p.Accepted).ToList();
         }
 

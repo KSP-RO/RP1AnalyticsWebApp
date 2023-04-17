@@ -13,5 +13,6 @@ namespace RP1AnalyticsWebApp.Models
         public double TotalFunding { get; set; }
         public double FundsPaidOut { get; set; }
         public double RepPenaltyAssessed { get; set; }
+        public ProgramSpeed Speed { get; set; }
     }
 }
