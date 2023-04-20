@@ -215,6 +215,13 @@
             type: 'scattergl',
             mode: 'lines'
         };
+        const subsidySizeTrace = {
+            name: 'Subsidy size',
+            y: getValuesForField(careerPeriods, 'subsidySize'),
+            type: 'scattergl',
+            mode: 'lines',
+            visible: 'legendonly'
+        };
 
         const sciEarnedTrace = {
             name: 'Science Earned',
@@ -297,6 +304,7 @@
         const traces = [
             earnedFundsTrace,
             currentFundsTrace,
+            subsidySizeTrace,
             sciEarnedTrace,
             curSciTrace,
             repTrace,
