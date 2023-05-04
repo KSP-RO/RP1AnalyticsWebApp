@@ -6,6 +6,7 @@
     });
 
     let contractEvents = null;
+    let programs = null;
     let hoverCurrentSubplotOnly = false;
     let hoverListenerSetUp = false;
 
@@ -114,6 +115,7 @@
 
         if (!careerId) {
             contractEvents = null;
+            programs = null;
             vm.reset();
         }
         else {
@@ -138,6 +140,13 @@
                     .then((jsonContracts) => {
                         contractEvents = jsonContracts;
                         return jsonContracts;
+                    })
+                    .catch((error) => alert(error)),
+                fetch(`/api/careerlogs/${careerId}/programs`)
+                    .then((res) => res.json())
+                    .then((jsonPrograms) => {
+                        programs = jsonPrograms;
+                        return jsonPrograms;
                     })
                     .catch((error) => alert(error))
             ]).then((values) => drawChart(values[0]))
@@ -301,6 +310,19 @@
             }
         }
 
+        // A fake 'trace' for displaying program status in the hover text.
+        const programsTrace = {
+            name: 'Programs',
+            y: 0,
+            text: getValuesForField(careerPeriods, 'startDate').map(genProgramTooltip),
+            hovertemplate: '%{text}',
+            type: 'scatter',
+            showlegend: false,
+            marker: {
+                color: '#fff0'
+            }
+        }
+
         const traces = [
             earnedFundsTrace,
             currentFundsTrace,
@@ -312,7 +334,8 @@
             engineersTrace,
             researchersTrace,
             engEffTrace,
-            contractsTrace
+            contractsTrace,
+            programsTrace
         ];
         traces.forEach(t => {
             t.x = getValuesForField(careerPeriods, 'startDate');
@@ -458,6 +481,17 @@
         return contractList ? `<span style='font-size:12px;'>${contractList}</span>` : 'N/A';
     };
 
+    function genProgramTooltip(xaxis) {
+        const dtStart = moment.utc(xaxis);
+        const dtEnd = dtStart.clone().add(1, 'months');
+        const complete = programs.filter(c => c.completed && moment.utc(c.completed) > dtStart && moment.utc(c.completed) <= dtEnd);
+        const accept = programs.filter(c => c.accepted && moment.utc(c.accepted) > dtStart && moment.utc(c.accepted) <= dtEnd);
+
+        const contractList = genTooltipProgramRow('Completed', complete)
+            + genTooltipProgramRow('Accepted', accept);
+        return contractList ? `<span style='font-size:12px;'>${contractList}</span>` : 'N/A';
+    };
+
     function genTooltipContractRow(title, contracts) {
         const groupedMap = contracts.reduce(
             (entryMap, e) => entryMap.set(e.contractInternalName, [...entryMap.get(e.contractInternalName) || [], e]),
@@ -466,6 +500,14 @@
 
         const res = Array.from(groupedMap.values()).reduce(
             (acc, entry) => acc + '<br>    ' + (entry.length > 1 ? entry.length + "x " : '') + entry[0].contractDisplayName,
+            ''
+        );
+        return res ? `<br><i>${title} :</i>${res}` : '';
+    }
+
+    function genTooltipProgramRow(title, programs) {
+        const res = programs.reduce(
+            (acc, entry) => acc + `<br>    ${entry.title}`,
             ''
         );
         return res ? `<br><i>${title} :</i>${res}` : '';
