@@ -37,8 +37,14 @@ namespace RP1AnalyticsWebApp
             services.Configure<CareerLogDatabaseSettings>(
                 Configuration.GetSection(nameof(CareerLogDatabaseSettings)));
 
+            services.Configure<AppSettings>(
+                Configuration.GetSection(nameof(AppSettings)));
+
             services.AddSingleton<ICareerLogDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<CareerLogDatabaseSettings>>().Value);
+
+            services.AddSingleton<IAppSettings>(sp =>
+                sp.GetRequiredService<IOptions<AppSettings>>().Value);
 
             services.AddSingleton<IContractSettings>(sp =>
                 sp.GetRequiredService<IOptions<ContractSettings>>().Value);

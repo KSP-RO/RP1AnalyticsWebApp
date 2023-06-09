@@ -41,6 +41,9 @@ Example settings file:
       "ClientId": "[Client ID of the GitHub OAuth App, mandatory]",
       "ClientSecret": "[Client secret of the app, mandatory]"
     }
+  },
+  "AppSettings": {
+    "UserDefaultRoles": ["Member"]
   }
 }
 ```

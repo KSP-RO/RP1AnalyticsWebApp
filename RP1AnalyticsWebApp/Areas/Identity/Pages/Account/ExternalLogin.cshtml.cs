@@ -14,15 +14,18 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<WebAppUser> _signInManager;
         private readonly UserManager<WebAppUser> _userManager;
+        private readonly IAppSettings _appSettings;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
             SignInManager<WebAppUser> signInManager,
             UserManager<WebAppUser> userManager,
+            IAppSettings appSettings,
             ILogger<ExternalLoginModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _appSettings = appSettings;
             _logger = logger;
         }
 
@@ -87,13 +90,17 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account
                 string userName = info.Principal.FindFirst(ClaimTypes.Name).Value;
                 var user = new WebAppUser { UserName = userName };
 
-                var userRes = await _userManager.CreateAsync(user);
+                IdentityResult userRes = await _userManager.CreateAsync(user);
                 if (userRes.Succeeded)
                 {
                     userRes = await _userManager.AddLoginAsync(user, info);
                     if (userRes.Succeeded)
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                        if (_appSettings.UserDefaultRoles?.Length > 0)
+                        {
+                            await _userManager.AddToRolesAsync(user, _appSettings.UserDefaultRoles);
+                        }
                         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
 
                         return RedirectToPage("./Manage/Index");
