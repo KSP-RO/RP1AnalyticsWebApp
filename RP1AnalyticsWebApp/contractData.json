@@ -1,19 +1,11 @@
 [
   {
-    "Name": "MolniyaRepeatComSats",
-    "Title": "Molniya Commercial Communications Satellite"
-  },
-  {
-    "Name": "TundraRepeatComSats",
-    "Title": "Tundra Commercial Communications Satellite"
-  },
-  {
     "Name": "orbitCeres",
     "Title": "Ceres Orbit"
   },
   {
     "Name": "orbitCeres_Rep",
-    "Title": "Ceres orbital science probe"
+    "Title": "Ceres Orbital Science Probe"
   },
   {
     "Name": "orbitVesta",
@@ -21,35 +13,79 @@
   },
   {
     "Name": "orbitVesta_Rep",
-    "Title": "Vesta orbital science probe"
+    "Title": "Vesta Orbital Science Probe"
   },
   {
-    "Name": "EarlyComNetwork3",
-    "Title": "Early Communications Network (3 Satellites)"
+    "Name": "LunarFlyby",
+    "Title": "Lunar Flyby (Uncrewed)"
   },
   {
-    "Name": "EarlyComNetwork4",
-    "Title": "Early Communications Network (4 Satellites)"
+    "Name": "LunarImpactor",
+    "Title": "First Lunar Impactor"
   },
   {
-    "Name": "first_MoonFlybyCrewed",
-    "Title": "Crewed Lunar Flyby"
+    "Name": "LunarImpactorOptional",
+    "Title": "Lunar Impactor (Uncrewed)"
   },
   {
-    "Name": "MoonExtendedStayCrew",
-    "Title": "Crewed Moon Landing & Rover Exploration"
+    "Name": "LunarOrbiter",
+    "Title": "First Lunar Orbiter (Uncrewed)"
   },
   {
-    "Name": "RepeatMoonLandingCrew",
-    "Title": "Crewed Targeted Moon Landing"
+    "Name": "LunarOrbiterOptional",
+    "Title": "Lunar Orbiter (Uncrewed)"
   },
   {
-    "Name": "FirstCrewedLunarOrbit",
-    "Title": "First Crewed Lunar Orbit"
+    "Name": "Downrange6000-Heavy",
+    "Title": "Downrange Milestone (6000 km)"
   },
   {
-    "Name": "first_MoonLandingCrewed",
-    "Title": "First Human Moon Landing"
+    "Name": "Downrange7500-Heavy",
+    "Title": "Downrange Milestone (7500 km)"
+  },
+  {
+    "Name": "FirstBioSat-Heavy",
+    "Title": "First Biological Satellite (400 kg)"
+  },
+  {
+    "Name": "FirstSatellite-Heavy",
+    "Title": "First Artificial Satellite (30 kg)"
+  },
+  {
+    "Name": "FirstScienceSat-Heavy",
+    "Title": "First Scientific Satellite (1000 kg)"
+  },
+  {
+    "Name": "AtmoSat",
+    "Title": "Atmospheric Analysis Satellite"
+  },
+  {
+    "Name": "Downrange6000",
+    "Title": "Downrange Milestone (6000 km)"
+  },
+  {
+    "Name": "Downrange7500",
+    "Title": "Downrange Milestone (7500 km)"
+  },
+  {
+    "Name": "FirstPolarSat",
+    "Title": "First Polar Orbit Satellite"
+  },
+  {
+    "Name": "FirstSatellite",
+    "Title": "First Artificial Satellite"
+  },
+  {
+    "Name": "FirstScienceSat",
+    "Title": "First Scientific Satellite"
+  },
+  {
+    "Name": "FirstSolarSat",
+    "Title": "First Solar-Powered Satellite"
+  },
+  {
+    "Name": "FirstSunSyncSat",
+    "Title": "First Sun-Synchronous Orbit Satellite"
   },
   {
     "Name": "first_Docking",
@@ -104,92 +140,44 @@
     "Title": "Suborbital Test Flight (Uncrewed)"
   },
   {
-    "Name": "flybyMars",
-    "Title": "Mars Flyby"
+    "Name": "ComTestSat",
+    "Title": "Communications Test Satellite"
   },
   {
-    "Name": "orbitMars",
-    "Title": "Mars Orbit"
+    "Name": "EarlyComNetwork3",
+    "Title": "Early Communications Network (3 Satellites)"
   },
   {
-    "Name": "MarsOrbitRepeatable",
-    "Title": "Mars Orbital Science Probe"
+    "Name": "EarlyComNetwork4",
+    "Title": "Early Communications Network (4 Satellites)"
   },
   {
-    "Name": "flybyVenus",
-    "Title": "Venus Flyby"
-  },
-  {
-    "Name": "orbitVenus",
-    "Title": "Venus Orbit"
-  },
-  {
-    "Name": "VenusOrbitRepeatable",
-    "Title": "Venus Orbital Science Probe"
-  },
-  {
-    "Name": "LunarFirstOrbiters",
-    "Title": "Lunar Early Orbiter (Uncrewed)"
-  },
-  {
-    "Name": "LunarFlyby",
-    "Title": "Lunar Flyby (Uncrewed)"
-  },
-  {
-    "Name": "LunarImpactor",
-    "Title": "Lunar Impactor (Uncrewed)"
-  },
-  {
-    "Name": "AtmoSat",
-    "Title": "Atmospheric Analysis Satellite"
+    "Name": "EarlyComSat",
+    "Title": "Commercial Communications Satellite (Early)"
   },
   {
     "Name": "FirstComSat",
     "Title": "First Communications Satellite"
   },
   {
+    "Name": "FirstGEOSat",
+    "Title": "First Geostationary Satellite"
+  },
+  {
+    "Name": "FirstMolniyaSat",
+    "Title": "First Molniya Orbit Satellite"
+  },
+  {
     "Name": "FirstNavSat",
     "Title": "First Navigational Satellite"
   },
   {
-    "Name": "FirstPolarSat",
-    "Title": "First Polar Orbit Satellite"
-  },
-  {
-    "Name": "FirstSatellite",
-    "Title": "First Artificial Satellite"
-  },
-  {
-    "Name": "FirstScienceSat",
-    "Title": "First Scientific Satellite"
-  },
-  {
-    "Name": "FirstSolarSat",
-    "Title": "First Solar Powered Satellite"
-  },
-  {
-    "Name": "FirstSunSyncSat",
-    "Title": "First Sun-Synchronous Orbit Satellite"
+    "Name": "FirstTundraSat",
+    "Title": "First Tundra Orbit Satellite"
   },
   {
     "Name": "FirstWeatherSat",
     "Title": "First Weather Satellite"
-  },
-  {
-    "Name": "BreakSoundBarrier",
-    "Title": "Break the Sound Barrier (Crewed)"
-  },
-  {
-    "Name": "CrewedFlightAtmo",
-    "Title": "X-Planes (Suborbital)"
-  },
-  {
-    "Name": "CrewedSupersonic",
-    "Title": "X-Planes (Supersonic)"
-  },
-  {
-    "Name": "RocketPlaneDevelopment",
-    "Title": "Experimental Rocketplanes"
   },
   {
     "Name": "GeoComSatNetwork",
@@ -198,46 +186,6 @@
   {
     "Name": "GEORepeatComSats",
     "Title": "Geostationary Commercial Communications Satellite"
-  },
-  {
-    "Name": "AsteroidLandingCrew",
-    "Title": "Asteroid Landing (Crewed)"
-  },
-  {
-    "Name": "JupiterFlybyCrew",
-    "Title": "Flyby Jupiter (Crewed)"
-  },
-  {
-    "Name": "first_MarsFlybyCrewed",
-    "Title": "Flyby Mars (Crewed)"
-  },
-  {
-    "Name": "MarsLandingCrew",
-    "Title": "Mars Landing (Crewed)"
-  },
-  {
-    "Name": "MarsOrbitCrew",
-    "Title": "Orbit Mars (Crewed)"
-  },
-  {
-    "Name": "MercuryFlybyCrew",
-    "Title": "Flyby Mercury (Crewed)"
-  },
-  {
-    "Name": "PhobosLandingCrew",
-    "Title": "Phobos Landing (Crewed)"
-  },
-  {
-    "Name": "SaturnFlybyCrew",
-    "Title": "Flyby Saturn (Crewed)"
-  },
-  {
-    "Name": "first_VenusFlybyCrewed",
-    "Title": "Flyby Venus (Crewed)"
-  },
-  {
-    "Name": "VenusOrbitCrew",
-    "Title": "Orbit Venus (Crewed)"
   },
   {
     "Name": "recordCrewedAlt",
@@ -277,59 +225,63 @@
   },
   {
     "Name": "orbitJupiter_Rep",
-    "Title": "Jupiter orbital science probe"
+    "Title": "Jupiter Orbital Science Probe"
   },
   {
     "Name": "probeJupiter",
     "Title": "Jupiter Atmospheric Probe"
   },
   {
-    "Name": "landingAsteroid",
-    "Title": "Asteroid Landing"
+    "Name": "first_MoonFlybyCrewed",
+    "Title": "Crewed Lunar Flyby"
   },
   {
-    "Name": "landingCallisto",
-    "Title": "Callisto Landing"
+    "Name": "MoonExtendedStayCrew",
+    "Title": "Crewed Moon Landing & Rover Exploration"
   },
   {
-    "Name": "landingDione",
-    "Title": "Dione Landing"
+    "Name": "RepeatMoonLandingCrew",
+    "Title": "Crewed Targeted Moon Landing"
   },
   {
-    "Name": "landingEnceladus",
-    "Title": "Enceladus Landing"
+    "Name": "FirstCrewedLunarOrbit",
+    "Title": "First Crewed Lunar Orbit"
   },
   {
-    "Name": "landingEuropa",
-    "Title": "Europa Landing"
+    "Name": "first_MoonLandingCrewed",
+    "Title": "First Human Moon Landing"
   },
   {
-    "Name": "landingGanymede",
-    "Title": "Ganymede Landing"
+    "Name": "MoonLanding",
+    "Title": "First Lunar Landing (Uncrewed)"
   },
   {
-    "Name": "landingIapetus",
-    "Title": "Iapetus Landing"
+    "Name": "MoonLandingFarSide",
+    "Title": "First Far Side Lunar Landing (Uncrewed)"
   },
   {
-    "Name": "landingIo",
-    "Title": "Io Landing"
+    "Name": "MoonLandingFarSideOptional",
+    "Title": "Far Side Lunar Landing (Uncrewed)"
   },
   {
-    "Name": "landingMimas",
-    "Title": "Mimas Landing"
+    "Name": "MoonLandingOptional",
+    "Title": "Lunar Landing (Uncrewed)"
   },
   {
-    "Name": "landingRhea",
-    "Title": "Rhea Landing"
+    "Name": "MoonLandingReturn",
+    "Title": "Lunar Landing & Sample Return (Uncrewed)"
   },
   {
-    "Name": "landingTethys",
-    "Title": "Tethys Landing"
+    "Name": "MoonOrbiter",
+    "Title": "First Lunar Orbiter & Mapper (Uncrewed)"
   },
   {
-    "Name": "landingTitan",
-    "Title": "Titan Landing"
+    "Name": "MoonOrbiterOptional",
+    "Title": "Lunar Orbiter & Mapper (Uncrewed)"
+  },
+  {
+    "Name": "MoonRover",
+    "Title": "Lunar Rover (Uncrewed)"
   },
   {
     "Name": "flybyDeimos",
@@ -350,6 +302,18 @@
   {
     "Name": "roverMars",
     "Title": "Mars Rover"
+  },
+  {
+    "Name": "flybyMars",
+    "Title": "Mars Flyby"
+  },
+  {
+    "Name": "orbitMars",
+    "Title": "Mars Orbit"
+  },
+  {
+    "Name": "MarsOrbitRepeatable",
+    "Title": "Mars Orbital Science Probe"
   },
   {
     "Name": "flybyPhobos",
@@ -373,23 +337,11 @@
   },
   {
     "Name": "orbitMercury_Rep",
-    "Title": "Mercury orbital science probe"
+    "Title": "Mercury Orbital Science Probe"
   },
   {
     "Name": "roverMercury",
     "Title": "Mercury Rover"
-  },
-  {
-    "Name": "EarlyNavSats",
-    "Title": "Early Navigation Satellite"
-  },
-  {
-    "Name": "OperationalNavSats",
-    "Title": "Operational Navigation System"
-  },
-  {
-    "Name": "SecondGenNavSats",
-    "Title": "Second-Generation Navigation Satellite"
   },
   {
     "Name": "flybyAriel",
@@ -405,7 +357,7 @@
   },
   {
     "Name": "orbitNeptune_Rep",
-    "Title": "Neptune orbital science probe"
+    "Title": "Neptune Orbital Science Probe"
   },
   {
     "Name": "probeNeptune",
@@ -437,7 +389,7 @@
   },
   {
     "Name": "orbitUranus_Rep",
-    "Title": "Uranus orbital science probe"
+    "Title": "Uranus Orbital Science Probe"
   },
   {
     "Name": "probeUranus",
@@ -496,118 +448,6 @@
     "Title": "Uncrewed Speed Record"
   },
   {
-    "Name": "roverCallisto",
-    "Title": "Callisto Rover"
-  },
-  {
-    "Name": "roverDione",
-    "Title": "Dione Rover"
-  },
-  {
-    "Name": "roverEnceladus",
-    "Title": "Enceladus Rover"
-  },
-  {
-    "Name": "roverEuropa",
-    "Title": "Europa Rover"
-  },
-  {
-    "Name": "roverGanymede",
-    "Title": "Ganymede Rover"
-  },
-  {
-    "Name": "roverIapetus",
-    "Title": "Iapetus Rover"
-  },
-  {
-    "Name": "roverIo",
-    "Title": "Io Rover"
-  },
-  {
-    "Name": "roverMimas",
-    "Title": "Mimas Rover"
-  },
-  {
-    "Name": "roverRhea",
-    "Title": "Rhea Rover"
-  },
-  {
-    "Name": "roverTethys",
-    "Title": "Tethys Rover"
-  },
-  {
-    "Name": "roverTriton",
-    "Title": "Triton Rover"
-  },
-  {
-    "Name": "samplesAsteroid",
-    "Title": "Asteroid Sample Return"
-  },
-  {
-    "Name": "samplesCallisto",
-    "Title": "Callisto Sample Return"
-  },
-  {
-    "Name": "samplesCharon",
-    "Title": "Charon Sample Return"
-  },
-  {
-    "Name": "samplesDione",
-    "Title": "Dione Sample Return"
-  },
-  {
-    "Name": "samplesEnceladus",
-    "Title": "Enceladus Sample Return"
-  },
-  {
-    "Name": "samplesEuropa",
-    "Title": "Europa Sample Return"
-  },
-  {
-    "Name": "samplesGanymede",
-    "Title": "Ganymede Sample Return"
-  },
-  {
-    "Name": "samplesIapetus",
-    "Title": "Iapetus Sample Return"
-  },
-  {
-    "Name": "samplesIo",
-    "Title": "Io Sample Return"
-  },
-  {
-    "Name": "samplesMars",
-    "Title": "Mars Sample Return"
-  },
-  {
-    "Name": "samplesMercury",
-    "Title": "Mercury Sample Return"
-  },
-  {
-    "Name": "samplesMimas",
-    "Title": "Mimas Sample Return"
-  },
-  {
-    "Name": "samplesPluto",
-    "Title": "Pluto Sample Return"
-  },
-  {
-    "Name": "samplesRhea",
-    "Title": "Rhea Sample Return"
-  },
-  {
-    "Name": "samplesTethys",
-    "Title": "Tethys Sample Return"
-  },
-  {
-    "Name": "samplesTitan",
-    "Title": "Titan Sample Return"
-  },
-  {
-    "Name": "samplesTriton",
-    "Title": "Triton Sample Return"
-  },
-  {
     "Name": "flybyDione",
     "Title": "Dione Flyby"
   },
@@ -633,7 +473,7 @@
   },
   {
     "Name": "orbitSaturn_Rep",
-    "Title": "Saturn orbital science probe"
+    "Title": "Saturn Orbital Science Probe"
   },
   {
     "Name": "probeSaturn",
@@ -656,34 +496,6 @@
     "Title": "Titan Rover"
   },
   {
-    "Name": "RP0_SCANSat_Earth_AltimetryLoRes",
-    "Title": "Conduct Low Resolution Altimetry SCANsat survey of Earth"
-  },
-  {
-    "Name": "RP0_SCANSat_Mars_AltimetryLoRes_Early",
-    "Title": "Conduct a Partial Low Resolution Altimetry SCANsat survey of Mars"
-  },
-  {
-    "Name": "RP0_SCANSat_Mars_AltimetryLoRes",
-    "Title": "Conduct Low Resolution Altimetry SCANsat survey of the Mars"
-  },
-  {
-    "Name": "RP0_SCANSat_Moon_AltimetryLoRes_Early",
-    "Title": "Conduct a Partial Low Resolution Altimetry SCANsat survey of the Moon"
-  },
-  {
-    "Name": "RP0_SCANSat_Moon_AltimetryLoRes",
-    "Title": "Conduct Low Resolution Altimetry SCANsat survey of the Moon"
-  },
-  {
-    "Name": "RP0_SCANSat_Venus_AltimetryLoRes_Early",
-    "Title": "Conduct a Partial Low Resolution Altimetry SCANsat survey of Venus"
-  },
-  {
-    "Name": "RP0_SCANSat_Venus_AltimetryLoRes",
-    "Title": "Conduct Low Resolution Altimetry SCANsat survey of the Venus"
-  },
-  {
     "Name": "flybyCeres",
     "Title": "Ceres Flyby"
   },
@@ -694,6 +506,66 @@
   {
     "Name": "flybyVesta",
     "Title": "Vesta Flyby"
+  },
+  {
+    "Name": "DistanceSoundingDifficult",
+    "Title": "Downrange Distance LV Development (Difficult)"
+  },
+  {
+    "Name": "DownrangeSoundingIntermediate",
+    "Title": "Downrange Distance LV Development (Intermediate)"
+  },
+  {
+    "Name": "Downrange",
+    "Title": "Downrange Milestone (4500 km)"
+  },
+  {
+    "Name": "DownrangeEarly",
+    "Title": "Downrange Milestone (3000 km)"
+  },
+  {
+    "Name": "first_FirstFlight",
+    "Title": "First Launch"
+  },
+  {
+    "Name": "KarmanLine",
+    "Title": "Karman Line"
+  },
+  {
+    "Name": "SoundingDifficult",
+    "Title": "Altitude Sounding Rocket (Difficult)"
+  },
+  {
+    "Name": "SoundingIntermediate",
+    "Title": "Altitude Sounding Rocket (Intermediate)"
+  },
+  {
+    "Name": "SoundingRocketAdvancedBio",
+    "Title": "First Advanced Biological Suborbital Experiment"
+  },
+  {
+    "Name": "SoundingRocketAdvancedBioOptional",
+    "Title": "Advanced Biological Suborbital Experiment"
+  },
+  {
+    "Name": "SoundingRocketBio",
+    "Title": "First Low Space Biological Experimentation"
+  },
+  {
+    "Name": "SoundingRocketBioOptional",
+    "Title": "Low Space Biological Experimentation"
+  },
+  {
+    "Name": "SoundingRocketFilm",
+    "Title": "First Low Space Film Return"
+  },
+  {
+    "Name": "SoundingRocketFilmOptional",
+    "Title": "Low Space Film Return"
+  },
+  {
+    "Name": "SuborbitalReturn",
+    "Title": "Reach a Suborbital Trajectory & Return (uncrewed)"
   },
   {
     "Name": "ExtraCrewStation",
@@ -708,16 +580,20 @@
     "Title": "First Space Station"
   },
   {
+    "Name": "improved_spaceStation",
+    "Title": "Improved Space Station"
+  },
+  {
+    "Name": "first_ISScrew",
+    "Title": "Crew your Improved Space Station for 60 days and collect science"
+  },
+  {
+    "Name": "second_ISScrew",
+    "Title": "Crew your Improved Space Station for 90 days and collect science"
+  },
+  {
     "Name": "LifeSupportStation",
     "Title": "Resupply the Life Support Resources on your Space Station"
-  },
-  {
-    "Name": "MoonSpaceStation",
-    "Title": "Lunar Space Station"
-  },
-  {
-    "Name": "MarsSpaceStation",
-    "Title": "Martian Space Station"
   },
   {
     "Name": "NewCrewStation",
@@ -728,104 +604,32 @@
     "Title": "Add More Power Generation to your Station"
   },
   {
-    "Name": "Downrange",
-    "Title": "Downrange Milestone (3000km)"
+    "Name": "first_SpaceplaneDocking",
+    "Title": "First Docking by Spaceplane"
   },
   {
-    "Name": "first_FirstFlight",
-    "Title": "First Launch"
+    "Name": "first_SpaceplaneOrbit",
+    "Title": "First Orbital Spaceplane Flight"
   },
   {
-    "Name": "KarmanLine",
-    "Title": "Karman Line"
+    "Name": "OrbitalSpaceplane1",
+    "Title": "Orbital Spaceplane (One Crew)"
   },
   {
-    "Name": "SuborbitalReturn",
-    "Title": "Reach a Suborbital Trajectory & Return (uncrewed)"
+    "Name": "OrbitalSpaceplane2",
+    "Title": "Orbital Spaceplane with Maneuvers and 2+ Crew"
   },
   {
-    "Name": "DistanceSoundingDifficult",
-    "Title": "Downrange Distance LV Development (Difficult)"
+    "Name": "OrbitalSpaceplane3",
+    "Title": "Orbital Spaceplane with at Least Three Crew"
   },
   {
-    "Name": "DownrangeSoundingIntermediate",
-    "Title": "Downrange Distance LV Development (Intermediate)"
+    "Name": "SpaceplaneRendezvous",
+    "Title": "First Rendezvous by Spaceplane"
   },
   {
-    "Name": "SoundingDifficult",
-    "Title": "Altitude Sounding Rocket (Difficult)"
-  },
-  {
-    "Name": "SoundingIntermediate",
-    "Title": "Altitude Sounding Rocket (Intermediate)"
-  },
-  {
-    "Name": "SoundingRocketAdvancedBio",
-    "Title": "Advanced Biological Suborbital Experiment"
-  },
-  {
-    "Name": "SoundingRocketBio",
-    "Title": "Low Space Biological Experimentation"
-  },
-  {
-    "Name": "SoundingRocketFilm",
-    "Title": "Low space film return"
-  },
-  {
-    "Name": "MarsSurfaceOutpost",
-    "Title": "Martian Surface Outpost"
-  },
-  {
-    "Name": "MarsSurfaceOutpostLab",
-    "Title": "Expanded Martian Surface Outpost"
-  },
-  {
-    "Name": "MoonSurfaceOutpost",
-    "Title": "Lunar Surface Outpost"
-  },
-  {
-    "Name": "MoonSurfaceOutpostLab",
-    "Title": "Expanded Lunar Surface Outpost"
-  },
-  {
-    "Name": "FirstGEOSat",
-    "Title": "First Geostationary Satellite"
-  },
-  {
-    "Name": "FirstMolniyaSat",
-    "Title": "First Molniya Orbit Satellite"
-  },
-  {
-    "Name": "FirstTundraSat",
-    "Title": "First Tundra Orbit Satellite"
-  },
-  {
-    "Name": "EarlyComSat",
-    "Title": "Commercial Communications Satellite (Early)"
-  },
-  {
-    "Name": "ComTestSat",
-    "Title": "Communications Test Satellite"
-  },
-  {
-    "Name": "MoonLanding",
-    "Title": "Lunar Landing (Uncrewed)"
-  },
-  {
-    "Name": "MoonLandingFarSide",
-    "Title": "Far Side Lunar Landing (Uncrewed)"
-  },
-  {
-    "Name": "MoonLandingReturn",
-    "Title": "Lunar Landing & Sample Return (Uncrewed)"
-  },
-  {
-    "Name": "MoonOrbiter",
-    "Title": "Lunar Orbiter & Mapper (Uncrewed)"
-  },
-  {
-    "Name": "MoonRover",
-    "Title": "Lunar Rover (Uncrewed)"
+    "Name": "CrewedSpaceplaneSuborbital",
+    "Title": "Suborbital Spaceplane Flight (Crewed)"
   },
   {
     "Name": "landingVenus",
@@ -840,19 +644,51 @@
     "Title": "Venus Rover"
   },
   {
-    "Name": "EarlyWeatherSats",
-    "Title": "Early Weather Satellite"
+    "Name": "flybyVenus",
+    "Title": "Venus Flyby"
   },
   {
-    "Name": "GEOWeather",
-    "Title": "Geostationary Weather Satellite"
+    "Name": "orbitVenus",
+    "Title": "Venus Orbit"
   },
   {
-    "Name": "SecondGenWeather",
-    "Title": "Second Generation Weather Satellite"
+    "Name": "VenusOrbitRepeatable",
+    "Title": "Venus Orbital Science Probe"
   },
   {
-    "Name": "SunSyncWeather",
-    "Title": "Sun Synchronous Weather Satellite"
+    "Name": "BreakSoundBarrier",
+    "Title": "Break the Sound Barrier (Crewed)"
+  },
+  {
+    "Name": "RocketPlaneDevelopment",
+    "Title": "Experimental Rocketplanes (Early)"
+  },
+  {
+    "Name": "RocketPlaneDevelopmentOptional",
+    "Title": "Experimental Rocketplanes"
+  },
+  {
+    "Name": "XPlanesHighAltitude",
+    "Title": "X-Planes (High Altitude)"
+  },
+  {
+    "Name": "XPlanesKarman",
+    "Title": "X-Planes (Karman Line)"
+  },
+  {
+    "Name": "XPlanesSuborbital",
+    "Title": "X-Planes (Suborbital)"
+  },
+  {
+    "Name": "XPlanesSupersonic",
+    "Title": "X-Planes (Supersonic)"
+  },
+  {
+    "Name": "XPlanesSupersonicMach2",
+    "Title": "X-Planes (Mach 2 Supersonic)"
+  },
+  {
+    "Name": "XPlanesSupersonicOptional",
+    "Title": "X-Planes (High Supersonic)"
   }
 ]
