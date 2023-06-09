@@ -3,9 +3,20 @@
   "SoundingIntermediate",
   "DownrangeSoundingIntermediate",
   "DistanceSoundingDifficult",
-  "CrewedSupersonic",
-  "CrewedFlightAtmo",
+  "XPlanesSupersonicOptional",
+  "ComTestSat",
+  "EarlyComSat",
+  "GEORepeatComSats",
   "OrbitalFlight1",
   "OrbitalFlight2",
-  "OrbitalFlight3"
+  "OrbitalFlight3",
+  "orbitMercury_Rep",
+  "VenusOrbitRepeatable",
+  "MarsOrbitRepeatable",
+  "orbitCeres_Rep",
+  "orbitVesta_Rep",
+  "orbitJupiter_Rep",
+  "orbitSaturn_Rep",
+  "orbitUranus_Rep",
+  "orbitNeptune_Rep"
 ]
