@@ -10,6 +10,7 @@
             const p2 = fetch(`/api/careerlogs/${careerId}/lcs`)
                 .then(res => res.json())
                 .then(jsonItems => {
+                    jsonItems.forEach(i => i.visible = false);
                     return jsonItems.filter(e => e.state != 'ConstructionCancelled');
                 });
 
@@ -40,6 +41,11 @@
             if (lc.lcType === 'Hangar') return 'fa-plane';
             return '';
         },
+        toggleVisibility(item) {
+            const newState = !item.visible;
+            this.items.forEach(i => i.visible = false);
+            item.visible = newState;
+        }
     },
     computed: {
         tabName() {
@@ -61,7 +67,7 @@
             </thead>
             <tbody>
                 <template v-for="item in items">
-                    <tr v-if="item.lcType">
+                    <tr v-if="item.lcType" @click="toggleVisibility(item)" class="clickable" :class="{ 'is-selected': item.visible }">
                         <td>
                             <span class="icon is-small"><i class="fas mr-2" :class="getLCIcon(item)" aria-hidden="true"></i></span>
                             <span>{{ item.name }}</span>
@@ -69,6 +75,14 @@
                         <td>{{ item.massMax }}</td>
                         <td>{{ formatDate(item.constrStarted) }}</td>
                         <td>{{ formatDate(item.constrEnded) }}</td>
+                    </tr>
+                    <tr v-if="item.lcType && item.visible">
+                        <td colspan="3">
+                            <div>Cost: √{{item.modCost.toLocaleString('en', { maximumFractionDigits: 0 })}}</div>
+                            <div>Height: {{item.sizeMax.y}}m</div>
+                            <div>Width: {{item.sizeMax.x > item.sizeMax.z ? item.sizeMax.x : item.sizeMax.z}}m</div>
+                            <div>Human-rated: {{item.isHumanRated ? 'Yes' : 'No'}}</div>
+                        </td>
                     </tr>
                     <tr v-if="!item.lcType">
                         <td>{{ item.facility }}</td>
