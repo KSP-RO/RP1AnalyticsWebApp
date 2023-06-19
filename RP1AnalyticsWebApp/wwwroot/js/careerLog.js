@@ -269,7 +269,7 @@
             type: 'scattergl',
             mode: 'lines',
             line: {
-                color: 'Chartreuse'
+                color: 'chartreuse'
             }   
         };
         const subsidySizeTrace = {
@@ -287,7 +287,7 @@
             type: 'scattergl',
             mode: 'lines',
             line: {
-                color: 'DodgerBlue',
+                color: 'dodgerblue',
             }
         };
 
@@ -307,7 +307,7 @@
             type: 'scattergl',
             mode: 'lines',
             line: {
-                color: 'DarkOrange',
+                color: 'darkorange',
             }
         };
 
@@ -318,7 +318,7 @@
             type: 'scattergl',
             mode: 'lines',
             line: {
-                color: 'DarkOrange',
+                color: 'darkorange',
                 dash: 'dot',
                 width: 3
             }
@@ -331,7 +331,7 @@
             type: 'scattergl',
             mode: 'lines',
             line: {
-                color: 'Fuchsia'
+                color: 'fuchsia'
             }
         };
 
