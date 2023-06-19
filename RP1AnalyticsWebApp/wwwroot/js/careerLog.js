@@ -267,7 +267,10 @@
             name: 'Earned Funds',
             y: getFundsEarned(careerPeriods),
             type: 'scattergl',
-            mode: 'lines'
+            mode: 'lines',
+            line: {
+                color: 'Chartreuse'
+            }   
         };
         const subsidySizeTrace = {
             name: 'Subsidy size',
@@ -282,7 +285,10 @@
             y: getValuesForField(careerPeriods, 'scienceEarned'),
             yaxis: 'y2',
             type: 'scattergl',
-            mode: 'lines'
+            mode: 'lines',
+            line: {
+                color: 'DodgerBlue',
+            }
         };
 
         const curSciTrace = {
@@ -299,7 +305,10 @@
             y: getValuesForField(careerPeriods, 'reputation'),
             yaxis: 'y3',
             type: 'scattergl',
-            mode: 'lines'
+            mode: 'lines',
+            line: {
+                color: 'DarkOrange',
+            }
         };
 
         const repCapTrace = {
@@ -309,6 +318,7 @@
             type: 'scattergl',
             mode: 'lines',
             line: {
+                color: 'DarkOrange',
                 dash: 'dot',
                 width: 3
             }
@@ -319,7 +329,10 @@
             y: getValuesForField(careerPeriods, 'confidence'),
             yaxis: 'y4',
             type: 'scattergl',
-            mode: 'lines'
+            mode: 'lines',
+            line: {
+                color: 'Fuchsia'
+            }
         };
 
         const engineersTrace = {
