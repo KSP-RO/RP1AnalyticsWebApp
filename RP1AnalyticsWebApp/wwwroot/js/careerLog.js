@@ -4,6 +4,27 @@
         'first_OrbitScience': 'FSO', 'first_MoonImpact': 'Lunar Impactor', 'first_OrbitCrewed': 'Crewed Orbit',
         'first_MoonLandingCrewed': 'Crewed Moon', 'MarsLandingCrew': 'Crewed Mars'
     });
+    const repToSubsidyConversion = 150;
+    const perYearMinSubsidyArr = Object.freeze([
+        25000,
+        30000,
+        35000,
+        40000,
+        60000,
+        80000,
+        100000,
+        125000,
+        150000,
+        200000,
+        250000,
+        300000,
+        375000,
+        450000,
+        500000,
+        550000,
+        600000
+    ]);
+    const yearRepMap = calculateYearRepMap();
 
     let contractEvents = null;
     let programs = null;
@@ -175,6 +196,30 @@
         return totals;
     }
 
+    function getRepCapForPeriods(careerLogs) {
+        const arr = [];
+        careerLogs.forEach((entry) => {
+            const dt = moment.utc(entry.endDate);
+            const timestamp = dt.unix();
+            let prevKey, prevVal;
+            for (const [key, value] of yearRepMap) {
+                if (timestamp < key) {
+                    const excess = timestamp - prevKey;
+                    const range = key - prevKey;
+                    const timeInRange = excess / range;
+                    const approxRep = lerp(prevVal, value, timeInRange)
+                    arr.push(approxRep);
+                    return;
+                }
+                prevKey = key;
+                prevVal = value;
+            }
+            arr.push(prevVal);
+        });
+
+        return arr;
+    }
+
     function getCompletionDatesAndIndexesForContracts(careerLog, contracts) {
         let arr = [];
         for (let i = 0; i < careerLog.contractEventEntries.length - 1; i++) {
@@ -257,6 +302,18 @@
             mode: 'lines'
         };
 
+        const repCapTrace = {
+            name: 'Reputation cap',
+            y: getRepCapForPeriods(careerPeriods),
+            yaxis: 'y3',
+            type: 'scattergl',
+            mode: 'lines',
+            line: {
+                dash: 'dot',
+                width: 3
+            }
+        };
+
         const confidenceTrace = {
             name: 'Confidence',
             y: getValuesForField(careerPeriods, 'confidence'),
@@ -330,6 +387,7 @@
             sciEarnedTrace,
             curSciTrace,
             repTrace,
+            repCapTrace,
             confidenceTrace,
             engineersTrace,
             researchersTrace,
@@ -509,5 +567,20 @@
             ''
         );
         return res ? `<br><i>${title} :</i>${res}` : '';
+    }
+
+    function calculateYearRepMap() {
+        const yearRepMap = new Map();   // Key is Unix timestamp of the year start; value is rep cap at that point in time
+        for (let i = 0; i < perYearMinSubsidyArr.length; i++) {
+            const year = 1951 + i;
+            const dt = moment({ year: year, month: 1, day: 1 });
+            yearRepMap.set(dt.unix(), perYearMinSubsidyArr[i] * 2 / repToSubsidyConversion);
+        }
+
+        return yearRepMap;
+    }
+
+    function lerp(start, end, time) {
+        return (1 - time) * start + time * end;
     }
 })();
