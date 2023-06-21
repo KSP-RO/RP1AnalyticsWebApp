@@ -4,7 +4,8 @@
         'first_OrbitScience': 'FSO', 'first_MoonImpact': 'Lunar Impactor', 'first_OrbitCrewed': 'Crewed Orbit',
         'first_MoonLandingCrewed': 'Crewed Moon', 'MarsLandingCrew': 'Crewed Mars'
     });
-    const repToSubsidyConversion = 150;
+    const repToSubsidyConversion = 100;
+    const subsidyMultiplierForMax = 2;
     const perYearMinSubsidyArr = Object.freeze([
         25000,
         30000,
@@ -587,7 +588,9 @@
         for (let i = 0; i < perYearMinSubsidyArr.length; i++) {
             const year = 1951 + i;
             const dt = moment({ year: year, month: 1, day: 1 });
-            yearRepMap.set(dt.unix(), perYearMinSubsidyArr[i] * 2 / repToSubsidyConversion);
+            const minSubsidy = perYearMinSubsidyArr[i];
+            const maxSubsidy = minSubsidy * subsidyMultiplierForMax;
+            yearRepMap.set(dt.unix(), (maxSubsidy - minSubsidy) / repToSubsidyConversion);
         }
 
         return yearRepMap;
