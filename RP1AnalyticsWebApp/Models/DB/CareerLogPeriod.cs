@@ -13,6 +13,7 @@ namespace RP1AnalyticsWebApp.Models
         public double EfficiencyEngineers { get; set; }
         public double CurrentFunds { get; set; }
         public double CurrentSci { get; set; }
+        public int RnDQueueLength { get; set; }
         public double ScienceEarned { get; set; }
         public double ProgramFunds { get; set; }
         public double OtherFundsEarned { get; set; }
@@ -43,6 +44,7 @@ namespace RP1AnalyticsWebApp.Models
             EfficiencyEngineers = c.EfficiencyEngineers;
             CurrentFunds = c.CurrentFunds;
             CurrentSci = c.CurrentSci;
+            RnDQueueLength = c.RnDQueueLength;
             ScienceEarned = c.ScienceEarned;
             ProgramFunds = c.ProgramFunds;
             OtherFundsEarned = c.OtherFundsEarned;
