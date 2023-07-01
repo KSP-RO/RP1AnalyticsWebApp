@@ -9,14 +9,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="5.0.8" />
-      <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.2.0" />
-      <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.7" />
-      <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.2" />
-      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-      <PackageReference Include="MongoDB.Driver" Version="2.13.1" />
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+      <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="6.0.15" />
+      <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.3.3" />
+      <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.19" />
+      <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.0" />
+      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.14" />
+      <PackageReference Include="MongoDB.Driver" Version="2.20.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
