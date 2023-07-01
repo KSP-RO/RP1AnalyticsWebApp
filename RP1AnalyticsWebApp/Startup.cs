@@ -3,16 +3,21 @@ using AspNetCore.Identity.Mongo.Model;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.OData.Formatter.MediaType;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson.Serialization.Conventions;
-using RP1AnalyticsWebApp.Models;
-using RP1AnalyticsWebApp.Services;
-using Microsoft.AspNetCore.OData;
+using Microsoft.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using MongoDB.Bson.Serialization.Conventions;
+using RP1AnalyticsWebApp.Models;
+using RP1AnalyticsWebApp.OData;
+using RP1AnalyticsWebApp.Services;
+using System.Linq;
 
 namespace RP1AnalyticsWebApp
 {
@@ -73,8 +78,18 @@ namespace RP1AnalyticsWebApp
             });
 
             services.AddControllers()
-                    .AddOData(opt => opt.AddRouteComponents("odata", GetEdmModel())
-                                        .Filter());
+                    .AddOData(opt => opt.AddRouteComponents(
+                        "odata", GetEdmModel(),
+                        service => service.AddSingleton<ODataMediaTypeResolver>(sp => new CsvMediaTypeResolver()))
+                    .Filter());
+
+            services.AddControllers(opt =>
+            {
+                var odataFormatter = opt.OutputFormatters.OfType<ODataOutputFormatter>().First();
+                odataFormatter.SupportedMediaTypes.Add("text/csv");
+                odataFormatter.MediaTypeMappings.Add(new QueryStringMediaTypeMapping("$format", "csv", "text/csv"));
+            });
+
             services.AddRazorPages();
             services.AddApplicationInsightsTelemetry();
             services.AddSwaggerGen();
