@@ -13,12 +13,21 @@ namespace RP1AnalyticsWebApp.Models
         public double CurrentSci { get; set; }
         public int RnDQueueLength { get; set; }
         public double ScienceEarned { get; set; }
+        public double SalaryEngineers { get; set; }
+        public double SalaryResearchers { get; set; }
+        public double SalaryCrew { get; set; }
         public double ProgramFunds { get; set; }
         public double OtherFundsEarned { get; set; }
         public double LaunchFees { get; set; }
+        public double VesselPurchase { get; set; }
+        public double VesselRecovery { get; set; }
+        public double LCMaintenance { get; set; }
+        public double FacilityMaintenance { get; set; }
         public double MaintenanceFees { get; set; }
+        public double TrainingFees { get; set; }
         public double ToolingFees { get; set; }
         public double EntryCosts { get; set; }
+        public double SpentUnlockCredit { get; set; }
         public double ConstructionFees { get; set; }
         public double OtherFees { get; set; }
         public double SubsidySize { get; set; }
