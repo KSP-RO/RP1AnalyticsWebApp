@@ -6,7 +6,6 @@ namespace RP1AnalyticsWebApp.Models
     {
         public string InternalName { get; set; }
         public DateTime Date { get; set; }
-        public double FundsChange { get; set; }
         public double RepChange { get; set; }
         public ContractEventType Type { get; set; }
 
@@ -18,7 +17,6 @@ namespace RP1AnalyticsWebApp.Models
         {
             InternalName = c.InternalName;
             Date = c.Date;
-            FundsChange = c.FundsChange;
             RepChange = c.RepChange;
             Type = c.Type;
         }
