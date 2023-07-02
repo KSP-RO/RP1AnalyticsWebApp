@@ -1,7 +1,9 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace RP1AnalyticsWebApp.Models
 {
+    [BsonIgnoreExtraElements]
     public class ContractEvent
     {
         public string InternalName { get; set; }
