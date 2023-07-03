@@ -542,14 +542,7 @@
         const dtEnd = dtStart.clone().add(1, 'months');
         const complete = contractEvents.filter(c => c.type === ContractEventTypes.Complete &&
             moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
-        const accept = contractEvents.filter(c => c.type === ContractEventTypes.Accept &&
-            moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
-        const fail = contractEvents.filter(c => c.type === ContractEventTypes.Fail &&
-            moment.utc(c.date) > dtStart && moment.utc(c.date) <= dtEnd);
-
-        const contractList = genTooltipContractRow('Completed', complete)
-            + genTooltipContractRow('Accepted', accept)
-            + genTooltipContractRow('Failed', fail);
+        const contractList = genTooltipContractRow('Completed', complete);
         return contractList ? `<span style='font-size:12px;'>${contractList}</span>` : 'N/A';
     };
 
