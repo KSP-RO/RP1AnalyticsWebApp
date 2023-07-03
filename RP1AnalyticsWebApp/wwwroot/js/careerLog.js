@@ -1,8 +1,8 @@
 ﻿(() => {
     const ContractEventTypes = Object.freeze({ 'Accept': 0, 'Complete': 1, 'Fail': 2, 'Cancel': 3 });
     const MilestonesToShowOnChart = Object.freeze({
-        'first_OrbitScience': 'FSO', 'first_MoonImpact': 'Lunar Impactor', 'first_OrbitCrewed': 'Crewed Orbit',
-        'first_MoonLandingCrewed': 'Crewed Moon', 'MarsLandingCrew': 'Crewed Mars'
+        'FirstScienceSat': 'FSO', 'FirstScienceSat-Heavy': 'FSO', 'LunarImpactor': 'Lunar Impactor', 'first_OrbitCrewed': 'Crewed Orbit',
+        'first_MoonLandingCrewed': 'Crewed Moon', 'MarsLandingCrew': 'Crewed Mars', 'first_spaceStation': 'Space Station'
     });
     const repToSubsidyConversion = 100;
     const subsidyMultiplierForMax = 2;
