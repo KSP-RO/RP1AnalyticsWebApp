@@ -661,15 +661,19 @@
   },
   {
     "Name": "RocketPlaneDevelopment",
-    "Title": "Experimental Rocketplanes (Early)"
+    "Title": "Experimental Rocketplanes"
   },
   {
     "Name": "RocketPlaneDevelopmentOptional",
-    "Title": "Experimental Rocketplanes"
+    "Title": "Experimental Rocketplanes - Optional"
   },
   {
     "Name": "XPlanesHighAltitude",
     "Title": "X-Planes (High Altitude)"
+  },
+  {
+    "Name": "XPlanesHighAltitudeOptional",
+    "Title": "X-Planes (High Altitude) - Optional"
   },
   {
     "Name": "XPlanesKarman",
@@ -688,7 +692,15 @@
     "Title": "X-Planes (Mach 2 Supersonic)"
   },
   {
-    "Name": "XPlanesSupersonicOptional",
-    "Title": "X-Planes (High Supersonic)"
+    "Name": "XPlanesSupersonicOptionalHigh",
+    "Title": "X-Planes (High Supersonic) Optional"
+  },
+  {
+    "Name": "XPlanesSupersonicOptionalLow",
+    "Title": "X-Planes (Low Supersonic) Optional"
+  },
+  {
+    "Name": "XPlanesSupersonicOptionalMid",
+    "Title": "X-Planes (Mid Supersonic) Optional"
   }
 ]
