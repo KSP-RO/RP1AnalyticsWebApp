@@ -16,6 +16,7 @@ namespace RP1AnalyticsWebApp.Models
         public List<LaunchEventDto> LaunchEvents { get; set; }
         public List<FailureEventDto> FailureEvents { get; set; }
         public List<ProgramDto> Programs { get; set; }
+        public List<LeaderEventDto> LeaderEvents { get; set; }
 
         public void TrimEmptyPeriod()
         {

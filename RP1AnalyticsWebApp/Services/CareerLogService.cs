@@ -482,6 +482,7 @@ namespace RP1AnalyticsWebApp.Services
 
             var programs = careerLogDto.Programs.Select(p => new Models.Program(p)).ToList();
             List<LC> lcs = ParseLCs(careerLogDto);
+            List<Leader> leaders = ParseLeaders(careerLogDto);
 
             var updateDef = Builders<CareerLog>.Update
                 .Set(nameof(CareerLog.StartDate), periods.FirstOrDefault()?.StartDate ?? Constants.CareerEpoch)
@@ -493,7 +494,8 @@ namespace RP1AnalyticsWebApp.Services
                 .Set(nameof(CareerLog.LCs), lcs)
                 .Set(nameof(CareerLog.FacilityConstructions), facilityConstructions)
                 .Set(nameof(CareerLog.TechEventEntries), tech)
-                .Set(nameof(CareerLog.LaunchEventEntries), launches);
+                .Set(nameof(CareerLog.LaunchEventEntries), launches)
+                .Set(nameof(CareerLog.Leaders), leaders);
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
             return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Token == token, updateDef, opts);
@@ -560,6 +562,26 @@ namespace RP1AnalyticsWebApp.Services
             }
 
             return lcs;
+        }
+
+        private static List<Leader> ParseLeaders(CareerLogDto careerLogDto)
+        {
+            List<Leader> allLeaders = careerLogDto.LeaderEvents.Where(l => l.IsAdd)
+                                                               .Select(l => new Leader(l))
+                                                               .ToList();
+            foreach (Leader leader in allLeaders)
+            {
+                var removeEvent = careerLogDto.LeaderEvents.Where(l => !l.IsAdd && l.LeaderName == leader.Name && l.Date >= leader.DateAdd)
+                                                           .OrderBy(l => l.Date)
+                                                           .FirstOrDefault();
+                if (removeEvent  != null)
+                {
+                    leader.DateRemove = removeEvent.Date;
+                    leader.FireCost = removeEvent.Cost;
+                }
+            }
+
+            return allLeaders;
         }
 
         private static void AddFailuresToLaunches(List<FailureEventDto> failureDtos, List<LaunchEvent> launches)
