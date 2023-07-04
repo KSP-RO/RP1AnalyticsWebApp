@@ -566,14 +566,18 @@ namespace RP1AnalyticsWebApp.Services
 
         private static List<Leader> ParseLeaders(CareerLogDto careerLogDto)
         {
-            List<Leader> allLeaders = careerLogDto.LeaderEvents.Where(l => l.IsAdd)
-                                                               .Select(l => new Leader(l))
-                                                               .ToList();
+            List<LeaderEventDto> events = careerLogDto.LeaderEvents;
+            if (events == null || events.Count == 0)
+                return new List<Leader>(0);
+
+            List<Leader> allLeaders = events.Where(l => l.IsAdd)
+                                            .Select(l => new Leader(l))
+                                            .ToList();
             foreach (Leader leader in allLeaders)
             {
-                var removeEvent = careerLogDto.LeaderEvents.Where(l => !l.IsAdd && l.LeaderName == leader.Name && l.Date >= leader.DateAdd)
-                                                           .OrderBy(l => l.Date)
-                                                           .FirstOrDefault();
+                var removeEvent = events.Where(l => !l.IsAdd && l.LeaderName == leader.Name && l.Date >= leader.DateAdd)
+                                        .OrderBy(l => l.Date)
+                                        .FirstOrDefault();
                 if (removeEvent  != null)
                 {
                     leader.DateRemove = removeEvent.Date;
