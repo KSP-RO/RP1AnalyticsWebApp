@@ -60,6 +60,9 @@ namespace RP1AnalyticsWebApp
             services.AddSingleton<IProgramSettings>(sp =>
                 sp.GetRequiredService<IOptions<ProgramSettings>>().Value);
 
+            services.AddSingleton<ILeaderSettings>(sp =>
+                sp.GetRequiredService<IOptions<LeaderSettings>>().Value);
+
             var pack = new ConventionPack
             {
                 new CamelCaseElementNameConvention()

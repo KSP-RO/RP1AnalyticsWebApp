@@ -39,6 +39,12 @@
                     <span>Facilities</span>
                 </a>
             </li>
+            <li v-bind:class="{ 'is-active': active === 'leaders' }">
+                <a @click="$emit('change-active', 'leaders')">
+                    <span class="icon is-small"><i class="fas fa-crown" aria-hidden="true"></i></span>
+                    <span>Leaders</span>
+                </a>
+            </li>
         </ul>
     </div>`
     

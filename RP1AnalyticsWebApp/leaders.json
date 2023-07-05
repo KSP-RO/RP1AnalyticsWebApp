@@ -1,0 +1,272 @@
+[
+  {
+    "Name": "leaderChelomeyAdmin",
+    "Title": "Vladimir Chelomey",
+    "Type": "Admin"
+  },
+  {
+    "Name": "leaderGlushkoAdmin",
+    "Title": "Valentin Glushko",
+    "Type": "Admin"
+  },
+  {
+    "Name": "leaderKorolevAdmin",
+    "Title": "Sergei Korolev",
+    "Type": "Admin"
+  },
+  {
+    "Name": "leaderRosenAdmin",
+    "Title": "Milton Rosen",
+    "Type": "Admin"
+  },
+  {
+    "Name": "leaderVonBraunAdmin",
+    "Title": "Wernher von Braun",
+    "Type": "Admin"
+  },
+  {
+    "Name": "leaderDhawanAdmin",
+    "Title": "Satish Dhawan",
+    "Type": "Admin"
+  },
+  {
+    "Name": "leaderGlushkoEngineer",
+    "Title": "Valentin Glushko",
+    "Type": "Engineer"
+  },
+  {
+    "Name": "leaderKorolevEngineering",
+    "Title": "Sergei Korolev",
+    "Type": "Engineer"
+  },
+  {
+    "Name": "leaderYangelEngineer",
+    "Title": "Mikhail Yangel",
+    "Type": "Engineer"
+  },
+  {
+    "Name": "leaderBossart",
+    "Title": "Charlie Bossart",
+    "Type": "Engineer"
+  },
+  {
+    "Name": "leaderFaget",
+    "Title": "Max Faget",
+    "Type": "Engineer"
+  },
+  {
+    "Name": "leaderMorgan",
+    "Title": "Mary Sherman Morgan",
+    "Type": "Engineer"
+  },
+  {
+    "Name": "leaderVonBraunEngineer",
+    "Title": "Wernher von Braun",
+    "Type": "Engineer"
+  },
+  {
+    "Name": "leaderValCleaverEngineer",
+    "Title": "Arthur Valentine Cleaver",
+    "Type": "Engineer"
+  },
+  {
+    "Name": "leaderNarayanan",
+    "Title": "Nambi Narayanan",
+    "Type": "Engineer"
+  },
+  {
+    "Name": "leaderVBarmin",
+    "Title": "Vladimir Barmin",
+    "Type": "FlightDirector"
+  },
+  {
+    "Name": "leaderGagarin",
+    "Title": "Yuri Gagarin",
+    "Type": "FlightDirector"
+  },
+  {
+    "Name": "leaderHickam",
+    "Title": "Homer Hickam",
+    "Type": "FlightDirector"
+  },
+  {
+    "Name": "leaderKraft",
+    "Title": "Chris Kraft",
+    "Type": "FlightDirector"
+  },
+  {
+    "Name": "leaderKranz",
+    "Title": "Gene Kranz",
+    "Type": "FlightDirector"
+  },
+  {
+    "Name": "leaderSlayton",
+    "Title": "Deke Slayton",
+    "Type": "FlightDirector"
+  },
+  {
+    "Name": "leaderKalam",
+    "Title": "Abdul Kalam",
+    "Type": "FlightDirector"
+  },
+  {
+    "Name": "leaderGurevich",
+    "Title": "Mikhail Gurevich",
+    "Type": "Scientist"
+  },
+  {
+    "Name": "leaderBrill",
+    "Title": "Yvonne Brill",
+    "Type": "Scientist"
+  },
+  {
+    "Name": "leaderKJohnson",
+    "Title": "Katherine Johnson",
+    "Type": "Scientist"
+  },
+  {
+    "Name": "leaderLove",
+    "Title": "Betty Love",
+    "Type": "Scientist"
+  },
+  {
+    "Name": "leaderParsons",
+    "Title": "Jack Parsons",
+    "Type": "Scientist"
+  },
+  {
+    "Name": "leaderVanAllen",
+    "Title": "James Van Allen",
+    "Type": "Scientist"
+  },
+  {
+    "Name": "leaderVonKarman",
+    "Title": "Theodore von Kármán",
+    "Type": "Scientist"
+  },
+  {
+    "Name": "leaderSarabhai",
+    "Title": "Vikram Sarabhai",
+    "Type": "Scientist"
+  },
+  {
+    "Name": "leaderIlyushinDesignContractor",
+    "Title": "Ilyushin Design Bureau",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderOKB1Contractor",
+    "Title": "ОКБ-1 Korolev",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderOKB52Contractor",
+    "Title": "ОКБ-52 Chelomey",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderOKB276Contractor",
+    "Title": "ОКБ-276 Kuznetsov",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderOKB456Contractor",
+    "Title": "ОКБ-456 Glushko",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderAerojetContractor",
+    "Title": "Aerojet",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderAECContractor",
+    "Title": "Atomic Energy Commission",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderBellAircraftContractor",
+    "Title": "Bell Aircraft Company",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderMcDonnellContractor",
+    "Title": "McDonnell Aircraft Corporation",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderDouglasAircraftContractor",
+    "Title": "Douglas Aircraft Company",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderJPLContractor",
+    "Title": "JPL",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderRocketdyneContractor",
+    "Title": "Rocketdyne",
+    "Type": "MainContractor"
+  },
+  {
+    "Name": "leaderIlyushinDesignSC",
+    "Title": "Ilyushin Design Bureau",
+    "Type": "Subcontractor"
+  },
+  {
+    "Name": "leaderOKB1SC",
+    "Title": "ОКБ-1 Korolev",
+    "Type": "Subcontractor"
+  },
+  {
+    "Name": "leaderOKB52SC",
+    "Title": "ОКБ-52 Chelomey",
+    "Type": "Subcontractor"
+  },
+  {
+    "Name": "leaderOKB276SC",
+    "Title": "ОКБ-276 Kuznetsov",
+    "Type": "Subcontractor"
+  },
+  {
+    "Name": "leaderOKB456SC",
+    "Title": "ОКБ-456 Glushko",
+    "Type": "Subcontractor"
+  },
+  {
+    "Name": "leaderAerojetSC",
+    "Title": "Aerojet",
+    "Type": "Subcontractor"
+  },
+  {
+    "Name": "leaderAECSC",
+    "Title": "Atomic Energy Commission",
+    "Type": "Subcontractor"
+  },
+  {
+    "Name": "leaderBellAircraftSC",
+    "Title": "Bell Aircraft Company",
+    "Type": "Subcontractor"
+  },
+  {
+    "Name": "leaderMcDonnellSC",
+    "Title": "McDonnell Aircraft Corporation",
+    "Type": "Subcontractor"
+  },
+  {
+    "Name": "leaderDouglasAircraftSC",
+    "Title": "Douglas Aircraft Company",
+    "Type": "Subcontractor"
+  },
+  {
+    "Name": "leaderJPLSC",
+    "Title": "JPL",
+    "Type": "Subcontractor"
+  },
+  {
+    "Name": "leaderRocketdyneSC",
+    "Title": "Rocketdyne",
+    "Type": "Subcontractor"
+  }
+]

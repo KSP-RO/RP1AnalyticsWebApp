@@ -83,6 +83,7 @@
     app.component('launches', Launches);
     app.component('facilities', Facilities);
     app.component('programs', Programs);
+    app.component('leaders', Leaders);
     app.component('loading-spinner', LoadingSpinner);
     app.component('meta-information', MetaInformation);
     const vm = app.mount('#appWrapper');

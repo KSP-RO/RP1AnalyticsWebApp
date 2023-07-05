@@ -15,17 +15,20 @@ namespace RP1AnalyticsWebApp.Services
         private readonly IContractSettings _contractSettings;
         private readonly ITechTreeSettings _techTreeSettings;
         private readonly IProgramSettings _programSettings;
+        private readonly ILeaderSettings _leaderSettings;
         private readonly UserManager<WebAppUser> _userManager;
 
         private List<WebAppUser> _allUsers;
         private List<WebAppUser> AllUsers => _allUsers ??= _userManager.Users.ToList();
 
         public CareerLogService(ICareerLogDatabaseSettings dbSettings, IContractSettings contractSettings,
-            ITechTreeSettings techTreeSettings, IProgramSettings programSettings, UserManager<WebAppUser> userManager)
+            ITechTreeSettings techTreeSettings, IProgramSettings programSettings, ILeaderSettings leaderSettings,
+            UserManager<WebAppUser> userManager)
         {
             _contractSettings = contractSettings;
             _techTreeSettings = techTreeSettings;
             _programSettings = programSettings;
+            _leaderSettings = leaderSettings;
             _userManager = userManager;
 
             var client = new MongoClient(dbSettings.ConnectionString);
@@ -371,6 +374,30 @@ namespace RP1AnalyticsWebApp.Services
                 RepPenaltyAssessed = p.RepPenaltyAssessed,
                 Speed = p.Speed
             }).OrderBy(p => p.Accepted).ToList();
+        }
+
+        public List<LeaderItem> GetLeadersForCareer(string id)
+        {
+            var c = _careerLogs.AsQueryable()
+                .Where(c => c.Id == id)
+                .Select(c => new
+                {
+                    c.Leaders
+                })
+                .FirstOrDefault();
+
+            if (c == null) return null;
+            if (c.Leaders == null) return new List<LeaderItem>(0);
+
+            return c.Leaders.Select(p => new LeaderItem
+            {
+                Name = p.Name,
+                Title = _leaderSettings.LeaderDict.TryGetValue(p.Name, out LeaderDefinitionItem lItem) ? lItem.Title : p.Name,
+                Type = lItem?.Type,
+                DateAdd = p.DateAdd,
+                DateRemove = p.DateRemove,
+                FireCost = p.FireCost
+            }).OrderBy(p => p.DateAdd).ToList();
         }
 
         public List<CareerListItem> GetCareerList(string userName = null)
