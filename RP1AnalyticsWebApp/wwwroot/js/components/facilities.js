@@ -45,6 +45,10 @@
             const newState = !item.visible;
             this.items.forEach(i => i.visible = false);
             item.visible = newState;
+        },
+        formatMass(value) {
+            if (value > 1e+38) return '∞';
+            return value;
         }
     },
     computed: {
@@ -72,7 +76,7 @@
                             <span class="icon is-small"><i class="fas mr-2" :class="getLCIcon(item)" aria-hidden="true"></i></span>
                             <span>{{ item.name }}</span>
                         </td>
-                        <td>{{ item.massMax }}</td>
+                        <td>{{ formatMass(item.massMax) }}</td>
                         <td>{{ formatDate(item.constrStarted) }}</td>
                         <td>{{ formatDate(item.constrEnded) }}</td>
                     </tr>
