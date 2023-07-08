@@ -551,7 +551,7 @@ namespace RP1AnalyticsWebApp.Services
         {
             var filterDef = Builders<CareerLog>.Filter.Where(c => c.Id == careerId && 
                                                                   c.LaunchEventEntries.Any(l => l.LaunchID == launch.LaunchID));
-            var updateDef = Builders<CareerLog>.Update.Set(c => c.LaunchEventEntries[-1], launch);
+            var updateDef = Builders<CareerLog>.Update.Set(c => c.LaunchEventEntries.FirstMatchingElement(), launch);
 
             _careerLogs.FindOneAndUpdate(filterDef, updateDef);
         }
