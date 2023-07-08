@@ -1,7 +1,7 @@
 ﻿const Programs = {
     mixins: [DataTabMixin],
     created: function () {
-        this.ProgramSpeeds = Object.freeze({ 0: 'Slow', 1: 'Normal', 2: 'Fast' });
+        this.ProgramSpeeds = Object.freeze({ 0: 'Normal', 1: 'Fast', 2: 'Breakneck' });
     },
     methods: {
         queryData(careerId) {
