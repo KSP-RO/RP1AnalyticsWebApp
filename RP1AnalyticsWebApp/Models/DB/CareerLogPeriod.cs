@@ -31,6 +31,8 @@ namespace RP1AnalyticsWebApp.Models
         public double EntryCosts { get; set; }
         public double SpentUnlockCredit { get; set; }
         public double ConstructionFees { get; set; }
+        public double HiringResearchers { get; set; }
+        public double HiringEngineers { get; set; }
         public double OtherFees { get; set; }
         public double SubsidySize { get; set; }
         public double SubsidyPaidOut { get; set; }
@@ -71,6 +73,8 @@ namespace RP1AnalyticsWebApp.Models
             EntryCosts = c.EntryCosts;
             SpentUnlockCredit = c.SpentUnlockCredit;
             ConstructionFees = c.ConstructionFees;
+            HiringResearchers = c.HiringResearchers;
+            HiringEngineers = c.HiringEngineers;
             OtherFees = c.OtherFees;
             SubsidySize = c.SubsidySize;
             SubsidyPaidOut = c.SubsidyPaidOut;

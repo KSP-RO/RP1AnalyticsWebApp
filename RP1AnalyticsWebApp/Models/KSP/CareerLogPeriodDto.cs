@@ -29,6 +29,8 @@ namespace RP1AnalyticsWebApp.Models
         public double EntryCosts { get; set; }
         public double SpentUnlockCredit { get; set; }
         public double ConstructionFees { get; set; }
+        public double HiringResearchers { get; set; }
+        public double HiringEngineers { get; set; }
         public double OtherFees { get; set; }
         public double SubsidySize { get; set; }
         public double SubsidyPaidOut { get; set; }
