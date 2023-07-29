@@ -219,7 +219,8 @@ namespace RP1AnalyticsWebApp.Services
                 });
             }
 
-            var events = q.SelectMany(c => c.ContractEventEntries, (c, e) => new ContractEventWithCareerInfo
+            var events = q.Where(c => c.EligibleForRecords)
+                          .SelectMany(c => c.ContractEventEntries, (c, e) => new ContractEventWithCareerInfo
             {
                 CareerId = c.Id,
                 CareerName = c.Name,
