@@ -254,7 +254,8 @@ namespace RP1AnalyticsWebApp.Services
                 });
             }
 
-            var events = q.Where(entry => entry.ContractEventEntries.Any(ce => ce.InternalName == contract && ce.Type == evtType))
+            var events = q.Where(entry => entry.EligibleForRecords &&
+                                          entry.ContractEventEntries.Any(ce => ce.InternalName == contract && ce.Type == evtType))
                           .Select(c => new ContractEventWithCareerInfo
                           {
                               CareerId = c.Id,
