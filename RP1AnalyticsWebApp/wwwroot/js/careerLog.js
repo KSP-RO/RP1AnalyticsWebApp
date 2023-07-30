@@ -550,10 +550,12 @@
     function genProgramTooltip(xaxis) {
         const dtStart = moment.utc(xaxis);
         const dtEnd = dtStart.clone().add(1, 'months');
-        const complete = programs.filter(c => c.completed && moment.utc(c.completed) > dtStart && moment.utc(c.completed) <= dtEnd);
+        const completed = programs.filter(p => p.completed && moment.utc(p.completed) > dtStart && moment.utc(p.completed) <= dtEnd);
+        const accepted = programs.filter(p => moment.utc(p.accepted) > dtStart && moment.utc(p.accepted) <= dtEnd);
 
-        const contractList = genTooltipProgramRow('Completed', complete);
-        return contractList ? `<span style='font-size:12px;'>${contractList}</span>` : 'N/A';
+        const programList = genTooltipProgramRow('Completed', completed);
+        const programList2 = genTooltipProgramRow('Accepted', accepted);
+        return programList || programList2 ? `<span style='font-size:12px;'>${programList}${programList2}</span>` : 'N/A';
     };
 
     function genTooltipContractRow(title, contracts) {
