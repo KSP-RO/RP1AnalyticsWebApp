@@ -15,6 +15,7 @@
             },
             handleFiltersChange(filters) {
                 this.filters = filters;
+                this.contractName = null;
             }
         }
     });
