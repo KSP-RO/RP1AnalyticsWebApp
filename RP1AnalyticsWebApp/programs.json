@@ -37,7 +37,15 @@
   },
   {
     "Name": "CrewedOrbit",
+    "Title": "Crewed Orbit (Deprecated)"
+  },
+  {
+    "Name": "CrewedOrbitEarly",
     "Title": "Crewed Orbit"
+  },
+  {
+    "Name": "CrewedOrbitAdv",
+    "Title": "Advanced Crewed Orbit"
   },
   {
     "Name": "EarlyInnerPlanetProbes",
@@ -114,5 +122,9 @@
   {
     "Name": "CrewedExploration",
     "Title": "Crewed Solar System Exploration"
+  },
+  {
+    "Name": "CrewedSpaceplaneDev",
+    "Title": "Crewed Spaceplane Development"
   }
 ]
