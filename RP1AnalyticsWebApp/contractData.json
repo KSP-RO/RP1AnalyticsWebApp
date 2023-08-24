@@ -1,11 +1,19 @@
 [
   {
+    "Name": "landingCeres",
+    "Title": "Ceres Landing (Uncrewed)"
+  },
+  {
     "Name": "orbitCeres",
     "Title": "Ceres Orbit"
   },
   {
     "Name": "orbitCeres_Rep",
     "Title": "Ceres Orbital Science Probe"
+  },
+  {
+    "Name": "landingVesta",
+    "Title": "Vesta Landing (Uncrewed)"
   },
   {
     "Name": "orbitVesta",
@@ -48,6 +56,10 @@
     "Title": "First Biological Satellite (400 kg)"
   },
   {
+    "Name": "FirstPolarSat-Heavy",
+    "Title": "First Polar Orbit Satellite (400 kg)"
+  },
+  {
     "Name": "FirstSatellite-Heavy",
     "Title": "First Artificial Satellite (30 kg)"
   },
@@ -88,12 +100,8 @@
     "Title": "First Sun-Synchronous Orbit Satellite"
   },
   {
-    "Name": "first_Docking",
-    "Title": "First Docking"
-  },
-  {
-    "Name": "first_EVA",
-    "Title": "First EVA"
+    "Name": "CollectCrewedScienceBasic",
+    "Title": "Collect Basic Crew Science"
   },
   {
     "Name": "first_OrbitCrewed",
@@ -108,14 +116,6 @@
     "Title": "Orbital Flight (One Crew)"
   },
   {
-    "Name": "OrbitalFlight2",
-    "Title": "Orbital Flight with Maneuvers and 2+ Crew"
-  },
-  {
-    "Name": "OrbitalFlight3",
-    "Title": "Orbital Flight with at Least Three Crew"
-  },
-  {
     "Name": "OrbitalTestFlight",
     "Title": "Orbital Test Flight (Uncrewed)"
   },
@@ -128,16 +128,32 @@
     "Title": "Reach Orbit & Return Safely to Earth"
   },
   {
-    "Name": "Rendezvous",
-    "Title": "First Rendezvous"
-  },
-  {
     "Name": "CrewedSuborbital",
     "Title": "Suborbital Flight (Crewed)"
   },
   {
     "Name": "SuborbitalTestFlight",
     "Title": "Suborbital Test Flight (Uncrewed)"
+  },
+  {
+    "Name": "first_Docking",
+    "Title": "First Docking"
+  },
+  {
+    "Name": "first_EVA",
+    "Title": "First EVA"
+  },
+  {
+    "Name": "OrbitalFlight2",
+    "Title": "Orbital Flight with Maneuvers and 2+ Crew"
+  },
+  {
+    "Name": "OrbitalFlight3",
+    "Title": "Orbital Flight with at Least Three Crew"
+  },
+  {
+    "Name": "Rendezvous",
+    "Title": "First Rendezvous"
   },
   {
     "Name": "ComTestSat",
@@ -204,6 +220,22 @@
     "Title": "Crewed Speed Record"
   },
   {
+    "Name": "landingCallisto",
+    "Title": "Callisto Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingEuropa",
+    "Title": "Europa Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingGanymede",
+    "Title": "Ganymede Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingIo",
+    "Title": "Io Landing (Uncrewed)"
+  },
+  {
     "Name": "flybyCallisto",
     "Title": "Callisto Flyby"
   },
@@ -250,6 +282,10 @@
   {
     "Name": "first_MoonLandingCrewed",
     "Title": "First Human Moon Landing"
+  },
+  {
+    "Name": "first_MoonLandingCrewedDirect",
+    "Title": "First Human Moon Landing (Direct)"
   },
   {
     "Name": "MoonLanding",
@@ -494,6 +530,34 @@
   {
     "Name": "roverTitan",
     "Title": "Titan Rover"
+  },
+  {
+    "Name": "landingDione",
+    "Title": "Dione Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingEnceladus",
+    "Title": "Enceladus Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingIapetus",
+    "Title": "Iapetus Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingMimas",
+    "Title": "Mimas Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingRhea",
+    "Title": "Rhea Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingTethys",
+    "Title": "Tethys Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingTitan",
+    "Title": "Titan Landing (Uncrewed)"
   },
   {
     "Name": "flybyCeres",
