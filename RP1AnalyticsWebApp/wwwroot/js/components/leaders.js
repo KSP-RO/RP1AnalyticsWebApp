@@ -9,6 +9,9 @@
                     this.items = jsonItems;
                 })
                 .catch(error => alert(error));
+        },
+        formatFloat(val) {
+            return typeof val === 'number' ? val.toFixed(1) : '';
         }
     },
     computed: {
@@ -34,7 +37,7 @@
                     <td>{{ item.title }}</td>
                     <td>{{ formatDate(item.dateAdd) }}</td>
                     <td>{{ formatDate(item.dateRemove) }}</td>
-                    <td>{{ item.dateRemove ? item.fireCost : ''}}</td>
+                    <td>{{ item.dateRemove ? formatFloat(item.fireCost) : ''}}</td>
                 </tr>
             </tbody>
             </table>
