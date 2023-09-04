@@ -463,7 +463,9 @@
             yaxis6: {
                 title: 'Efficiency',
                 tickformat: ',.0%',
-                range: [0, 1],
+                hoverformat: ',.1%',
+                showgrid: false,
+                autorange: true,
                 type: 'linear',
                 overlaying: 'y5',
                 side: 'right'
@@ -528,7 +530,7 @@
                     Plotly.Fx.hover(
                         plotDiv,
                         { xval: eventData.xvals[0] },
-                        ['xy', 'xy2', 'xy3', 'xy4', 'xy5']
+                        ['xy', 'xy2', 'xy3', 'xy4', 'xy5', 'xy6']
                     );
                 }
             });
