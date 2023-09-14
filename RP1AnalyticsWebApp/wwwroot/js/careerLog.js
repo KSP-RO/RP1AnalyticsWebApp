@@ -258,6 +258,18 @@
         const careerPeriods = careerLog.careerLogEntries;
         if (!careerPeriods) return false;
 
+        const programFundsTrace = {
+            name: 'Program funding',
+            y: getValuesForField(careerPeriods, 'programFunds'),
+            type: 'scattergl',
+            mode: 'lines'
+        };
+        const subsidySizeTrace = {
+            name: 'Subsidy size',
+            y: getValuesForField(careerPeriods, 'subsidySize'),
+            type: 'scattergl',
+            mode: 'lines'
+        };
         const currentFundsTrace = {
             name: 'Current Funds',
             y: getValuesForField(careerPeriods, 'currentFunds'),
@@ -270,16 +282,10 @@
             y: getFundsEarned(careerPeriods),
             type: 'scattergl',
             mode: 'lines',
+            visible: 'legendonly',
             line: {
                 color: 'chartreuse'
             }   
-        };
-        const subsidySizeTrace = {
-            name: 'Subsidy size',
-            y: getValuesForField(careerPeriods, 'subsidySize'),
-            type: 'scattergl',
-            mode: 'lines',
-            visible: 'legendonly'
         };
 
         const sciEarnedTrace = {
@@ -396,9 +402,10 @@
         }
 
         const traces = [
+            programFundsTrace,
+            subsidySizeTrace,
             earnedFundsTrace,
             currentFundsTrace,
-            subsidySizeTrace,
             sciEarnedTrace,
             curSciTrace,
             repTrace,
