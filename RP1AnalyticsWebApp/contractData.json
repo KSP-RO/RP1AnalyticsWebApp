@@ -24,6 +24,38 @@
     "Title": "Vesta Orbital Science Probe"
   },
   {
+    "Name": "EarlyComSat-CA",
+    "Title": "Commercial Communications Satellite (Early)"
+  },
+  {
+    "Name": "EarlyMolniyaSat",
+    "Title": "Molniya Communications Satellite (Early)"
+  },
+  {
+    "Name": "EarlyNavNetwork3",
+    "Title": "Early Navigation Network (3 Satellites)"
+  },
+  {
+    "Name": "EarlyNavNetwork4",
+    "Title": "Early Navigation Network (4 Satellites)"
+  },
+  {
+    "Name": "EarlyNavSat-CA",
+    "Title": "Commercial Navigation Satellite (Early)"
+  },
+  {
+    "Name": "FirstComSat-CA",
+    "Title": "First Communications Satellite"
+  },
+  {
+    "Name": "FirstMolniyaSat-CA",
+    "Title": "First Molniya Orbit Satellite"
+  },
+  {
+    "Name": "FirstNavSat-CA",
+    "Title": "First Navigational Satellite"
+  },
+  {
     "Name": "LunarFlyby",
     "Title": "Lunar Flyby (Uncrewed)"
   },
@@ -154,6 +186,42 @@
   {
     "Name": "Rendezvous",
     "Title": "First Rendezvous"
+  },
+  {
+    "Name": "EOSCherenkov",
+    "Title": "Cherenkov Detection Beyond LEO"
+  },
+  {
+    "Name": "EOSCorona",
+    "Title": "Dedicated Earth Imaging Satellite"
+  },
+  {
+    "Name": "EOSCoronaRep",
+    "Title": "Improved Earth Imaging Satellite"
+  },
+  {
+    "Name": "EOSCosmicRay1",
+    "Title": "Cosmic Ray Satellite Beyond LEO"
+  },
+  {
+    "Name": "EOSGrav1",
+    "Title": "Gravimetric Satellite"
+  },
+  {
+    "Name": "EOSIRRad1",
+    "Title": "Infrared Radiometry Satellite"
+  },
+  {
+    "Name": "EOSIRRad2",
+    "Title": "Infrared Radiometry Satellite, Follow-On"
+  },
+  {
+    "Name": "EOSIRRad3",
+    "Title": "Infrared Radiometry Satellite, Follow-On"
+  },
+  {
+    "Name": "EOSMagScan1",
+    "Title": "Magnetometry Satellite"
   },
   {
     "Name": "ComTestSat",
@@ -581,7 +649,7 @@
   },
   {
     "Name": "Downrange",
-    "Title": "Downrange Milestone (4500 km)"
+    "Title": "Downrange Milestone (5000 km)"
   },
   {
     "Name": "DownrangeEarly",
@@ -740,8 +808,24 @@
     "Title": "X-Planes (High Altitude) - Optional"
   },
   {
+    "Name": "XPlanesHypersonic",
+    "Title": "X-Planes (Hypersonic)"
+  },
+  {
+    "Name": "XPlanesHypersonicOptional",
+    "Title": "X-Planes (Hypersonic) Optional"
+  },
+  {
     "Name": "XPlanesKarman",
     "Title": "X-Planes (Karman Line)"
+  },
+  {
+    "Name": "XPlanesStratosphericResearch",
+    "Title": "X-Planes (Stratospheric Research)"
+  },
+  {
+    "Name": "XPlanesStratosphericResearchOptional",
+    "Title": "X-Planes (Stratospheric Research) Optional"
   },
   {
     "Name": "XPlanesSuborbital",

@@ -17,11 +17,19 @@
   },
   {
     "Name": "TargetedSats",
-    "Title": "Targeted Satellites"
+    "Title": "Targeted Satellites (Deprecated)"
+  },
+  {
+    "Name": "EarthObservationScience1",
+    "Title": "Early Earth Observation Satellites"
+  },
+  {
+    "Name": "CommercialApplications1",
+    "Title": "Early Commercial Satellites"
   },
   {
     "Name": "CommNetwork",
-    "Title": "Communication Network"
+    "Title": "Communication Network (Deprecated)"
   },
   {
     "Name": "GEOCommNetwork",
