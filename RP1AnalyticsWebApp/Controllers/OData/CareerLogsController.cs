@@ -79,10 +79,24 @@ namespace RP1AnalyticsWebApp.Controllers.OData
             return period;
         }
 
-        [HttpGet("records", Name = "ODataGetRecords")]
-        public ActionResult<List<ContractRecord>> GetRecords(ODataQueryOptions<CareerLog> queryOptions)
+        [HttpGet("contractRecords", Name = "ODataGetContractRecords")]
+        public ActionResult<List<ContractRecord>> GetContractRecords(ODataQueryOptions<CareerLog> queryOptions)
         {
-            List<ContractRecord> events = _careerLogService.GetRecords(queryOptions);
+            List<ContractRecord> events = _careerLogService.GetContractRecords(queryOptions);
+            return events;
+        }
+
+        [HttpGet("programRecords", Name = "ODataGetProgramRecords")]
+        public ActionResult<List<ProgramRecord>> GetProgramRecords(ODataQueryOptions<CareerLog> queryOptions, ProgramRecordType type = ProgramRecordType.Accepted)
+        {
+            List<ProgramRecord> events = _careerLogService.GetProgramRecords(type, queryOptions: queryOptions);
+            return events;
+        }
+
+        [HttpGet("programs({program})", Name = "ODataGetRecordsForSpecificProgram")]
+        public ActionResult<List<ProgramItemWithCareerInfo>> GetRecordsForSpecificProgram(string program, ODataQueryOptions<CareerLog> queryOptions, ProgramRecordType type = ProgramRecordType.Accepted)
+        {
+            List<ProgramItemWithCareerInfo> events = _careerLogService.GetProgramRecords(type, program, queryOptions: queryOptions);
             return events;
         }
 

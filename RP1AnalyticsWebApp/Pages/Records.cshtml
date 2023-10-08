@@ -5,15 +5,25 @@
 }
 
 <div id="app" class="container mt-4 mb-4">
-    <h2 class="subtitle">Records</h2>
-    <records-table :filters="filters" v-on:contract-clicked="showContractLeaderboard"></records-table>
-    <contract-leaderboard-modal ref="modal" :contract-name="contractName" :filters="filters"></contract-leaderboard-modal>
+    <h2 class="subtitle">Program Records</h2>
+    <div id="selection-tab" class="selection-tab mb-1">
+        <program-record-type-select :active="programsMode" v-on:change-active="handleChangeActive"></program-record-type-select>
+    </div>
+    <program-records-table :mode="programsMode" :filters="filters" v-on:program-clicked="showProgramLeaderboard"></program-records-table>
+    <program-leaderboard-modal ref="programModal" :program-name="programName" :mode="programsMode" :filters="filters"></program-leaderboard-modal>
+
+    <h2 class="subtitle">Contract Records</h2>
+    <contract-records-table :filters="filters" v-on:contract-clicked="showContractLeaderboard"></contract-records-table>
+    <contract-leaderboard-modal ref="contractModal" :contract-name="contractName" :filters="filters"></contract-leaderboard-modal>
 </div>
 
 @section Scripts {
     <script src="~/js/components/career-dates.js" asp-append-version="true"></script>
+    <script src="~/js/components/program-leaderboard-modal.js" asp-append-version="true"></script>
     <script src="~/js/components/contract-leaderboard-modal.js" asp-append-version="true"></script>
     <script src="~/js/components/loading-spinner.js" asp-append-version="true"></script>
-    <script src="~/js/components/records-table.js" asp-append-version="true"></script>
+    <script src="~/js/components/program-record-type-select.js" asp-append-version="true"></script>
+    <script src="~/js/components/program-records-table.js" asp-append-version="true"></script>
+    <script src="~/js/components/contract-records-table.js" asp-append-version="true"></script>
     <script src="~/js/records.js" asp-append-version="true"></script>
 }

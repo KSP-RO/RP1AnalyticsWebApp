@@ -1,4 +1,4 @@
-﻿const RecordsTable = {
+﻿const ContractRecordsTable = {
     props: ['filters'],
     emits: ['contractClicked'],
     data() {
@@ -10,7 +10,7 @@
     methods: {
         queryData(filters) {
             this.isLoading = true;
-            fetch(`/odata/records${constructFilterQueryString(filters)}`)
+            fetch(`/odata/contractRecords${constructFilterQueryString(filters)}`)
                 .then(res => res.json())
                 .then(odataResp => {
                     this.isLoading = false;

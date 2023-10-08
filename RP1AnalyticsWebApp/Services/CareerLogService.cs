@@ -6,6 +6,7 @@ using RP1AnalyticsWebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace RP1AnalyticsWebApp.Services
 {
@@ -163,7 +164,7 @@ namespace RP1AnalyticsWebApp.Services
             return repeatables;
         }
 
-        public List<ContractRecord> GetRecords(ODataQueryOptions<CareerLog> queryOptions = null)
+        public List<ContractRecord> GetContractRecords(ODataQueryOptions<CareerLog> queryOptions = null)
         {
             var q = _careerLogs.AsQueryable();
             if (queryOptions != null)
@@ -202,6 +203,109 @@ namespace RP1AnalyticsWebApp.Services
             result.ForEach(r =>
             {
                 r.ContractDisplayName = ResolveContractName(r.ContractInternalName);
+                r.UserPreferredName = GetUserPreferredName(r.UserLogin);
+            });
+
+            return result;
+        }
+
+        public List<ProgramRecord> GetProgramRecords(ProgramRecordType type, ODataQueryOptions<CareerLog> queryOptions = null)
+        {
+            var q = _careerLogs.AsQueryable();
+            if (queryOptions != null)
+            {
+                q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
+                {
+                    HandleNullPropagation = HandleNullPropagationOption.False
+                });
+            }
+
+            var allPrograms = q
+                .Where(c => c.EligibleForRecords)
+                .SelectMany(c => c.Programs, (c, p) => new ProgramRecord
+                {
+                    CareerId = c.Id,
+                    CareerName = c.Name,
+                    UserLogin = c.UserLogin,
+                    ProgramName = p.Name,
+                    Date = type == ProgramRecordType.Accepted ? p.Accepted :
+                               type == ProgramRecordType.ObjectivesCompleted ? p.ObjectivesCompleted : p.Completed
+                });
+
+            if (type != ProgramRecordType.Accepted)
+            {
+                allPrograms = allPrograms.Where(p => p.Date.HasValue);
+            }
+
+            var result = allPrograms.OrderBy(p => p.Date)
+                .GroupBy(p => p.ProgramName)
+                .Select(g => new ProgramRecord
+                {
+                    ProgramName = g.Key,
+                    CareerId = g.First().CareerId,
+                    UserLogin = g.First().UserLogin,
+                    CareerName = g.First().CareerName,
+                    Date = g.Min(p => p.Date)
+                })
+                .OrderBy(c => c.Date)
+                .ToList();
+
+            result.ForEach(r =>
+            {
+                r.ProgramDisplayName = _programSettings.ProgramNameDict.TryGetValue(r.ProgramName, out string disp) ? disp : r.ProgramName;
+                r.UserPreferredName = GetUserPreferredName(r.UserLogin);
+            });
+
+            return result;
+        }
+
+        public List<ProgramItemWithCareerInfo> GetProgramRecords(ProgramRecordType type, string program, ODataQueryOptions<CareerLog> queryOptions = null)
+        {
+            var q = _careerLogs.AsQueryable();
+            if (queryOptions != null)
+            {
+                q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
+                {
+                    HandleNullPropagation = HandleNullPropagationOption.False
+                });
+            }
+
+            var allPrograms = q
+                .Where(c => c.EligibleForRecords)
+                .SelectMany(c => c.Programs, (c, p) => new ProgramItemWithCareerInfo
+                {
+                    CareerId = c.Id,
+                    CareerName = c.Name,
+                    UserLogin = c.UserLogin,
+                    Name = p.Name,
+                    Accepted = p.Accepted,
+                    ObjectivesCompleted = p.ObjectivesCompleted,
+                    Completed = p.Completed,
+                    Speed = p.Speed,
+                    TotalFunding = p.TotalFunding,
+                    FundsPaidOut = p.FundsPaidOut,
+                    RepPenaltyAssessed = p.RepPenaltyAssessed,
+                    NominalDurationYears = p.NominalDurationYears
+                })
+                .Where(p => p.Name == program);
+
+            if (type == ProgramRecordType.ObjectivesCompleted)
+            {
+                allPrograms = allPrograms.Where(p => p.ObjectivesCompleted.HasValue);
+            }
+            else if (type == ProgramRecordType.Completed)
+            {
+                allPrograms = allPrograms.Where(p => p.Completed.HasValue);
+            }
+
+            var result = allPrograms
+                .OrderBy(c => type == ProgramRecordType.Accepted ? c.Accepted :
+                              type == ProgramRecordType.ObjectivesCompleted ? c.ObjectivesCompleted : c.Completed)
+                .ToList();
+
+            result.ForEach(r =>
+            {
+                r.Title = _programSettings.ProgramNameDict.TryGetValue(r.Name, out string disp) ? disp : r.Name;
                 r.UserPreferredName = GetUserPreferredName(r.UserLogin);
             });
 

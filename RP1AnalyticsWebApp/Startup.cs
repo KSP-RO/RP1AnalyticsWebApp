@@ -177,6 +177,12 @@ namespace RP1AnalyticsWebApp
             var cr = builder.EntityType<ContractRecord>();
             cr.HasKey(o => o.CareerId);
 
+            var pr = builder.EntityType<ProgramRecord>();
+            pr.HasKey(o => o.CareerId);
+
+            var pi = builder.EntityType<ProgramItemWithCareerInfo>();
+            pi.HasKey(o => o.Name);
+
             var ce = builder.EntityType<ContractEventWithCareerInfo>();
             ce.HasKey(o => o.ContractInternalName);
 
@@ -187,7 +193,11 @@ namespace RP1AnalyticsWebApp
 
             builder.EntitySet<CareerListItem>("careerListItems");
 
-            builder.EntitySet<ContractRecord>("records");
+            builder.EntitySet<ContractRecord>("contractRecords");
+
+            builder.EntitySet<ProgramRecord>("programRecords");
+
+            builder.EntitySet<ProgramItemWithCareerInfo>("programs");
 
             builder.EntitySet<ContractEventWithCareerInfo>("contracts");
 

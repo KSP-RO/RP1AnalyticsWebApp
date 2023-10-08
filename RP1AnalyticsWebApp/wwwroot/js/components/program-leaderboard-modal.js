@@ -1,5 +1,5 @@
-﻿const ContractLeaderboardModal = {
-    props: ['contractName', 'filters'],
+﻿const ProgramLeaderboardModal = {
+    props: ['programName', 'mode', 'filters'],
     data() {
         return {
             items: null,
@@ -8,18 +8,18 @@
         }
     },
     watch: {
-        contractName(newContractName, oldContractName) {
-            if (newContractName !== oldContractName) {
-                this.queryData(newContractName);
+        programName(newProgramName, oldProgramName) {
+            if (newProgramName !== oldProgramName) {
+                this.queryData(newProgramName);
             }
         }
     },
     methods: {
-        queryData(contractName) {
+        queryData(programName) {
             this.items = null;
-            if (contractName) {
+            if (programName) {
                 this.isLoading = true;
-                fetch(`/odata/contracts('${contractName}')${constructFilterQueryString(this.filters)}`)
+                fetch(`/odata/programs('${programName}')?type=${this.mode}${constructFilterQueryString(this.filters)}`)
                     .then((res) => res.json())
                     .then((odataResp) => {
                         this.items = odataResp.value;
@@ -38,15 +38,18 @@
     },
     computed: {
         dlgTitle() {
-            return this.items && this.items[0].contractDisplayName;
+            return this.items && this.items[0].title;
+        },
+        dateField() {
+            return this.mode;
         }
     },
     template: `
-        <div id="modal1" class="modal" :class="{ 'is-active': isVisible }">
+        <div id="modal2" class="modal" :class="{ 'is-active': isVisible }">
             <div class="modal-background" @click="closeModal"></div>
             <div class="modal-content">
                 <div id="careerDates" class="contracts-app">
-                    <career-dates :items="items" date-field="date" :title="dlgTitle"></career-dates>
+                    <career-dates :items="items" :date-field="dateField" :title="dlgTitle"></career-dates>
                 </div>
             </div>
             <button @click="closeModal" class="modal-close is-large" aria-label="close"></button>

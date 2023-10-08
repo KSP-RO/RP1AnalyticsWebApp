@@ -115,12 +115,12 @@ namespace RP1AnalyticsWebApp.Controllers
             return contractEvents;
         }
 
-        [HttpGet("Contracts", Name = "GetRecords")]
-        public ActionResult<List<ContractRecord>> GetRecords()
+        [HttpGet("Contracts", Name = "GetContractRecords")]
+        public ActionResult<List<ContractRecord>> GetContractRecords()
         {
-            _telemetry.TrackEvent("CareerLogsController-GetRecords");
+            _telemetry.TrackEvent("CareerLogsController-GetContractRecords");
 
-            List<ContractRecord> events = _careerLogService.GetRecords();
+            List<ContractRecord> events = _careerLogService.GetContractRecords();
             return events;
         }
 

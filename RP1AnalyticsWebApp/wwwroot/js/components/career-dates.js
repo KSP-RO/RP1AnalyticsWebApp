@@ -1,31 +1,34 @@
 ﻿const CareerDates = {
-    props: ['items'],
+    props: ['items', 'dateField', 'title'],
     computed: {
         isVisible() {
             return !!this.items;
         }
     },
     methods: {
+        getAndFormatDate(item) {
+            return this.formatDate(item[this.dateField]);
+        },
         formatDate(date) {
             return date ? moment.utc(date).format('YYYY-MM-DD') : '';
         }
     },
     template: `
         <div v-if="isVisible" class="box">
-        <h2 class="subtitle">{{items[0].contractDisplayName}}</h2>
+        <h2 class="subtitle">{{title}}</h2>
             <table class="table is-bordered is-fullwidth is-hoverable">
             <thead>
                 <tr>
                     <th>User</th>
                     <th>Career</th>
-                    <th>Completion Date</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="item in items">
                     <td>{{ item.userPreferredName }}</td>
                     <td>{{ item.careerName }}</td>
-                    <td>{{ formatDate(item.date) }}</td>
+                    <td>{{ getAndFormatDate(item) }}</td>
                 </tr> 
             </tbody>
             </table>
