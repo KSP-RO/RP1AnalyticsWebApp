@@ -16,6 +16,10 @@
     "Title": "Early Satellites"
   },
   {
+    "Name": "EarlySatellites-Heavy",
+    "Title": "Early Satellites (Heavy)"
+  },
+  {
     "Name": "TargetedSats",
     "Title": "Targeted Satellites (Deprecated)"
   },
