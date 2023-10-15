@@ -10,7 +10,7 @@
     methods: {
         queryData(filters) {
             this.isLoading = true;
-            fetch(`/odata/programRecords?type=${this.mode}${constructFilterQueryString(this.filters)}`)
+            fetch(`/odata/programRecords?type=${this.mode}&${constructFilterQueryString(this.filters, true)}`)
                 .then(res => res.json())
                 .then(odataResp => {
                     this.isLoading = false;

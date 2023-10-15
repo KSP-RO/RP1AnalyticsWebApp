@@ -19,7 +19,7 @@
             this.items = null;
             if (programName) {
                 this.isLoading = true;
-                fetch(`/odata/programs('${programName}')?type=${this.mode}${constructFilterQueryString(this.filters)}`)
+                fetch(`/odata/programs('${programName}')?type=${this.mode}&${constructFilterQueryString(this.filters, true)}`)
                     .then((res) => res.json())
                     .then((odataResp) => {
                         this.items = odataResp.value;

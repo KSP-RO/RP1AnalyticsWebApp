@@ -50,7 +50,7 @@
     const vm = app.mount('#navbar');
     window.vmFilters = vm;
 
-    window.constructFilterQueryString = function (filters) {
+    window.constructFilterQueryString = function (filters, omitSeparator) {
         if (!filters) return '';
 
         const arr = [];
@@ -106,6 +106,6 @@
 
         if (arr.length === 0) return '';
 
-        return `?$filter=${arr.join(' and ')}`;
+        return `${omitSeparator ? '' : '?'}$filter=${arr.join(' and ')}`;
     };
 })();
