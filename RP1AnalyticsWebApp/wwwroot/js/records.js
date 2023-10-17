@@ -8,6 +8,11 @@
                 filters: null
             };
         },
+        watch: {
+            programsMode() {
+                this.programName = null;    // to prevent dialog showing outdated data when clicking on a program that was already loaded before but in different mode
+            }
+        },
         methods: {
             handleChangeActive(tabName) {
                 this.programsMode = tabName;
