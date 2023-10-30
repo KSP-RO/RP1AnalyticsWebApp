@@ -443,6 +443,7 @@
             yaxis2: {
                 title: 'Science',
                 autorange: true,
+                rangemode: 'nonnegative',
                 type: 'linear',
                 hoverformat: '.1f'
             },
@@ -455,6 +456,7 @@
             yaxis4: {
                 title: 'Confidence',
                 autorange: true,
+                rangemode: 'nonnegative',
                 showgrid: false,
                 type: 'linear',
                 hoverformat: '.1f',
@@ -473,6 +475,7 @@
                 hoverformat: ',.1%',
                 showgrid: false,
                 autorange: true,
+                rangemode: 'nonnegative',
                 type: 'linear',
                 overlaying: 'y5',
                 side: 'right'
