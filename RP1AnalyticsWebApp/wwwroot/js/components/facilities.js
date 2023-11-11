@@ -49,6 +49,17 @@
         formatMass(value) {
             if (value > 1e+38) return '∞';
             return value;
+        },
+        getFacilityTitle(val) {
+            const defs = {
+                ResearchAndDevelopment: 'R&D',
+                Administration: 'Administration',
+                MissionControl: 'Mission Control',
+                TrackingStation: 'Tracking Station',
+                AstronautComplex: 'Astronaut Complex'
+            };
+            const title = defs[val];
+            return title ? title : val;
         }
     },
     computed: {
@@ -89,7 +100,7 @@
                         </td>
                     </tr>
                     <tr v-if="!item.lcType">
-                        <td>{{ item.facility }}</td>
+                        <td>{{ getFacilityTitle(item.facility) }}</td>
                         <td>{{ item.newLevel + 1 }}</td>
                         <td>{{ formatDate(item.started) }}</td>
                         <td>{{ formatDate(item.ended) }}</td>
