@@ -12,6 +12,18 @@
         },
         formatFloat(val) {
             return typeof val === 'number' ? val.toFixed(1) : '';
+        },
+        getTypeTitle(val) {
+            const defs = {
+                Admin: 'Admin',
+                Engineer: 'Chief Designer',
+                FlightDirector: 'Flight Director',
+                Scientist: 'Chief Scientist',
+                MainContractor: 'Main Contractor',
+                Subcontractor: 'Subcontractor'
+            };
+            const title = defs[val];
+            return title ? title : val;
         }
     },
     computed: {
@@ -27,6 +39,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Type</th>
                     <th>Added</th>
                     <th>Removed</th>
                     <th>Remove cost</th>
@@ -35,6 +48,7 @@
             <tbody>
                 <tr v-for="item in items">
                     <td>{{ item.title }}</td>
+                    <td>{{ getTypeTitle(item.type) }}</td>
                     <td>{{ formatDate(item.dateAdd) }}</td>
                     <td>{{ formatDate(item.dateRemove) }}</td>
                     <td>{{ item.dateRemove ? formatFloat(item.fireCost) : ''}}</td>
