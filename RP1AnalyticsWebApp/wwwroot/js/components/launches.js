@@ -140,7 +140,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><span :title="formatDatePlusTime(item.date)">{{ formatDate(item.date) }}</span></td>
+                                <td class="date-col"><span :title="formatDatePlusTime(item.date)">{{ formatDate(item.date) }}</span></td>
                             </tr>
                             <tr v-if="item.visible">
                                 <td colspan="3">

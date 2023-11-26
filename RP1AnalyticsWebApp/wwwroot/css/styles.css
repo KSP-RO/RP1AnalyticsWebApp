@@ -35,6 +35,10 @@ tr.clickable {
     cursor: pointer;
 }
 
+.date-col {
+    white-space: nowrap;
+}
+
 #chart {
     margin: 10px 0 0 0;
     height: max(min(calc(100vh * 0.875), 1000px), 350px);

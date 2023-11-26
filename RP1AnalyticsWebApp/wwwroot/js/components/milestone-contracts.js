@@ -30,7 +30,7 @@
             <tbody>
                 <tr v-for="item in items">
                     <td>{{ item.contractDisplayName }}</td>
-                    <td>{{ formatDate(item.date) }}</td>
+                    <td class="date-col">{{ formatDate(item.date) }}</td>
                 </tr>
             </tbody>
             </table>

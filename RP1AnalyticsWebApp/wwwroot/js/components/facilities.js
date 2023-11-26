@@ -88,8 +88,8 @@
                             <span>{{ item.name }}</span>
                         </td>
                         <td>{{ formatMass(item.massMax) }}</td>
-                        <td>{{ formatDate(item.constrStarted) }}</td>
-                        <td>{{ formatDate(item.constrEnded) }}</td>
+                        <td class="date-col">{{ formatDate(item.constrStarted) }}</td>
+                        <td class="date-col">{{ formatDate(item.constrEnded) }}</td>
                     </tr>
                     <tr v-if="item.lcType && item.visible">
                         <td colspan="3">
@@ -102,8 +102,8 @@
                     <tr v-if="!item.lcType">
                         <td>{{ getFacilityTitle(item.facility) }}</td>
                         <td>{{ item.newLevel + 1 }}</td>
-                        <td>{{ formatDate(item.started) }}</td>
-                        <td>{{ formatDate(item.ended) }}</td>
+                        <td class="date-col">{{ formatDate(item.started) }}</td>
+                        <td class="date-col">{{ formatDate(item.ended) }}</td>
                     </tr>
                 </template>
             </tbody>

@@ -29,7 +29,7 @@
                 <tr v-for="item in items">
                     <td>{{ item.userPreferredName }}</td>
                     <td>{{ item.careerName }}</td>
-                    <td>{{ getAndFormatDate(item) }}</td>
+                    <td class="date-col">{{ getAndFormatDate(item) }}</td>
                     <td v-for="def in extraFields">{{item[def.field]}}</td>
                 </tr> 
             </tbody>

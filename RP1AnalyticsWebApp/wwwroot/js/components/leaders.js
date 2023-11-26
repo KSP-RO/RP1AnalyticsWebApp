@@ -49,8 +49,8 @@
                 <tr v-for="item in items">
                     <td>{{ item.title }}</td>
                     <td>{{ getTypeTitle(item.type) }}</td>
-                    <td>{{ formatDate(item.dateAdd) }}</td>
-                    <td>{{ formatDate(item.dateRemove) }}</td>
+                    <td class="date-col">{{ formatDate(item.dateAdd) }}</td>
+                    <td class="date-col">{{ formatDate(item.dateRemove) }}</td>
                     <td>{{ item.dateRemove ? formatFloat(item.fireCost) : ''}}</td>
                 </tr>
             </tbody>

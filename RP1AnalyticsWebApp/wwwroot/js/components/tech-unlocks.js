@@ -35,7 +35,7 @@
                 <tr v-for="item in items">
                     <td>{{ item.nodeDisplayName }}</td>
                     <td>{{ formatFloat(item.yearMult) }}</td>
-                    <td>{{ formatDate(item.date) }}</td>
+                    <td class="date-col">{{ formatDate(item.date) }}</td>
                 </tr> 
             </tbody>
             </table>

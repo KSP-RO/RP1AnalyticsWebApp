@@ -51,7 +51,7 @@
                     <td>
                         <a role="button" class="modal-trigger" @click="programClicked(r)">{{r.programDisplayName}}</a>
                     </td>
-                    <td>{{formatDate(r.date)}}</td>
+                    <td class="date-col">{{formatDate(r.date)}}</td>
                     <td>{{r.userPreferredName}}</td>
                     <td>
                         <a :href="getCareerUrl(r)">{{r.careerName}}</a>

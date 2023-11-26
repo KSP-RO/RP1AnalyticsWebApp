@@ -41,9 +41,9 @@
                 <tr v-for="item in items">
                     <td>{{ item.title }}</td>
                     <td>{{ mapSpeedToText(item.speed) }}</td>
-                    <td>{{ formatDate(item.accepted) }}</td>
-                    <td>{{ formatDate(item.objectivesCompleted) }}</td>
-                    <td>{{ formatDate(item.completed) }}</td>
+                    <td class="date-col">{{ formatDate(item.accepted) }}</td>
+                    <td class="date-col">{{ formatDate(item.objectivesCompleted) }}</td>
+                    <td class="date-col">{{ formatDate(item.completed) }}</td>
                 </tr>
             </tbody>
             </table>

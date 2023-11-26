@@ -48,7 +48,7 @@
                     <td>
                         <a role="button" class="modal-trigger" @click="contractClicked(r)">{{r.contractDisplayName}}</a>
                     </td>
-                    <td>{{formatDate(r.date)}}</td>
+                    <td class="date-col">{{formatDate(r.date)}}</td>
                     <td>{{r.userPreferredName}}</td>
                     <td>
                         <a :href="getCareerUrl(r)">{{r.careerName}}</a>
