@@ -1,5 +1,5 @@
 ﻿const CareerDates = {
-    props: ['items', 'dateField', 'title'],
+    props: ['items', 'dateField', 'extraFields', 'title'],
     computed: {
         isVisible() {
             return !!this.items;
@@ -22,6 +22,7 @@
                     <th>User</th>
                     <th>Career</th>
                     <th>Date</th>
+                    <th v-for="def in extraFields">{{def.title}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +30,7 @@
                     <td>{{ item.userPreferredName }}</td>
                     <td>{{ item.careerName }}</td>
                     <td>{{ getAndFormatDate(item) }}</td>
+                    <td v-for="def in extraFields">{{item[def.field]}}</td>
                 </tr> 
             </tbody>
             </table>
