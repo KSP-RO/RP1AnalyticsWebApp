@@ -30,6 +30,10 @@
                                         <span>@r.Name</span>
                                     </button>
                                 }
+                                <button type="submit" class="button is-small is-danger"
+                                        asp-route-user="@u.UserName" asp-page-handler="DeleteUser">
+                                    <span>Delete</span>
+                                </button>
                             </div>
                         </td>
                     </tr>

@@ -56,6 +56,17 @@ namespace RP1AnalyticsWebApp.Areas.Admin.Pages
             return RedirectToPage();
         }
 
+        public async Task<IActionResult> OnPostDeleteUserAsync(string user)
+        {
+            _telemetry.TrackEvent("DeleteUser", new Dictionary<string, string>
+            {
+                { nameof(user), user }
+            });
+            var u = _userManager.Users.First(u => u.UserName == user);
+            await _userManager.DeleteAsync(u);
+            return RedirectToPage();
+        }
+
         private async Task ProcessRoleChange(string userName, string roleName, Func<WebAppUser, string, Task> roleOp)
         {
             var u = _userManager.Users.First(u => u.UserName == userName);
