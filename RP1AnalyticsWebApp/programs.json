@@ -40,6 +40,10 @@
     "Title": "Geostationary Communication Network"
   },
   {
+    "Name": "CommercialApplications2",
+    "Title": "Advanced Commercial Applications"
+  },
+  {
     "Name": "EarlyLunarProbes",
     "Title": "Early Lunar Probes"
   },
@@ -68,8 +72,8 @@
     "Title": "Crewed Lunar Exploration"
   },
   {
-    "Name": "EarthSpaceStation",
-    "Title": "Earth Space Station"
+    "Name": "EarlyEarthSpaceStation",
+    "Title": "Early Earth Space Stations"
   },
   {
     "Name": "MarsSurfaceExp",

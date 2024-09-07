@@ -24,6 +24,14 @@
     "Title": "Vesta Orbital Science Probe"
   },
   {
+    "Name": "EarlyComNetwork3-CA",
+    "Title": "Early Communications Network (3 Satellites)"
+  },
+  {
+    "Name": "EarlyComNetwork4-CA",
+    "Title": "Early Communications Network (4 Satellites)"
+  },
+  {
     "Name": "EarlyComSat-CA",
     "Title": "Commercial Communications Satellite (Early)"
   },
@@ -56,6 +64,58 @@
     "Title": "First Navigational Satellite"
   },
   {
+    "Name": "FirstGEOSat",
+    "Title": "Geostationary Test Satellite"
+  },
+  {
+    "Name": "FirstGeosync",
+    "Title": "Geosynchronous Test Satellite"
+  },
+  {
+    "Name": "FirstTargetedGeo",
+    "Title": "Targeted Geostationary Satellite"
+  },
+  {
+    "Name": "FirstTargetedMolniya",
+    "Title": "Targeted Molniya Orbit Satellite"
+  },
+  {
+    "Name": "FirstTargetedTundra",
+    "Title": "Targeted Tundra Orbit Satellite"
+  },
+  {
+    "Name": "FirstTundraSat",
+    "Title": "First Tundra Orbit Satellite"
+  },
+  {
+    "Name": "GeoComSatNetwork",
+    "Title": "Geostationary Communications Network"
+  },
+  {
+    "Name": "GeoComSatNetwork3",
+    "Title": "Geostationary Communications Network (3 Satellites)"
+  },
+  {
+    "Name": "GeoComSatNetwork4",
+    "Title": "Geostationary Communications Network (4 Satellites)"
+  },
+  {
+    "Name": "GEORepeatComSats",
+    "Title": "Geostationary Commercial Communications Satellite"
+  },
+  {
+    "Name": "MolniyaNetwork3",
+    "Title": "Molniya Communications Network (3 Satellites)"
+  },
+  {
+    "Name": "MolniyaRepeatComSats",
+    "Title": "Molniya Commercial Communications Satellite"
+  },
+  {
+    "Name": "TundraRepeatComSats",
+    "Title": "Tundra Commercial Communications Satellite"
+  },
+  {
     "Name": "LunarFlyby",
     "Title": "Lunar Flyby (Uncrewed)"
   },
@@ -65,7 +125,7 @@
   },
   {
     "Name": "LunarImpactorOptional",
-    "Title": "Lunar Impactor (Uncrewed)"
+    "Title": "Lunar Impactor"
   },
   {
     "Name": "LunarOrbiter",
@@ -130,6 +190,34 @@
   {
     "Name": "FirstSunSyncSat",
     "Title": "First Sun-Synchronous Orbit Satellite"
+  },
+  {
+    "Name": "CollectSecondGenerationStationScience",
+    "Title": "Collect Second Generation Station Science"
+  },
+  {
+    "Name": "supplySecondGenerationStation",
+    "Title": "Second Generation Station Supply"
+  },
+  {
+    "Name": "first_spaceStation",
+    "Title": "First Space Station"
+  },
+  {
+    "Name": "CollectProtoStationScience",
+    "Title": "Collect Prototype Crewed Station Science"
+  },
+  {
+    "Name": "supplyProtoStation",
+    "Title": "Prototype Space Station Supply"
+  },
+  {
+    "Name": "prototype_spaceStation_launch",
+    "Title": "Prototype Space Station"
+  },
+  {
+    "Name": "secondGen_spaceStation",
+    "Title": "Second Generation Space Station"
   },
   {
     "Name": "CollectCrewedScienceBasic",
@@ -244,10 +332,6 @@
     "Title": "First Communications Satellite"
   },
   {
-    "Name": "FirstGEOSat",
-    "Title": "First Geostationary Satellite"
-  },
-  {
     "Name": "FirstMolniyaSat",
     "Title": "First Molniya Orbit Satellite"
   },
@@ -256,20 +340,8 @@
     "Title": "First Navigational Satellite"
   },
   {
-    "Name": "FirstTundraSat",
-    "Title": "First Tundra Orbit Satellite"
-  },
-  {
     "Name": "FirstWeatherSat",
     "Title": "First Weather Satellite"
-  },
-  {
-    "Name": "GeoComSatNetwork",
-    "Title": "Geostationary Communications Network"
-  },
-  {
-    "Name": "GEORepeatComSats",
-    "Title": "Geostationary Commercial Communications Satellite"
   },
   {
     "Name": "recordCrewedAlt",
@@ -336,6 +408,10 @@
     "Title": "Crewed Lunar Flyby"
   },
   {
+    "Name": "CrewedLunarOrbitRepeat",
+    "Title": "Crewed Lunar Orbit"
+  },
+  {
     "Name": "MoonExtendedStayCrew",
     "Title": "Crewed Moon Landing & Rover Exploration"
   },
@@ -400,11 +476,19 @@
     "Title": "Mars Landing"
   },
   {
+    "Name": "landingMarsRepeatable",
+    "Title": "Mars Landing"
+  },
+  {
     "Name": "probeMars",
     "Title": "Mars Atmospheric Probe"
   },
   {
     "Name": "roverMars",
+    "Title": "Mars Rover"
+  },
+  {
+    "Name": "roverMarsRepeatable",
     "Title": "Mars Rover"
   },
   {
@@ -436,6 +520,10 @@
     "Title": "Mercury Landing"
   },
   {
+    "Name": "landingMercuryRepeatable",
+    "Title": "Mercury Landing"
+  },
+  {
     "Name": "orbitMercury",
     "Title": "Mercury Orbit"
   },
@@ -446,6 +534,10 @@
   {
     "Name": "roverMercury",
     "Title": "Mercury Rover"
+  },
+  {
+    "Name": "landingTriton",
+    "Title": "Triton Landing"
   },
   {
     "Name": "flybyAriel",
@@ -478,10 +570,6 @@
   {
     "Name": "flybyTriton",
     "Title": "Triton Flyby"
-  },
-  {
-    "Name": "landingTriton",
-    "Title": "Triton Landing"
   },
   {
     "Name": "flybyUmbriel",
@@ -528,11 +616,19 @@
     "Title": "Charon Landing"
   },
   {
+    "Name": "landingCharonRepeat",
+    "Title": "Charon Landing"
+  },
+  {
     "Name": "roverCharon",
     "Title": "Charon Rover"
   },
   {
     "Name": "landingPluto",
+    "Title": "Pluto Landing"
+  },
+  {
+    "Name": "landingPlutoRepeat",
     "Title": "Pluto Landing"
   },
   {
@@ -700,42 +796,6 @@
     "Title": "Reach a Suborbital Trajectory & Return (uncrewed)"
   },
   {
-    "Name": "ExtraCrewStation",
-    "Title": "Add More Crew Capacity to your Station"
-  },
-  {
-    "Name": "CrewRotationStation",
-    "Title": "Rotate the Crew of Your Space Station"
-  },
-  {
-    "Name": "first_spaceStation",
-    "Title": "First Space Station"
-  },
-  {
-    "Name": "improved_spaceStation",
-    "Title": "Improved Space Station"
-  },
-  {
-    "Name": "first_ISScrew",
-    "Title": "Crew your Improved Space Station for 60 days and collect science"
-  },
-  {
-    "Name": "second_ISScrew",
-    "Title": "Crew your Improved Space Station for 90 days and collect science"
-  },
-  {
-    "Name": "LifeSupportStation",
-    "Title": "Resupply the Life Support Resources on your Space Station"
-  },
-  {
-    "Name": "NewCrewStation",
-    "Title": "Send a New Crew to Your Station"
-  },
-  {
-    "Name": "PowerModuleStation",
-    "Title": "Add More Power Generation to your Station"
-  },
-  {
     "Name": "first_SpaceplaneDocking",
     "Title": "First Docking by Spaceplane"
   },
@@ -764,7 +824,31 @@
     "Title": "Suborbital Spaceplane Flight (Crewed)"
   },
   {
+    "Name": "landingAriel",
+    "Title": "Ariel Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingMiranda",
+    "Title": "Miranda Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingOberon",
+    "Title": "Oberon Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingTitania",
+    "Title": "Titania Landing (Uncrewed)"
+  },
+  {
+    "Name": "landingUmbriel",
+    "Title": "Umbriel Landing (Uncrewed)"
+  },
+  {
     "Name": "landingVenus",
+    "Title": "Venus Landing"
+  },
+  {
+    "Name": "landingVenusRepeatable",
     "Title": "Venus Landing"
   },
   {
