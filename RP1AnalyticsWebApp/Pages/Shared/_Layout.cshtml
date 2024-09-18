@@ -1,6 +1,6 @@
-﻿@using RP1AnalyticsWebApp.Utilities
-@inject SignInManager<Models.WebAppUser> SignInManager
+﻿@inject SignInManager<Models.WebAppUser> SignInManager
 @inject UserManager<Models.WebAppUser> UserManager
+@inject IViteManifest Manifest
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,17 +8,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <script src="https://cdn.jsdelivr.net/npm/moment"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-duration-format/2.3.2/moment-duration-format.min.js" integrity="sha512-ej3mVbjyGQoZGS3JkES4ewdpjD8UBxHRGW+MN5j7lg3aGQ0k170sFCj5QJVCFghZRCio7DEmyi+8/HAwmwWWiA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.plot.ly/plotly-2.2.1.min.js"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
-    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <link rel="stylesheet" vite-href="~/css/styles.scss" asp-append-version="true" />
+    <link rel="stylesheet" vite-href="~/navbar-main.ts" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
 
     <link rel="apple-touch-icon" sizes="57x57" href="/images/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/images/apple-icon-60x60.png">
@@ -43,7 +42,7 @@
 <nav class="navbar is-link" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="https://github.com/KSP-RO">
-            <img alt="rp-1 logo" src="https://github.com/KSP-RO/RP-0/raw/master/Source/RP-1%20Logo.png?v=4&s=50" width="28" height="28">
+            <img class="logo" alt="rp-1 logo" src="/images/logo-72x72.png" width="36" height="36">
         </a>
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar">
             <span aria-hidden="true"></span>
@@ -69,9 +68,6 @@
                 <i class="fa fa-filter" aria-hidden="true"></i>
             </a>
         </div>
-
-        <career-filters-modal v-model:is-visible="modalVisible" v-model:filters="filters" v-on:apply-filters="applyFilters"></career-filters-modal>
-
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
@@ -79,14 +75,14 @@
                 </div>
             </div>
         </div>
+
+        <career-filters-modal v-model:is-visible="modalVisible" v-model:filters="filters" v-on:apply-filters="applyFilters" />
     </div>
 </nav>
 
 <div class="container">
     @RenderBody()
-    <script src="~/js/navbar.js" asp-append-version="true"></script>
-    <script src="~/js/components/career-filters-modal.js" asp-append-version="true"></script>
-    <script src="~/js/components/career-filters.js" asp-append-version="true"></script>
+
     @if (SignInManager.IsSignedIn(User))
     {
         <script type="text/javascript">
@@ -102,7 +98,10 @@
             const currentUser = null;
         </script>
     }
-    @RenderSection("Scripts", required: false)
+
+    <script type="module" vite-src="~/navbar-main.ts"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 </div>
 </body>
 </html>

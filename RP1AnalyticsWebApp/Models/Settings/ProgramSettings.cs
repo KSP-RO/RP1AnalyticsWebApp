@@ -11,7 +11,7 @@ namespace RP1AnalyticsWebApp.Models
 
         public ProgramSettings()
         {
-            const string _fileName = @"programs.json";
+            const string _fileName = @"Configs/programs.json";
             string jsonString = File.ReadAllText(_fileName);
             var arr = JsonSerializer.Deserialize<ProgramDefinitionItem[]>(jsonString);
             ProgramNameDict = arr.ToDictionary(e => e.Name, e => e.Title);

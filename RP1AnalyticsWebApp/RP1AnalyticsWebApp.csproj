@@ -1,27 +1,123 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <RootNamespace>RP1AnalyticsWebApp</RootNamespace>
-        <ApplicationInsightsResourceId>/subscriptions/4b00baf6-7f57-4be8-a64f-dbd94e553f28/resourcegroups/RP1CareerLog/providers/microsoft.insights/components/RP1CareerLog</ApplicationInsightsResourceId>
-        <UserSecretsId>23129407-713f-4ed9-af75-39dffc62a42d</UserSecretsId>
-        <Version>2.0.0</Version>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>RP1AnalyticsWebApp</RootNamespace>
+    <ApplicationInsightsResourceId>/subscriptions/4b00baf6-7f57-4be8-a64f-dbd94e553f28/resourcegroups/RP1CareerLog/providers/microsoft.insights/components/RP1CareerLog</ApplicationInsightsResourceId>
+    <UserSecretsId>23129407-713f-4ed9-af75-39dffc62a42d</UserSecretsId>
+    <Version>2.0.0</Version>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="6.0.15" />
-      <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.3.3" />
-      <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.19" />
-      <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.0" />
-      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.14" />
-      <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="6.0.15" />
+    <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.3.3" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.19" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.14" />
+    <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Vite.AspNetCore" Version="2.1.2" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <WCFMetadata Include="Connected Services" />
-    </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\agathorn.webp" />
+    <None Remove="src\careerLog.vue" />
+    <None Remove="src\components\career-filters-button.vue" />
+    <None Remove="src\components\career-filters-modal.ts" />
+    <None Remove="src\components\career-filters.ts" />
+    <None Remove="src\components\CareerFiltersModal.vue" />
+    <None Remove="src\components\CareerSelect.vue" />
+    <None Remove="src\components\LoadingSpinner.vue" />
+    <None Remove="src\components\MetaInformation.vue" />
+    <None Remove="src\components\navbar.ts" />
+    <None Remove="src\components\SelectionTab.vue" />
+    <None Remove="src\navbar.ts" />
+  </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="public\browserconfig.xml" />
+    <Content Include="public\images\agathorn.webp" />
+    <Content Include="public\images\android-icon-144x144.png" />
+    <Content Include="public\images\android-icon-192x192.png" />
+    <Content Include="public\images\android-icon-36x36.png" />
+    <Content Include="public\images\android-icon-48x48.png" />
+    <Content Include="public\images\android-icon-72x72.png" />
+    <Content Include="public\images\android-icon-96x96.png" />
+    <Content Include="public\images\apple-icon-114x114.png" />
+    <Content Include="public\images\apple-icon-120x120.png" />
+    <Content Include="public\images\apple-icon-144x144.png" />
+    <Content Include="public\images\apple-icon-152x152.png" />
+    <Content Include="public\images\apple-icon-180x180.png" />
+    <Content Include="public\images\apple-icon-57x57.png" />
+    <Content Include="public\images\apple-icon-60x60.png" />
+    <Content Include="public\images\apple-icon-72x72.png" />
+    <Content Include="public\images\apple-icon-76x76.png" />
+    <Content Include="public\images\apple-icon-precomposed.png" />
+    <Content Include="public\images\apple-icon.png" />
+    <Content Include="public\images\favicon-16x16.png" />
+    <Content Include="public\images\favicon-32x32.png" />
+    <Content Include="public\images\favicon-96x96.png" />
+    <Content Include="public\images\favicon.ico" />
+    <Content Include="public\images\ms-icon-144x144.png" />
+    <Content Include="public\images\ms-icon-150x150.png" />
+    <Content Include="public\images\ms-icon-310x310.png" />
+    <Content Include="public\images\ms-icon-70x70.png" />
+    <Content Include="src\assets\agathorn.webp">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="src\components\Careerlog.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="src\components\CareerFiltersModal.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="src\components\CareerSelect.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="src\components\LoadingSpinner.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="src\components\MetaInformation.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="src\components\SelectionTab.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="src\navbar-main.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <!-- Ensure Node environment on Build -->
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build;PublishBuildAssets" Condition=" !Exists('node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <!-- Install Node packages -->
+    <Exec Command="npm install" />
+  </Target>
+
+  <!-- Build the final assets -->
+  <Target Name="PublishBuildAssets" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
+    <!-- Build the final assets -->
+    <Exec Command="npm run build" />
+  </Target>
 
 </Project>

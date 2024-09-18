@@ -13,17 +13,17 @@ namespace RP1AnalyticsWebApp.Models
 
         public ContractSettings()
         {
-            const string _fileName = @"contractData.json";
+            const string _fileName = @"Configs/contractData.json";
             string jsonString = File.ReadAllText(_fileName);
             var arr = JsonSerializer.Deserialize<ContractDefinitionItem[]>(jsonString);
             ContractNameDict = arr.ToDictionary(e => e.Name, e => e.Title);
 
-            const string _milestoneFileName = @"milestoneContracts.json";
+            const string _milestoneFileName = @"Configs/milestoneContracts.json";
             jsonString = File.ReadAllText(_milestoneFileName);
             var arr2 = JsonSerializer.Deserialize<string[]>(jsonString);
             MilestoneContractNames = new HashSet<string>(arr2);
 
-            const string _repeatableFileName = @"repeatableContracts.json";
+            const string _repeatableFileName = @"Configs/repeatableContracts.json";
             jsonString = File.ReadAllText(_repeatableFileName);
             var arr3 = JsonSerializer.Deserialize<string[]>(jsonString);
             RepeatableContractNames = new HashSet<string>(arr3);

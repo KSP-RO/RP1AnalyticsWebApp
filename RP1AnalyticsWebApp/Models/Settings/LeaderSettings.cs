@@ -11,7 +11,7 @@ namespace RP1AnalyticsWebApp.Models
 
         public LeaderSettings()
         {
-            const string _fileName = @"leaders.json";
+            const string _fileName = @"Configs/leaders.json";
             string jsonString = File.ReadAllText(_fileName);
             var arr = JsonSerializer.Deserialize<LeaderDefinitionItem[]>(jsonString);
             LeaderDict = arr.ToDictionary(e => e.Name);

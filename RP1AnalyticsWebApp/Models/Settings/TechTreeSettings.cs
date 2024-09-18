@@ -11,7 +11,7 @@ namespace RP1AnalyticsWebApp.Models
 
         public TechTreeSettings()
         {
-            const string _fileName = @"techTree.json";
+            const string _fileName = @"Configs/techTree.json";
             string jsonString = File.ReadAllText(_fileName);
             var arr = JsonSerializer.Deserialize<TechTreeNode[]>(jsonString);
             NodeTitleDict = arr.ToDictionary(e => e.ID, e => e.Title);

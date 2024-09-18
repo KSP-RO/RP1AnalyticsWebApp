@@ -1,0 +1,47 @@
+[v-cloak] {
+    display: none
+}
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+.navbar-burger {
+    margin: 0;    /*align navbar to the left instead of the default right*/
+}
+
+.navbar-item img.logo {
+    max-height: 36px;
+}
+
+.contracts-app {
+    h2 {
+        margin-top: 0.75rem;
+    }
+
+    .collection .collection-item {
+        padding: 6px 12px;
+    }
+
+    .preloader-wrapper {
+        margin: 2rem 10rem;
+    }
+
+    .inline-icon {
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+}
+
+tr.clickable {
+    cursor: pointer;
+}
+
+.date-col {
+    white-space: nowrap;
+}
+
+.copy-url {
+    background: lightgray;
+    user-select: all;
+}

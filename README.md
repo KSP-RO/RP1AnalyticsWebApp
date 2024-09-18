@@ -2,14 +2,17 @@
 Receives career progress information from the game and shows various useful visualizations for comparing careers and balancing RP-1.
 
 ## Technology stack
-* .NET 5
-* ASP.NET Core 5 (Razor pages + web API)
-* Vue.js
+* .NET 6
+* ASP.NET Core 6 (Razor pages + web API)
+* Vue.js 3
 * MongoDB
+* Microsoft.AspNetCore.OData
 * Application Insights
 * AspNetCore.Identity.Mongo
 * AspNet.Security.OAuth.GitHub
 * Swagger / OpenAPI
+* Vite.AspNetCore
+* Node.js 20
 
 ## Install
 ### Production
@@ -24,7 +27,7 @@ I.e:
 ```
 
 ### Development
-Add appsettings.json to \RP1AnalyticsWebApp\ and hit F5 in VS.
+Add appsettings.json to \RP1AnalyticsWebApp\ and hit F5 in VS. Npm install will be run automatically and vite dev server will start on first request.
 Example settings file:
 ```
 {

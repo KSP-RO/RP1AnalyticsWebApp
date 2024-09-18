@@ -5,65 +5,11 @@
     ViewData["Title"] = "RP-1 Analytics";
 }
 
-<div id="appWrapper">
-    <div class="box columns is-centered">
-        <div class="field">
-            <career-select :selected-career="careerId" :filters="filters" v-on:career-changed="handleCareerChange"></career-select>
-        </div>
-    </div>
+<div id="appWrapper"></div>
 
-    <div class="pb-5">
-        <meta-information :title="careerTitle" :meta="careerLogMeta" :is-loading="isLoadingCareerMeta"></meta-information>
-    </div>
-
-    <div id="selection-tab" class="selection-tab">
-        <selection-tab :active="activeTab" v-on:change-active="handleChangeActive"></selection-tab>
-    </div>
-    <div id="milestones" class="contracts-app">
-        <milestone-contracts :active-tab="activeTab" :career-id="careerId"></milestone-contracts>
-    </div>
-
-    <div id="repeatables" class="contracts-app">
-        <repeatable-contracts :active-tab="activeTab" :career-id="careerId"></repeatable-contracts>
-    </div>
-
-    <div id="programs" class="contracts-app">
-        <programs :active-tab="activeTab" :career-id="careerId"></programs>
-    </div>
-
-    <div id="tech" class="contracts-app">
-        <tech-unlocks :active-tab="activeTab" :career-id="careerId"></tech-unlocks>
-    </div>
-
-    <div id="launches" class="contracts-app">
-        <launches :active-tab="activeTab" :career-id="careerId" :can-edit="canEdit"></launches>
-    </div>
-
-    <div id="facilities" class="contracts-app">
-        <facilities :active-tab="activeTab" :career-id="careerId"></facilities>
-    </div>
-
-    <div id="leaders" class="contracts-app">
-        <leaders :active-tab="activeTab" :career-id="careerId"></leaders>
-    </div>
-</div>
-
-
-<div id="chart"></div>
-
+@section Styles {
+    <link rel="stylesheet" vite-href="~/careerlog-main.ts" asp-append-version="true" />
+}
 @section Scripts {
-    <script src="~/js/components/career-select.js" asp-append-version="true"></script>
-    <script src="~/js/components/data-tab-mixin.js" asp-append-version="true"></script>
-    <script src="~/js/components/meta-information.js" asp-append-version="true"></script>
-    <script src="~/js/components/selection-tab.js" asp-append-version="true"></script>
-    <script src="~/js/components/milestone-contracts.js" asp-append-version="true"></script>
-    <script src="~/js/components/repeatable-contracts.js" asp-append-version="true"></script>
-    <script src="~/js/components/tech-unlocks.js" asp-append-version="true"></script>
-    <script src="~/js/components/launches.js" asp-append-version="true"></script>
-    <script src="~/js/components/facilities.js" asp-append-version="true"></script>
-    <script src="~/js/components/programs.js" asp-append-version="true"></script>
-    <script src="~/js/components/leaders.js" asp-append-version="true"></script>
-    <script src="~/js/components/loading-spinner.js" asp-append-version="true"></script>
-    <script src="~/js/careerLog.js" asp-append-version="true"></script>
-
+    <script type="module" vite-src="~/careerlog-main.ts"></script>
 }

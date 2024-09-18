@@ -18,6 +18,7 @@ using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.OData;
 using RP1AnalyticsWebApp.Services;
 using System.Linq;
+using Vite.AspNetCore;
 
 namespace RP1AnalyticsWebApp
 {
@@ -117,6 +118,12 @@ namespace RP1AnalyticsWebApp
             });
 
             services.AddHostedService<StartupHostedService>();
+
+            services.AddViteServices(options =>
+            {
+                options.Server.Https = true;
+                options.Server.AutoRun = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -155,6 +162,12 @@ namespace RP1AnalyticsWebApp
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
+
+            if (env.IsDevelopment())
+            {
+                app.UseWebSockets();
+                app.UseViteDevelopmentServer(true);
+            }
         }
 
         private static IEdmModel GetEdmModel()
