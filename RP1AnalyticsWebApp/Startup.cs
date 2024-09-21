@@ -121,6 +121,7 @@ namespace RP1AnalyticsWebApp
 
             services.AddViteServices(options =>
             {
+                options.Manifest = "vite-manifest.json";
                 options.Server.Https = true;
                 options.Server.AutoRun = true;
             });

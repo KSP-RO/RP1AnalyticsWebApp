@@ -53,7 +53,7 @@ export default defineConfig(async () => {
             },
         },
         build: {
-            manifest: true,
+            manifest: 'vite-manifest.json',
             emptyOutDir: true,
             outDir: '../wwwroot',
             assetsDir: '',
