@@ -46,7 +46,7 @@
 <script lang="ts">
     import { defineComponent } from 'vue';
     import { fetchCareerLog, fetchContractsForCareer, fetchProgramsForCareer } from '../utils/api';
-    import { currentUser } from '../utils/currentUser';
+    import currentUser from '../utils/currentUser';
     import { activeFilters } from '../utils/activeFilters';
     import type { CareerLog, BaseContractEvent, ExtendedCareerLogMeta, ProgramItem } from 'types';
     import CareerSelect from './CareerSelect.vue';
