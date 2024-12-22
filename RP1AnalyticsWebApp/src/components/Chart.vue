@@ -32,6 +32,7 @@
         ['LunarImpactor', 'Lunar Impactor'],
         ['first_OrbitCrewed', 'Crewed Orbit'],
         ['first_MoonLandingCrewed', 'Crewed Moon'],
+        ['first_MoonLandingCrewedDirect', 'Crewed Moon (Direct)'],
         ['MarsLandingCrew', 'Crewed Mars'],
         ['first_spaceStation', 'Space Station']
     ]));
