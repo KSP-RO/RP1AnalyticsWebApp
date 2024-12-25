@@ -392,7 +392,7 @@
                 const completionArr = this.getCompletionDatesAndIndexesForContracts(careerLog, contractNames);
                 completionArr.forEach(el => annotations.push({
                     x: el.month,
-                    y: this.getValuesForField<number>(careerPeriods, 'currentFunds')[el.index],
+                    y: 0,
                     yref: 'y',
                     text: MilestonesToShowOnChart.get(el.contract),
                     arrowhead: 6,
@@ -400,12 +400,12 @@
                     ay: -35
                 }));
 
-                careerPeriods.forEach((p, idx) => {
+                careerPeriods.forEach((p) => {
                     if (p.numNautsKilled > 0) {
                         const dt = parseUtcDate(p.startDate);
                         annotations.push({
                             x: dt.toFormat('yyyy-MM'),
-                            y: this.getValuesForField<number>(careerPeriods, 'reputation')[idx],
+                            y: 0,
                             yref: 'y3',
                             text: '💀',
                             arrowhead: 6,
