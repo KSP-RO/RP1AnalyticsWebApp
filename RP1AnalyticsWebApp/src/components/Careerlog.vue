@@ -107,6 +107,8 @@
                 this.careerLogMeta = null;
                 this.isLoadingCareerMeta = false;
                 this.careerTitle = null;
+                this.contractEvents = null;
+                this.programs = null;
             },
             handleChangeActive(tabName: string) {
                 this.activeTab = tabName;
@@ -123,12 +125,9 @@
             async getCareerLogs(careerId: string) {
                 console.log(`Getting Logs for ${careerId}...`);
 
-                if (!careerId) {
-                    this.contractEvents = null;
-                    this.programs = null;
-                    this.reset();
-                }
-                else {
+                this.reset();
+
+                if (careerId) {
                     this.careerId = careerId;
                     this.isLoadingCareerMeta = true;
 
