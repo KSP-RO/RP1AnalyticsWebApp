@@ -732,20 +732,20 @@
     "Title": "Crew Survivability"
   },
   {
-    "ID": "earlyLifeSupport",
-    "Title": "Early Life Support and ISRU"
+    "ID": "rudimentaryLifeSupport",
+    "Title": "Rudimentary Life Support"
   },
   {
-    "ID": "lifeSupportISRU",
-    "Title": "Life Support and ISRU"
+    "ID": "earlyLifeSupport",
+    "Title": "Early Life Support"
   },
   {
     "ID": "basicLifeSupport",
-    "Title": "Basic Life Support and ISRU"
+    "Title": "Basic Life Support"
   },
   {
     "ID": "improvedLifeSupport",
-    "Title": "Improved Life Support and ISRU"
+    "Title": "Improved Life Support"
   },
   {
     "ID": "longTermLifeSupport",
