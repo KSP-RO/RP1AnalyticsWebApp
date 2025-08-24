@@ -2,8 +2,8 @@
 Receives career progress information from the game and shows various useful visualizations for comparing careers and balancing RP-1.
 
 ## Technology stack
-* .NET 6
-* ASP.NET Core 6 (Razor pages + web API)
+* .NET 9
+* ASP.NET Core 9 (Razor pages + web API)
 * Vue.js 3
 * MongoDB
 * Microsoft.AspNetCore.OData
