@@ -13,7 +13,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Serializers;
 using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.OData;
 using RP1AnalyticsWebApp.Services;
@@ -70,6 +73,7 @@ namespace RP1AnalyticsWebApp
             };
             ConventionRegistry.Register("CustomConventions", pack,
                t => t.FullName.StartsWith("RP1AnalyticsWebApp.Models."));
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.CSharpLegacy));
 
             services.AddTransient<CareerLogService>();
 
