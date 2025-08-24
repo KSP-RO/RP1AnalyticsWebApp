@@ -17,9 +17,9 @@ const cssPattern = /\.css$/;
 const imagePattern = /\.(png|jpe?g|gif|svg|webp|avif)$/;
 
 // Export Vite configuration
-export default defineConfig(async () => {
+export default defineConfig(async ({ command, mode, isSsrBuild, isPreview }) => {
     // Ensure the certificate and key exist
-    if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
+    if (command === 'serve' && (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath))) {
         // Wait for the certificate to be generated
         await new Promise<void>((resolve) => {
             spawn('dotnet', [
