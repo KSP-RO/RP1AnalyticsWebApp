@@ -5,7 +5,7 @@
 <style>
     #chart {
         margin: 10px 0 25px 0;
-        height: max(min(calc(100vh * 0.875), 1000px), 350px);
+        height: max(min(calc(100vh * 0.875), 1500px), 600px);
     }
 </style>
 
