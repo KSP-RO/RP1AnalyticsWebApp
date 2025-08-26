@@ -4,7 +4,7 @@
 
 <style>
     #chart {
-        margin: 10px 0 0 0;
+        margin: 10px 0 25px 0;
         height: max(min(calc(100vh * 0.875), 1000px), 350px);
     }
 </style>
@@ -381,7 +381,7 @@
                     margin: {
                         t: 40,
                         r: 20,
-                        b: 200,
+                        b: 0,
                         l: 80,
                         pad: 4
                     }
