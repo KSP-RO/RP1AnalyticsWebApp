@@ -320,7 +320,7 @@
                     hovermode: 'x unified',
                     grid: {
                         columns: 1,
-                        subplots: [['xy'], ['xy2'], ['xy3'], ['xy4'], ['xy5']],
+                        subplots: [['xy'], ['xy2'], ['xy3'], ['xy5']],
                         ygap: 0.1
                     },
                     xaxis: {
