@@ -4,13 +4,7 @@ on:
   push:
     branches:
       - master
-# CONFIGURATION
-# For help, go to https://github.com/Azure/Actions
-#
-# 1. Set up the following secrets in your repository:
-#   AZURE_WEBAPP_PUBLISH_PROFILE
-#
-# 2. Change these variables for your configuration:
+
 env:
   AZURE_WEBAPP_NAME: RP1CareerLog     # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
@@ -21,8 +15,11 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: production
-    steps:
+    permissions:
+      id-token: write   #This is required for requesting the JWT
+      contents: read    #This is required for actions/checkout
 
+    steps:
       - uses: actions/checkout@v4
 
       - name: Setup .NET Core
@@ -41,9 +38,16 @@ jobs:
           dotnet build --configuration Release
           dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/azure-prod' 
 
-      - name: 'Run Azure webapp deploy action using publish profile credentials'
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_748F88D058DD4FBAB690FAB4D0C27D03 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9C269CD678E3422FBC2CA01E881C7AFF }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_6822A6434B25448F86223A5522CBF3E9 }}
+
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }}
+          slot-name: 'Production'
           package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/azure-prod'
