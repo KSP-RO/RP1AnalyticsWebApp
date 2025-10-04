@@ -36,7 +36,7 @@ namespace RP1AnalyticsWebApp.Services
             var q = _careerLogs.AsQueryable();
             if (queryOptions != null)
             {
-                q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q,
+                q = (IQueryable<CareerLog>)queryOptions.ApplyTo(q,
                     new ODataQuerySettings
                     {
                         HandleNullPropagation = HandleNullPropagationOption.False
@@ -58,7 +58,7 @@ namespace RP1AnalyticsWebApp.Services
                                .SelectMany(c => c.CareerLogEntries);
             if (queryOptions != null)
             {
-                q = (IMongoQueryable<CareerLogPeriod>)queryOptions.ApplyTo(q,
+                q = (IQueryable<CareerLogPeriod>)queryOptions.ApplyTo(q,
                     new ODataQuerySettings
                     {
                         HandleNullPropagation = HandleNullPropagationOption.False
@@ -139,8 +139,8 @@ namespace RP1AnalyticsWebApp.Services
                 .Select(g => new ContractEventWithCount
                 {
                     ContractInternalName = g.Key,
-                    CareerId = g.First().CareerId,
-                    CareerName = g.First().CareerName,
+                    CareerId = g.ElementAt(0).CareerId,
+                    CareerName = g.ElementAt(0).CareerName,
                     Date = g.Min(e => e.EventDate),
                     Count = g.Count()
                 })
@@ -163,7 +163,7 @@ namespace RP1AnalyticsWebApp.Services
             var q = _careerLogs.AsQueryable();
             if (queryOptions != null)
             {
-                q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
+                q = (IQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
                 {
                     HandleNullPropagation = HandleNullPropagationOption.False
                 });
@@ -186,9 +186,9 @@ namespace RP1AnalyticsWebApp.Services
                 .Select(g => new ContractRecord
                 {
                     ContractInternalName = g.Key,
-                    CareerId = g.First().CareerId,
-                    UserLogin = g.First().UserLogin,
-                    CareerName = g.First().CareerName,
+                    CareerId = g.ElementAt(0).CareerId,
+                    UserLogin = g.ElementAt(0).UserLogin,
+                    CareerName = g.ElementAt(0).CareerName,
                     Date = g.Min(e => e.EventDate)
                 })
                 .OrderBy(c => c.Date)
@@ -219,7 +219,7 @@ namespace RP1AnalyticsWebApp.Services
             var q = _careerLogs.AsQueryable();
             if (queryOptions != null)
             {
-                q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
+                q = (IQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
                 {
                     HandleNullPropagation = HandleNullPropagationOption.False
                 });
@@ -253,7 +253,7 @@ namespace RP1AnalyticsWebApp.Services
             var q = _careerLogs.AsQueryable();
             if (queryOptions != null)
             {
-                q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
+                q = (IQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
                 {
                     HandleNullPropagation = HandleNullPropagationOption.False
                 });
@@ -379,7 +379,7 @@ namespace RP1AnalyticsWebApp.Services
         public List<CareerListItem> GetCareerListWithTokens(ODataQueryOptions<CareerLog> queryOptions)
         {
             var q = _careerLogs.AsQueryable();
-            q = (IMongoQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
+            q = (IQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
             {
                 HandleNullPropagation = HandleNullPropagationOption.False
             });

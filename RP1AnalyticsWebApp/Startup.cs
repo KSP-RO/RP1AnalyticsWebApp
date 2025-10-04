@@ -3,16 +3,19 @@ using AspNetCore.Identity.Mongo.Model;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.OData;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson.Serialization.Conventions;
-using RP1AnalyticsWebApp.Models;
-using RP1AnalyticsWebApp.Services;
-using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Serializers;
+using RP1AnalyticsWebApp.Models;
+using RP1AnalyticsWebApp.Services;
 
 namespace RP1AnalyticsWebApp
 {
@@ -52,6 +55,7 @@ namespace RP1AnalyticsWebApp
             };
             ConventionRegistry.Register("CustomConventions", pack,
                t => t.FullName.StartsWith("RP1AnalyticsWebApp.Models."));
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.CSharpLegacy));
 
             services.AddTransient<CareerLogService>();
 
