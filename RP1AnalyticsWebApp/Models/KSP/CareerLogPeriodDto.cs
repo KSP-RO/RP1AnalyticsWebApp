@@ -11,6 +11,7 @@ namespace RP1AnalyticsWebApp.Models
         public double EfficiencyEngineers { get; set; }
         public double CurrentFunds { get; set; }
         public double CurrentSci { get; set; }
+        public double CurrentUnlockCredit { get; set; }
         public int RnDQueueLength { get; set; }
         public double ScienceEarned { get; set; }
         public double SalaryEngineers { get; set; }
