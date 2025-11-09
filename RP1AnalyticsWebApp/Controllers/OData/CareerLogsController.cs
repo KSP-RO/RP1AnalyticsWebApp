@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace RP1AnalyticsWebApp.Controllers.OData
 {
+    [ApiController]
     [ODataAttributeRouting]
     [Route("odata")]
     public class CareerLogsController : ControllerBase
