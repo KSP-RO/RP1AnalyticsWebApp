@@ -43,7 +43,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            CareerLog = _careerLogService.GetByToken(RouteData.Values["token"].ToString());
+            CareerLog = await _careerLogService.GetByTokenAsync(RouteData.Values["token"].ToString());
 
             if (CareerLog.CareerLogMeta != null) InitFieldValues();
             else Input.CareerName = CareerLog.Name;
@@ -52,9 +52,9 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
-        public RedirectToPageResult OnPost()
+        public async Task<RedirectToPageResult> OnPostAsync()
         {
-            _careerLogService.UpdateMetaByToken(RouteData.Values["token"].ToString(),
+            await _careerLogService.UpdateMetaByTokenAsync(RouteData.Values["token"].ToString(),
                 Input.CareerName,
                 CreateCareerLogMeta());
 

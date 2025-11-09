@@ -7,6 +7,7 @@ using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.Services;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RP1AnalyticsWebApp.Controllers.OData
 {
@@ -27,9 +28,9 @@ namespace RP1AnalyticsWebApp.Controllers.OData
 
         //[EnableQuery(AllowedQueryOptions = AllowedQueryOptions.Filter)]
         [HttpGet("careers", Name = "ODataGetCareerLogs")]
-        public ActionResult<List<CareerLog>> ODataGetCareerLogs(ODataQueryOptions<CareerLog> queryOptions)
+        public async Task<ActionResult<List<CareerLog>>> ODataGetCareerLogsAsync(ODataQueryOptions<CareerLog> queryOptions)
         {
-            var res = _careerLogService.Get(queryOptions);
+            var res = await _careerLogService.GetAsync(queryOptions);
             if (!IsLocalhost)
             {
                 res.ForEach(c => c.RemoveNonPublicData());
@@ -38,9 +39,9 @@ namespace RP1AnalyticsWebApp.Controllers.OData
         }
 
         [HttpGet("careers({id:length(24)})", Name = "ODataGetCareerLogsById")]
-        public ActionResult<CareerLog> GetCareerLogsById(string id)
+        public async Task<ActionResult<CareerLog>> GetCareerLogsByIdAsync(string id)
         {
-            var careerLog = _careerLogService.Get(id);
+            var careerLog = await _careerLogService.GetAsync(id);
             if (careerLog == null)
             {
                 return NotFound();
@@ -55,9 +56,9 @@ namespace RP1AnalyticsWebApp.Controllers.OData
         }
 
         [HttpGet("careers({id:length(24)})/careerLogEntries", Name = "ODataGetCareerPeriods")]
-        public ActionResult<List<CareerLogPeriod>> GetCareerPeriods(string id, ODataQueryOptions<CareerLogPeriod> queryOptions)
+        public async Task<ActionResult<List<CareerLogPeriod>>> GetCareerPeriodsAsync(string id, ODataQueryOptions<CareerLogPeriod> queryOptions)
         {
-            var periods = _careerLogService.GetCareerPeriods(id, queryOptions);
+            var periods = await _careerLogService.GetCareerPeriodsAsync(id, queryOptions);
             if (periods == null)
             {
                 return NotFound();
@@ -67,10 +68,10 @@ namespace RP1AnalyticsWebApp.Controllers.OData
         }
 
         [HttpGet("careers({careerId:length(24)})/careerLogEntries({periodStart})", Name = "ODataGetCareerPeriod")]
-        public ActionResult<CareerLogPeriod> GetCareerPeriod(string careerId, string periodStart)
+        public async Task<ActionResult<CareerLogPeriod>> GetCareerPeriodAsync(string careerId, string periodStart)
         {
             var dt = DateTime.Parse(periodStart);
-            var period = _careerLogService.GetCareerPeriod(careerId, dt);
+            var period = await _careerLogService.GetCareerPeriodAsync(careerId, dt);
             if (period == null)
             {
                 return NotFound();
@@ -80,44 +81,44 @@ namespace RP1AnalyticsWebApp.Controllers.OData
         }
 
         [HttpGet("contractRecords", Name = "ODataGetContractRecords")]
-        public ActionResult<List<ContractRecord>> GetContractRecords(ODataQueryOptions<CareerLog> queryOptions)
+        public async Task<ActionResult<List<ContractRecord>>> GetContractRecordsAsync(ODataQueryOptions<CareerLog> queryOptions)
         {
-            List<ContractRecord> events = _careerLogService.GetContractRecords(queryOptions);
+            List<ContractRecord> events = await _careerLogService.GetContractRecordsAsync(queryOptions);
             return events;
         }
 
         [HttpGet("programRecords", Name = "ODataGetProgramRecords")]
-        public ActionResult<List<ProgramRecord>> GetProgramRecords(ODataQueryOptions<CareerLog> queryOptions, ProgramRecordType type = ProgramRecordType.Accepted)
+        public async Task<ActionResult<List<ProgramRecord>>> GetProgramRecordsAsync(ODataQueryOptions<CareerLog> queryOptions, ProgramRecordType type = ProgramRecordType.Accepted)
         {
-            List<ProgramRecord> events = _careerLogService.GetProgramRecords(type, queryOptions: queryOptions);
+            List<ProgramRecord> events = await _careerLogService.GetProgramRecordsAsync(type, queryOptions: queryOptions);
             return events;
         }
 
         [HttpGet("programs({program})", Name = "ODataGetRecordsForSpecificProgram")]
-        public ActionResult<List<ProgramItemWithCareerInfo>> GetRecordsForSpecificProgram(string program, ODataQueryOptions<CareerLog> queryOptions, ProgramRecordType type = ProgramRecordType.Accepted)
+        public async Task<ActionResult<List<ProgramItemWithCareerInfo>>> GetRecordsForSpecificProgramAsync(string program, ODataQueryOptions<CareerLog> queryOptions, ProgramRecordType type = ProgramRecordType.Accepted)
         {
-            List<ProgramItemWithCareerInfo> events = _careerLogService.GetProgramRecords(type, program, queryOptions: queryOptions);
+            List<ProgramItemWithCareerInfo> events = await _careerLogService.GetProgramRecordsAsync(type, program, queryOptions: queryOptions);
             return events;
         }
 
         [HttpGet("contracts", Name = "ODataGetContracts")]
-        public ActionResult<List<ContractEventWithCareerInfo>> GetContracts(ODataQueryOptions<CareerLog> queryOptions)
+        public async Task<ActionResult<List<ContractEventWithCareerInfo>>> GetContractsAsync(ODataQueryOptions<CareerLog> queryOptions)
         {
-            List<ContractEventWithCareerInfo> events = _careerLogService.GetAllContractEvents(queryOptions);
+            List<ContractEventWithCareerInfo> events = await _careerLogService.GetAllContractEventsAsync(queryOptions);
             return events;
         }
 
         [HttpGet("contracts({contract})", Name = "ODataGetContractCompletions")]
-        public ActionResult<List<ContractEventWithCareerInfo>> GetContracts(string contract, ODataQueryOptions<CareerLog> queryOptions)
+        public async Task<ActionResult<List<ContractEventWithCareerInfo>>> GetContractsAsync(string contract, ODataQueryOptions<CareerLog> queryOptions)
         {
-            List<ContractEventWithCareerInfo> events = _careerLogService.GetEventsForContract(contract, ContractEventType.Complete, queryOptions);
+            List<ContractEventWithCareerInfo> events = await _careerLogService.GetEventsForContractAsync(contract, ContractEventType.Complete, queryOptions);
             return events;
         }
 
         [HttpGet("careerListItems", Name = "ODataGetCareerListItems")]
-        public ActionResult<List<CareerListItem>> GetCareerListItems(ODataQueryOptions<CareerLog> queryOptions)
+        public async Task<ActionResult<List<CareerListItem>>> GetCareerListItemsAsync(ODataQueryOptions<CareerLog> queryOptions)
         {
-            var res = _careerLogService.GetCareerList(queryOptions);
+            var res = await _careerLogService.GetCareerListAsync(queryOptions);
             return res;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,10 +25,10 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet(Name = "GetCareerLogs")]
-        public ActionResult<List<CareerLog>> GetCareerLogs()
+        public async Task<ActionResult<List<CareerLog>>> GetCareerLogsAsync()
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerLogs");
-            var res = _careerLogService.Get();
+            var res = await _careerLogService.GetAsync();
             if (!IsLocalhost)
             {
                 res.ForEach(c => c.RemoveNonPublicData());
@@ -36,21 +37,21 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet("List", Name = "GetCareerList")]
-        public ActionResult<List<CareerListItem>> GetCareerList(string userName = null)
+        public async Task<ActionResult<List<CareerListItem>>> GetCareerListAsync(string userName = null)
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerList");
-            return _careerLogService.GetCareerList(userName);
+            return await _careerLogService.GetCareerListAsync(userName);
         }
 
         [HttpGet("{id:length(24)}", Name = "GetCareerLog")]
-        public ActionResult<CareerLog> GetCareerLog(string id)
+        public async Task<ActionResult<CareerLog>> GetCareerLogAsync(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerLog", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            var careerLog = _careerLogService.Get(id);
+            var careerLog = await _careerLogService.GetAsync(id);
             if (careerLog == null)
             {
                 return NotFound();
@@ -65,14 +66,14 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet("{id:length(24)}/Contracts", Name = "GetCareerContracts")]
-        public ActionResult<List<BaseContractEvent>> GetCareerContracts(string id)
+        public async Task<ActionResult<List<BaseContractEvent>>> GetCareerContractsAsync(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerContracts", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<BaseContractEvent> contractEvents = _careerLogService.GetContractsForCareer(id);
+            List<BaseContractEvent> contractEvents = await _careerLogService.GetContractsForCareerAsync(id);
             if (contractEvents == null)
             {
                 return NotFound();
@@ -82,14 +83,14 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet("{id:length(24)}/CompletedMilestones", Name = "GetCareerCompletedMilestones")]
-        public ActionResult<List<BaseContractEvent>> GetCareerCompletedMilestones(string id)
+        public async Task<ActionResult<List<BaseContractEvent>>> GetCareerCompletedMilestonesAsync(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerCompletedMilestones", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<BaseContractEvent> contractEvents = _careerLogService.GetCompletedMilestonesForCareer(id);
+            List<BaseContractEvent> contractEvents = await _careerLogService.GetCompletedMilestonesForCareerAsync(id);
             if (contractEvents == null)
             {
                 return NotFound();
@@ -99,14 +100,14 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet("{id:length(24)}/CompletedRepeatables", Name = "GetCareerCompletedRepeatables")]
-        public ActionResult<List<ContractEventWithCount>> GetCareerCompletedRepeatables(string id)
+        public async Task<ActionResult<List<ContractEventWithCount>>> GetCareerCompletedRepeatablesAsync(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerCompletedRepeatables", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<ContractEventWithCount> contractEvents = _careerLogService.GetRepeatableContractCompletionCountsForCareer(id);
+            List<ContractEventWithCount> contractEvents = await _careerLogService.GetRepeatableContractCompletionCountsForCareerAsync(id);
             if (contractEvents == null)
             {
                 return NotFound();
@@ -116,103 +117,103 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet("Contracts", Name = "GetContractRecords")]
-        public ActionResult<List<ContractRecord>> GetContractRecords()
+        public async Task<ActionResult<List<ContractRecord>>> GetContractRecordsAsync()
         {
             _telemetry.TrackEvent("CareerLogsController-GetContractRecords");
 
-            List<ContractRecord> events = _careerLogService.GetContractRecords();
+            List<ContractRecord> events = await _careerLogService.GetContractRecordsAsync();
             return events;
         }
 
         [HttpGet("Contracts/{contract}", Name = "GetCompletionsForContract")]
-        public ActionResult<List<ContractEventWithCareerInfo>> GetCompletionsForContract(string contract)
+        public async Task<ActionResult<List<ContractEventWithCareerInfo>>> GetCompletionsForContractAsync(string contract)
         {
             _telemetry.TrackEvent("CareerLogsController-GetCompletionsForContract", new Dictionary<string, string>
             {
                 { nameof(contract), contract }
             });
 
-            List<ContractEventWithCareerInfo> events = _careerLogService.GetEventsForContract(contract, ContractEventType.Complete);
+            List<ContractEventWithCareerInfo> events = await _careerLogService.GetEventsForContractAsync(contract, ContractEventType.Complete);
             return events;
         }
 
         [HttpGet("{id:length(24)}/Tech", Name = "GetTechUnlocksForCareer")]
-        public ActionResult<List<TechEvent>> GetTechUnlocksForCareer(string id)
+        public async Task<ActionResult<List<TechEvent>>> GetTechUnlocksForCareerAsync(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetTechUnlocksForCareer", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<TechEvent> events = _careerLogService.GetTechUnlocksForCareer(id);
+            List<TechEvent> events = await _careerLogService.GetTechUnlocksForCareerAsync(id);
             return events;
         }
 
         [HttpGet("{id:length(24)}/Launches", Name = "GetLaunchesForCareer")]
-        public ActionResult<List<LaunchEvent>> GetLaunchesForCareer(string id)
+        public async Task<ActionResult<List<LaunchEvent>>> GetLaunchesForCareerAsync(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetLaunchesForCareer", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<LaunchEvent> events = _careerLogService.GetLaunchesForCareer(id);
+            List<LaunchEvent> events = await _careerLogService.GetLaunchesForCareerAsync(id);
             return events;
         }
 
         [HttpGet("{id:length(24)}/Facilities", Name = "GetFacilityConstructionsForCareer")]
-        public ActionResult<List<FacilityConstruction>> GetFacilityConstructionsForCareer(string id)
+        public async Task<ActionResult<List<FacilityConstruction>>> GetFacilityConstructionsForCareerAsync(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetFacilityConstructionsForCareer", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<FacilityConstruction> fcs = _careerLogService.GetFacilityConstructionsForCareer(id);
+            List<FacilityConstruction> fcs = await _careerLogService.GetFacilityConstructionsForCareerAsync(id);
             return fcs;
         }
 
         [HttpGet("{id:length(24)}/LCs", Name = "GetLCsForCareer")]
-        public ActionResult<List<LC>> GetLCsForCareer(string id)
+        public async Task<ActionResult<List<LC>>> GetLCsForCareerAsync(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetLCsForCareer", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<LC> lcs = _careerLogService.GetLCsForCareer(id);
+            List<LC> lcs = await _careerLogService.GetLCsForCareerAsync(id);
             return lcs;
         }
 
         [HttpGet("{id:length(24)}/Programs", Name = "GetProgramsForCareer")]
-        public ActionResult<List<ProgramItem>> GetProgramsForCareer(string id)
+        public async Task<ActionResult<List<ProgramItem>>> GetProgramsForCareerAsync(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetProgramsForCareer", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<ProgramItem> ps = _careerLogService.GetProgramsForCareer(id);
+            List<ProgramItem> ps = await _careerLogService.GetProgramsForCareerAsync(id);
             return ps;
         }
 
         [HttpGet("{id:length(24)}/Leaders", Name = "GetLeadersForCareer")]
-        public ActionResult<List<LeaderItem>> GetLeadersForCareer(string id)
+        public async Task<ActionResult<List<LeaderItem>>> GetLeadersForCareerAsync(string id)
         {
             _telemetry.TrackEvent("CareerLogsController-GetLeadersForCareer", new Dictionary<string, string>
             {
                 { nameof(id), id }
             });
 
-            List<LeaderItem> ls = _careerLogService.GetLeadersForCareer(id);
+            List<LeaderItem> ls = await _careerLogService.GetLeadersForCareerAsync(id);
             return ls;
         }
 
         [HttpGet("Races", Name = "GetRaces")]
-        public ActionResult<List<string>> GetRaces()
+        public async Task<ActionResult<List<string>>> GetRacesAsync()
         {
             _telemetry.TrackEvent("CareerLogsController-GetRaces");
-            List<string> res = _careerLogService.GetRaces();
+            List<string> res = await _careerLogService.GetRacesAsync();
             return res;
         }
 
@@ -221,7 +222,7 @@ namespace RP1AnalyticsWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize(Roles = Constants.Roles.Member)]
-        public ActionResult<CareerLog> CreateCareer(CareerLog log)
+        public async Task<ActionResult<CareerLog>> CreateCareerAsync(CareerLog log)
         {
             _telemetry.TrackEvent("CareerLogsController-CreateCareer", new Dictionary<string, string>
             {
@@ -230,21 +231,21 @@ namespace RP1AnalyticsWebApp.Controllers
 
             log.UserLogin = User.Identity.Name;
 
-            CareerLog res = _careerLogService.Create(log);
+            CareerLog res = await _careerLogService.CreateAsync(log);
             return CreatedAtRoute("CreateCareer", res);
         }
 
         [HttpPatch("{token:length(32)}", Name = "UpdateCareer")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<CareerLogDto> UpdateCareer(string token, CareerLogDto careerLog)
+        public async Task<ActionResult<CareerLogDto>> UpdateCareerAsync(string token, CareerLogDto careerLog)
         {
             _telemetry.TrackEvent("CareerLogsController-UpdateCareer", new Dictionary<string, string>
             {
                 { nameof(token), token }
             });
 
-            CareerLog res = _careerLogService.Update(token, careerLog);
+            CareerLog res = await _careerLogService.UpdateAsync(token, careerLog);
             if (res == null) return NotFound();
 
             return CreatedAtRoute("UpdateCareer", res);
@@ -255,7 +256,7 @@ namespace RP1AnalyticsWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize(Roles = Constants.Roles.Admin)]
-        public ActionResult<CareerLog> UpdateRace(string careerId, [FromBody] string race)
+        public async Task<ActionResult<CareerLog>> UpdateRaceAsync(string careerId, [FromBody] string race)
         {
             _telemetry.TrackEvent("CareerLogsController-UpdateRace", new Dictionary<string, string>
             {
@@ -263,7 +264,7 @@ namespace RP1AnalyticsWebApp.Controllers
                 { nameof(race), race }
             });
 
-            CareerLog c = _careerLogService.UpdateRace(careerId, race);
+            CareerLog c = await _careerLogService.UpdateRaceAsync(careerId, race);
             if (c == null) return NotFound();
 
             return CreatedAtRoute("UpdateRace", c);
@@ -274,7 +275,7 @@ namespace RP1AnalyticsWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize(Roles = Constants.Roles.Member)]
-        public ActionResult<LaunchEvent> UpdateLaunch(string careerId, string launchId, LaunchMeta meta)
+        public async Task<ActionResult<LaunchEvent>> UpdateLaunchAsync(string careerId, string launchId, LaunchMeta meta)
         {
             _telemetry.TrackEvent("CareerLogsController-UpdateLaunch", new Dictionary<string, string>
             {
@@ -283,7 +284,7 @@ namespace RP1AnalyticsWebApp.Controllers
             });
 
             // TODO: fetching the entire career log isn't particularly optimal
-            CareerLog c = _careerLogService.Get(careerId);
+            CareerLog c = await _careerLogService.GetAsync(careerId);
             if (c == null) return NotFound();
             if (c.UserLogin != User.Identity.Name) return Unauthorized();
 
@@ -291,7 +292,7 @@ namespace RP1AnalyticsWebApp.Controllers
             if (l == null) return NotFound();
             l.Metadata = meta;
 
-            _careerLogService.UpdateLaunch(careerId, l);
+            await _careerLogService.UpdateLaunchAsync(careerId, l);
 
             return CreatedAtRoute("UpdateLaunch", l);
         }

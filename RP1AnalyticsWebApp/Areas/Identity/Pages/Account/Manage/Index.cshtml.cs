@@ -13,16 +13,12 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
     public partial class IndexModel : PageModel
     {
         private readonly UserManager<WebAppUser> _userManager;
-        private readonly SignInManager<WebAppUser> _signInManager;
         private readonly CareerLogService _careerLogService;
-
-        public List<CareerListItem> Careers => _careerLogService.GetCareerListWithTokens(User.Identity.Name);
 
         public IndexModel(UserManager<WebAppUser> userManager, SignInManager<WebAppUser> signInManager,
             CareerLogService careerLogService)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _careerLogService = careerLogService;
         }
 
@@ -72,6 +68,11 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Preferred name")]
             [StringLength(20)]
             public string PreferredName { get; set; }
+        }
+
+        public async Task<List<CareerListItem>> GetAllCareersAsync()
+        {
+            return await _careerLogService.GetCareerListWithTokensAsync(User.Identity.Name);
         }
 
         private async Task LoadAsync(WebAppUser user)
@@ -144,7 +145,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
             await LoadAsync(user);
 
-            _careerLogService.Create(new CareerLog
+            await _careerLogService.CreateAsync(new CareerLog
             {
                 Name = Form.CareerInput.CareerName,
                 UserLogin = Username,
@@ -156,9 +157,9 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             return RedirectToPage();
         }
 
-        public RedirectToPageResult OnPostDelete(string token)
+        public async Task<RedirectToPageResult> OnPostDelete(string token)
         {
-            _careerLogService.DeleteByToken(token);
+            await _careerLogService.DeleteByTokenAsync(token);
 
             return new RedirectToPageResult("Index");
         }

@@ -6,6 +6,7 @@ using RP1AnalyticsWebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace RP1AnalyticsWebApp.Services
 {
@@ -36,7 +37,7 @@ namespace RP1AnalyticsWebApp.Services
             _careerLogs = database.GetCollection<CareerLog>(dbSettings.CareerLogsCollectionName);
         }
 
-        public List<CareerLog> Get(ODataQueryOptions<CareerLog> queryOptions = null)
+        public async Task<List<CareerLog>> GetAsync(ODataQueryOptions<CareerLog> queryOptions = null)
         {
             var q = _careerLogs.AsQueryable();
             if (queryOptions != null)
@@ -48,15 +49,15 @@ namespace RP1AnalyticsWebApp.Services
                     },
                     AllowedQueryOptions.Supported ^ AllowedQueryOptions.Filter);
             }
-            return q.ToList();
+            return await q.ToListAsync();
         }
 
-        public CareerLog Get(string id)
+        public async Task<CareerLog> GetAsync(string id)
         {
-            return _careerLogs.Find(entry => entry.Id == id).FirstOrDefault();
+            return await _careerLogs.Find(entry => entry.Id == id).FirstOrDefaultAsync();
         }
 
-        public List<CareerLogPeriod> GetCareerPeriods(string id, ODataQueryOptions<CareerLogPeriod> queryOptions = null)
+        public async Task<List<CareerLogPeriod>> GetCareerPeriodsAsync(string id, ODataQueryOptions<CareerLogPeriod> queryOptions = null)
         {
             var q = _careerLogs.AsQueryable()
                                .Where(c => c.Id == id)
@@ -70,27 +71,27 @@ namespace RP1AnalyticsWebApp.Services
                     },
                     AllowedQueryOptions.Supported ^ AllowedQueryOptions.Filter);
             }
-            return q.ToList();
+            return await q.ToListAsync();
         }
 
-        public CareerLogPeriod GetCareerPeriod(string careerId, DateTime startDate)
+        public async Task<CareerLogPeriod> GetCareerPeriodAsync(string careerId, DateTime startDate)
         {
             var q = _careerLogs.AsQueryable()
                                .Where(c => c.Id == careerId)
                                .SelectMany(c => c.CareerLogEntries)
                                .Where(p => p.StartDate == startDate);
-            return q.FirstOrDefault();
+            return await q.FirstOrDefaultAsync();
         }
 
-        public List<BaseContractEvent> GetContractsForCareer(string id)
+        public async Task<List<BaseContractEvent>> GetContractsForCareerAsync(string id)
         {
-            var c = _careerLogs.AsQueryable()
+            var c = await _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
                 .Select(c => new
                 {
                     c.ContractEventEntries
                 })
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (c == null) return null;
             if (c.ContractEventEntries == null) return new List<BaseContractEvent>(0);
@@ -104,15 +105,15 @@ namespace RP1AnalyticsWebApp.Services
             }).ToList();
         }
 
-        public List<BaseContractEvent> GetCompletedMilestonesForCareer(string id)
+        public async Task<List<BaseContractEvent>> GetCompletedMilestonesForCareerAsync(string id)
         {
-            var c = _careerLogs.AsQueryable()
+            var c = await _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
                 .Select(c => new
                 {
                     c.ContractEventEntries
                 })
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
             if (c == null) return null;
             if (c.ContractEventEntries == null) return new List<BaseContractEvent>(0);
 
@@ -127,9 +128,9 @@ namespace RP1AnalyticsWebApp.Services
             }).Where(ce => ce.Date.HasValue).OrderBy(ce => ce.Date).ToList();
         }
 
-        public List<ContractEventWithCount> GetRepeatableContractCompletionCountsForCareer(string id)
+        public async Task<List<ContractEventWithCount>> GetRepeatableContractCompletionCountsForCareerAsync(string id)
         {
-            var result = _careerLogs.AsQueryable()
+            var result = await _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
                 .SelectMany(c => c.ContractEventEntries, (c, e) => new
                 {
@@ -149,7 +150,7 @@ namespace RP1AnalyticsWebApp.Services
                     Date = g.Min(e => e.EventDate),
                     Count = g.Count()
                 })
-                .ToList();
+                .ToListAsync();
 
             var repeatables = result
                 .Where(r => _contractSettings.RepeatableContractNames.Contains(r.ContractInternalName))
@@ -163,7 +164,7 @@ namespace RP1AnalyticsWebApp.Services
             return repeatables;
         }
 
-        public List<ContractRecord> GetContractRecords(ODataQueryOptions<CareerLog> queryOptions = null)
+        public async Task<List<ContractRecord>> GetContractRecordsAsync(ODataQueryOptions<CareerLog> queryOptions = null)
         {
             var q = _careerLogs.AsQueryable();
             if (queryOptions != null)
@@ -174,7 +175,7 @@ namespace RP1AnalyticsWebApp.Services
                 });
             }
 
-            var result = q
+            var result = await q
                 .Where(c => c.EligibleForRecords)
                 .SelectMany(c => c.ContractEventEntries, (c, e) => new
                 {
@@ -197,7 +198,7 @@ namespace RP1AnalyticsWebApp.Services
                     Date = g.Min(e => e.EventDate)
                 })
                 .OrderBy(c => c.Date)
-                .ToList();
+                .ToListAsync();
 
             result.ForEach(r =>
             {
@@ -208,7 +209,7 @@ namespace RP1AnalyticsWebApp.Services
             return result;
         }
 
-        public List<ProgramRecord> GetProgramRecords(ProgramRecordType type, ODataQueryOptions<CareerLog> queryOptions = null)
+        public async Task<List<ProgramRecord>> GetProgramRecordsAsync(ProgramRecordType type, ODataQueryOptions<CareerLog> queryOptions = null)
         {
             var q = _careerLogs.AsQueryable();
             if (queryOptions != null)
@@ -236,7 +237,7 @@ namespace RP1AnalyticsWebApp.Services
                 allPrograms = allPrograms.Where(p => p.Date.HasValue);
             }
 
-            var result = allPrograms.OrderBy(p => p.Date)
+            var result = await allPrograms.OrderBy(p => p.Date)
                 .GroupBy(p => p.ProgramName)
                 .Select(g => new ProgramRecord
                 {
@@ -247,7 +248,7 @@ namespace RP1AnalyticsWebApp.Services
                     Date = g.Min(p => p.Date)
                 })
                 .OrderBy(c => c.Date)
-                .ToList();
+                .ToListAsync();
 
             result.ForEach(r =>
             {
@@ -258,7 +259,7 @@ namespace RP1AnalyticsWebApp.Services
             return result;
         }
 
-        public List<ProgramItemWithCareerInfo> GetProgramRecords(ProgramRecordType type, string program, ODataQueryOptions<CareerLog> queryOptions = null)
+        public async Task<List<ProgramItemWithCareerInfo>> GetProgramRecordsAsync(ProgramRecordType type, string program, ODataQueryOptions<CareerLog> queryOptions = null)
         {
             var q = _careerLogs.AsQueryable();
             if (queryOptions != null)
@@ -297,10 +298,10 @@ namespace RP1AnalyticsWebApp.Services
                 allPrograms = allPrograms.Where(p => p.Completed.HasValue);
             }
 
-            var result = allPrograms
+            var result = await allPrograms
                 .OrderBy(c => type == ProgramRecordType.Accepted ? c.Accepted :
                               type == ProgramRecordType.ObjectivesCompleted ? c.ObjectivesCompleted : c.Completed)
-                .ToList();
+                .ToListAsync();
 
             result.ForEach(r =>
             {
@@ -311,18 +312,18 @@ namespace RP1AnalyticsWebApp.Services
             return result;
         }
 
-        public List<string> GetRaces()
+        public async Task<List<string>> GetRacesAsync()
         {
             var q = _careerLogs.AsQueryable();
-            var items = q.Where(c => c.Race != null)
-                         .Select(c => c.Race)
-                         .Distinct()
-                         .OrderBy(r => r)
-                         .ToList();
+            var items = await q.Where(c => c.Race != null)
+                               .Select(c => c.Race)
+                               .Distinct()
+                               .OrderBy(r => r)
+                               .ToListAsync();
             return items;
         }
 
-        public List<ContractEventWithCareerInfo> GetAllContractEvents(ODataQueryOptions<CareerLog> queryOptions = null)
+        public async Task<List<ContractEventWithCareerInfo>> GetAllContractEventsAsync(ODataQueryOptions<CareerLog> queryOptions = null)
         {
             var q = _careerLogs.AsQueryable();
             if (queryOptions != null)
@@ -333,8 +334,8 @@ namespace RP1AnalyticsWebApp.Services
                 });
             }
 
-            var events = q.Where(c => c.EligibleForRecords)
-                          .SelectMany(c => c.ContractEventEntries, (c, e) => new ContractEventWithCareerInfo
+            var events = await q.Where(c => c.EligibleForRecords)
+                                .SelectMany(c => c.ContractEventEntries, (c, e) => new ContractEventWithCareerInfo
             {
                 CareerId = c.Id,
                 CareerName = c.Name,
@@ -343,7 +344,7 @@ namespace RP1AnalyticsWebApp.Services
                 Date = e.Date,
                 Type = e.Type
             })
-            .ToList();
+            .ToListAsync();
 
             events.ForEach(entry =>
             {
@@ -354,7 +355,7 @@ namespace RP1AnalyticsWebApp.Services
             return events;
         }
 
-        public List<ContractEventWithCareerInfo> GetEventsForContract(string contract,
+        public async Task<List<ContractEventWithCareerInfo>> GetEventsForContractAsync(string contract,
             ContractEventType evtType = ContractEventType.Complete, ODataQueryOptions<CareerLog> queryOptions = null)
         {
             string contractDispName = ResolveContractName(contract);
@@ -368,17 +369,17 @@ namespace RP1AnalyticsWebApp.Services
                 });
             }
 
-            var events = q.Where(entry => entry.EligibleForRecords &&
-                                          entry.ContractEventEntries.Any(ce => ce.InternalName == contract && ce.Type == evtType))
-                          .Select(c => new ContractEventWithCareerInfo
-                          {
-                              CareerId = c.Id,
-                              CareerName = c.Name,
-                              UserLogin = c.UserLogin,
-                              Date = c.ContractEventEntries.Where(ce => ce.InternalName == contract && ce.Type == evtType)
-                                                           .Min(ce => ce.Date)
-                          })
-                          .ToList();
+            var events = await q.Where(entry => entry.EligibleForRecords &&
+                                                entry.ContractEventEntries.Any(ce => ce.InternalName == contract && ce.Type == evtType))
+                                .Select(c => new ContractEventWithCareerInfo
+                                {
+                                    CareerId = c.Id,
+                                    CareerName = c.Name,
+                                    UserLogin = c.UserLogin,
+                                    Date = c.ContractEventEntries.Where(ce => ce.InternalName == contract && ce.Type == evtType)
+                                                                 .Min(ce => ce.Date)
+                                })
+                                .ToListAsync();
 
             events.ForEach(entry =>
             {
@@ -393,15 +394,15 @@ namespace RP1AnalyticsWebApp.Services
             return events;
         }
 
-        public List<TechEvent> GetTechUnlocksForCareer(string id)
+        public async Task<List<TechEvent>> GetTechUnlocksForCareerAsync(string id)
         {
-            var c = _careerLogs.AsQueryable()
+            var c = await _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
                 .Select(c => new
                 {
                     c.TechEventEntries
                 })
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (c == null) return null;
             if (c.TechEventEntries == null) return new List<TechEvent>(0);
@@ -416,15 +417,15 @@ namespace RP1AnalyticsWebApp.Services
             }).OrderBy(ce => ce.Date).ToList();
         }
 
-        public List<LaunchEvent> GetLaunchesForCareer(string id)
+        public async Task<List<LaunchEvent>> GetLaunchesForCareerAsync(string id)
         {
-            var c = _careerLogs.AsQueryable()
+            var c = await _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
                 .Select(c => new
                 {
                     c.LaunchEventEntries
                 })
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (c == null) return null;
             if (c.LaunchEventEntries == null) return new List<LaunchEvent>(0);
@@ -432,15 +433,15 @@ namespace RP1AnalyticsWebApp.Services
             return c.LaunchEventEntries.OrderBy(e => e.Date).ToList();
         }
 
-        public List<FacilityConstruction> GetFacilityConstructionsForCareer(string id)
+        public async Task<List<FacilityConstruction>> GetFacilityConstructionsForCareerAsync(string id)
         {
-            var c = _careerLogs.AsQueryable()
+            var c = await _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
                 .Select(c => new
                 {
                     c.FacilityConstructions
                 })
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (c == null) return null;
             if (c.FacilityConstructions == null) return new List<FacilityConstruction>(0);
@@ -448,15 +449,15 @@ namespace RP1AnalyticsWebApp.Services
             return c.FacilityConstructions.OrderBy(e => e.Started).ToList();
         }
 
-        public List<LC> GetLCsForCareer(string id)
+        public async Task<List<LC>> GetLCsForCareerAsync(string id)
         {
-            var c = _careerLogs.AsQueryable()
+            var c = await _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
                 .Select(c => new
                 {
                     c.LCs
                 })
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (c == null) return null;
             if (c.LCs == null) return new List<LC>(0);
@@ -464,15 +465,15 @@ namespace RP1AnalyticsWebApp.Services
             return c.LCs.OrderBy(e => e.ConstrStarted).ToList();
         }
 
-        public List<ProgramItem> GetProgramsForCareer(string id)
+        public async Task<List<ProgramItem>> GetProgramsForCareerAsync(string id)
         {
-            var c = _careerLogs.AsQueryable()
+            var c = await _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
                 .Select(c => new
                 {
                     c.Programs
                 })
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (c == null) return null;
             if (c.Programs == null) return new List<ProgramItem>(0);
@@ -492,15 +493,15 @@ namespace RP1AnalyticsWebApp.Services
             }).OrderBy(p => p.Accepted).ToList();
         }
 
-        public List<LeaderItem> GetLeadersForCareer(string id)
+        public async Task<List<LeaderItem>> GetLeadersForCareerAsync(string id)
         {
-            var c = _careerLogs.AsQueryable()
+            var c = await _careerLogs.AsQueryable()
                 .Where(c => c.Id == id)
                 .Select(c => new
                 {
                     c.Leaders
                 })
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (c == null) return null;
             if (c.Leaders == null) return new List<LeaderItem>(0);
@@ -516,14 +517,14 @@ namespace RP1AnalyticsWebApp.Services
             }).OrderBy(p => p.DateAdd).ToList();
         }
 
-        public List<CareerListItem> GetCareerList(string userName = null)
+        public async Task<List<CareerListItem>> GetCareerListAsync(string userName = null)
         {
-            var res = GetCareerListWithTokens(userName);
+            var res = await GetCareerListWithTokensAsync(userName);
             res.ForEach(c => c.Token = null);
             return res;
         }
 
-        public List<CareerListItem> GetCareerListWithTokens(string userName = null)
+        public async Task<List<CareerListItem>> GetCareerListWithTokensAsync(string userName = null)
         {
             var q = _careerLogs.AsQueryable();
             if (!string.IsNullOrWhiteSpace(userName))
@@ -531,14 +532,14 @@ namespace RP1AnalyticsWebApp.Services
                 q = q.Where(c => c.UserLogin == userName);
             }
 
-            var items = q.Select(c => new CareerListItem
+            var items = await q.Select(c => new CareerListItem
             {
                 Id = c.Id,
                 Name = c.Name,
                 User = c.UserLogin,
                 Token = c.Token,
                 Race = c.Race
-            }).ToList();
+            }).ToListAsync();
 
             items.ForEach(item =>
             {
@@ -548,14 +549,14 @@ namespace RP1AnalyticsWebApp.Services
             return items;
         }
 
-        public List<CareerListItem> GetCareerList(ODataQueryOptions<CareerLog> queryOptions)
+        public async Task<List<CareerListItem>> GetCareerListAsync(ODataQueryOptions<CareerLog> queryOptions)
         {
-            var res = GetCareerListWithTokens(queryOptions);
+            var res = await GetCareerListWithTokensAsync(queryOptions);
             res.ForEach(c => c.Token = null);
             return res;
         }
 
-        public List<CareerListItem> GetCareerListWithTokens(ODataQueryOptions<CareerLog> queryOptions)
+        public async Task<List<CareerListItem>> GetCareerListWithTokensAsync(ODataQueryOptions<CareerLog> queryOptions)
         {
             var q = _careerLogs.AsQueryable();
             q = (IQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
@@ -563,14 +564,14 @@ namespace RP1AnalyticsWebApp.Services
                 HandleNullPropagation = HandleNullPropagationOption.False
             });
 
-            var items = q.Select(c => new CareerListItem
+            var items = await q.Select(c => new CareerListItem
             {
                 Id = c.Id,
                 Name = c.Name,
                 User = c.UserLogin,
                 Token = c.Token,
                 Race = c.Race
-            }).ToList();
+            }).ToListAsync();
 
             items.ForEach(item =>
             {
@@ -580,7 +581,7 @@ namespace RP1AnalyticsWebApp.Services
             return items;
         }
 
-        public CareerLog Create(CareerLog log)
+        public async Task<CareerLog> CreateAsync(CareerLog log)
         {
             var careerLog = new CareerLog
             {
@@ -604,16 +605,16 @@ namespace RP1AnalyticsWebApp.Services
             careerLog.TechEventEntries = log.TechEventEntries;
             careerLog.LaunchEventEntries = log.LaunchEventEntries;
 
-            _careerLogs.InsertOne(careerLog);
+            await _careerLogs.InsertOneAsync(careerLog);
 
             return careerLog;
         }
 
-        public CareerLog Update(string token, CareerLogDto careerLogDto)
+        public async Task<CareerLog> UpdateAsync(string token, CareerLogDto careerLogDto)
         {
             careerLogDto.TrimEmptyPeriod();
 
-            CareerLog existingItem = GetByToken(token);
+            CareerLog existingItem = await GetByTokenAsync(token);
             if (existingItem == null) return null;
 
             var periods = careerLogDto.Periods.Select(c => new CareerLogPeriod(c)).ToList();
@@ -643,43 +644,43 @@ namespace RP1AnalyticsWebApp.Services
                 .Set(nameof(CareerLog.Leaders), leaders);
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
-            return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Token == token, updateDef, opts);
+            return await _careerLogs.FindOneAndUpdateAsync(entry => entry.Token == token, updateDef, opts);
         }
 
-        public CareerLog GetByToken(string token)
+        public async Task<CareerLog> GetByTokenAsync(string token)
         {
-            return _careerLogs.Find(entry => entry.Token == token).FirstOrDefault();
+            return await _careerLogs.Find(entry => entry.Token == token).FirstOrDefaultAsync();
         }
 
-        public void DeleteByToken(string token)
+        public async Task DeleteByTokenAsync(string token)
         {
-            _careerLogs.DeleteOne(entry => entry.Token == token);
+            await _careerLogs.DeleteOneAsync(entry => entry.Token == token);
         }
 
-        public CareerLog UpdateMetaByToken(string token, string careerName, CareerLogMeta meta)
+        public async Task<CareerLog> UpdateMetaByTokenAsync(string token, string careerName, CareerLogMeta meta)
         {
             var updateDefinition = Builders<CareerLog>.Update.Set(nameof(CareerLog.CareerLogMeta), meta)
                                                              .Set(nameof(CareerLog.Name), careerName);
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
-            return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Token == token, updateDefinition, opts);
+            return await _careerLogs.FindOneAndUpdateAsync(entry => entry.Token == token, updateDefinition, opts);
         }
 
-        public CareerLog UpdateRace(string careerId, string race)
+        public async Task<CareerLog> UpdateRaceAsync(string careerId, string race)
         {
             var updateDefinition = Builders<CareerLog>.Update.Set(nameof(CareerLog.Race), race);
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
-            return _careerLogs.FindOneAndUpdate<CareerLog>(entry => entry.Id == careerId, updateDefinition, opts);
+            return await _careerLogs.FindOneAndUpdateAsync(entry => entry.Id == careerId, updateDefinition, opts);
         }
 
-        public void UpdateLaunch(string careerId, LaunchEvent launch)
+        public async Task UpdateLaunchAsync(string careerId, LaunchEvent launch)
         {
             var filterDef = Builders<CareerLog>.Filter.Where(c => c.Id == careerId && 
                                                                   c.LaunchEventEntries.Any(l => l.LaunchID == launch.LaunchID));
             var updateDef = Builders<CareerLog>.Update.Set(c => c.LaunchEventEntries.FirstMatchingElement(), launch);
 
-            _careerLogs.FindOneAndUpdate(filterDef, updateDef);
+            await _careerLogs.FindOneAndUpdateAsync(filterDef, updateDef);
         }
 
         private string ResolveContractName(string name)
