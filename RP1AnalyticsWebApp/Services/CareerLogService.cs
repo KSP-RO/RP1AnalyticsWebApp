@@ -589,13 +589,14 @@ namespace RP1AnalyticsWebApp.Services
                 Name = log.Name,
                 UserLogin = log.UserLogin,
                 EligibleForRecords = log.EligibleForRecords,
+                StartDate = log.CareerLogEntries?[0].StartDate ?? Constants.CareerEpoch,
+                EndDate = log.CareerLogEntries?[^1].EndDate ?? Constants.CareerEpoch,
+                LastUpdate = DateTime.UtcNow,
                 CareerLogMeta = log.CareerLogMeta
             };
 
             if (log.CareerLogEntries != null)
             {
-                careerLog.StartDate = log.CareerLogEntries[0].StartDate;
-                careerLog.EndDate = log.CareerLogEntries[^1].EndDate;
                 careerLog.CareerLogEntries = log.CareerLogEntries;
             }
 

@@ -150,6 +150,9 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
                 Name = Form.CareerInput.CareerName,
                 UserLogin = Username,
                 EligibleForRecords = true,
+                StartDate = Constants.CareerEpoch,
+                EndDate = Constants.CareerEpoch,
+                LastUpdate = DateTime.UtcNow,
                 CareerLogMeta = CreateCareerLogMeta()
             });
 

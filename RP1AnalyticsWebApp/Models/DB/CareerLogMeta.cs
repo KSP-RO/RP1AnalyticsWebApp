@@ -10,23 +10,23 @@ namespace RP1AnalyticsWebApp.Models
     {
         [JsonConverter(typeof(JsonStringEnumConverter))]
         [BsonRepresentation(BsonType.String)]
-        public CareerPlaystyle CareerPlaystyle { get; set; }
+        public required CareerPlaystyle CareerPlaystyle { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         [BsonRepresentation(BsonType.String)]
-        public DifficultyLevel DifficultyLevel { get; set; }
+        public required DifficultyLevel DifficultyLevel { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         [BsonRepresentation(BsonType.String)]
-        public ConfigurableStart ConfigurableStart { get; set; }
+        public required ConfigurableStart ConfigurableStart { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         [BsonRepresentation(BsonType.String)]
-        public FailureModel FailureModel { get; set; }
+        public required FailureModel FailureModel { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         [BsonRepresentation(BsonType.String)]
-        public ModRecency ModRecency { get; set; }
+        public required ModRecency ModRecency { get; set; }
 
         [BsonRepresentation(BsonType.String)]
         public string VersionTag { get; set; }

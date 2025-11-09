@@ -15,10 +15,10 @@ namespace RP1AnalyticsWebApp.Models
         public string Name { get; set; }
         public string UserLogin { get; set; }
         public string Token { get; set; }
-        public bool EligibleForRecords { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public required bool EligibleForRecords { get; set; }
+        public required DateTime StartDate { get; set; }
+        public required DateTime EndDate { get; set; }
+        public required DateTime LastUpdate { get; set; }
         public string Race { get; set; }
         public List<CareerLogPeriod> CareerLogEntries { get; set; }
         public List<ContractEvent> ContractEventEntries { get; set; }
