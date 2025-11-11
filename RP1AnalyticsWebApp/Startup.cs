@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Formatter.MediaType;
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +21,7 @@ using MongoDB.Bson.Serialization.Serializers;
 using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.OData;
 using RP1AnalyticsWebApp.Services;
+using System;
 using System.Linq;
 using Vite.AspNetCore;
 
@@ -76,6 +78,7 @@ namespace RP1AnalyticsWebApp
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.CSharpLegacy));
 
             services.AddTransient<CareerLogService>();
+            services.AddTransient<CacheService>();
 
             services.AddIdentityMongoDbProvider<WebAppUser, MongoRole>(identityOptions =>
             {
@@ -119,6 +122,16 @@ namespace RP1AnalyticsWebApp
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/Account/Login";
+            });
+
+            services.AddHybridCache(options =>
+            {
+                options.MaximumPayloadBytes = 512 * 1024 * 1024;    // 512 MB
+                options.DefaultEntryOptions = new HybridCacheEntryOptions
+                {
+                    Expiration = TimeSpan.FromHours(8),
+                    LocalCacheExpiration = TimeSpan.FromHours(8)
+                };
             });
 
             services.AddHostedService<StartupHostedService>();

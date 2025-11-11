@@ -18,19 +18,21 @@ namespace RP1AnalyticsWebApp.Services
         private readonly IProgramSettings _programSettings;
         private readonly ILeaderSettings _leaderSettings;
         private readonly UserManager<WebAppUser> _userManager;
+        private readonly CacheService _cache;
 
         private List<WebAppUser> _allUsers;
         private List<WebAppUser> AllUsers => _allUsers ??= _userManager.Users.ToList();
 
         public CareerLogService(ICareerLogDatabaseSettings dbSettings, IContractSettings contractSettings,
             ITechTreeSettings techTreeSettings, IProgramSettings programSettings, ILeaderSettings leaderSettings,
-            UserManager<WebAppUser> userManager)
+            UserManager<WebAppUser> userManager, CacheService cache)
         {
             _contractSettings = contractSettings;
             _techTreeSettings = techTreeSettings;
             _programSettings = programSettings;
             _leaderSettings = leaderSettings;
             _userManager = userManager;
+            _cache = cache;
 
             var client = new MongoClient(dbSettings.ConnectionString);
             var database = client.GetDatabase(dbSettings.DatabaseName);
@@ -39,17 +41,20 @@ namespace RP1AnalyticsWebApp.Services
 
         public async Task<List<CareerLog>> GetAsync(ODataQueryOptions<CareerLog> queryOptions = null)
         {
-            var q = _careerLogs.AsQueryable();
+            List<CareerLog> all = await _cache.FetchAllCareersAsync(_careerLogs);
             if (queryOptions != null)
             {
+                var q = all.AsQueryable();
                 q = (IQueryable<CareerLog>)queryOptions.ApplyTo(q,
                     new ODataQuerySettings
                     {
                         HandleNullPropagation = HandleNullPropagationOption.False
                     },
                     AllowedQueryOptions.Supported ^ AllowedQueryOptions.Filter);
+                return q.ToList();
             }
-            return await q.ToListAsync();
+
+            return all;
         }
 
         public async Task<CareerLog> GetAsync(string id)
@@ -166,17 +171,10 @@ namespace RP1AnalyticsWebApp.Services
 
         public async Task<List<ContractRecord>> GetContractRecordsAsync(ODataQueryOptions<CareerLog> queryOptions = null)
         {
-            var q = _careerLogs.AsQueryable();
-            if (queryOptions != null)
-            {
-                q = (IQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
-                {
-                    HandleNullPropagation = HandleNullPropagationOption.False
-                });
-            }
+            var q = (await GetAsync(queryOptions)).AsQueryable();
 
-            var result = await q
-                .Where(c => c.EligibleForRecords)
+            var result = q
+                .Where(c => c.EligibleForRecords && c.ContractEventEntries != null)
                 .SelectMany(c => c.ContractEventEntries, (c, e) => new
                 {
                     CareerId = c.Id,
@@ -198,7 +196,7 @@ namespace RP1AnalyticsWebApp.Services
                     Date = g.Min(e => e.EventDate)
                 })
                 .OrderBy(c => c.Date)
-                .ToListAsync();
+                .ToList();
 
             result.ForEach(r =>
             {
@@ -211,17 +209,10 @@ namespace RP1AnalyticsWebApp.Services
 
         public async Task<List<ProgramRecord>> GetProgramRecordsAsync(ProgramRecordType type, ODataQueryOptions<CareerLog> queryOptions = null)
         {
-            var q = _careerLogs.AsQueryable();
-            if (queryOptions != null)
-            {
-                q = (IQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
-                {
-                    HandleNullPropagation = HandleNullPropagationOption.False
-                });
-            }
+            var q = (await GetAsync(queryOptions)).AsQueryable();
 
             var allPrograms = q
-                .Where(c => c.EligibleForRecords)
+                .Where(c => c.EligibleForRecords && c.Programs != null)
                 .SelectMany(c => c.Programs, (c, p) => new ProgramRecord
                 {
                     CareerId = c.Id,
@@ -237,7 +228,7 @@ namespace RP1AnalyticsWebApp.Services
                 allPrograms = allPrograms.Where(p => p.Date.HasValue);
             }
 
-            var result = await allPrograms.OrderBy(p => p.Date)
+            var result = allPrograms.OrderBy(p => p.Date)
                 .GroupBy(p => p.ProgramName)
                 .Select(g => new ProgramRecord
                 {
@@ -248,7 +239,7 @@ namespace RP1AnalyticsWebApp.Services
                     Date = g.Min(p => p.Date)
                 })
                 .OrderBy(c => c.Date)
-                .ToListAsync();
+                .ToList();
 
             result.ForEach(r =>
             {
@@ -261,17 +252,10 @@ namespace RP1AnalyticsWebApp.Services
 
         public async Task<List<ProgramItemWithCareerInfo>> GetProgramRecordsAsync(ProgramRecordType type, string program, ODataQueryOptions<CareerLog> queryOptions = null)
         {
-            var q = _careerLogs.AsQueryable();
-            if (queryOptions != null)
-            {
-                q = (IQueryable<CareerLog>)queryOptions.ApplyTo(q, new ODataQuerySettings
-                {
-                    HandleNullPropagation = HandleNullPropagationOption.False
-                });
-            }
+            var q = (await GetAsync(queryOptions)).AsQueryable();
 
             var allPrograms = q
-                .Where(c => c.EligibleForRecords)
+                .Where(c => c.EligibleForRecords && c.Programs != null)
                 .SelectMany(c => c.Programs, (c, p) => new ProgramItemWithCareerInfo
                 {
                     CareerId = c.Id,
@@ -298,10 +282,10 @@ namespace RP1AnalyticsWebApp.Services
                 allPrograms = allPrograms.Where(p => p.Completed.HasValue);
             }
 
-            var result = await allPrograms
+            var result = allPrograms
                 .OrderBy(c => type == ProgramRecordType.Accepted ? c.Accepted :
                               type == ProgramRecordType.ObjectivesCompleted ? c.ObjectivesCompleted : c.Completed)
-                .ToListAsync();
+                .ToList();
 
             result.ForEach(r =>
             {
@@ -607,6 +591,7 @@ namespace RP1AnalyticsWebApp.Services
             careerLog.LaunchEventEntries = log.LaunchEventEntries;
 
             await _careerLogs.InsertOneAsync(careerLog);
+            await _cache.InvalidateAsync();
 
             return careerLog;
         }
@@ -645,7 +630,9 @@ namespace RP1AnalyticsWebApp.Services
                 .Set(nameof(CareerLog.Leaders), leaders);
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
-            return await _careerLogs.FindOneAndUpdateAsync(entry => entry.Token == token, updateDef, opts);
+            var res = await _careerLogs.FindOneAndUpdateAsync(entry => entry.Token == token, updateDef, opts);
+            await _cache.InvalidateAsync();
+            return res;
         }
 
         public async Task<CareerLog> GetByTokenAsync(string token)
@@ -656,6 +643,7 @@ namespace RP1AnalyticsWebApp.Services
         public async Task DeleteByTokenAsync(string token)
         {
             await _careerLogs.DeleteOneAsync(entry => entry.Token == token);
+            await _cache.InvalidateAsync();
         }
 
         public async Task<CareerLog> UpdateMetaByTokenAsync(string token, string careerName, CareerLogMeta meta)
@@ -664,7 +652,9 @@ namespace RP1AnalyticsWebApp.Services
                                                              .Set(nameof(CareerLog.Name), careerName);
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
-            return await _careerLogs.FindOneAndUpdateAsync(entry => entry.Token == token, updateDefinition, opts);
+            var res = await _careerLogs.FindOneAndUpdateAsync(entry => entry.Token == token, updateDefinition, opts);
+            await _cache.InvalidateAsync();
+            return res;
         }
 
         public async Task<CareerLog> UpdateRaceAsync(string careerId, string race)
@@ -672,7 +662,9 @@ namespace RP1AnalyticsWebApp.Services
             var updateDefinition = Builders<CareerLog>.Update.Set(nameof(CareerLog.Race), race);
             var opts = new FindOneAndUpdateOptions<CareerLog> { ReturnDocument = ReturnDocument.After };
 
-            return await _careerLogs.FindOneAndUpdateAsync(entry => entry.Id == careerId, updateDefinition, opts);
+            var res = await _careerLogs.FindOneAndUpdateAsync(entry => entry.Id == careerId, updateDefinition, opts);
+            await _cache.InvalidateAsync();
+            return res;
         }
 
         public async Task UpdateLaunchAsync(string careerId, LaunchEvent launch)
@@ -682,6 +674,7 @@ namespace RP1AnalyticsWebApp.Services
             var updateDef = Builders<CareerLog>.Update.Set(c => c.LaunchEventEntries.FirstMatchingElement(), launch);
 
             await _careerLogs.FindOneAndUpdateAsync(filterDef, updateDef);
+            await _cache.InvalidateAsync();
         }
 
         private string ResolveContractName(string name)
