@@ -18,11 +18,13 @@ namespace RP1AnalyticsWebApp.Services
 
         private readonly HybridCache _cache;
         private readonly TelemetryClient _telemetry;
+        private readonly ICareerLogDatabaseSettings _dbSettings;
 
-        public CacheService(HybridCache cache, TelemetryClient telemetry)
+        public CacheService(HybridCache cache, TelemetryClient telemetry, ICareerLogDatabaseSettings dbSettings)
         {
             _cache = cache;
             _telemetry = telemetry;
+            _dbSettings = dbSettings;
         }
 
         public async Task<List<CareerLog>> FetchAllCareersAsync(IMongoCollection<CareerLog> careerLogs)
@@ -38,6 +40,17 @@ namespace RP1AnalyticsWebApp.Services
         {
             _telemetry.TrackEvent("InvalidateCache");
             await _cache.RemoveAsync(CacheKey);
+        }
+
+        public async Task InitCacheAsync(CancellationToken ct = default)
+        {
+            _telemetry.TrackEvent("InitCacheAsync");
+            IMongoCollection<CareerLog> careerLogs = CareerLogService.CreateCareerLogsMongoClient(_dbSettings);
+
+            await _cache.GetOrCreateAsync(
+                CacheKey,
+                FetchFromDB(careerLogs),
+                cancellationToken: ct);
         }
 
         private Func<CancellationToken, ValueTask<CachedCareerLogs>> FetchFromDB(IMongoCollection<CareerLog> careerLogs)

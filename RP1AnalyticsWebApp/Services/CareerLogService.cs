@@ -34,9 +34,14 @@ namespace RP1AnalyticsWebApp.Services
             _userManager = userManager;
             _cache = cache;
 
+            _careerLogs = CreateCareerLogsMongoClient(dbSettings);
+        }
+
+        public static IMongoCollection<CareerLog> CreateCareerLogsMongoClient(ICareerLogDatabaseSettings dbSettings)
+        {
             var client = new MongoClient(dbSettings.ConnectionString);
             var database = client.GetDatabase(dbSettings.DatabaseName);
-            _careerLogs = database.GetCollection<CareerLog>(dbSettings.CareerLogsCollectionName);
+            return database.GetCollection<CareerLog>(dbSettings.CareerLogsCollectionName);
         }
 
         public async Task<List<CareerLog>> GetAsync(ODataQueryOptions<CareerLog> queryOptions = null)
