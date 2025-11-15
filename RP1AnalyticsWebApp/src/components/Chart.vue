@@ -387,6 +387,19 @@
                     }
                 };
 
+                // overwrite styles for dark mode
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    layout.paper_bgcolor = '#00000000';
+                    layout.plot_bgcolor = '#00000000';
+                    layout.font.color = '#ebecf0';
+                    layout.hoverlabel = {
+                        bgcolor: '#000000'
+                    }
+                    layout.yaxis.gridcolor = layout.yaxis2.gridcolor = layout.yaxis3.gridcolor =
+                        layout.yaxis4.gridcolor = layout.yaxis5.gridcolor = layout.yaxis6.gridcolor =
+                        layout.xaxis.gridcolor = '#606060';
+                }
+
                 const annotations: Array<Partial<Annotations>> = [];
                 const contractNames = [...MilestonesToShowOnChart.keys()];
                 const completionArr = this.getCompletionDatesAndIndexesForContracts(careerLog, contractNames);
