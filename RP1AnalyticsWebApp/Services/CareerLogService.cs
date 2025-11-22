@@ -155,8 +155,8 @@ namespace RP1AnalyticsWebApp.Services
                 .Select(g => new ContractEventWithCount
                 {
                     ContractInternalName = g.Key,
-                    CareerId = g.ElementAt(0).CareerId,
-                    CareerName = g.ElementAt(0).CareerName,
+                    CareerId = g.First().CareerId,
+                    CareerName = g.First().CareerName,
                     Date = g.Min(e => e.EventDate),
                     Count = g.Count()
                 })
@@ -195,9 +195,9 @@ namespace RP1AnalyticsWebApp.Services
                 .Select(g => new ContractRecord
                 {
                     ContractInternalName = g.Key,
-                    CareerId = g.ElementAt(0).CareerId,
-                    UserLogin = g.ElementAt(0).UserLogin,
-                    CareerName = g.ElementAt(0).CareerName,
+                    CareerId = g.First().CareerId,
+                    UserLogin = g.First().UserLogin,
+                    CareerName = g.First().CareerName,
                     Date = g.Min(e => e.EventDate)
                 })
                 .OrderBy(c => c.Date)
@@ -238,9 +238,9 @@ namespace RP1AnalyticsWebApp.Services
                 .Select(g => new ProgramRecord
                 {
                     ProgramName = g.Key,
-                    CareerId = g.ElementAt(0).CareerId,
-                    UserLogin = g.ElementAt(0).UserLogin,
-                    CareerName = g.ElementAt(0).CareerName,
+                    CareerId = g.First().CareerId,
+                    UserLogin = g.First().UserLogin,
+                    CareerName = g.First().CareerName,
                     Date = g.Min(p => p.Date)
                 })
                 .OrderBy(c => c.Date)
