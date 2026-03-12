@@ -85,6 +85,7 @@
                 items: null,
                 isLoading: false,
                 isOpen: false,
+                mouseDownInsideInput: false,
                 inputText: ''
             };
         },
@@ -109,7 +110,18 @@
                 const selItem = this.items.find(i => i.id === this.selectedCareer);
                 this.inputText = selItem?.name ?? '';
             },
+            onMouseDown(e) {
+                // Used for handling marking text. I.e mouse button goes down on the input but is released when outside it.
+                if (e.target.closest(".combo-box")) {
+                    this.mouseDownInsideInput = true;
+                }
+            },
             onClickOutside(e) {
+                if (this.mouseDownInsideInput) {
+                    this.mouseDownInsideInput = false;
+                    return;
+                }
+
                 if (!e.target.closest(".combo-box")) {
                     this.isOpen = false;
                 }
@@ -148,9 +160,11 @@
             this.$nextTick(function () {
                 this.queryData(this.filters);
             });
+            document.addEventListener('mousedown', this.onMouseDown);
             document.addEventListener('click', this.onClickOutside);
         },
         beforeUnmount() {
+            document.removeEventListener('mousedown', this.onMouseDown);
             document.removeEventListener('click', this.onClickOutside);
         },
         watch: {
