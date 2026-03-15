@@ -117,8 +117,7 @@ export interface ProgramItem {
     totalFunding: number;
     fundsPaidOut: number;
     repPenaltyAssessed: number;
-    speed: keyof typeof programSpeeds;
-    speedText: string;
+    speed: typeof programSpeeds;
 }
 
 export interface BaseContractEvent {

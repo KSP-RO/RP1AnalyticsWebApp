@@ -15,7 +15,7 @@
             <tbody>
                 <tr v-for="item in items">
                     <td>{{ item.title }}</td>
-                    <td>{{ mapSpeedToText(item.speed) }}</td>
+                    <td>{{ item.speed }}</td>
                     <td class="date-col">{{ formatDate(item.accepted) }}</td>
                     <td class="date-col">{{ formatDate(item.objectivesCompleted) }}</td>
                     <td class="date-col">{{ formatDate(item.completed) }}</td>
@@ -31,7 +31,6 @@
 <script lang="ts">
     import { defineComponent } from 'vue';
     import { fetchProgramsForCareer } from '../utils/api';
-    import { programSpeeds } from '../utils/programSpeeds';
     import DataTabMixin from '../components/DataTabMixin.vue';
     import LoadingSpinner from '../components/LoadingSpinner.vue';
 
@@ -48,10 +47,6 @@
                 finally {
                     this.isLoading = false;
                 }
-            },
-            mapSpeedToText(speed: keyof typeof programSpeeds) {
-                if (speed == null) return '';
-                return programSpeeds[speed];
             }
         },
         computed: {

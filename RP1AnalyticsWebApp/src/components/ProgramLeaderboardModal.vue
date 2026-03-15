@@ -15,7 +15,6 @@
     import type { PropType } from 'vue'
     import type { ProgramItem, Filters } from 'types';
     import { fetchPrograms } from '../utils/api';
-    import { programSpeeds } from '../utils/programSpeeds';
     import { parseUtcDate } from '../utils/parseUtcDate';
     import CareerDates from '../components/CareerDates.vue';
 
@@ -51,7 +50,7 @@
                 isVisible: false,
                 extraFields: [{
                     title: 'Speed',
-                    field: 'speedText'
+                    field: 'speed'
                 }]
             }
         },
@@ -62,7 +61,6 @@
                     this.isLoading = true;
                     try {
                         const items = await fetchPrograms(programName, this.mode, this.filters);
-                        items.forEach((i) => i.speedText = this.mapSpeedToText(i.speed));
                         this.items = items;
                         this.isVisible = true;
                     }
@@ -76,10 +74,6 @@
             },
             closeModal() {
                 this.isVisible = false;
-            },
-            mapSpeedToText(speed: keyof typeof programSpeeds) {
-                if (speed == null) return '';
-                return programSpeeds[speed];
             }
         },
         computed: {

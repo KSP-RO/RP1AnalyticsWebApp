@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace RP1AnalyticsWebApp.Models
 {
@@ -13,6 +14,7 @@ namespace RP1AnalyticsWebApp.Models
         public double TotalFunding { get; set; }
         public double FundsPaidOut { get; set; }
         public double RepPenaltyAssessed { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public ProgramSpeed Speed { get; set; }
     }
 }
