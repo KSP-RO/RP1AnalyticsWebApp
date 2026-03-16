@@ -1,9 +1,9 @@
 ﻿namespace RP1AnalyticsWebApp.Models
 {
-    public enum ProgramSpeed
+    public enum KSPProgramSpeed
     {
+        Slow,
         Normal,
-        Fast,
-        Breakneck
+        Fast
     }
 }

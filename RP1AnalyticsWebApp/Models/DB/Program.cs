@@ -30,7 +30,7 @@ namespace RP1AnalyticsWebApp.Models
             TotalFunding = p.TotalFunding;
             FundsPaidOut = p.FundsPaidOut;
             RepPenaltyAssessed = p.RepPenaltyAssessed;
-            Speed = p.Speed;
+            Speed = (ProgramSpeed)p.Speed;
         }
     }
 }
