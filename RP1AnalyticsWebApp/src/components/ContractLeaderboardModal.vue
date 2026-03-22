@@ -10,70 +10,49 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
-    import type { PropType } from 'vue'
+<script setup lang="ts">
+    import { ref, computed, watch } from 'vue';
     import type { ContractEventWithCareerInfo, Filters } from 'types';
-    import { parseUtcDate } from '../utils/parseUtcDate';
     import { fetchContracts } from '../utils/api';
     import CareerDates from '../components/CareerDates.vue';
 
-    interface ComponentData {
-        items: ContractEventWithCareerInfo[] | null;
-        isVisible: boolean;
-        isLoading: boolean;
+    const props = defineProps<{
+        contractName?: string;
+        filters: Filters;
+    }>();
+
+    const items = ref<ContractEventWithCareerInfo[] | null>(null);
+    const isVisible = ref(false);
+    const isLoading = ref(false);
+
+    const dlgTitle = computed(() => items.value && items.value[0].contractDisplayName);
+
+    async function queryData(contractName: string) {
+        items.value = null;
+        if (contractName) {
+            isLoading.value = true;
+            try {
+                items.value = await fetchContracts(contractName, props.filters);
+                isVisible.value = true;
+            } finally {
+                isLoading.value = false;
+            }
+        }
     }
 
-    export default defineComponent({
-        components: {
-            CareerDates
-        },
-        props: {
-            contractName: String,
-            filters: {
-                type: Object as PropType<Filters>,
-                required: true
-            }
-        },
-        data(): ComponentData {
-            return {
-                items: null,
-                isLoading: false,
-                isVisible: false
-            }
-        },
-        methods: {
-            async queryData(contractName: string) {
-                this.items = null;
-                if (contractName) {
-                    this.isLoading = true;
-                    try {
-                        this.items = await fetchContracts(contractName, this.filters);
-                        this.isVisible = true;
-                    }
-                    finally {
-                        this.isLoading = false;
-                    }
-                }
-            },
-            formatDate(date: string) {
-                return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
-            },
-            closeModal() {
-                this.isVisible = false;
-            }
-        },
-        computed: {
-            dlgTitle() {
-                return this.items && this.items[0].contractDisplayName;
-            }
-        },
-        watch: {
-            contractName(newContractName, oldContractName) {
-                if (newContractName !== oldContractName) {
-                    this.queryData(newContractName);
-                }
-            }
-        },
+    function closeModal() {
+        isVisible.value = false;
+    }
+
+    watch(() => props.contractName, (newContractName, oldContractName) => {
+        if (newContractName !== oldContractName) {
+            queryData(newContractName!);
+        }
     });
+
+    function show() {
+        isVisible.value = true;
+    }
+
+    defineExpose({ show });
 </script>

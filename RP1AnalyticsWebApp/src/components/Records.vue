@@ -11,8 +11,8 @@
     <ContractLeaderboardModal ref="contractModal" :contract-name="contractName" :filters="filters" />
 </template>
 
-<script lang="ts">
-    import { defineComponent, useTemplateRef } from 'vue';
+<script setup lang="ts">
+    import { ref, watch, useTemplateRef } from 'vue';
     import { activeFilters } from '../utils/activeFilters';
     import type { ProgramRecord, ContractEventWithCareerInfo } from 'types';
     import ProgramRecordTypeSelect from '../components/ProgramRecordTypeSelect.vue';
@@ -21,63 +21,37 @@
     import ContractRecordsTable from '../components/ContractRecordsTable.vue';
     import ContractLeaderboardModal from '../components/ContractLeaderboardModal.vue';
 
-    interface ComponentData {
-        programsMode: string;
-        programName: string | null;
-        contractName: string | null;
-        filters: typeof activeFilters;
+    const programsMode = ref('completed');
+    const programName = ref<string | null>(null);
+    const contractName = ref<string | null>(null);
+    const filters = activeFilters;
+
+    const programModal = useTemplateRef<typeof ProgramLeaderboardModal>('programModal');
+    const contractModal = useTemplateRef<typeof ContractLeaderboardModal>('contractModal');
+
+    watch(filters, () => {
+        contractName.value = null;
+    }, { deep: true });
+
+    watch(programsMode, () => {
+        programName.value = null;    // prevent dialog showing outdated data when clicking on a program that was already loaded before but in different mode
+    });
+
+    function handleChangeActive(tabName: string) {
+        programsMode.value = tabName;
     }
 
-    export default defineComponent({
-        components: {
-            ProgramRecordTypeSelect,
-            ProgramRecordsTable,
-            ProgramLeaderboardModal,
-            ContractRecordsTable,
-            ContractLeaderboardModal
-        },
-        data(): ComponentData {
-            return {
-                programsMode: 'completed',
-                programName: null,
-                contractName: null,
-                filters: activeFilters
-            }
-        },
-        setup() {
-            const programModal = useTemplateRef<typeof ProgramLeaderboardModal | null>('programModal');
-            const contractModal = useTemplateRef<typeof ContractLeaderboardModal | null>('contractModal');
-            return {
-                programModal, contractModal
-            }
-        },
-        watch: {
-            filters: {
-                handler() {
-                    this.contractName = null;
-                },
-                deep: true
-            },
-            programsMode() {
-                this.programName = null;    // to prevent dialog showing outdated data when clicking on a program that was already loaded before but in different mode
-            }
-        },
-        methods: {
-            handleChangeActive(tabName: string) {
-                this.programsMode = tabName;
-            },
-            showProgramLeaderboard(program: ProgramRecord) {
-                if (this.programName === program.programName) {
-                    this.programModal!.isVisible = true;
-                }
-                this.programName = program.programName;
-            },
-            showContractLeaderboard(contract: ContractEventWithCareerInfo) {
-                if (this.contractName === contract.contractInternalName) {
-                    this.contractModal!.isVisible = true;
-                }
-                this.contractName = contract.contractInternalName;
-            }
+    function showProgramLeaderboard(program: ProgramRecord) {
+        if (programName.value === program.programName) {
+            programModal.value!.show();
         }
-    });
+        programName.value = program.programName;
+    }
+
+    function showContractLeaderboard(contract: ContractEventWithCareerInfo) {
+        if (contractName.value === contract.contractInternalName) {
+            contractModal.value!.show();
+        }
+        contractName.value = contract.contractInternalName;
+    }
 </script>

@@ -26,68 +26,50 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
-    import type { PropType } from 'vue'
+<script setup lang="ts">
+    import { ref, watch, onMounted } from 'vue';
     import type { ContractRecord, Filters } from 'types';
     import { parseUtcDate } from '../utils/parseUtcDate';
     import { fetchContractRecords } from '../utils/api';
     import LoadingSpinner from '../components/LoadingSpinner.vue';
 
-    interface ComponentData {
-        items: ContractRecord[] | null;
-        isLoading: boolean;
+    const props = defineProps<{
+        filters: Filters;
+    }>();
+
+    const emit = defineEmits<{
+        'contractClicked': [item: ContractRecord];
+    }>();
+
+    const items = ref<ContractRecord[] | null>(null);
+    const isLoading = ref(false);
+
+    async function queryData() {
+        isLoading.value = true;
+        try {
+            items.value = await fetchContractRecords(props.filters);
+        } finally {
+            isLoading.value = false;
+        }
     }
 
-    export default defineComponent({
-        components: {
-            LoadingSpinner
-        },
-        props: {
-            filters: {
-                type: Object as PropType<Filters>,
-                required: true
-            }
-        },
-        emits: ['contractClicked'],
-        data(): ComponentData {
-            return {
-                items: null,
-                isLoading: false
-            }
-        },
-        methods: {
-            async queryData() {
-                this.isLoading = true;
-                try {
-                    this.items = await fetchContractRecords(this.filters);
-                }
-                finally {
-                    this.isLoading = false;
-                }
-            },
-            contractClicked(item: ContractRecord) {
-                this.$emit('contractClicked', item);
-            },
-            getCareerUrl(item: ContractRecord) {
-                return `/?careerId=${item.careerId}`;
-            },
-            formatDate(date: string) {
-                return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
-            }
-        },
-        watch: {
-            filters: {
-                handler() {
-                    this.queryData();
-                },
-                deep: true
-            }
-        },
-        mounted() {
-            this.$nextTick(function () {
-                this.queryData();
-            });
-        }
+    function contractClicked(item: ContractRecord) {
+        emit('contractClicked', item);
+    }
+
+    function getCareerUrl(item: ContractRecord) {
+        return `/?careerId=${item.careerId}`;
+    }
+
+    function formatDate(date: string) {
+        return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
+    }
+
+    watch(() => props.filters, () => {
+        queryData();
+    }, { deep: true });
+
+    onMounted(() => {
+        queryData();
     });
 </script>

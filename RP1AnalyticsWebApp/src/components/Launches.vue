@@ -91,111 +91,112 @@
     }
 </style>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
+<script setup lang="ts">
+    import { ref } from 'vue';
     import { parseUtcDate } from '../utils/parseUtcDate';
     import { fetchLaunchesForCareer, patchLaunchMeta } from '../utils/api';
     import type { LaunchEventItem, Failure } from 'types';
-    import DataTabMixin from '../components/DataTabMixin.vue';
+    import { useDataTab } from '../utils/useDataTab';
     import LoadingSpinner from '../components/LoadingSpinner.vue';
 
-    export default defineComponent({
-        mixins: [DataTabMixin],
-        components: {
-            LoadingSpinner
-        },
-        props: {
-            canEdit: Boolean
-        },
-        methods: {
-            async queryData(careerId: string) {
-                try {
-                    const arr = await fetchLaunchesForCareer(careerId) as LaunchEventItem[];
-                    arr.forEach(i => i.visible = false);
-                    this.items = arr;
-                }
-                finally {
-                    this.isLoading = false;
-                }
-            },
-            async saveLaunchMetaChanges(launch: LaunchEventItem) {
-                await patchLaunchMeta(this.careerId, launch.launchID, launch.metadata);
-            },
-            updateLaunchSuccessState(launch: LaunchEventItem, isSuccess: boolean, event: Event) {
-                const meta = launch.metadata = launch.metadata || {};
-                meta.success = meta.success === isSuccess ? null : isSuccess;
-                event.target!.closest('button').blur();
-                this.saveLaunchMetaChanges(launch);
-            },
-            getVesselIcon(launch: LaunchEventItem) {
-                if (launch.builtAt === 'VAB') return 'fa-rocket';
-                if (launch.builtAt === 'SPH') return 'fa-plane';
-                return '';
-            },
-            getSuccessStyleForEdit(launch: LaunchEventItem) {
-                if (launch.metadata && launch.metadata.success === true) return 'is-active';
-                return 'is-outlined';
-            },
-            getFailStyleForEdit(launch: LaunchEventItem) {
-                if (launch.metadata && launch.metadata.success === false)
-                    return 'is-active';
-                return 'is-outlined';
-            },
-            getSuccessStateIconForDisp(launch: LaunchEventItem) {
-                if (!launch.metadata || launch.metadata.success == null)
-                    return '';
-                if (launch.metadata.success)
-                    return 'fa-check has-text-success';
-                return 'fa-xmark has-text-danger';
-            },
-            getSuccessStateTitle(launch: LaunchEventItem) {
-                if (!launch.metadata || launch.metadata.success == null)
-                    return '';
-                if (launch.metadata.success)
-                    return 'Launch met all or at least part of its goals';
-                return 'Launch failed to meet its goals';
-            },
-            hasFailures(launch: LaunchEventItem) {
-                return launch.failures && launch.failures.length > 0;
-            },
-            getTFFailureIconTitle(launch: LaunchEventItem) {
-                return `Had ${launch.failures.length} failure${launch.failures.length === 1 ? '' : 's'}`;
-            },
-            canOpen(launch: LaunchEventItem) {
-                return this.hasFailures(launch);
-            },
-            toggleVisibility(launch: LaunchEventItem) {
-                if (!this.canOpen(launch)) return;
+    const props = defineProps<{
+        careerId?: string;
+        activeTab?: string;
+        canEdit?: boolean;
+    }>();
 
-                const newState = !launch.visible;
-                this.items.forEach(i => i.visible = false);
-                launch.visible = newState;
-            },
-            getLaunchCount(builtAt: string) {
-                if (!this.items) return 0;
-                return this.items.filter((launch: LaunchEventItem) => launch.builtAt === builtAt).length;
-            },
-            prettyPrintMET(launch: LaunchEventItem, failure: Failure) {
-                const m1 = parseUtcDate(launch.date);
-                const m2 = parseUtcDate(failure.date);
-                const msDuration = m2.diff(m1);
-                let duration = msDuration.rescale();
+    const items = ref<LaunchEventItem[] | null>(null);
+    const isLoading = ref(false);
 
-                if (msDuration.milliseconds > 1000) {
-                    duration = duration.set({ milliseconds: 0 });
-                }
-
-                if (msDuration.milliseconds > 60 * 60 * 1000) {
-                    duration = duration.set({ seconds: 0 });
-                }
-
-                return duration.rescale().toHuman({ unitDisplay: 'short' });
-            }
-        },
-        computed: {
-            tabName() {
-                return 'launches';
-            }
+    async function queryData(careerId: string) {
+        try {
+            const arr = await fetchLaunchesForCareer(careerId) as LaunchEventItem[];
+            arr.forEach(i => i.visible = false);
+            items.value = arr;
+        } finally {
+            isLoading.value = false;
         }
-    });
+    }
+
+    const { isVisible, isSpinnerShown, formatDate, formatDatePlusTime } = useDataTab('launches', props, items, isLoading, queryData);
+
+    async function saveLaunchMetaChanges(launch: LaunchEventItem) {
+        await patchLaunchMeta(props.careerId, launch.launchID, launch.metadata);
+    }
+
+    function updateLaunchSuccessState(launch: LaunchEventItem, isSuccess: boolean, event: Event) {
+        const meta = launch.metadata = launch.metadata || {};
+        meta.success = meta.success === isSuccess ? null : isSuccess;
+        (event.target as Element).closest('button')!.blur();
+        saveLaunchMetaChanges(launch);
+    }
+
+    function getVesselIcon(launch: LaunchEventItem) {
+        if (launch.builtAt === 'VAB') return 'fa-rocket';
+        if (launch.builtAt === 'SPH') return 'fa-plane';
+        return '';
+    }
+
+    function getSuccessStyleForEdit(launch: LaunchEventItem) {
+        if (launch.metadata && launch.metadata.success === true) return 'is-active';
+        return 'is-outlined';
+    }
+
+    function getFailStyleForEdit(launch: LaunchEventItem) {
+        if (launch.metadata && launch.metadata.success === false) return 'is-active';
+        return 'is-outlined';
+    }
+
+    function getSuccessStateIconForDisp(launch: LaunchEventItem) {
+        if (!launch.metadata || launch.metadata.success == null) return '';
+        if (launch.metadata.success) return 'fa-check has-text-success';
+        return 'fa-xmark has-text-danger';
+    }
+
+    function getSuccessStateTitle(launch: LaunchEventItem) {
+        if (!launch.metadata || launch.metadata.success == null) return '';
+        if (launch.metadata.success) return 'Launch met all or at least part of its goals';
+        return 'Launch failed to meet its goals';
+    }
+
+    function hasFailures(launch: LaunchEventItem) {
+        return launch.failures && launch.failures.length > 0;
+    }
+
+    function getTFFailureIconTitle(launch: LaunchEventItem) {
+        return `Had ${launch.failures.length} failure${launch.failures.length === 1 ? '' : 's'}`;
+    }
+
+    function canOpen(launch: LaunchEventItem) {
+        return hasFailures(launch);
+    }
+
+    function toggleVisibility(launch: LaunchEventItem) {
+        if (!canOpen(launch)) return;
+        const newState = !launch.visible;
+        items.value!.forEach(i => i.visible = false);
+        launch.visible = newState;
+    }
+
+    function getLaunchCount(builtAt: string) {
+        if (!items.value) return 0;
+        return items.value.filter(launch => launch.builtAt === builtAt).length;
+    }
+
+    function prettyPrintMET(launch: LaunchEventItem, failure: Failure) {
+        const m1 = parseUtcDate(launch.date);
+        const m2 = parseUtcDate(failure.date);
+        const msDuration = m2.diff(m1);
+        let duration = msDuration.rescale();
+
+        if (msDuration.milliseconds > 1000) {
+            duration = duration.set({ milliseconds: 0 });
+        }
+
+        if (msDuration.milliseconds > 60 * 60 * 1000) {
+            duration = duration.set({ seconds: 0 });
+        }
+
+        return duration.rescale().toHuman({ unitDisplay: 'short' });
+    }
 </script>

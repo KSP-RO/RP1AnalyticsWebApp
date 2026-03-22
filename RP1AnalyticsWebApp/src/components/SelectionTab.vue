@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <div class="tabs is-centered is-toggle is-toggle-rounded">
         <ul>
             <li v-bind:class="{ 'is-active': active === 'milestones' }">
@@ -47,12 +47,12 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
+<script setup lang="ts">
+    defineProps<{
+        active?: string;
+    }>();
 
-    export default defineComponent({
-        props: {
-            active: String
-        }
-    });
+    defineEmits<{
+        'change-active': [tabName: string];
+    }>();
 </script>

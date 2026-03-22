@@ -34,54 +34,40 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
+<script setup lang="ts">
+    import { ref, onMounted } from 'vue';
     import { fetchCareerLogList, assignCareerToRace } from '../utils/api';
     import type { RaceManagementCareerListItem } from 'types';
     import LoadingSpinner from '../components/LoadingSpinner.vue';
 
-    interface ComponentData {
-        items: RaceManagementCareerListItem[] | null;
-        isLoading: boolean;
+    const items = ref<RaceManagementCareerListItem[] | null>(null);
+    const isLoading = ref(false);
+
+    async function queryData() {
+        isLoading.value = true;
+        try {
+            const arr = await fetchCareerLogList() as RaceManagementCareerListItem[];
+            arr.forEach(i => i.isUpdating = false);
+            items.value = arr;
+        } finally {
+            isLoading.value = false;
+        }
     }
 
-    export default defineComponent({
-        components: {
-            LoadingSpinner
-        },
-        data(): ComponentData {
-            return {
-                items: null,
-                isLoading: false
-            }
-        },
-        methods: {
-            async queryData() {
-                this.isLoading = true;
-                try {
-                    const arr = await fetchCareerLogList() as RaceManagementCareerListItem[];
-                    arr.forEach(i => i.isUpdating = false);
-                    this.items = arr;
-                }
-                finally {
-                    this.isLoading = false;
-                }
-            },
-            async saveData(item: RaceManagementCareerListItem) {
-                item.isUpdating = true;
-                try {
-                    await assignCareerToRace(item.id, item.race);
-                }
-                finally {
-                    item.isUpdating = false;
-                }
-            },
-            getCareerUrl(c: RaceManagementCareerListItem) {
-                return `/?careerId=${c.id}`;
-            }
-        },
-        mounted() {
-            this.queryData();
+    async function saveData(item: RaceManagementCareerListItem) {
+        item.isUpdating = true;
+        try {
+            await assignCareerToRace(item.id, item.race);
+        } finally {
+            item.isUpdating = false;
         }
+    }
+
+    function getCareerUrl(c: RaceManagementCareerListItem) {
+        return `/?careerId=${c.id}`;
+    }
+
+    onMounted(() => {
+        queryData();
     });
 </script>

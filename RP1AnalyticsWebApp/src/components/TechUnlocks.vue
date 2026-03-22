@@ -24,34 +24,31 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
+<script setup lang="ts">
+    import { ref } from 'vue';
     import { fetchTechUnlocksForCareer } from '../utils/api';
-    import DataTabMixin from '../components/DataTabMixin.vue';
+    import { useDataTab } from '../utils/useDataTab';
     import LoadingSpinner from '../components/LoadingSpinner.vue';
 
-    export default defineComponent({
-        mixins: [DataTabMixin],
-        components: {
-            LoadingSpinner
-        },
-        methods: {
-            async queryData(careerId: string) {
-                try {
-                    this.items = await fetchTechUnlocksForCareer(careerId);
-                }
-                finally {
-                    this.isLoading = false;
-                }
-            },
-            formatFloat(val: number | null) {
-                return typeof val === 'number' ? val.toFixed(2) : '';
-            }
-        },
-        computed: {
-            tabName() {
-                return 'tech';
-            }
+    const props = defineProps<{
+        careerId?: string;
+        activeTab?: string;
+    }>();
+
+    const items = ref<any[] | null>(null);
+    const isLoading = ref(false);
+
+    async function queryData(careerId: string) {
+        try {
+            items.value = await fetchTechUnlocksForCareer(careerId);
+        } finally {
+            isLoading.value = false;
         }
-    });
+    }
+
+    const { isVisible, isSpinnerShown, formatDate } = useDataTab('tech', props, items, isLoading, queryData);
+
+    function formatFloat(val: number | null) {
+        return typeof val === 'number' ? val.toFixed(2) : '';
+    }
 </script>

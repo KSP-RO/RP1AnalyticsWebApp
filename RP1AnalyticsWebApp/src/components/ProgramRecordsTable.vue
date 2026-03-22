@@ -26,75 +26,55 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
-    import type { PropType } from 'vue'
+<script setup lang="ts">
+    import { ref, watch, onMounted } from 'vue';
     import type { ProgramRecord, Filters } from 'types';
     import { fetchProgramRecords } from '../utils/api';
     import { parseUtcDate } from '../utils/parseUtcDate';
     import LoadingSpinner from '../components/LoadingSpinner.vue';
 
-    interface ComponentData {
-        items: ProgramRecord[] | null;
-        isLoading: boolean;
+    const props = defineProps<{
+        mode: string;
+        filters: Filters;
+    }>();
+
+    const emit = defineEmits<{
+        'programClicked': [item: ProgramRecord];
+    }>();
+
+    const items = ref<ProgramRecord[] | null>(null);
+    const isLoading = ref(false);
+
+    async function queryData() {
+        isLoading.value = true;
+        try {
+            items.value = await fetchProgramRecords(props.mode, props.filters);
+        } finally {
+            isLoading.value = false;
+        }
     }
 
-    export default defineComponent({
-        components: {
-            LoadingSpinner
-        },
-        props: {
-            mode: {
-                type: String,
-                required: true
-            },
-            filters: {
-                type: Object as PropType<Filters>,
-                required: true
-            }
-        },
-        emits: ['programClicked'],
-        data(): ComponentData {
-            return {
-                items: null,
-                isLoading: false
-            }
-        },
-        methods: {
-            async queryData() {
-                this.isLoading = true;
-                try {
-                    this.items = await fetchProgramRecords(this.mode, this.filters);;
-                }
-                finally {
-                    this.isLoading = false;
-                }
-            },
-            programClicked(item: ProgramRecord) {
-                this.$emit('programClicked', item);
-            },
-            getCareerUrl(item: ProgramRecord) {
-                return `/?careerId=${item.careerId}`;
-            },
-            formatDate(date: string) {
-                return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
-            }
-        },
-        watch: {
-            mode() {
-                this.queryData();
-            },
-            filters: {
-                handler() {
-                    this.queryData();
-                },
-                deep: true
-            }
-        },
-        mounted() {
-            this.$nextTick(function () {
-                this.queryData();
-            });
-        }
+    function programClicked(item: ProgramRecord) {
+        emit('programClicked', item);
+    }
+
+    function getCareerUrl(item: ProgramRecord) {
+        return `/?careerId=${item.careerId}`;
+    }
+
+    function formatDate(date: string) {
+        return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
+    }
+
+    watch(() => props.mode, () => {
+        queryData();
+    });
+
+    watch(() => props.filters, () => {
+        queryData();
+    }, { deep: true });
+
+    onMounted(() => {
+        queryData();
     });
 </script>

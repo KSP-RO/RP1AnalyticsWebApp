@@ -20,13 +20,12 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
+<script setup lang="ts">
+    defineProps<{
+        active?: string;
+    }>();
 
-    export default defineComponent({
-        props: {
-            active: String
-        },
-        emits: ['change-active']
-    });
+    defineEmits<{
+        'change-active': [tabName: string];
+    }>();
 </script>

@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <div class="modal is-active" v-show="isVisible">
         <div class="modal-background" @click="closeModal"></div>
         <div class="modal-content">
@@ -145,78 +145,64 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
-    import type { PropType } from 'vue'
+<script setup lang="ts">
+    import { ref, watch } from 'vue';
     import type { Filters, UserData } from 'types';
     import { fetchUsers, fetchRaces } from '../utils/api';
     import { createEmptyFilters } from '../utils/activeFilters';
 
-    interface ComponentData {
-        players: UserData[] | null;
-        races: string[] | null;
+    const props = defineProps<{
+        filters?: Filters;
+        isVisible?: boolean;
+    }>();
+
+    const emit = defineEmits<{
+        'update:isVisible': [value: boolean];
+        'update:filters': [value: Filters];
+        'applyFilters': [value: Filters];
+    }>();
+
+    const players = ref<UserData[] | null>(null);
+    const races = ref<string[] | null>(null);
+    const localFilters = ref<Filters>(makeLocalFilters());
+
+    function makeLocalFilters(): Filters {
+        const copy = { ...props.filters } as Filters;
+        if (!copy.ingameDateOp) copy.ingameDateOp = 'ge';
+        if (!copy.ingameDate) copy.ingameDate = '1951-01-01';
+        if (!copy.lastUpdateOp) copy.lastUpdateOp = 'ge';
+        if (!copy.difficulty) copy.difficulty = '';
+        if (!copy.playstyle) copy.playstyle = '';
+        return copy;
     }
 
-    export default defineComponent({
-        props: {
-            filters: Object as PropType<Filters>,
-            isVisible: Boolean
-        },
-        emits: ['update:isVisible', 'update:filters', 'applyFilters'],
-        data(): ComponentData {
-            return {
-                players: null,
-                races: null
-            }
-        },
-        computed: {
-            localFilters(): Filters {
-                const copy = { ...this.filters };
-                if (!copy.ingameDateOp)
-                    copy.ingameDateOp = 'ge';
-
-                if (!copy.ingameDate)
-                    copy.ingameDate = '1951-01-01';
-
-                if (!copy.lastUpdateOp)
-                    copy.lastUpdateOp = 'ge';
-
-                if (!copy.difficulty)
-                    copy.difficulty = '';
-
-                if (!copy.playstyle)
-                    copy.playstyle = '';
-
-                return copy as Filters;
-            }
-        },
-        methods: {
-            closeModal() {
-                this.$emit('update:isVisible', false);
-            },
-            applyFilters() {
-                this.$emit('applyFilters', this.localFilters);
-                this.closeModal();
-            },
-            clearFilters() {
-                this.$emit('applyFilters', createEmptyFilters());
-                this.closeModal();
-            },
-            async queryPlayers() {
-                this.players = await fetchUsers();
-            },
-            async queryRaces() {
-                this.races = await fetchRaces();
-            }
-        },
-        watch: {
-            isVisible(newIsVisible: boolean) {
-                if (newIsVisible && !this.players)
-                    this.queryPlayers();
-
-                if (newIsVisible && !this.races)
-                    this.queryRaces();
-            }
+    watch(() => props.isVisible, (newIsVisible) => {
+        if (newIsVisible) {
+            localFilters.value = makeLocalFilters();
+            if (!players.value) queryPlayers();
+            if (!races.value) queryRaces();
         }
     });
+
+    function closeModal() {
+        emit('update:isVisible', false);
+    }
+
+    function applyFilters() {
+        emit('applyFilters', localFilters.value);
+        closeModal();
+    }
+
+    function clearFilters() {
+        emit('applyFilters', createEmptyFilters());
+        closeModal();
+    }
+
+    async function queryPlayers() {
+        players.value = await fetchUsers();
+    }
+
+    async function queryRaces() {
+        races.value = await fetchRaces();
+    }
 </script>

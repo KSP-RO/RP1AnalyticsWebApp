@@ -10,86 +10,52 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
-    import type { PropType } from 'vue'
+<script setup lang="ts">
+    import { ref, computed, watch } from 'vue';
     import type { ProgramItem, Filters } from 'types';
     import { fetchPrograms } from '../utils/api';
-    import { parseUtcDate } from '../utils/parseUtcDate';
     import CareerDates from '../components/CareerDates.vue';
 
-    interface ComponentData {
-        items: ProgramItem[] | null;
-        isVisible: boolean;
-        isLoading: boolean;
-        extraFields: [{
-            title: string,
-            field: string
-        }];
+    const props = defineProps<{
+        programName?: string;
+        mode: string;
+        filters: Filters;
+    }>();
+
+    const items = ref<ProgramItem[] | null>(null);
+    const isVisible = ref(false);
+    const isLoading = ref(false);
+    const extraFields = [{ title: 'Speed', field: 'speed' }];
+
+    const dlgTitle = computed(() => items.value && items.value[0].title);
+    const dateField = computed(() => props.mode);
+
+    async function queryData(programName: string) {
+        items.value = null;
+        if (programName) {
+            isLoading.value = true;
+            try {
+                items.value = await fetchPrograms(programName, props.mode, props.filters);
+                isVisible.value = true;
+            } finally {
+                isLoading.value = false;
+            }
+        }
     }
 
-    export default defineComponent({
-        components: {
-            CareerDates
-        },
-        props: {
-            programName: String,
-            mode: {
-                type: String,
-                required: true
-            },
-            filters: {
-                type: Object as PropType<Filters>,
-                required: true
-            }
-        },
-        data(): ComponentData {
-            return {
-                items: null,
-                isLoading: false,
-                isVisible: false,
-                extraFields: [{
-                    title: 'Speed',
-                    field: 'speed'
-                }]
-            }
-        },
-        methods: {
-            async queryData(programName: string) {
-                this.items = null;
-                if (programName) {
-                    this.isLoading = true;
-                    try {
-                        const items = await fetchPrograms(programName, this.mode, this.filters);
-                        this.items = items;
-                        this.isVisible = true;
-                    }
-                    finally {
-                        this.isLoading = false;
-                    }
-                }
-            },
-            formatDate(date: string) {
-                return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
-            },
-            closeModal() {
-                this.isVisible = false;
-            }
-        },
-        computed: {
-            dlgTitle() {
-                return this.items && this.items[0].title;
-            },
-            dateField() {
-                return this.mode;
-            }
-        },
-        watch: {
-            programName(newProgramName: string, oldProgramName: string) {
-                if (newProgramName !== oldProgramName) {
-                    this.queryData(newProgramName);
-                }
-            }
-        },
+    function closeModal() {
+        isVisible.value = false;
+    }
+
+    watch(() => props.programName, (newProgramName, oldProgramName) => {
+        if (newProgramName !== oldProgramName) {
+            queryData(newProgramName!);
+        }
     });
+
+    function show() {
+        isVisible.value = true;
+    }
+
+    defineExpose({ show });
 </script>

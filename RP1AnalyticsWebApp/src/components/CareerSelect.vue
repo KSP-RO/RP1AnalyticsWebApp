@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <div class="combo-box control dropdown is-expanded is-rounded" :class="{ 'is-active': isOpen, 'is-loading': isLoading }">
         <div class="dropdown-trigger">
             <div class="control has-icons-left has-icons-right">
@@ -57,128 +57,110 @@
     }
 </style>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
-    import type { PropType } from 'vue'
+<script setup lang="ts">
+    import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
     import type { CareerListItem, Filters } from 'types';
     import { fetchCareerListItems } from '../utils/api';
 
-    interface ComponentData {
-        items: CareerListItem[] | null;
-        isLoading: boolean;
-        isOpen: boolean;
-        inputText: string;
-    }
-    
-    export default defineComponent({
-        props: {
-            careerItems: Object as PropType<CareerListItem[]>,
-            selectedCareer: String,
-            filters: {
-                type: Object as PropType<Filters>,
-                required: true
-            }
-        },
-        emits: ['update:selectedCareer', 'careerChanged'],
-        data(): ComponentData {
-            return {
-                items: null,
-                isLoading: false,
-                isOpen: false,
-                mouseDownInsideInput: false,
-                inputText: ''
-            };
-        },
-        methods: {
-            async queryData(filters: Filters) {
-                this.isLoading = true;
-                try {
-                    const arr = await fetchCareerListItems(filters);
-                    this.items = arr;
-                    this.updateInputText();
-                }
-                finally {
-                    this.isLoading = false;
-                }
-            },
-            selectValue(value) {
-                this.inputText = value.name;
-                this.isOpen = false;
-                this.careerChanged(value.id);
-            },
-            updateInputText() {
-                const selItem = this.items.find(i => i.id === this.selectedCareer);
-                this.inputText = selItem?.name ?? '';
-            },
-            onMouseDown(e) {
-                // Used for handling marking text. I.e mouse button goes down on the input but is released when outside it.
-                if (e.target.closest(".combo-box")) {
-                    this.mouseDownInsideInput = true;
-                }
-            },
-            onClickOutside(e) {
-                if (this.mouseDownInsideInput) {
-                    this.mouseDownInsideInput = false;
-                    return;
-                }
+    const props = defineProps<{
+        careerItems?: CareerListItem[];
+        selectedCareer?: string;
+        filters: Filters;
+    }>();
 
-                if (!e.target.closest(".combo-box")) {
-                    this.isOpen = false;
-                }
-            },
-            careerChanged(careerId: string) {
-                this.$emit('update:selectedCareer', careerId);
-                this.$emit('careerChanged', careerId);
-            },
-            getPlayerName(entry: CareerListItem) {
-                return entry.userPreferredName ? entry.userPreferredName : entry.user;
-            }
-        },
-        computed: {
-            canEdit(): boolean {
-                return this.career != null && currentUser != null && this.career.userLogin === currentUser.userName;
-            },
-            filteredGroups() {
-                let items = this.items;
-                if (!items) return new Map<string, CareerListItem[]>();
+    const emit = defineEmits<{
+        'update:selectedCareer': [value: string];
+        'careerChanged': [value: string];
+    }>();
 
-                const text = this.inputText.toLowerCase();
-                if (text.length > 0) {
-                    items = this.items.filter(i => this.getPlayerName(i).toLowerCase().includes(text) ||
-                                                   i.name.toLowerCase().includes(text));
-                }
+    const items = ref<CareerListItem[] | null>(null);
+    const isLoading = ref(false);
+    const isOpen = ref(false);
+    const inputText = ref('');
+    let mouseDownInsideInput = false;
 
-                const groupedMap = items.reduce(
-                    (entryMap, e) => entryMap.set(this.getPlayerName(e), [...entryMap.get(this.getPlayerName(e)) || [], e]),
-                    new Map<string, CareerListItem[]>()
-                );
-
-                return groupedMap;
-            }
-        },
-        mounted() {
-            this.$nextTick(function () {
-                this.queryData(this.filters);
-            });
-            document.addEventListener('mousedown', this.onMouseDown);
-            document.addEventListener('click', this.onClickOutside);
-        },
-        beforeUnmount() {
-            document.removeEventListener('mousedown', this.onMouseDown);
-            document.removeEventListener('click', this.onClickOutside);
-        },
-        watch: {
-            selectedCareer() {
-                if (this.items) {
-                    this.updateInputText();
-                }
-            },
-            filters: {
-                handler() {
-                    this.queryData(this.filters);
-                },
-                deep: true
-            }
+    async function queryData(filters: Filters) {
+        isLoading.value = true;
+        try {
+            const arr = await fetchCareerListItems(filters);
+            items.value = arr;
+            updateInputText();
+        } finally {
+            isLoading.value = false;
         }
+    }
+
+    function selectValue(value: CareerListItem) {
+        inputText.value = value.name;
+        isOpen.value = false;
+        careerChanged(value.id);
+    }
+
+    function updateInputText() {
+        const selItem = items.value!.find(i => i.id === props.selectedCareer);
+        inputText.value = selItem?.name ?? '';
+    }
+
+    function onMouseDown(e: MouseEvent) {
+        if ((e.target as Element).closest('.combo-box')) {
+            mouseDownInsideInput = true;
+        }
+    }
+
+    function onClickOutside(e: MouseEvent) {
+        if (mouseDownInsideInput) {
+            mouseDownInsideInput = false;
+            return;
+        }
+
+        if (!(e.target as Element).closest('.combo-box')) {
+            isOpen.value = false;
+        }
+    }
+
+    function careerChanged(careerId: string) {
+        emit('update:selectedCareer', careerId);
+        emit('careerChanged', careerId);
+    }
+
+    function getPlayerName(entry: CareerListItem) {
+        return entry.userPreferredName ? entry.userPreferredName : entry.user;
+    }
+
+    const filteredGroups = computed(() => {
+        let arr = items.value;
+        if (!arr) return new Map<string, CareerListItem[]>();
+
+        const text = inputText.value.toLowerCase();
+        if (text.length > 0) {
+            arr = arr.filter(i => getPlayerName(i).toLowerCase().includes(text) ||
+                                  i.name.toLowerCase().includes(text));
+        }
+
+        return arr.reduce(
+            (entryMap, e) => entryMap.set(getPlayerName(e), [...entryMap.get(getPlayerName(e)) || [], e]),
+            new Map<string, CareerListItem[]>()
+        );
+    });
+
+    watch(() => props.selectedCareer, () => {
+        if (items.value) {
+            updateInputText();
+        }
+    });
+
+    watch(() => props.filters, () => {
+        queryData(props.filters);
+    }, { deep: true });
+
+    onMounted(() => {
+        queryData(props.filters);
+        document.addEventListener('mousedown', onMouseDown);
+        document.addEventListener('click', onClickOutside);
+    });
+
+    onBeforeUnmount(() => {
+        document.removeEventListener('mousedown', onMouseDown);
+        document.removeEventListener('click', onClickOutside);
     });
 </script>

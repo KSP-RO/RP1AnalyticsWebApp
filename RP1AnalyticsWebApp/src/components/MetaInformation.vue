@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <div v-if="isVisible">
         <div class="box">
             <div class="columns is-vcentered is-centered has-text-centered">
@@ -44,47 +44,32 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
-    import type { PropType } from 'vue'
+<script setup lang="ts">
+    import { computed } from 'vue';
     import type { CareerLogMeta } from 'types';
     import { parseUtcDate } from '../utils/parseUtcDate';
     import * as showdown from 'showdown';
 
-    export default defineComponent({
-        props: {
-            meta: Object as PropType<CareerLogMeta>,
-            title: String,
-            isLoading: Boolean
-        },
-        methods: {
-            formatToDate(date: string) {
-                if (typeof date !== 'string') return '?';
-                const m = parseUtcDate(date);
-                return m.toFormat('yyyy-MM-dd');
-            },
-            formatToLocalDate(date: string) {
-                if (typeof date !== 'string') return '?';
-                const m = parseUtcDate(date);
-                return m.toLocal().toFormat('yyyy-MM-dd');
-            },
-            formatToUTCDateTime(date: string) {
-                if (typeof date !== 'string') return '?';
-                const m = parseUtcDate(date);
-                return m.toString();
-            }
-        },
-        computed: {
-            isVisible() {
-                return this.meta && !this.isLoading;
-            },
-            versionFormatted() {
-                return this.meta!.versionTag ? this.meta!.versionTag : '?';
-            },
-            descriptionShowdown() {
-                const converter = new showdown.Converter();
-                return converter.makeHtml(this.meta!.descriptionText);
-            }
-        }
+    const props = defineProps<{
+        meta?: CareerLogMeta;
+        title?: string;
+        isLoading?: boolean;
+    }>();
+
+    const isVisible = computed(() => props.meta && !props.isLoading);
+    const versionFormatted = computed(() => props.meta?.versionTag ?? '?');
+    const descriptionShowdown = computed(() => {
+        const converter = new showdown.Converter();
+        return converter.makeHtml(props.meta!.descriptionText);
     });
+
+    function formatToLocalDate(date: string) {
+        if (typeof date !== 'string') return '?';
+        return parseUtcDate(date).toLocal().toFormat('yyyy-MM-dd');
+    }
+
+    function formatToUTCDateTime(date: string) {
+        if (typeof date !== 'string') return '?';
+        return parseUtcDate(date).toString();
+    }
 </script>

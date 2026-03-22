@@ -28,39 +28,37 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
+<script setup lang="ts">
+    import { ref } from 'vue';
     import { leaderTypes } from '../utils/leaderTypes';
     import { fetchLeadersForCareer } from '../utils/api';
-    import DataTabMixin from '../components/DataTabMixin.vue';
+    import { useDataTab } from '../utils/useDataTab';
     import LoadingSpinner from '../components/LoadingSpinner.vue';
 
-    export default defineComponent({
-        mixins: [DataTabMixin],
-        components: {
-            LoadingSpinner
-        },
-        methods: {
-            async queryData(careerId: string) {
-                try {
-                    this.items = await fetchLeadersForCareer(careerId);
-                }
-                finally {
-                    this.isLoading = false;
-                }
-            },
-            formatFloat(val: number | null) {
-                return typeof val === 'number' ? val.toFixed(1) : '';
-            },
-            getTypeTitle(type: keyof typeof leaderTypes) {
-                if (type == null) return '';
-                return leaderTypes[type];
-            }
-        },
-        computed: {
-            tabName() {
-                return 'leaders';
-            }
+    const props = defineProps<{
+        careerId?: string;
+        activeTab?: string;
+    }>();
+
+    const items = ref<any[] | null>(null);
+    const isLoading = ref(false);
+
+    async function queryData(careerId: string) {
+        try {
+            items.value = await fetchLeadersForCareer(careerId);
+        } finally {
+            isLoading.value = false;
         }
-    });
+    }
+
+    const { isVisible, isSpinnerShown, formatDate } = useDataTab('leaders', props, items, isLoading, queryData);
+
+    function formatFloat(val: number | null) {
+        return typeof val === 'number' ? val.toFixed(1) : '';
+    }
+
+    function getTypeTitle(type: keyof typeof leaderTypes) {
+        if (type == null) return '';
+        return leaderTypes[type];
+    }
 </script>

@@ -23,35 +23,24 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
+<script setup lang="ts">
+    import { computed } from 'vue';
     import { parseUtcDate } from '../utils/parseUtcDate';
 
-    export default defineComponent({
-        props: {
-            items: Array<any>,
-            dateField: {
-                type: String,
-                required: true
-            },
-            title: String,
-            extraFields: Array<{
-                title: string,
-                field: string
-            }>
-        },
-        computed: {
-            isVisible() {
-                return !!this.items;
-            }
-        },
-        methods: {
-            getAndFormatDate(item: any) {
-                return this.formatDate(item[this.dateField]);
-            },
-            formatDate(date: string) {
-                return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
-            }
-        }
-    });
+    const props = defineProps<{
+        items?: any[];
+        dateField: string;
+        title?: string;
+        extraFields?: { title: string; field: string }[];
+    }>();
+
+    const isVisible = computed(() => !!props.items);
+
+    function getAndFormatDate(item: any) {
+        return formatDate(item[props.dateField]);
+    }
+
+    function formatDate(date: string) {
+        return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
+    }
 </script>

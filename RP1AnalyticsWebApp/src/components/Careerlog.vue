@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <div class="box columns is-centered">
         <div class="field">
             <CareerSelect :selected-career="careerId" :filters="filters" v-on:career-changed="handleCareerChange" />
@@ -43,8 +43,8 @@
     <Chart :career="career" :contract-events="contractEvents" :programs="programs" />
 </template>
 
-<script lang="ts">
-    import { defineComponent } from 'vue';
+<script setup lang="ts">
+    import { ref, computed, onMounted } from 'vue';
     import { fetchCareerLog, fetchContractsForCareer, fetchProgramsForCareer } from '../utils/api';
     import currentUser from '../utils/currentUser';
     import { activeFilters } from '../utils/activeFilters';
@@ -61,127 +61,95 @@
     import Leaders from './Leaders.vue';
     import Chart from './Chart.vue';
 
-    interface ComponentData {
-        careerId: string | null;
-        career: CareerLog | null;
-        careerTitle: string | null;
-        careerLogMeta: ExtendedCareerLogMeta | null;
-        isLoadingCareerMeta: boolean;
-        contractEvents: BaseContractEvent[] | null;
-        programs: ProgramItem[] | null;
-        activeTab: string;
-        filters: typeof activeFilters;
+    const careerId = ref<string | null>(null);
+    const career = ref<CareerLog | null>(null);
+    const careerTitle = ref<string | null>(null);
+    const careerLogMeta = ref<ExtendedCareerLogMeta | null>(null);
+    const isLoadingCareerMeta = ref(false);
+    const contractEvents = ref<BaseContractEvent[] | null>(null);
+    const programs = ref<ProgramItem[] | null>(null);
+    const activeTab = ref('milestones');
+    const filters = activeFilters;
+
+    const canEdit = computed(() =>
+        career.value != null && currentUser != null && career.value.userLogin === currentUser.userName
+    );
+
+    function reset() {
+        careerId.value = null;
+        career.value = null;
+        careerLogMeta.value = null;
+        isLoadingCareerMeta.value = false;
+        careerTitle.value = null;
+        contractEvents.value = null;
+        programs.value = null;
     }
 
-    export default defineComponent({
-        components: {
-            CareerSelect,
-            MetaInformation,
-            SelectionTab,
-            MilestoneContracts,
-            RepeatableContracts,
-            Programs,
-            Launches,
-            Facilities,
-            TechUnlocks,
-            Leaders,
-            Chart
-        },
-        data(): ComponentData {
-            return {
-                careerId: null,
-                career: null,
-                careerTitle: null,
-                careerLogMeta: null,
-                programs: null,
-                isLoadingCareerMeta: false,
-                contractEvents: null,
-                activeTab: 'milestones',
-                filters: activeFilters
-            };
-        },
-        methods: {
-            reset() {
-                this.careerId = null;
-                this.career = null;
-                this.careerLogMeta = null;
-                this.isLoadingCareerMeta = false;
-                this.careerTitle = null;
-                this.contractEvents = null;
-                this.programs = null;
-            },
-            handleChangeActive(tabName: string) {
-                this.activeTab = tabName;
-                const url = new URL(window.location.href);
-                url.searchParams.set('tab', tabName);
-                window.history.replaceState({}, '', url);
-            },
-            handleCareerChange(careerId: string) {
-                const url = new URL(window.location.href);
-                url.searchParams.set('careerId', careerId);
-                window.history.pushState({}, '', url);
-                this.getCareerLogs(careerId);
-            },
-            async getCareerLogs(careerId: string) {
-                console.log(`Getting Logs for ${careerId}...`);
+    function handleChangeActive(tabName: string) {
+        activeTab.value = tabName;
+        const url = new URL(window.location.href);
+        url.searchParams.set('tab', tabName);
+        window.history.replaceState({}, '', url);
+    }
 
-                this.reset();
+    function handleCareerChange(id: string) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('careerId', id);
+        window.history.pushState({}, '', url);
+        getCareerLogs(id);
+    }
 
-                if (careerId) {
-                    this.careerId = careerId;
-                    this.isLoadingCareerMeta = true;
+    async function getCareerLogs(id: string) {
+        console.log(`Getting Logs for ${id}...`);
 
-                    const p1 = fetchCareerLog(careerId);
-                    const p2 = fetchContractsForCareer(careerId);
-                    const p3 = fetchProgramsForCareer(careerId);
+        reset();
 
-                    const log = await p1;
-                    const meta = log.careerLogMeta as ExtendedCareerLogMeta;
-                    meta.lastUpdate = log.lastUpdate;
-                    this.isLoadingCareerMeta = false;
-                    this.careerLogMeta = meta;
-                    this.careerTitle = log.name;
-                    this.career = log;
-                    
-                    this.contractEvents = await p2;
-                    this.programs = await p3;
-                }
-            }
-        },
-        computed: {
-            canEdit(): boolean {
-                return this.career != null && currentUser != null && this.career.userLogin === currentUser.userName;
-            }
-        },
-        mounted() {
-            this.$nextTick(function () {
-                const urlParams = new URLSearchParams(window.location.search);
-                const initialCareerId = urlParams.get('careerId');
-                if (initialCareerId) {
-                    this.getCareerLogs(initialCareerId);
-                }
+        if (id) {
+            careerId.value = id;
+            isLoadingCareerMeta.value = true;
 
-                const tabId = urlParams.get('tab');
-                if (tabId) {
-                    this.activeTab = tabId;
-                }
-            });
+            const p1 = fetchCareerLog(id);
+            const p2 = fetchContractsForCareer(id);
+            const p3 = fetchProgramsForCareer(id);
 
-            window.onpopstate = () => {
-                const urlParams = new URLSearchParams(window.location.search);
-                const initialCareerId = urlParams.get('careerId');
-                if (initialCareerId) {
-                    this.getCareerLogs(initialCareerId);
-                }
-                else {
-                    this.reset();
-                }
+            const log = await p1;
+            const meta = log.careerLogMeta as ExtendedCareerLogMeta;
+            meta.lastUpdate = log.lastUpdate;
+            isLoadingCareerMeta.value = false;
+            careerLogMeta.value = meta;
+            careerTitle.value = log.name;
+            career.value = log;
 
-                const tabId = urlParams.get('tab');
-                if (tabId) {
-                    this.activeTab = tabId;
-                }
-            }
+            contractEvents.value = await p2;
+            programs.value = await p3;
         }
+    }
+
+    onMounted(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialCareerId = urlParams.get('careerId');
+        if (initialCareerId) {
+            getCareerLogs(initialCareerId);
+        }
+
+        const tabId = urlParams.get('tab');
+        if (tabId) {
+            activeTab.value = tabId;
+        }
+
+        window.onpopstate = () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('careerId');
+            if (id) {
+                getCareerLogs(id);
+            } else {
+                reset();
+            }
+
+            const tab = params.get('tab');
+            if (tab) {
+                activeTab.value = tab;
+            }
+        };
     });
 </script>
