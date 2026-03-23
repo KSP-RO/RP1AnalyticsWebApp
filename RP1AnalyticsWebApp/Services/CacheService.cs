@@ -75,9 +75,9 @@ namespace RP1AnalyticsWebApp.Services
 
                 List<CareerLog> allItems = subLists.SelectMany(l => l).ToList();
                 Console.WriteLine($"AllCareerLogs: {allItems.Count} items in {sw.ElapsedMilliseconds:N0} ms");
-                _telemetry.TrackEvent("FetchAllCareers", metrics: new Dictionary<string, double>
+                _telemetry.TrackEvent("FetchAllCareers", new Dictionary<string, string>
                 {
-                    { "QueryDuration", sw.ElapsedMilliseconds }
+                    { "QueryDuration", sw.ElapsedMilliseconds.ToString() }
                 });
                 return new CachedCareerLogs { Items = allItems };
             };

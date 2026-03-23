@@ -1,6 +1,6 @@
 using AspNetCore.Identity.Mongo;
 using AspNetCore.Identity.Mongo.Model;
-using Microsoft.ApplicationInsights.Extensibility;
+using OpenTelemetry.Trace;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.OData;
@@ -104,7 +104,7 @@ namespace RP1AnalyticsWebApp
             services.AddRazorPages();
             services.AddApplicationInsightsTelemetry();
             services.AddSwaggerGen();
-            services.AddSingleton<ITelemetryInitializer, CustomTelemetryInitializer>();
+            services.AddOpenTelemetry().WithTracing(b => b.AddProcessor<CustomTelemetryInitializer>());
 
             services.AddAuthentication()
                 .AddGitHub(options =>

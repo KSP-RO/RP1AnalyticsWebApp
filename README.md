@@ -2,8 +2,8 @@
 Receives career progress information from the game and shows various useful visualizations for comparing careers and balancing RP-1.
 
 ## Technology stack
-* .NET 9
-* ASP.NET Core 9 (Razor pages + web API)
+* .NET 10
+* ASP.NET Core 10 (Razor pages + web API)
 * Vue.js 3
 * MongoDB
 * Microsoft.AspNetCore.OData
@@ -32,7 +32,7 @@ Example settings file:
 ```
 {
   "ApplicationInsights": {
-    "InstrumentationKey": "[GUID, optional]"
+    "ConnectionString": "InstrumentationKey=00000000-0000-0000-0000-000000000000"
   },
   "CareerLogDatabaseSettings": {
     "CareerLogsCollectionName": "[Mongo Collection name, mandatory]",

@@ -1,11 +1,11 @@
-﻿using Microsoft.ApplicationInsights.Channel;
-using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
+using OpenTelemetry;
 using System;
+using System.Diagnostics;
 
 namespace RP1AnalyticsWebApp.Services
 {
-    public class CustomTelemetryInitializer : ITelemetryInitializer
+    public class CustomTelemetryInitializer : BaseProcessor<Activity>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -14,12 +14,12 @@ namespace RP1AnalyticsWebApp.Services
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
-        public void Initialize(ITelemetry telemetry)
+        public override void OnEnd(Activity activity)
         {
             var httpContext = _httpContextAccessor.HttpContext;
-            if (httpContext?.User.Identity.IsAuthenticated ?? false)
+            if (httpContext?.User.Identity?.IsAuthenticated ?? false)
             {
-                telemetry.Context.User.AuthenticatedUserId = httpContext.User.Identity.Name;
+                activity.SetTag("enduser.id", httpContext.User.Identity.Name);
             }
         }
     }
