@@ -2,9 +2,11 @@
     <div class="combo-box control dropdown is-expanded is-rounded" :class="{ 'is-active': isOpen, 'is-loading': isLoading }">
         <div class="dropdown-trigger">
             <div class="control has-icons-left has-icons-right">
-                <input type="text"
+                <input ref="inputRef"
+                       type="text"
                        v-model="inputText"
                        @focus="isOpen = true"
+                       @keydown="onKeyDown"
                        placeholder="Select a career"
                        class="combo-input input is-rounded" />
                 <div class="icon is-small is-left">
@@ -17,7 +19,7 @@
         </div>
 
         <div v-if="isOpen" class="combo-dropdown dropdown-menu" role="menu">
-            <div class="dropdown-content">
+            <div ref="dropdownContentRef" class="dropdown-content">
                 <template v-for="[key, value] in filteredGroups" :key="key">
                     <div class="combo-group-label dropdown-item">
                         {{ key }}
@@ -26,7 +28,8 @@
                     <button v-for="option in value"
                             :key="option.id"
                             @click="selectValue(option)"
-                            class="combo-option dropdown-item">
+                            class="combo-option dropdown-item"
+                            :class="{ 'is-active': flatIndexMap.get(option.id) === highlightedIndex }">
                         {{ option.name }}
                     </button>
                 </template>
@@ -77,6 +80,9 @@
     const isLoading = ref(false);
     const isOpen = ref(false);
     const inputText = ref('');
+    const highlightedIndex = ref(-1);
+    const dropdownContentRef = ref<HTMLElement | null>(null);
+    const inputRef = ref<HTMLInputElement | null>(null);
     let mouseDownInsideInput = false;
 
     async function queryData(filters: Filters) {
@@ -93,7 +99,41 @@
     function selectValue(value: CareerListItem) {
         inputText.value = value.name;
         isOpen.value = false;
+        highlightedIndex.value = -1;
         careerChanged(value.id);
+    }
+
+    function onKeyDown(e: KeyboardEvent) {
+        if (!isOpen.value) {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                isOpen.value = true;
+            }
+            return;
+        }
+
+        const flat = flatFilteredItems.value;
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            highlightedIndex.value = highlightedIndex.value < flat.length - 1
+                ? highlightedIndex.value + 1
+                : 0;
+            scrollHighlightedIntoView();
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            highlightedIndex.value = highlightedIndex.value > 0
+                ? highlightedIndex.value - 1
+                : flat.length - 1;
+            scrollHighlightedIntoView();
+        } else if (e.key === 'Enter' && highlightedIndex.value >= 0) {
+            e.preventDefault();
+            selectValue(flat[highlightedIndex.value]);
+            inputRef.value?.blur();
+        }
+    }
+
+    function scrollHighlightedIntoView() {
+        const el = dropdownContentRef.value?.querySelector<HTMLElement>('.combo-option.is-active');
+        el?.scrollIntoView({ block: 'nearest' });
     }
 
     function updateInputText() {
@@ -127,6 +167,20 @@
         return entry.userPreferredName ? entry.userPreferredName : entry.user;
     }
 
+    const flatFilteredItems = computed(() => {
+        const result: CareerListItem[] = [];
+        for (const [, value] of filteredGroups.value) {
+            result.push(...value);
+        }
+        return result;
+    });
+
+    const flatIndexMap = computed(() => {
+        const map = new Map<string, number>();
+        flatFilteredItems.value.forEach((item, i) => map.set(item.id, i));
+        return map;
+    });
+
     const filteredGroups = computed(() => {
         let arr = items.value;
         if (!arr) return new Map<string, CareerListItem[]>();
@@ -141,6 +195,10 @@
             (entryMap, e) => entryMap.set(getPlayerName(e), [...entryMap.get(getPlayerName(e)) || [], e]),
             new Map<string, CareerListItem[]>()
         );
+    });
+
+    watch(inputText, () => {
+        highlightedIndex.value = -1;
     });
 
     watch(() => props.selectedCareer, () => {
