@@ -188,7 +188,7 @@ public class CsvWriter : ODataWriter
             ++index;
 
             string propertyName = header;
-            ODataProperty property = resource.Resource.Properties.SingleOrDefault(p => p.Name == propertyName);
+            ODataProperty property = resource.Resource.Properties.OfType<ODataProperty>().SingleOrDefault(p => p.Name == propertyName);
             if (property != null)
             {
                 string propertyValueString = GetValueString(property.Value);
@@ -277,7 +277,7 @@ public class CsvWriter : ODataWriter
     {
         sb.Append("{");
         int index = 0;
-        foreach (var property in resourceWrapper.Resource.Properties)
+        foreach (var property in resourceWrapper.Resource.Properties.OfType<ODataProperty>())
         {
             if (index != 0)
             {
