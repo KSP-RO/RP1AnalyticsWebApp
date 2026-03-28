@@ -64,6 +64,7 @@
     import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
     import type { CareerListItem, Filters } from 'types';
     import { fetchCareerListItems } from '../utils/api';
+    import currentUser from '../utils/currentUser';
 
     const props = defineProps<{
         careerItems?: CareerListItem[];
@@ -191,10 +192,29 @@
                                   i.name.toLowerCase().includes(text));
         }
 
-        return arr.reduce(
+        const groups = arr.reduce(
             (entryMap, e) => entryMap.set(getPlayerName(e), [...entryMap.get(getPlayerName(e)) || [], e]),
             new Map<string, CareerListItem[]>()
         );
+
+        // Make sure entries for currently logged in user appear first
+        if (currentUser) {
+            const currentUserItem = arr.find(i => i.user === currentUser.userName);
+            if (currentUserItem) {
+                const currentUserKey = getPlayerName(currentUserItem);
+                const currentUserGroup = groups.get(currentUserKey);
+                if (currentUserGroup) {
+                    const sorted = new Map<string, CareerListItem[]>();
+                    sorted.set(currentUserKey, currentUserGroup);
+                    for (const [key, value] of groups) {
+                        if (key !== currentUserKey) sorted.set(key, value);
+                    }
+                    return sorted;
+                }
+            }
+        }
+
+        return groups;
     });
 
     watch(inputText, () => {
