@@ -934,5 +934,301 @@
   {
     "Name": "XPlanesSupersonicOptionalMid",
     "Title": "X-Planes (Mid Supersonic) Optional"
+  },
+  {
+    "Name": "EarlyNavNetwork3-SCA",
+    "Title": "Early Navigation Network (3 Satellites)"
+  },
+  {
+    "Name": "EarlyNavNetwork4-SCA",
+    "Title": "Early Navigation Network (4 Satellites)"
+  },
+  {
+    "Name": "EarlyNavSat-SCA",
+    "Title": "Commercial Navigation Satellite (Early)"
+  },
+  {
+    "Name": "FirstComSat-SCA",
+    "Title": "First Low Orbit Communications Satellite"
+  },
+  {
+    "Name": "FirstGEOSat-SCA",
+    "Title": "Geostationary Test Satellite"
+  },
+  {
+    "Name": "FirstGeosync-SCA",
+    "Title": "Geosynchronous Test Satellite"
+  },
+  {
+    "Name": "FirstMolniyaSat-SCA",
+    "Title": "First Molniya Orbit Satellite"
+  },
+  {
+    "Name": "FirstNavSat-SCA",
+    "Title": "First Navigational Satellite"
+  },
+  {
+    "Name": "FirstTundraSat-SCA",
+    "Title": "Tundra Orbit Test Satellite"
+  },
+  {
+    "Name": "intermittent_paris_moscow_tv",
+    "Title": "Experimental Paris-Moscow Television"
+  },
+  {
+    "Name": "intermittent_soviet_tv",
+    "Title": "Experimental Soviet Television"
+  },
+  {
+    "Name": "intermittent_transatlantic_tv",
+    "Title": "Experimental Transatlantic Television"
+  },
+  {
+    "Name": "intermittent_transpacific_tv",
+    "Title": "Experimental Transpacific Television"
+  },
+  {
+    "Name": "syncom_ship_to_shore",
+    "Title": "Experimental Ship-to-Shore Communications"
+  },
+  {
+    "Name": "syncom_transatlantic_tv",
+    "Title": "Experimental Transatlantic Telephony"
+  },
+  {
+    "Name": "syncom_transpacific_tv",
+    "Title": "Experimental Transpacific Telephony"
+  },
+  {
+    "Name": "l1_havana_tv",
+    "Title": "Moscow-Havana Telecommunications - Level 1"
+  },
+  {
+    "Name": "l1_indian_ocean_tv",
+    "Title": "Indian Ocean Telecommunications - Level 1"
+  },
+  {
+    "Name": "l1_north_atlantic_tv",
+    "Title": "North Atlantic Telecommunications - Level 1"
+  },
+  {
+    "Name": "l1_north_pacific_tv",
+    "Title": "North Pacific Telecommunications - Level 1"
+  },
+  {
+    "Name": "l1_orbita",
+    "Title": "Soviet Television - Level 1"
+  },
+  {
+    "Name": "l1_paris_moscow_tv",
+    "Title": "Paris–Moscow Telecommunications - Level 1"
+  },
+  {
+    "Name": "l1_south_pacific_tv",
+    "Title": "South Pacific Telecommunications - Level 1"
+  },
+  {
+    "Name": "l1_soviet_tracking_ships",
+    "Title": "Soviet Tracking Ships - Level 1"
+  },
+  {
+    "Name": "l1_ulaanbaatar_tv",
+    "Title": "Moscow-Ulaanbaatar Television - Level 1"
+  },
+  {
+    "Name": "l1_us_tracking_ships",
+    "Title": "US Tracking Ships - Level 1"
+  },
+  {
+    "Name": "our_world_tv",
+    "Title": "<i>Our World</i>"
+  },
+  {
+    "Name": "l2_atlantic_tv",
+    "Title": "North Atlantic Telecommunications - Level 2"
+  },
+  {
+    "Name": "l2_havana_tv",
+    "Title": "Moscow-Havana Telecommunications - Level 2"
+  },
+  {
+    "Name": "l2_indian_ocean_tv",
+    "Title": "Indian Ocean Telecommunications - Level 2"
+  },
+  {
+    "Name": "l2_intersputnik_europe",
+    "Title": "Intersputnik - Eastern Europe - Level 1"
+  },
+  {
+    "Name": "l2_moscow_dc",
+    "Title": "Moscow-Washington Hotline - Level 1"
+  },
+  {
+    "Name": "l2_orbita",
+    "Title": "Soviet Telecommunications - Level 2"
+  },
+  {
+    "Name": "l2_pacific_tv",
+    "Title": "Pacific Telecommunications - Level 2"
+  },
+  {
+    "Name": "l2_paris_moscow_tv",
+    "Title": "Paris–Moscow Telecommunications - Level 2"
+  },
+  {
+    "Name": "l2_soviet_tracking_ships",
+    "Title": "Soviet Tracking Ships - Level 2"
+  },
+  {
+    "Name": "l2_us_tracking_ships",
+    "Title": "US Tracking Ships - Level 2"
+  },
+  {
+    "Name": "l3_atlantic_tv",
+    "Title": "North Atlantic Telecommunications - Level 3"
+  },
+  {
+    "Name": "l3_canunet",
+    "Title": "Canadian Domestic Telecommunications - Level 1"
+  },
+  {
+    "Name": "l3_canunet_rtv_test",
+    "Title": "(PLACEHOLDER CONTRACT) Canadian Remote TV - Level 1"
+  },
+  {
+    "Name": "l3_domestic_us",
+    "Title": "US Domestic Telecommunications - Level 1"
+  },
+  {
+    "Name": "l3_ekran_test",
+    "Title": "(PLACEHOLDER CONTRACT) Soviet Direct-to-Home Television - Level 1"
+  },
+  {
+    "Name": "l3_hbo_us_test",
+    "Title": "(PLACEHOLDER CONTRACT) US Domestic TV Recieve-Only Service - Level 1"
+  },
+  {
+    "Name": "l3_hermes_remote_tv",
+    "Title": "Experimental Ku-band Remote Television"
+  },
+  {
+    "Name": "l3_indian_ocean_tv",
+    "Title": "Indian Ocean Telecommunications - Level 3"
+  },
+  {
+    "Name": "l3_intersputnik_asia",
+    "Title": "Intersputnik - Asia - Level 1"
+  },
+  {
+    "Name": "l3_intersputnik_caribbean",
+    "Title": "Intersputnik - Caribbean - Level 2"
+  },
+  {
+    "Name": "l3_marisat",
+    "Title": "Maritime Satellite Communications - Level 3"
+  },
+  {
+    "Name": "l3_moskva",
+    "Title": "Soviet Telecommunications - Level 3"
+  },
+  {
+    "Name": "l3_pacific_tv",
+    "Title": "Pacific Telecommunications - Level 3"
+  },
+  {
+    "Name": "l3_paris_moscow_tv",
+    "Title": "Paris–Moscow Telecommunications - Level 3"
+  },
+  {
+    "Name": "l3_soviet_tracking_ships",
+    "Title": "Soviet Tracking Ships - Level 3"
+  },
+  {
+    "Name": "l3_us_territories",
+    "Title": "US Remote Territories Telecommunications - Level 1"
+  },
+  {
+    "Name": "l3_volna",
+    "Title": "Soviet Maritime Satellite Communications - Level 3"
+  },
+  {
+    "Name": "MoonLandingCrew1Month",
+    "Title": "Month-long Crewed Lunar Stay"
+  },
+  {
+    "Name": "MoonLandingCrew1Year",
+    "Title": "12-month Crewed Lunar Stay"
+  },
+  {
+    "Name": "MoonLandingCrew2Week",
+    "Title": "Two-week Crewed Lunar Stay"
+  },
+  {
+    "Name": "MoonLandingCrew3Month",
+    "Title": "Three-month Crewed Lunar Stay"
+  },
+  {
+    "Name": "MoonLandingCrew6Month",
+    "Title": "Six-month Crewed Lunar Stay"
+  },
+  {
+    "Name": "MoonOrbitCrewedPolar",
+    "Title": "Crewed 28-day Lunar Polar Orbit"
+  },
+  {
+    "Name": "MoonSpaceStation",
+    "Title": "Moon Space Station"
+  },
+  {
+    "Name": "MoonSpaceStation12Month",
+    "Title": "12 Month Lunar Orbital Stay"
+  },
+  {
+    "Name": "MoonSpaceStation3Month",
+    "Title": "3 Month Lunar Orbital Stay"
+  },
+  {
+    "Name": "MoonSpaceStation6Month",
+    "Title": "6 Month Lunar Orbital Stay"
+  },
+  {
+    "Name": "CrewedMarsLandingRepeat",
+    "Title": "Crewed Mars Landing"
+  },
+  {
+    "Name": "DeimosLandingCrew",
+    "Title": "Deimos Landing (Crewed)"
+  },
+  {
+    "Name": "FirstCrewedMarsLanding",
+    "Title": "First Crewed Mars Landing"
+  },
+  {
+    "Name": "FirstCrewedMarsOrbit",
+    "Title": "First Crewed Mars Orbit"
+  },
+  {
+    "Name": "CollectCrewedMarsSurfaceScience",
+    "Title": "Collect Crewed Mars Surface Science"
+  },
+  {
+    "Name": "MarsRoboticSampleReturn",
+    "Title": "Mars Robotic Sample Return"
+  },
+  {
+    "Name": "first_MarsFlybyCrewed",
+    "Title": "Flyby Mars (Crewed)"
+  },
+  {
+    "Name": "MarsVenusFlybyCrewed",
+    "Title": "Mars Opposition Venus Flyby (Crewed)"
+  },
+  {
+    "Name": "CrewedPhobosLandingSurfaceScience",
+    "Title": "Crewed Phobos Landing and Surface Science"
+  },
+  {
+    "Name": "PhobosLandingCrew",
+    "Title": "Phobos Landing (Crewed)"
   }
 ]
