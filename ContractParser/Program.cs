@@ -9,8 +9,8 @@ namespace ContractParser
     {
         public static void Main(string[] args)
         {
-            string inputPath = null;
-            string outputPath = null;
+            string? inputPath = null;
+            string? outputPath = null;
             string outputFileName = "ContractData";
 
             if (args.Length == 1)
@@ -21,13 +21,13 @@ namespace ContractParser
                 outputPath = args[1];
             }
 
-            if (string.IsNullOrEmpty(inputPath))
+            while (string.IsNullOrEmpty(inputPath))
             {
                 Console.Write("Enter contracts folder path: ");
                 inputPath = Console.ReadLine();
             }
 
-            if (string.IsNullOrEmpty(outputPath))
+            while (string.IsNullOrEmpty(outputPath))
             {
                 Console.Write("Enter json output folder path: ");
                 outputPath = Console.ReadLine();
@@ -43,9 +43,9 @@ namespace ContractParser
                 inputPath = Console.ReadLine();
             }
 
-            string fullOutPath = Path.GetFullPath(outputPath);
+            string fullOutPath = Path.GetFullPath(outputPath ?? string.Empty);
 
-            if (fullOutPath != null)
+            if (!string.IsNullOrEmpty(fullOutPath))
             {
                 Directory.CreateDirectory(fullOutPath);
                 string FileName = $"{fullOutPath}/{outputFileName}.json";
@@ -64,12 +64,15 @@ namespace ContractParser
             Console.ReadLine();
         }
 
-        private static bool LoadAllFiles(string folderPath)
+        private static bool LoadAllFiles(string? folderPath)
         {
+            if (string.IsNullOrEmpty(folderPath))
+                return false;
+
             Console.WriteLine($"Parsing contracts from {folderPath}...");
             IEnumerable<string> filePaths = Directory.EnumerateFiles(folderPath, "*.cfg", SearchOption.AllDirectories);
 
-            if (filePaths.Count() > 0)
+            if (filePaths.Any())
             {
                 foreach (string file in filePaths)
                 {
@@ -85,7 +88,7 @@ namespace ContractParser
                 return false;
         }
 
-        private static Contract[] LoadContracts(string fileFullName)
+        private static Contract[]? LoadContracts(string fileFullName)
         {
             if (!File.Exists(fileFullName))
             {
@@ -95,13 +98,13 @@ namespace ContractParser
             return LoadFromStringArray(File.ReadAllLines(fileFullName));
         }
 
-        private static Contract[] LoadFromStringArray(string[] cfgData)
+        private static Contract[]? LoadFromStringArray(string[]? cfgData)
         {
             if (cfgData == null)
             {
                 return null;
             }
-            List<string[]> list = PreFormatConfig(cfgData);
+            List<string[]>? list = PreFormatConfig(cfgData);
             if (list != null && list.Count != 0)
             {
                 Contract[] cc = ContractHandler.FindContractsInCfg(list);
@@ -110,7 +113,7 @@ namespace ContractParser
             return null;
         }
 
-        private static List<string[]> PreFormatConfig(string[] cfgData)
+        private static List<string[]>? PreFormatConfig(string[]? cfgData)
         {
             if (cfgData != null && cfgData.Length >= 1)
             {
