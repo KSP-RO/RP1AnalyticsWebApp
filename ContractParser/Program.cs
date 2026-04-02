@@ -33,7 +33,10 @@ namespace ContractParser
                 outputPath = Console.ReadLine();
             }
 
-            while (ContractHandler.Count == 0 && !LoadAllFiles(inputPath))
+            string existingJsonPath = Path.Combine(Path.GetFullPath(outputPath), $"{outputFileName}.json");
+            ContractHandler.LoadExistingJson(existingJsonPath);
+
+            while (!LoadAllFiles(inputPath))
             {
                 Console.WriteLine("ERROR: No configs found in folder");
                 Console.Write("Enter the path of the folder containing your contracts: ");

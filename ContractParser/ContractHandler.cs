@@ -36,6 +36,34 @@ namespace ContractParser
             return Add(new Contract(name, title));
         }
 
+        public static void LoadExistingJson(string filePath)
+        {
+            if (!System.IO.File.Exists(filePath))
+            {
+                Console.WriteLine($"Existing JSON file not found at '{filePath}', starting fresh.");
+                return;
+            }
+
+            try
+            {
+                string json = System.IO.File.ReadAllText(filePath);
+                var existing = JsonConvert.DeserializeObject<List<Contract>>(json);
+                if (existing != null)
+                {
+                    foreach (var c in existing)
+                    {
+                        if (!string.IsNullOrWhiteSpace(c.Name))
+                            Contracts[c.Name] = c;
+                    }
+                    Console.WriteLine($"Loaded {existing.Count} existing contracts from '{filePath}'.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to load existing JSON: {ex.Message}");
+            }
+        }
+
         public static string SerializeContracts()
         {
             var settings = new JsonSerializerSettings
