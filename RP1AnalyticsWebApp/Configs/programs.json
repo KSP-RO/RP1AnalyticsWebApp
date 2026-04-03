@@ -44,6 +44,22 @@
     "Title": "Advanced Commercial Applications"
   },
   {
+    "Name": "SkoposCommercialApplications0",
+    "Title": "Early Commercial Applications"
+  },
+  {
+    "Name": "SkoposCommercialApplications1",
+    "Title": "First Generation Commercial Applications"
+  },
+  {
+    "Name": "SkoposCommercialApplications2",
+    "Title": "Second Generation Commercial Applications"
+  },
+  {
+    "Name": "SkoposCommercialApplications3",
+    "Title": "Third Generation Commercial Applications"
+  },
+  {
     "Name": "EarlyLunarProbes",
     "Title": "Early Lunar Probes"
   },
@@ -74,6 +90,10 @@
   {
     "Name": "EarlyEarthSpaceStation",
     "Title": "Early Earth Space Stations"
+  },
+  {
+    "Name": "EarlyLunarHabitation",
+    "Title": "Early Lunar Habitation"
   },
   {
     "Name": "MarsSurfaceExp",
