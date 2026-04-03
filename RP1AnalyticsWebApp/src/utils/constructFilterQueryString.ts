@@ -25,8 +25,8 @@ export function constructFilterQueryString(filters: Filters | null, omitSeparato
         const mults = [1000000, 1000, 1];
 
         if (filters.rp1verOp === 'eq' && split.length === 2) {
-            const num1 = parseInt(split[0]);
-            const num2 = parseInt(split[1]);
+            const num1 = Number.parseInt(split[0]);
+            const num2 = Number.parseInt(split[1]);
             const verLowerBound = num1 * mults[0] + num2 * mults[1];
             const verUpperBound = num1 * mults[0] + (num2 + 1) * mults[1];
 
@@ -36,8 +36,8 @@ export function constructFilterQueryString(filters: Filters | null, omitSeparato
             let sortableVer = 0;
             for (let i = 0; i < 3; i++) {
                 if (i >= split.length) break;
-                const num = parseInt(split[i]);
-                if (!isNaN(num)) {
+                const num = Number.parseInt(split[i]);
+                if (!Number.isNaN(num)) {
                     sortableVer += num * mults[i];
                 }
             }

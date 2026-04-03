@@ -17,7 +17,7 @@ public class CsvWriter : ODataWriter
     private ODataItemWrapper _topLevelItem = null;
     private Stack<ODataItemWrapper> _itemsStack = new Stack<ODataItemWrapper>();
 
-    private CsvOutputContext _context;
+    private readonly CsvOutputContext _context;
 
     public CsvWriter(CsvOutputContext context, IEdmStructuredType structuredType)
     {

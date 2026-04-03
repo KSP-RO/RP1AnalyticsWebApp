@@ -11,7 +11,7 @@
         <tbody>
             <tr v-for="r in items">
                 <td>
-                    <a role="button" class="modal-trigger" @click="contractClicked(r)">{{r.contractDisplayName}}</a>
+                    <a role="button" class="modal-trigger" tabindex="0" @click="contractClicked(r)" @keydown.enter="contractClicked(r)">{{r.contractDisplayName}}</a>
                 </td>
                 <td class="date-col">{{formatDate(r.date)}}</td>
                 <td>{{r.userPreferredName}}</td>

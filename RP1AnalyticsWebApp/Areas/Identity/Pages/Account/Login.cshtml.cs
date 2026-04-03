@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using RP1AnalyticsWebApp.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,17 +13,11 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<WebAppUser> _userManager;
         private readonly SignInManager<WebAppUser> _signInManager;
-        private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<WebAppUser> signInManager, 
-            ILogger<LoginModel> logger,
-            UserManager<WebAppUser> userManager)
+        public LoginModel(SignInManager<WebAppUser> signInManager)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
         }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }

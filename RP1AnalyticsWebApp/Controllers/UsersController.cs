@@ -1,5 +1,4 @@
-﻿using Microsoft.ApplicationInsights;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RP1AnalyticsWebApp.Models;
 using System.Collections.Generic;
@@ -11,13 +10,11 @@ namespace RP1AnalyticsWebApp.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly TelemetryClient _telemetry;
         private readonly UserManager<WebAppUser> _userManager;
 
-        public UsersController(UserManager<WebAppUser> userManager, TelemetryClient telemetry)
+        public UsersController(UserManager<WebAppUser> userManager)
         {
             _userManager = userManager;
-            _telemetry = telemetry;
         }
 
         [HttpGet(Name = "GetUsers")]

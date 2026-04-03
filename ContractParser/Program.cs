@@ -43,7 +43,7 @@ namespace ContractParser
                 inputPath = Console.ReadLine();
             }
 
-            string fullOutPath = Path.GetFullPath(outputPath ?? string.Empty);
+            string fullOutPath = Path.GetFullPath(outputPath!);
 
             if (!string.IsNullOrEmpty(fullOutPath))
             {

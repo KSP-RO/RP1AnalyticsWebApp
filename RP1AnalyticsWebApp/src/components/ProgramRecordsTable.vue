@@ -11,7 +11,7 @@
         <tbody>
             <tr v-for="r in items">
                 <td>
-                    <a role="button" class="modal-trigger" @click="programClicked(r)">{{r.programDisplayName}}</a>
+                    <a role="button" class="modal-trigger" tabindex="0" @click="programClicked(r)" @keydown.enter="programClicked(r)">{{r.programDisplayName}}</a>
                 </td>
                 <td class="date-col">{{formatDate(r.date)}}</td>
                 <td>{{r.userPreferredName}}</td>

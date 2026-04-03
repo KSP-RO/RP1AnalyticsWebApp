@@ -18,8 +18,8 @@ namespace RP1AnalyticsWebApp.OData
 
         public TextWriter Writer { get; private set; }
 
-        public override Task<ODataWriter> CreateODataResourceSetWriterAsync(IEdmEntitySetBase entitySet, IEdmStructuredType resourceType)
-            => Task.FromResult<ODataWriter>(new CsvWriter(this, resourceType));
+        public override Task<ODataWriter> CreateODataResourceSetWriterAsync(IEdmEntitySetBase entitySet, IEdmStructuredType entityType)
+            => Task.FromResult<ODataWriter>(new CsvWriter(this, entityType));
 
         public override Task<ODataWriter> CreateODataResourceWriterAsync(IEdmNavigationSource navigationSource, IEdmStructuredType resourceType)
             => Task.FromResult<ODataWriter>(new CsvWriter(this, resourceType));

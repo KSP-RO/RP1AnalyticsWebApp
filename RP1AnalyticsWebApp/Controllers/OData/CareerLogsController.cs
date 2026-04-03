@@ -1,5 +1,4 @@
-﻿using Microsoft.ApplicationInsights;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
@@ -17,14 +16,12 @@ namespace RP1AnalyticsWebApp.Controllers.OData
     public class CareerLogsController : ControllerBase
     {
         private readonly CareerLogService _careerLogService;
-        private readonly TelemetryClient _telemetry;
 
         private bool IsLocalhost => string.Equals(HttpContext.Request.Host.Host, "localhost", System.StringComparison.OrdinalIgnoreCase);
 
-        public CareerLogsController(CareerLogService careerLogService, TelemetryClient telemetry)
+        public CareerLogsController(CareerLogService careerLogService)
         {
             _careerLogService = careerLogService;
-            _telemetry = telemetry;
         }
 
         //[EnableQuery(AllowedQueryOptions = AllowedQueryOptions.Filter)]

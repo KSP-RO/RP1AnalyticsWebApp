@@ -6,11 +6,11 @@
                 <div class="columns">
                     <div class="column">
                         <div class="field">
-                            <label class="label">Player</label>
+                            <label class="label" for="filter-player">Player</label>
                             <div class="control has-icons-left">
                                 <div class="select is-rounded">
                                     <span class="select">
-                                        <select class="browser-default" v-model="localFilters.player">
+                                        <select id="filter-player" class="browser-default" v-model="localFilters.player">
                                             <option v-for="p in players" :value="p.userName">
                                                 {{ p.preferredName ? p.preferredName : p.userName }}
                                             </option>
@@ -26,7 +26,7 @@
                 </div>
                 <div class="columns">
                     <div class="column">
-                        <label class="label">Ingame date</label>
+                        <label class="label" for="filter-ingame-date">Ingame date</label>
                         <div class="field has-addons">
                             <p class="control">
                                 <span class="select">
@@ -37,14 +37,14 @@
                                 </span>
                             </p>
                             <p class="control">
-                                <input class="input" type="date" v-model="localFilters.ingameDate" />
+                                <input id="filter-ingame-date" class="input" type="date" v-model="localFilters.ingameDate" />
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="columns">
                     <div class="column">
-                        <label class="label">Last update</label>
+                        <label class="label" for="filter-last-update">Last update</label>
                         <div class="field has-addons">
                             <p class="control">
                                 <span class="select">
@@ -55,14 +55,14 @@
                                 </span>
                             </p>
                             <p class="control">
-                                <input class="input" type="date" v-model="localFilters.lastUpdate" />
+                                <input id="filter-last-update" class="input" type="date" v-model="localFilters.lastUpdate" />
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="columns">
                     <div class="column">
-                        <label class="label">RP-1 version</label>
+                        <label class="label" for="filter-rp1ver">RP-1 version</label>
                         <div class="field has-addons">
                             <p class="control">
                                 <span class="select">
@@ -74,7 +74,7 @@
                                 </span>
                             </p>
                             <p class="control">
-                                <input class="input" type="text" v-model="localFilters.rp1ver" />
+                                <input id="filter-rp1ver" class="input" type="text" v-model="localFilters.rp1ver" />
                             </p>
                         </div>
                     </div>
@@ -82,10 +82,10 @@
                 <div class="columns">
                     <div class="column">
                         <div class="field">
-                            <label class="label">Difficulty</label>
+                            <label class="label" for="filter-difficulty">Difficulty</label>
                             <div class="control">
                                 <span class="select">
-                                    <select v-model="localFilters.difficulty">
+                                    <select id="filter-difficulty" v-model="localFilters.difficulty">
                                         <option value="">Any</option>
                                         <option value="Easy">Easy</option>
                                         <option value="Normal">Normal</option>
@@ -100,10 +100,10 @@
                 <div class="columns">
                     <div class="column">
                         <div class="field">
-                            <label class="label">Playstyle</label>
+                            <label class="label" for="filter-playstyle">Playstyle</label>
                             <div class="control">
                                 <span class="select">
-                                    <select v-model="localFilters.playstyle">
+                                    <select id="filter-playstyle" v-model="localFilters.playstyle">
                                         <option value="">Any</option>
                                         <option value="Normal">Normal</option>
                                         <option value="Historic">Historic</option>
@@ -117,10 +117,10 @@
                 <div class="columns">
                     <div class="column">
                         <div class="field">
-                            <label class="label">Race</label>
+                            <label class="label" for="filter-race">Race</label>
                             <div class="control">
                                 <span class="select">
-                                    <select v-model="localFilters.race">
+                                    <select id="filter-race" v-model="localFilters.race">
                                         <option value=""></option>
                                         <option v-for="r in races" :value="r">
                                             {{ r }}

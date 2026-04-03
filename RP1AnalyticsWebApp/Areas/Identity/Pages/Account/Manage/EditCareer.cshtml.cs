@@ -15,16 +15,13 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
         public string Username { get; set; }
         [BindProperty] public IndexModel.CareerInputModel Input { get; set; }
         private readonly UserManager<WebAppUser> _userManager;
-        private readonly SignInManager<WebAppUser> _signInManager;
         private readonly CareerLogService _careerLogService;
 
         public CareerLog CareerLog { get; private set; }
 
-        public EditCareerModel(UserManager<WebAppUser> userManager, SignInManager<WebAppUser> signInManager,
-            CareerLogService careerLogService)
+        public EditCareerModel(UserManager<WebAppUser> userManager, CareerLogService careerLogService)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _careerLogService = careerLogService;
             Input = new IndexModel.CareerInputModel();
         }
