@@ -3,58 +3,59 @@ import type { Filters } from 'types';
 export function constructFilterQueryString(filters: Filters | null, omitSeparator: boolean) {
     if (filters == null) return '';
 
-    const arr = [];
-    if (filters.player) {
-        arr.push(`UserLogin eq '${filters.player}'`);
-    }
+    const arr: string[] = [];
+    const playerFilter = stringOrFilter('UserLogin', filters.players);
+    if (playerFilter) arr.push(playerFilter);
 
-    if (filters.race) {
-        arr.push(`Race eq '${filters.race}'`);
-    }
+    const raceFilter = stringOrFilter('Race', filters.races);
+    if (raceFilter) arr.push(raceFilter);
 
-    if (filters.ingameDateOp && filters.ingameDate && filters.ingameDate !== '1951-01-01') {
-        arr.push(`EndDate ${filters.ingameDateOp} ${filters.ingameDate}T00:00:00.00Z`);
-    }
+    const careerDateFilter = dateModeFilter('EndDate', filters.careerDateMode, filters.careerDateStart, filters.careerDateEnd);
+    if (careerDateFilter) arr.push(careerDateFilter);
 
-    if (filters.lastUpdateOp && filters.lastUpdate) {
-        arr.push(`LastUpdate ${filters.lastUpdateOp} ${filters.lastUpdate}T00:00:00.00Z`);
-    }
+    const lastUpdateFilter = dateModeFilter('LastUpdate', filters.lastUpdateMode, filters.lastUpdateStart, filters.lastUpdateEnd);
+    if (lastUpdateFilter) arr.push(lastUpdateFilter);
 
-    if (filters.rp1verOp && filters.rp1ver) {
-        const split = filters.rp1ver.split('.');
-        const mults = [1000000, 1000, 1];
+    const versionFilter = stringOrFilter('CareerLogMeta/VersionTag', filters.rp1Versions);
+    if (versionFilter) arr.push(versionFilter);
 
-        if (filters.rp1verOp === 'eq' && split.length === 2) {
-            const num1 = Number.parseInt(split[0]);
-            const num2 = Number.parseInt(split[1]);
-            const verLowerBound = num1 * mults[0] + num2 * mults[1];
-            const verUpperBound = num1 * mults[0] + (num2 + 1) * mults[1];
+    const difficultyFilter = stringOrFilter('CareerLogMeta/DifficultyLevel', filters.difficulties);
+    if (difficultyFilter) arr.push(difficultyFilter);
 
-            arr.push(`CareerLogMeta/VersionSort ge ${verLowerBound} and CareerLogMeta/VersionSort lt ${verUpperBound}`);
-        }
-        else {
-            let sortableVer = 0;
-            for (let i = 0; i < 3; i++) {
-                if (i >= split.length) break;
-                const num = Number.parseInt(split[i]);
-                if (!Number.isNaN(num)) {
-                    sortableVer += num * mults[i];
-                }
-            }
+    const playstyleFilter = stringOrFilter('CareerLogMeta/CareerPlaystyle', filters.playstyles);
+    if (playstyleFilter) arr.push(playstyleFilter);
 
-            arr.push(`CareerLogMeta/VersionSort ${filters.rp1verOp} ${sortableVer}`);
-        }
-    }
-
-    if (filters.difficulty) {
-        arr.push(`CareerLogMeta/DifficultyLevel eq '${filters.difficulty}'`);
-    }
-
-    if (filters.playstyle) {
-        arr.push(`CareerLogMeta/CareerPlaystyle eq '${filters.playstyle}'`);
+    if (filters.recordEligibility !== 'All') {
+        arr.push(`EligibleForRecords eq ${filters.recordEligibility === 'Eligible' ? 'true' : 'false'}`);
     }
 
     if (arr.length === 0) return '';
 
     return `${omitSeparator ? '' : '?'}$filter=${arr.join(' and ')}`;
+}
+
+function stringOrFilter(property: string, values: string[]) {
+    const clean = values.map(escapeValue).filter(Boolean);
+    if (clean.length === 0) return '';
+    return clean.length === 1
+        ? `${property} eq '${clean[0]}'`
+        : `(${clean.map(value => `${property} eq '${value}'`).join(' or ')})`;
+}
+
+function dateModeFilter(property: string, mode: Filters['careerDateMode'], start: string | null, end: string | null) {
+    if (mode === 'All') return '';
+    if (mode === 'Before' && end) return `${property} le ${end}T00:00:00.00Z`;
+    if (mode === 'After' && start) return `${property} ge ${start}T00:00:00.00Z`;
+    if (mode === 'Range') {
+        const parts = [];
+        if (start) parts.push(`${property} ge ${start}T00:00:00.00Z`);
+        if (end) parts.push(`${property} le ${end}T00:00:00.00Z`);
+        return parts.join(' and ');
+    }
+
+    return '';
+}
+
+function escapeValue(value: string) {
+    return value.trim().replace(/'/g, "''");
 }

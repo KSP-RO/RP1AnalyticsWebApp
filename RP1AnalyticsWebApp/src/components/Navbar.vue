@@ -14,7 +14,7 @@
     // the in-DOM template entirely, silently discarding all reactive state.
 
     import { defineComponent, ref, computed, onMounted } from 'vue';
-    import { activeFilters } from '../utils/activeFilters';
+    import { activeFilters, normalizeFilters } from '../utils/activeFilters';
     import type { Filters } from 'types';
 
     export default defineComponent({
@@ -23,13 +23,14 @@
             const filters = activeFilters;
 
             const hasActiveFilters = computed(() =>
-                filters.player != null ||
-                filters.race != null ||
-                (filters.ingameDateOp != null && filters.ingameDate != null && filters.ingameDate !== '1951-01-01') ||
-                (filters.lastUpdateOp != null && filters.lastUpdate != null) ||
-                (filters.rp1verOp != null && filters.rp1ver != null) ||
-                filters.difficulty != null ||
-                filters.playstyle != null
+                filters.players.length > 0 ||
+                filters.races.length > 0 ||
+                filters.rp1Versions.length > 0 ||
+                filters.difficulties.length > 0 ||
+                filters.playstyles.length > 0 ||
+                filters.recordEligibility !== 'All' ||
+                filters.careerDateMode !== 'All' ||
+                filters.lastUpdateMode !== 'All'
             );
 
             function toggleFilters() {
@@ -37,16 +38,7 @@
             }
 
             function applyFilters(newFilters: Filters) {
-                filters.player = newFilters.player;
-                filters.race = newFilters.race;
-                filters.ingameDateOp = newFilters.ingameDateOp;
-                filters.ingameDate = newFilters.ingameDate;
-                filters.lastUpdateOp = newFilters.lastUpdateOp;
-                filters.lastUpdate = newFilters.lastUpdate;
-                filters.rp1verOp = newFilters.rp1verOp;
-                filters.rp1ver = newFilters.rp1ver;
-                filters.difficulty = newFilters.difficulty;
-                filters.playstyle = newFilters.playstyle;
+                Object.assign(filters, normalizeFilters(newFilters));
 
                 localStorage.setItem('filters', JSON.stringify(filters));
             }

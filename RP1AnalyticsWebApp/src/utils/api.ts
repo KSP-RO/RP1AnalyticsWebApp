@@ -1,4 +1,4 @@
-import { BaseContractEvent, CareerListItem, CareerLog, ContractEventWithCareerInfo, ContractRecord, FacilityEvent, Filters, LaunchEvent, LaunchMetadata, LC, ExtendedLeaderEvent, ProgramItem, ProgramRecord, TechUnlockItem, UserData } from "../types";
+import { BaseContractEvent, CareerComparison, CareerListItem, CareerLog, CareerOverviewSnapshot, ContractEventWithCareerInfo, ContractRecord, FacilityEvent, Filters, HistoricalBenchmark, LaunchEvent, LaunchMetadata, LC, ExtendedLeaderEvent, ProgramItem, ProgramRecord, RecordsSnapshot, TechUnlockItem, UserData } from "../types";
 import { constructFilterQueryString } from "./constructFilterQueryString";
 
 interface ODateResp {
@@ -28,6 +28,55 @@ export async function fetchCareerLogList(): Promise<CareerListItem[]> {
 
 export async function fetchCareerLog(careerId: string): Promise<CareerLog> {
     return await get<CareerLog>(`/api/careerlogs/${careerId}`);
+}
+
+export async function fetchCareerOverview(filters: Filters): Promise<CareerOverviewSnapshot> {
+    const params = filtersToParams(filters);
+    const query = params.toString();
+    return await get<CareerOverviewSnapshot>(`/api/careerlogs/overview${query ? `?${query}` : ''}`);
+}
+
+export async function fetchCareerComparison(
+    careerId: string,
+    filters: Filters): Promise<CareerComparison> {
+    const params = filtersToParams(filters);
+    return await get<CareerComparison>(`/api/careerlogs/${careerId}/comparison?${params.toString()}`);
+}
+
+export async function fetchHistoricalBenchmarks(): Promise<HistoricalBenchmark[]> {
+    return await get<HistoricalBenchmark[]>(`/api/benchmarks/historical`);
+}
+
+export async function fetchRecordsSnapshot(filters: Filters, mode = 'Completed'): Promise<RecordsSnapshot> {
+    const params = filtersToParams(filters);
+    params.set('programType', mode);
+    return await get<RecordsSnapshot>(`/api/records?${params.toString()}`);
+}
+
+function filtersToParams(filters: Filters) {
+    const params = new URLSearchParams();
+    appendMany(params, 'players', filters.players);
+    appendMany(params, 'races', filters.races);
+    appendMany(params, 'rp1Versions', filters.rp1Versions);
+    appendMany(params, 'difficulties', filters.difficulties);
+    appendMany(params, 'playstyles', filters.playstyles);
+    params.set('recordEligibility', filters.recordEligibility);
+
+    params.set('careerDateMode', filters.careerDateMode);
+    if (filters.careerDateStart) params.set('careerDateStart', filters.careerDateStart);
+    if (filters.careerDateEnd) params.set('careerDateEnd', filters.careerDateEnd);
+
+    params.set('lastUpdateMode', filters.lastUpdateMode);
+    if (filters.lastUpdateStart) params.set('lastUpdateStart', filters.lastUpdateStart);
+    if (filters.lastUpdateEnd) params.set('lastUpdateEnd', filters.lastUpdateEnd);
+
+    return params;
+}
+
+function appendMany(params: URLSearchParams, key: string, values: string[]) {
+    for (const value of values) {
+        if (value) params.append(key, value);
+    }
 }
 
 export async function assignCareerToRace(careerId: string, race: string): Promise<void> {

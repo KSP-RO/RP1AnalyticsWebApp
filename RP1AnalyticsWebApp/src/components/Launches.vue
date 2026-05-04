@@ -186,19 +186,17 @@
     function prettyPrintMET(launch: LaunchEventItem, failure: Failure) {
         const m1 = parseUtcDate(launch.date);
         const m2 = parseUtcDate(failure.date);
-        const d = m2.diff(m1).rescale();
+        const msDuration = m2.diff(m1);
+        let duration = msDuration.rescale();
 
-        const parts: string[] = [];
-        if (d.years)  parts.push(`${d.years}y`);
-        if (d.months) parts.push(`${d.months}mo`);
-        if (d.weeks)  parts.push(`${d.weeks}w`);
-        if (d.days)   parts.push(`${d.days}d`);
+        if (msDuration.milliseconds > 1000) {
+            duration = duration.set({ milliseconds: 0 });
+        }
 
-        const hh = String(Math.floor(d.hours)).padStart(2, '0');
-        const mm = String(Math.floor(d.minutes)).padStart(2, '0');
-        const ss = String(Math.floor(d.seconds)).padStart(2, '0');
-        parts.push(`${hh}:${mm}:${ss}`);
+        if (msDuration.milliseconds > 60 * 60 * 1000) {
+            duration = duration.set({ seconds: 0 });
+        }
 
-        return parts.join(' ');
+        return duration.rescale().toHuman({ unitDisplay: 'short' });
     }
 </script>

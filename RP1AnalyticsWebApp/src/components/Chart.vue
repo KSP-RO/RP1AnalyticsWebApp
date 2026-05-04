@@ -1,11 +1,95 @@
 <template>
-    <div id="chart" v-show="isVisible"></div>
+    <section class="chart-panel" v-show="isVisible">
+        <header class="chart-panel__header">
+            <div>
+                <p>Career history</p>
+                <h2>Operations Timeline</h2>
+            </div>
+            <span>{{ periodCountLabel }}</span>
+        </header>
+        <div id="chart" class="chart-plot"></div>
+    </section>
 </template>
 
-<style>
-    #chart {
-        margin: 10px 0 25px 0;
+<style scoped>
+    .chart-panel {
+        --chart-ink: #17212e;
+        --chart-muted: #65717f;
+        --chart-line: rgba(36, 48, 63, 0.14);
+        --chart-panel: rgba(255, 255, 255, 0.78);
+        --chart-accent: #1d8f8a;
+        border: 1px solid var(--chart-line);
+        border-radius: 8px;
+        margin: 1rem 0 2rem;
+        padding: 1rem;
+        background: var(--chart-panel);
+        color: var(--chart-ink);
+        box-shadow: 0 0.9rem 2rem rgba(12, 18, 26, 0.1);
+    }
+
+    .chart-panel__header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: end;
+        margin-bottom: 0.65rem;
+        border-bottom: 1px solid var(--chart-line);
+        padding-bottom: 0.85rem;
+    }
+
+    .chart-panel__header p,
+    .chart-panel__header h2 {
+        margin: 0;
+    }
+
+    .chart-panel__header p {
+        color: var(--chart-accent);
+        font-size: 0.72rem;
+        font-weight: 850;
+        text-transform: uppercase;
+    }
+
+    .chart-panel__header h2 {
+        margin-top: 0.15rem;
+        font-size: 1.15rem;
+        line-height: 1.1;
+    }
+
+    .chart-panel__header span {
+        color: var(--chart-muted);
+        font-size: 0.78rem;
+        font-weight: 750;
+        white-space: nowrap;
+    }
+
+    .chart-plot {
         height: max(min(calc(100vh * 0.875), 1500px), 600px);
+    }
+
+    @media (max-width: 700px) {
+        .chart-panel {
+            padding: 0.75rem;
+        }
+
+        .chart-panel__header {
+            display: block;
+        }
+
+        .chart-panel__header span {
+            display: block;
+            margin-top: 0.35rem;
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .chart-panel {
+            --chart-ink: #edf3fb;
+            --chart-muted: #a6b1bd;
+            --chart-line: rgba(255, 255, 255, 0.13);
+            --chart-panel: rgba(255, 255, 255, 0.045);
+            --chart-accent: #5ed0c9;
+            box-shadow: none;
+        }
     }
 </style>
 
@@ -47,6 +131,10 @@
     }>();
 
     const isVisible = computed(() => props.career != null && props.contractEvents != null && props.programs != null);
+    const periodCountLabel = computed(() => {
+        const count = props.career?.careerLogEntries?.length ?? 0;
+        return count === 1 ? '1 period' : `${new Intl.NumberFormat('en').format(count)} periods`;
+    });
 
     watch(isVisible, (newIsVisible) => {
         if (newIsVisible) {
