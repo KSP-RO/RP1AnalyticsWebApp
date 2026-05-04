@@ -33,9 +33,6 @@ namespace RP1AnalyticsWebApp.Models
             LCID = l.LCID;
             LCModID = l.LCModID;
             BuiltAt = l.BuiltAt == EditorFacility.None ? null : l.BuiltAt;
-            VesselMassTons = l.VesselMassTons;
-            PartCount = l.PartCount;
-            CrewCount = l.CrewCount;
         }
     }
 }
