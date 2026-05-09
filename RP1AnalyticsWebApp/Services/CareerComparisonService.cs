@@ -306,7 +306,11 @@ namespace RP1AnalyticsWebApp.Services
                 Metric("engineers", "Engineers", "Workforce", "count", target, cohort, c => Last(c)?.NumEngineers, true,
                     "Engineers at the latest uploaded period."),
                 Metric("researchers", "Researchers", "Workforce", "count", target, cohort, c => Last(c)?.NumResearchers, true,
-                    "Researchers at the latest uploaded period.")
+                    "Researchers at the latest uploaded period."),
+                Metric("engineerEfficiency", "Engineer efficiency", "Workforce", "percent", target, cohort, c => Last(c)?.EfficiencyEngineers * 100d, true,
+                    "Engineer efficiency at the latest uploaded period."),
+                Metric("confidence", "Confidence earned", "Reputation", "score", target, cohort, c => Last(c)?.Confidence, true,
+                    "Confidence at the latest uploaded period.")
             };
         }
 

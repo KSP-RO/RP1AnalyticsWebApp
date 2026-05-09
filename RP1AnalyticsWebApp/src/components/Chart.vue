@@ -136,13 +136,19 @@
         return count === 1 ? '1 period' : `${new Intl.NumberFormat('en').format(count)} periods`;
     });
 
+    function queueChartDraw() {
+        setTimeout(() => {
+            if (isVisible.value && props.career) {
+                drawChart(props.career);
+            }
+        }, 0);
+    }
+
     watch(isVisible, (newIsVisible) => {
         if (newIsVisible) {
-            setTimeout(() => {
-                drawChart(props.career!);
-            }, 0);
+            queueChartDraw();
         }
-    });
+    }, { immediate: true });
 
     onMounted(() => {
         document.addEventListener('keydown', event => {

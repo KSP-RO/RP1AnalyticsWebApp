@@ -15,13 +15,13 @@
         </div>
 
         <div class="metric-grid">
-            <article v-for="metric in headlineMetrics" :key="metric.key" class="metric-panel">
+            <article v-for="metric in summaryMetrics" :key="metric.key" class="metric-panel">
                 <div class="metric-panel__top">
                     <span>{{ metric.category }}</span>
                     <strong v-if="metric.rank">#{{ metric.rank }}</strong>
                 </div>
                 <h2>{{ formatMetric(metric) }}</h2>
-                <p>{{ metric.label }}</p>
+                <p>{{ metric.displayLabel }}</p>
                 <div class="metric-panel__range">
                     <span>Median {{ formatMetricValue(metric.cohortMedian, metric.unit) }}</span>
                     <span v-if="metric.percentile !== null">{{ metric.percentile }} percentile</span>
@@ -108,10 +108,38 @@
 
     const timelineLimit = ref(24);
 
-    const headlineMetrics = computed(() => {
+    const summaryMetrics = computed(() => {
         if (!props.comparison) return [];
-        const keys = ['milestones', 'programsCompleted', 'techUnlocks', 'launches', 'currentReputation', 'successRate'];
-        return keys.map(k => props.comparison!.metrics.find(m => m.key === k)).filter(Boolean) as MetricComparison[];
+
+        const keys = [
+            'milestones',
+            'programsCompleted',
+            'techUnlocks',
+            'launches',
+            'currentReputation',
+            'successRate',
+            'engineers',
+            'researchers',
+            'engineerEfficiency',
+            'confidence'
+        ] as const;
+
+        return keys
+            .map(key => {
+                const metric = props.comparison!.metrics.find(m => m.key === key);
+                if (!metric) return null;
+                return {
+                    ...metric,
+                    displayLabel: key === 'researchers'
+                        ? 'Scientists'
+                        : key === 'engineerEfficiency'
+                            ? 'Engineer Efficiency'
+                            : key === 'confidence'
+                                ? 'Confidence earned'
+                                : metric.label
+                };
+            })
+            .filter(Boolean) as Array<MetricComparison & { displayLabel: string }>;
     });
 
     const sortedTimeline = computed(() =>
@@ -331,7 +359,7 @@
 
     .metric-grid {
         display: grid;
-        grid-template-columns: repeat(6, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
         gap: 0.75rem;
         margin: 1rem 0;
     }
@@ -551,14 +579,9 @@
     }
 
     @media (max-width: 1100px) {
-        .metric-grid {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
         .comparison-layout {
             grid-template-columns: 1fr;
         }
-
     }
 
     @media (max-width: 720px) {
@@ -584,11 +607,6 @@
         .end-date-fields {
             justify-content: flex-start;
         }
-
-        .metric-grid {
-            grid-template-columns: 1fr;
-        }
-
         .timeline-limit-control {
             margin-top: 0.6rem;
         }
@@ -596,6 +614,12 @@
         .timeline-list li {
             grid-template-columns: 5.75rem 1.75rem minmax(0, 1fr);
             gap: 0.55rem;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .metric-grid {
+            grid-template-columns: 1fr;
         }
     }
 

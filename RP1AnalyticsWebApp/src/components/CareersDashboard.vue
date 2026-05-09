@@ -573,7 +573,7 @@
     }
 
     function careerUrl(careerId: string) {
-        return `/?careerId=${careerId}`;
+        return `/?careerId=${careerId}&tab=comparison`;
     }
 
     function uniqueStrings(values: string[]) {
