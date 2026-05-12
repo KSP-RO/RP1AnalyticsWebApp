@@ -621,61 +621,41 @@ namespace RP1AnalyticsWebApp.Services
 
             foreach (var lc in target.LCs ?? new List<LC>())
             {
-                if (lc.ConstrStarted.HasValue)
-                {
-                    events.Add(new InfrastructureChartEvent
-                    {
-                        Date = lc.ConstrStarted.Value,
-                        Type = "Launch Complex",
-                        Label = lc.Name,
-                        Detail = $"{lc.LcType}, {FormatMass(lc.MassMax)} t",
-                        MassTons = IsFiniteMass(lc.MassMax) ? lc.MassMax : null,
-                        Completed = false
-                    });
-                }
-
-                if (lc.ConstrEnded.HasValue)
-                {
-                    events.Add(new InfrastructureChartEvent
-                    {
-                        Date = lc.ConstrEnded.Value,
-                        Type = "Launch Complex",
-                        Label = lc.Name,
-                        Detail = $"{lc.State}, {FormatMass(lc.MassMax)} t",
-                        MassTons = IsFiniteMass(lc.MassMax) ? lc.MassMax : null,
-                        Completed = lc.State == LCState.Active
-                    });
-                }
+                AddInfrastructureEvent(events, lc.ConstrStarted, "Launch Complex", lc.Name,
+                    $"{lc.LcType}, {FormatMass(lc.MassMax)} t", false, lc.MassMax);
+                AddInfrastructureEvent(events, lc.ConstrEnded, "Launch Complex", lc.Name,
+                    $"{lc.State}, {FormatMass(lc.MassMax)} t", lc.State == LCState.Active, lc.MassMax);
             }
 
             foreach (var facility in target.FacilityConstructions ?? new List<FacilityConstruction>())
             {
-                if (facility.Started.HasValue)
-                {
-                    events.Add(new InfrastructureChartEvent
-                    {
-                        Date = facility.Started.Value,
-                        Type = "Facility",
-                        Label = FormatFacilityName(facility.Facility),
-                        Detail = $"Level {facility.NewLevel + 1} started",
-                        Completed = false
-                    });
-                }
-
-                if (facility.Ended.HasValue)
-                {
-                    events.Add(new InfrastructureChartEvent
-                    {
-                        Date = facility.Ended.Value,
-                        Type = "Facility",
-                        Label = FormatFacilityName(facility.Facility),
-                        Detail = $"Level {facility.NewLevel + 1}, {facility.State}",
-                        Completed = facility.State == FacilityConstructionState.Completed
-                    });
-                }
+                string label = FormatFacilityName(facility.Facility);
+                AddInfrastructureEvent(events, facility.Started, "Facility", label,
+                    $"Level {facility.NewLevel + 1} started", false);
+                AddInfrastructureEvent(events, facility.Ended, "Facility", label,
+                    $"Level {facility.NewLevel + 1}, {facility.State}", facility.State == FacilityConstructionState.Completed);
             }
 
             return events.OrderBy(e => e.Date).ToList();
+        }
+
+        private static void AddInfrastructureEvent(List<InfrastructureChartEvent> events, DateTime? date,
+            string type, string label, string detail, bool completed, float? massTons = null)
+        {
+            if (!date.HasValue)
+            {
+                return;
+            }
+
+            events.Add(new InfrastructureChartEvent
+            {
+                Date = date.Value,
+                Type = type,
+                Label = label,
+                Detail = detail,
+                MassTons = massTons.HasValue && IsFiniteMass(massTons.Value) ? massTons.Value : null,
+                Completed = completed
+            });
         }
 
         private List<CareerTimelineEvent> CreateTimeline(CareerLog career)
@@ -684,146 +664,87 @@ namespace RP1AnalyticsWebApp.Services
 
             foreach (var launch in career.LaunchEventEntries ?? new List<LaunchEvent>())
             {
-                events.Add(new CareerTimelineEvent
-                {
-                    Date = launch.Date,
-                    Type = "Launch",
-                    Key = launch.LaunchID,
-                    Title = launch.VesselName,
-                    Detail = launch.BuiltAt?.ToString(),
-                    Outcome = launch.Metadata?.Success == true ? "Success" : launch.Metadata?.Success == false ? "Failure" :
-                        launch.Failures?.Count > 0 ? "Had failures" : null
-                });
+                AddTimelineEvent(events, launch.Date, "Launch", launch.LaunchID, launch.VesselName,
+                    launch.BuiltAt?.ToString(), GetLaunchOutcome(launch));
             }
 
             foreach (var contract in career.ContractEventEntries ?? new List<ContractEvent>())
             {
-                events.Add(new CareerTimelineEvent
-                {
-                    Date = contract.Date,
-                    Type = "Contract",
-                    Key = contract.InternalName,
-                    Title = ResolveContractName(contract),
-                    Outcome = contract.Type.ToString()
-                });
+                AddTimelineEvent(events, contract.Date, "Contract", contract.InternalName, ResolveContractName(contract),
+                    outcome: contract.Type.ToString());
             }
 
             foreach (var program in career.Programs ?? new List<RP1AnalyticsWebApp.Models.Program>())
             {
-                events.Add(new CareerTimelineEvent
-                {
-                    Date = program.Accepted,
-                    Type = "Program",
-                    Key = program.Name,
-                    Title = ResolveProgramName(program.Name),
-                    Outcome = "Accepted"
-                });
-                if (program.Completed.HasValue)
-                {
-                    events.Add(new CareerTimelineEvent
-                    {
-                        Date = program.Completed.Value,
-                        Type = "Program",
-                        Key = program.Name,
-                        Title = ResolveProgramName(program.Name),
-                        Outcome = "Completed"
-                    });
-                }
+                string title = ResolveProgramName(program.Name);
+                AddTimelineEvent(events, program.Accepted, "Program", program.Name, title, outcome: "Accepted");
+                AddTimelineEvent(events, program.Completed, "Program", program.Name, title, outcome: "Completed");
             }
 
             foreach (var tech in career.TechEventEntries ?? new List<TechResearchEvent>())
             {
-                events.Add(new CareerTimelineEvent
-                {
-                    Date = tech.Date,
-                    Type = "Research",
-                    Key = tech.NodeName,
-                    Title = ResolveTechNodeName(tech.NodeName),
-                    Detail = $"Rate {tech.ResearchRate:N2}, year multiplier {tech.YearMult:N2}",
-                    Outcome = "Unlocked"
-                });
+                AddTimelineEvent(events, tech.Date, "Research", tech.NodeName, ResolveTechNodeName(tech.NodeName),
+                    $"Rate {tech.ResearchRate:N2}, year multiplier {tech.YearMult:N2}", "Unlocked");
             }
 
             foreach (var lc in career.LCs ?? new List<LC>())
             {
-                if (lc.ConstrStarted.HasValue)
-                {
-                    events.Add(new CareerTimelineEvent
-                    {
-                        Date = lc.ConstrStarted.Value,
-                        Type = "Infrastructure",
-                        Key = lc.ModId.ToString(),
-                        Title = lc.Name,
-                        Detail = $"{lc.LcType}, {FormatMass(lc.MassMax)} t",
-                        Outcome = "Started"
-                    });
-                }
-                if (lc.ConstrEnded.HasValue)
-                {
-                    events.Add(new CareerTimelineEvent
-                    {
-                        Date = lc.ConstrEnded.Value,
-                        Type = "Infrastructure",
-                        Key = lc.ModId.ToString(),
-                        Title = lc.Name,
-                        Detail = $"{lc.LcType}, {FormatMass(lc.MassMax)} t",
-                        Outcome = lc.State.ToString()
-                    });
-                }
+                string key = lc.ModId.ToString();
+                string detail = $"{lc.LcType}, {FormatMass(lc.MassMax)} t";
+                AddTimelineEvent(events, lc.ConstrStarted, "Infrastructure", key, lc.Name, detail, "Started");
+                AddTimelineEvent(events, lc.ConstrEnded, "Infrastructure", key, lc.Name, detail, lc.State.ToString());
             }
 
             foreach (var facility in career.FacilityConstructions ?? new List<FacilityConstruction>())
             {
-                if (facility.Started.HasValue)
-                {
-                    events.Add(new CareerTimelineEvent
-                    {
-                        Date = facility.Started.Value,
-                        Type = "Infrastructure",
-                        Key = facility.Id.ToString(),
-                        Title = FormatFacilityName(facility.Facility),
-                        Detail = $"Level {facility.NewLevel + 1}",
-                        Outcome = "Started"
-                    });
-                }
-                if (facility.Ended.HasValue)
-                {
-                    events.Add(new CareerTimelineEvent
-                    {
-                        Date = facility.Ended.Value,
-                        Type = "Infrastructure",
-                        Key = facility.Id.ToString(),
-                        Title = FormatFacilityName(facility.Facility),
-                        Detail = $"Level {facility.NewLevel + 1}",
-                        Outcome = facility.State.ToString()
-                    });
-                }
+                string key = facility.Id.ToString();
+                string title = FormatFacilityName(facility.Facility);
+                string detail = $"Level {facility.NewLevel + 1}";
+                AddTimelineEvent(events, facility.Started, "Infrastructure", key, title, detail, "Started");
+                AddTimelineEvent(events, facility.Ended, "Infrastructure", key, title, detail, facility.State.ToString());
             }
 
             foreach (var leader in career.Leaders ?? new List<Leader>())
             {
-                events.Add(new CareerTimelineEvent
-                {
-                    Date = leader.DateAdd,
-                    Type = "Leader",
-                    Key = leader.Name,
-                    Title = leader.Name,
-                    Outcome = "Added"
-                });
-                if (leader.DateRemove.HasValue)
-                {
-                    events.Add(new CareerTimelineEvent
-                    {
-                        Date = leader.DateRemove.Value,
-                        Type = "Leader",
-                        Key = leader.Name,
-                        Title = leader.Name,
-                        Outcome = "Removed"
-                    });
-                }
+                AddTimelineEvent(events, leader.DateAdd, "Leader", leader.Name, leader.Name, outcome: "Added");
+                AddTimelineEvent(events, leader.DateRemove, "Leader", leader.Name, leader.Name, outcome: "Removed");
             }
 
             return events;
+        }
+
+        private static void AddTimelineEvent(List<CareerTimelineEvent> events, DateTime? date, string type, string key,
+            string title, string detail = null, string outcome = null)
+        {
+            if (!date.HasValue)
+            {
+                return;
+            }
+
+            events.Add(new CareerTimelineEvent
+            {
+                Date = date.Value,
+                Type = type,
+                Key = key,
+                Title = title,
+                Detail = detail,
+                Outcome = outcome
+            });
+        }
+
+        private static string GetLaunchOutcome(LaunchEvent launch)
+        {
+            if (launch.Metadata?.Success == true)
+            {
+                return "Success";
+            }
+
+            if (launch.Metadata?.Success == false)
+            {
+                return "Failure";
+            }
+
+            return launch.Failures?.Count > 0 ? "Had failures" : null;
         }
 
         private static List<CareerLog> ApplyGlobalFilters(List<CareerLog> careers, List<string> players, List<string> races,
