@@ -21,6 +21,8 @@ async function patch(url: string, obj: any): Promise<void> {
     });
 }
 
+const careerOverviewRequests = new Map<string, Promise<CareerOverviewSnapshot>>();
+const careerComparisonRequests = new Map<string, Promise<CareerComparison>>();
 
 export async function fetchCareerLogList(): Promise<CareerListItem[]> {
     return await get<CareerListItem[]>(`/api/careerLogs/list`);
@@ -33,14 +35,34 @@ export async function fetchCareerLog(careerId: string): Promise<CareerLog> {
 export async function fetchCareerOverview(filters: Filters): Promise<CareerOverviewSnapshot> {
     const params = filtersToParams(filters);
     const query = params.toString();
-    return await get<CareerOverviewSnapshot>(`/api/careerlogs/overview${query ? `?${query}` : ''}`);
+    const url = `/api/careerlogs/overview${query ? `?${query}` : ''}`;
+    const existingRequest = careerOverviewRequests.get(url);
+    if (existingRequest) {
+        return await existingRequest;
+    }
+
+    const request = get<CareerOverviewSnapshot>(url).finally(() => {
+        careerOverviewRequests.delete(url);
+    });
+    careerOverviewRequests.set(url, request);
+    return await request;
 }
 
 export async function fetchCareerComparison(
     careerId: string,
     filters: Filters): Promise<CareerComparison> {
     const params = filtersToParams(filters);
-    return await get<CareerComparison>(`/api/careerlogs/${careerId}/comparison?${params.toString()}`);
+    const url = `/api/careerlogs/${careerId}/comparison?${params.toString()}`;
+    const existingRequest = careerComparisonRequests.get(url);
+    if (existingRequest) {
+        return await existingRequest;
+    }
+
+    const request = get<CareerComparison>(url).finally(() => {
+        careerComparisonRequests.delete(url);
+    });
+    careerComparisonRequests.set(url, request);
+    return await request;
 }
 
 export async function fetchHistoricalBenchmarks(): Promise<HistoricalBenchmark[]> {
