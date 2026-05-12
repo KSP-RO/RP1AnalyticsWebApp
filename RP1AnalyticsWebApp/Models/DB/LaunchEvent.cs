@@ -10,8 +10,13 @@ namespace RP1AnalyticsWebApp.Models
         public string VesselName { get; set; }
         public string VesselUID { get; set; }
         public string LaunchID { get; set; }
+        public string LCID { get; set; }
+        public string LCModID { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public EditorFacility? BuiltAt { get; set; }
+        public double? VesselMassTons { get; set; }
+        public int? PartCount { get; set; }
+        public int? CrewCount { get; set; }
         public List<FailureEvent> Failures { get; set; }
         public LaunchMeta Metadata { get; set; }
 
@@ -25,6 +30,8 @@ namespace RP1AnalyticsWebApp.Models
             VesselName = l.VesselName;
             VesselUID = l.VesselUID;
             LaunchID = l.LaunchID;
+            LCID = l.LCID;
+            LCModID = l.LCModID;
             BuiltAt = l.BuiltAt == EditorFacility.None ? null : l.BuiltAt;
         }
     }

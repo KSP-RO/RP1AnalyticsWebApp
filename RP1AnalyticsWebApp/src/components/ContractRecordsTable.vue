@@ -3,6 +3,7 @@
         <thead>
             <tr>
                 <th>Contract Name</th>
+                <th>Rank</th>
                 <th>Completion Date</th>
                 <th>User</th>
                 <th>Career</th>
@@ -13,6 +14,7 @@
                 <td>
                     <a role="button" class="modal-trigger" tabindex="0" @click="contractClicked(r)" @keydown.enter="contractClicked(r)">{{r.contractDisplayName}}</a>
                 </td>
+                <td>{{formatRank(r.rank, r.cohortSize)}}</td>
                 <td class="date-col">{{formatDate(r.date)}}</td>
                 <td>{{r.userPreferredName}}</td>
                 <td>
@@ -63,6 +65,11 @@
 
     function formatDate(date: string) {
         return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
+    }
+
+    function formatRank(rank?: number, cohortSize?: number) {
+        if (!rank || !cohortSize) return '';
+        return `${rank} / ${cohortSize}`;
     }
 
     watch(() => props.filters, () => {

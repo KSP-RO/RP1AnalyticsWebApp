@@ -1,0 +1,416 @@
+[
+  {
+    "key": "XPlanesSupersonicMach2",
+    "kind": "Contract",
+    "title": "Douglas D-558-II Skyrocket, first Mach 2 flight",
+    "date": "1953-11-20T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.nasa.gov/aeronautics/d-558-ii-transonic-aircraft/",
+    "note": "Mapped to RP-1's X-Planes Mach 2 milestone; earlier sound-barrier milestones are intentionally omitted because they predate 1951."
+  },
+  {
+    "key": "FirstSatellite",
+    "kind": "Contract",
+    "title": "Sputnik 1, first artificial satellite",
+    "date": "1957-10-04T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1957-001B",
+    "note": "Mapped to RP-1's first satellite milestone."
+  },
+  {
+    "key": "FirstSatellite-Heavy",
+    "kind": "Contract",
+    "title": "Sputnik 1, first artificial satellite",
+    "date": "1957-10-04T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1957-001B",
+    "note": "Mapped to RP-1's First Artificial Satellite (30 kg) heavy milestone."
+  },
+  {
+    "key": "FirstBioSat-Heavy",
+    "kind": "Contract",
+    "title": "Sputnik 2, first biological satellite",
+    "date": "1957-11-03T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1957-002A",
+    "note": "Mapped to RP-1's First Biological Satellite (400 kg) heavy milestone."
+  },
+  {
+    "key": "FirstScienceSat",
+    "kind": "Contract",
+    "title": "Explorer 1, early scientific satellite",
+    "date": "1958-02-01T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/mission/explorer-1",
+    "note": "Approximate mapping for early science satellite progression."
+  },
+  {
+    "key": "FirstSolarSat",
+    "kind": "Contract",
+    "title": "Vanguard 1, first solar-powered satellite",
+    "date": "1958-03-17T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.nasa.gov/image-article/vanguard-satellite-1958/",
+    "note": "Mapped to RP-1's first solar-powered satellite milestone."
+  },
+  {
+    "key": "FirstScienceSat-Heavy",
+    "kind": "Contract",
+    "title": "Sputnik 3, first heavy scientific satellite",
+    "date": "1958-05-15T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1958-004B",
+    "note": "Mapped to RP-1's First Scientific Satellite (1000 kg) heavy milestone."
+  },
+  {
+    "key": "FirstPolarSat",
+    "kind": "Contract",
+    "title": "Discoverer 1, first polar-orbiting satellite",
+    "date": "1959-02-28T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.nro.gov/Portals/135/documents/history/csnr/corona/The%20CORONA%20Story.pdf",
+    "note": "Mapped to RP-1's first polar orbit satellite milestone."
+  },
+  {
+    "key": "FirstPolarSat-Heavy",
+    "kind": "Contract",
+    "title": "Discoverer 1, first polar-orbiting satellite",
+    "date": "1959-02-28T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.nro.gov/Portals/135/documents/history/csnr/corona/The%20CORONA%20Story.pdf",
+    "note": "Mapped to RP-1's First Polar Orbit Satellite (400 kg) heavy milestone."
+  },
+  {
+    "key": "LunarFlyby",
+    "kind": "Contract",
+    "title": "Luna 1, first lunar flyby trajectory",
+    "date": "1959-01-04T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1959-012A",
+    "note": "Luna 1 missed the Moon and entered heliocentric orbit; useful as RP-1 lunar flyby analogue."
+  },
+  {
+    "key": "LunarImpactor",
+    "kind": "Contract",
+    "title": "Luna 2, first lunar impact",
+    "date": "1959-09-14T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1959-014A",
+    "note": "Direct mapping for the RP-1 lunar impact milestone."
+  },
+  {
+    "key": "AtmoSat",
+    "kind": "Contract",
+    "title": "TIROS 1, first successful weather satellite",
+    "date": "1960-04-01T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.nasa.gov/image-article/tiros-nations-first-weather-satellite/",
+    "note": "Approximate mapping for RP-1's atmospheric analysis satellite milestone."
+  },
+  {
+    "key": "first_OrbitRecover",
+    "kind": "Contract",
+    "title": "Discoverer 13, first successful recovery of an object from orbit",
+    "date": "1960-08-11T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.nro.gov/Portals/135/documents/history/csnr/corona/StarCatchersWeb.pdf",
+    "note": "User-provided mapping for RP-1's orbital-speed return milestone."
+  },
+  {
+    "key": "first_OrbitCrewed",
+    "kind": "Contract",
+    "title": "Vostok 1, first crewed orbital flight",
+    "date": "1961-04-12T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://www.nasa.gov/history/60-years-ago-yuri-gagarin-becomes-the-first-person-in-space/",
+    "note": "Mapped to RP-1's first crewed orbit milestone."
+  },
+  {
+    "key": "flybyVenus",
+    "kind": "Contract",
+    "title": "Venera 1, first Venus flyby",
+    "date": "1961-05-19T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://www.nasa.gov/history/60-years-ago-mariner-1-launch-attempt-to-venus/",
+    "note": "User-provided mapping; Venera 1 likely flew by Venus after contact had been lost."
+  },
+  {
+    "key": "FirstGEOSat",
+    "kind": "Contract",
+    "title": "Syncom 2, first geosynchronous communications satellite",
+    "date": "1963-07-26T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.nasa.gov/image-article/first-geosynchronous-satellite/",
+    "note": "User-provided mapping for RP-1's geostationary test satellite milestone."
+  },
+  {
+    "key": "XPlanesKarman",
+    "kind": "Contract",
+    "title": "X-15 Flight 90, first winged flight above the Karman line",
+    "date": "1963-07-19T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.aftc.af.mil/About-Us/History/On-This-Day-in-Test-History/Article-Display-Test-History/Article/2232890/july-19-1963-north-american-x-15-flight-records/",
+    "note": "Mapped to RP-1's crewed X-plane Karman line milestone."
+  },
+  {
+    "key": "flybyMars",
+    "kind": "Contract",
+    "title": "Mariner 4, first successful Mars flyby",
+    "date": "1965-07-15T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1964-077A",
+    "note": "Mapped to RP-1's Mars flyby milestone."
+  },
+  {
+    "key": "Rendezvous",
+    "kind": "Contract",
+    "title": "Gemini 6A and Gemini 7, first crewed space rendezvous",
+    "date": "1965-12-15T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.nasa.gov/mission/gemini-vi/",
+    "note": "User-provided mapping for RP-1's rendezvous milestone."
+  },
+  {
+    "key": "first_EVA",
+    "kind": "Contract",
+    "title": "Voskhod 2, first EVA",
+    "date": "1965-03-18T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://www.nasa.gov/history/55-years-ago-first-spacewalk/",
+    "note": "Mapped to RP-1's first EVA milestone."
+  },
+  {
+    "key": "first_Docking",
+    "kind": "Contract",
+    "title": "Gemini 8, first docking of two spacecraft",
+    "date": "1966-03-16T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.nasa.gov/history/gemini-viii/",
+    "note": "Mapped to RP-1's docking milestone."
+  },
+  {
+    "key": "MoonLanding",
+    "kind": "Contract",
+    "title": "Luna 9, first soft landing on the Moon",
+    "date": "1966-02-03T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1966-006A",
+    "note": "Mapped to uncrewed lunar landing."
+  },
+  {
+    "key": "LunarOrbiter",
+    "kind": "Contract",
+    "title": "Luna 10, first lunar orbiter",
+    "date": "1966-04-03T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1966-027A",
+    "note": "Direct mapping for the RP-1 lunar orbit milestone."
+  },
+  {
+    "key": "first_MoonFlybyCrewed",
+    "kind": "Contract",
+    "title": "Apollo 8, first crewed lunar flyby",
+    "date": "1968-12-24T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/earth/earth-observatory/all-of-you-on-the-good-earth-144427/",
+    "note": "User-provided mapping; dated to Apollo 8's arrival at and orbit around the Moon."
+  },
+  {
+    "key": "FirstCrewedLunarOrbit",
+    "kind": "Contract",
+    "title": "Apollo 8, first crewed lunar orbit",
+    "date": "1968-12-24T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/earth/earth-observatory/all-of-you-on-the-good-earth-144427/",
+    "note": "User-provided mapping; Apollo 8 was the first crewed mission to orbit the Moon."
+  },
+  {
+    "key": "first_MoonLandingCrewed",
+    "kind": "Contract",
+    "title": "Apollo 11, first crewed Moon landing",
+    "date": "1969-07-20T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.nasa.gov/mission/apollo-11/",
+    "note": "Mapped to RP-1's crewed lunar landing milestone."
+  },
+  {
+    "key": "landingVenus",
+    "kind": "Contract",
+    "title": "Venera 7, first soft landing on Venus",
+    "date": "1970-12-15T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://science.nasa.gov/deep-space-exploration/",
+    "note": "Mapped to RP-1's Venus landing milestone."
+  },
+  {
+    "key": "MoonLandingReturn",
+    "kind": "Contract",
+    "title": "Luna 16, first robotic lunar sample return",
+    "date": "1970-09-24T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://science.nasa.gov/photojournal/luna-16",
+    "note": "Mapped to RP-1's uncrewed lunar landing and sample return milestone; dated to Earth return."
+  },
+  {
+    "key": "MoonRover",
+    "kind": "Contract",
+    "title": "Luna 17 and Lunokhod 1, first lunar rover",
+    "date": "1970-11-17T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://www.nasa.gov/wp-content/uploads/2018/09/beyond-earth-tagged.pdf",
+    "note": "Mapped to RP-1's uncrewed lunar rover milestone."
+  },
+  {
+    "key": "first_spaceStation",
+    "kind": "Contract",
+    "title": "Salyut 1, first space station",
+    "date": "1971-04-19T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1971-032A",
+    "note": "Mapped to RP-1's early space station milestone."
+  },
+  {
+    "key": "orbitMars",
+    "kind": "Contract",
+    "title": "Mariner 9, first Mars orbiter",
+    "date": "1971-11-14T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1971-051A",
+    "note": "Mapped to RP-1's Mars orbit milestone."
+  },
+  {
+    "key": "flybyJupiter",
+    "kind": "Contract",
+    "title": "Pioneer 10, first Jupiter flyby",
+    "date": "1973-12-04T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-012A",
+    "note": "Mapped to RP-1's Jupiter flyby milestone."
+  },
+  {
+    "key": "flybyMercury",
+    "kind": "Contract",
+    "title": "Mariner 10, first Mercury flyby",
+    "date": "1974-03-29T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/mission/mariner-10",
+    "note": "Mapped to RP-1's Mercury flyby milestone."
+  },
+  {
+    "key": "orbitVenus",
+    "kind": "Contract",
+    "title": "Venera 9, first Venus orbiter",
+    "date": "1975-10-22T00:00:00Z",
+    "agency": "Soviet Union",
+    "sourceUrl": "https://science.nasa.gov/venus/exploration",
+    "note": "User-provided mapping for RP-1's Venus orbit milestone."
+  },
+  {
+    "key": "landingMars",
+    "kind": "Contract",
+    "title": "Viking 1, first long-lived Mars lander",
+    "date": "1976-07-20T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/mission/viking-1",
+    "note": "Mapped to RP-1's Mars landing milestone."
+  },
+  {
+    "key": "flybySaturn",
+    "kind": "Contract",
+    "title": "Pioneer 11, first Saturn flyby",
+    "date": "1979-09-01T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/mission/pioneer-11",
+    "note": "Mapped to RP-1's Saturn flyby milestone."
+  },
+  {
+    "key": "flybyUranus",
+    "kind": "Contract",
+    "title": "Voyager 2, first Uranus flyby",
+    "date": "1986-01-24T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/mission/voyager-2/",
+    "note": "Mapped to RP-1's Uranus flyby milestone."
+  },
+  {
+    "key": "flybyNeptune",
+    "kind": "Contract",
+    "title": "Voyager 2, first Neptune flyby",
+    "date": "1989-08-25T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/mission/voyager-2/",
+    "note": "Mapped to RP-1's Neptune flyby milestone."
+  },
+  {
+    "key": "orbitJupiter",
+    "kind": "Contract",
+    "title": "Galileo, first Jupiter orbiter",
+    "date": "1995-12-07T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://www.jpl.nasa.gov/missions/galileo",
+    "note": "User-provided mapping for RP-1's Jupiter orbit milestone."
+  },
+  {
+    "key": "roverMars",
+    "kind": "Contract",
+    "title": "Mars Pathfinder and Sojourner, first Mars rover",
+    "date": "1997-07-05T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/mission/mars-pathfinder",
+    "note": "Mapped to RP-1's Mars rover milestone; dated to Sojourner's deployment from the lander."
+  },
+  {
+    "key": "orbitSaturn",
+    "kind": "Contract",
+    "title": "Cassini, first Saturn orbiter",
+    "date": "2004-07-01T00:00:00Z",
+    "agency": "United States / ESA / Italy",
+    "sourceUrl": "https://science.nasa.gov/mission/cassini/faq/",
+    "note": "Mapped to RP-1's Saturn orbit milestone."
+  },
+  {
+    "key": "orbitMercury",
+    "kind": "Contract",
+    "title": "MESSENGER, first Mercury orbiter",
+    "date": "2011-03-18T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/mission/messenger",
+    "note": "Mapped to RP-1's Mercury orbit milestone."
+  },
+  {
+    "key": "flybyVesta",
+    "kind": "Contract",
+    "title": "Dawn, first spacecraft at Vesta",
+    "date": "2011-07-16T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/mission/dawn/science/vesta/",
+    "note": "Mapped to RP-1's Vesta flyby milestone using Dawn's Vesta arrival/orbit as the closest historical analogue."
+  },
+  {
+    "key": "flybyCeres",
+    "kind": "Contract",
+    "title": "Dawn, first spacecraft at Ceres",
+    "date": "2015-03-06T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/mission/dawn/mission-status/",
+    "note": "User-provided mapping; Dawn's Ceres arrival/orbit is used as the closest historical analogue for the RP-1 Ceres flyby milestone."
+  },
+  {
+    "key": "flybyPluto",
+    "kind": "Contract",
+    "title": "New Horizons, first Pluto flyby",
+    "date": "2015-07-14T00:00:00Z",
+    "agency": "United States",
+    "sourceUrl": "https://science.nasa.gov/mission/new-horizons",
+    "note": "Mapped to RP-1's Pluto flyby milestone."
+  },
+  {
+    "key": "MoonLandingFarSide",
+    "kind": "Contract",
+    "title": "Chang'e 4, first far-side lunar landing",
+    "date": "2019-01-03T00:00:00Z",
+    "agency": "China",
+    "sourceUrl": "https://science.nasa.gov/resource/first-look-change-4/",
+    "note": "Mapped to RP-1's uncrewed far-side lunar landing milestone."
+  }
+]

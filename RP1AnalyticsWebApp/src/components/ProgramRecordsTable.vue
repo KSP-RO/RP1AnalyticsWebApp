@@ -3,6 +3,7 @@
         <thead>
             <tr>
                 <th>Program Name</th>
+                <th>Rank</th>
                 <th>Date</th>
                 <th>User</th>
                 <th>Career</th>
@@ -13,6 +14,7 @@
                 <td>
                     <a role="button" class="modal-trigger" tabindex="0" @click="programClicked(r)" @keydown.enter="programClicked(r)">{{r.programDisplayName}}</a>
                 </td>
+                <td>{{formatRank(r.rank, r.cohortSize)}}</td>
                 <td class="date-col">{{formatDate(r.date)}}</td>
                 <td>{{r.userPreferredName}}</td>
                 <td>
@@ -64,6 +66,11 @@
 
     function formatDate(date: string) {
         return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
+    }
+
+    function formatRank(rank?: number, cohortSize?: number) {
+        if (!rank || !cohortSize) return '';
+        return `${rank} / ${cohortSize}`;
     }
 
     watch(() => props.mode, () => {

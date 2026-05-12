@@ -78,6 +78,8 @@ namespace RP1AnalyticsWebApp
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.CSharpLegacy));
 
             services.AddTransient<CareerLogService>();
+            services.AddTransient<CareerComparisonService>();
+            services.AddSingleton<HistoricalBenchmarkService>();
             services.AddTransient<CacheService>();
 
             services.AddIdentityMongoDbProvider<WebAppUser, MongoRole>(identityOptions =>
