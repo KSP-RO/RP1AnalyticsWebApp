@@ -91,7 +91,7 @@
         </section>
 
         <section class="chart-grid-two">
-            <article class="chart-block">
+            <article class="chart-block chart-block--wide">
                 <div class="chart-block__header">
                     <div>
                         <h3>Launch Cadence + Outcomes</h3>
@@ -184,8 +184,8 @@
             <article class="chart-block">
                 <div class="chart-block__header">
                     <div>
-                        <h3>Economy + Reputation</h3>
-                        <p>Total spending and reputation in context with the comparison group.</p>
+                        <h3>Economy + Confidence</h3>
+                        <p>Total spending and cumulative confidence earned in context with the comparison group.</p>
                     </div>
                 </div>
                 <div class="stacked-band-charts">
@@ -457,7 +457,8 @@
     function showLaunchYear(year: number) {
         const years = launchCadence.value.map(p => p.year);
         const index = years.indexOf(year);
-        return index === 0 || index === years.length - 1 || year % 3 === 0;
+        const interval = years.length > 45 ? 10 : years.length > 24 ? 5 : 3;
+        return index === 0 || index === years.length - 1 || year % interval === 0;
     }
 
     function targetLaunchTotal(point: LaunchCadencePoint) {
@@ -702,6 +703,10 @@
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1rem;
+    }
+
+    .chart-block--wide {
+        grid-column: 1 / -1;
     }
 
     .mini-chart {

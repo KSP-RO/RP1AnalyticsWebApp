@@ -288,9 +288,9 @@ namespace RP1AnalyticsWebApp.Services
                     "Total science earned as reported by RP-1."),
                 Metric("currentReputation", "Current reputation", "Reputation", "score", target, cohort, c => Last(c)?.Reputation, true,
                     "Reputation at the latest uploaded period."),
-                Metric("totalSpending", "Total spending", "Economy", "funds", target, cohort, TotalSpending, false,
+                Metric("totalSpending", "Total spending", "Economy", "funds", target, cohort, TotalSpending, true,
                     "Recorded spending across launches, construction, salaries, maintenance, tooling, and other fees."),
-                Metric("maintenanceBurden", "Maintenance burden", "Economy", "funds", target, cohort, c => SumPeriods(c, p => p.MaintenanceFees), false,
+                Metric("maintenanceBurden", "Maintenance burden", "Economy", "funds", target, cohort, c => SumPeriods(c, p => p.MaintenanceFees), true,
                     "Maintenance fees after subsidies."),
                 Metric("launches", "Launches", "Operations", "count", target, cohort, c => c.LaunchEventEntries?.Count ?? 0, true,
                     "Uploaded launch events."),
@@ -309,8 +309,8 @@ namespace RP1AnalyticsWebApp.Services
                     "Researchers at the latest uploaded period."),
                 Metric("engineerEfficiency", "Engineer efficiency", "Workforce", "percent", target, cohort, c => Last(c)?.EfficiencyEngineers * 100d, true,
                     "Engineer efficiency at the latest uploaded period."),
-                Metric("confidence", "Confidence earned", "Reputation", "score", target, cohort, c => Last(c)?.Confidence, true,
-                    "Confidence at the latest uploaded period.")
+                Metric("confidence", "Confidence earned", "Confidence", "score", target, cohort, c => SumPeriods(c, p => p.Confidence), true,
+                    "Cumulative confidence earned across uploaded periods.")
             };
         }
 
@@ -497,7 +497,7 @@ namespace RP1AnalyticsWebApp.Services
             return new List<ComparisonBandSeries>
             {
                 BandSeries("totalSpending", "Total Spending", "funds", target, cohort, TotalSpendingByDate),
-                BandSeries("reputation", "Reputation", "score", target, cohort, ReputationByDate)
+                BandSeries("confidence", "Confidence Earned", "score", target, cohort, ConfidenceEarnedByDate)
             };
         }
 
@@ -1185,13 +1185,16 @@ namespace RP1AnalyticsWebApp.Services
                 .Sum(SpendingForPeriod);
         }
 
-        private static double? ReputationByDate(CareerLog career, DateTime date)
+        private static double? ConfidenceEarnedByDate(CareerLog career, DateTime date)
         {
-            return career.CareerLogEntries?
+            if (career.CareerLogEntries == null || career.CareerLogEntries.Count == 0)
+            {
+                return null;
+            }
+
+            return career.CareerLogEntries
                 .Where(p => p.EndDate.Date <= date.Date)
-                .OrderBy(p => p.EndDate)
-                .Select(p => (double?)p.Reputation)
-                .LastOrDefault();
+                .Sum(p => p.Confidence);
         }
 
         private static double SpendingForPeriod(CareerLogPeriod p)

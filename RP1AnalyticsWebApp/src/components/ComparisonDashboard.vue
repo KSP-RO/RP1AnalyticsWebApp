@@ -518,11 +518,12 @@
     }
 
     .timeline-type-icon {
-        display: inline-grid;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         box-sizing: border-box;
         width: 1.65rem;
         height: 1.65rem;
-        place-items: center;
         align-self: center;
         justify-self: center;
         border: 1px solid color-mix(in srgb, var(--rp-muted) 22%, transparent);
@@ -536,10 +537,13 @@
     }
 
     .timeline-type-icon i {
-        display: block;
-        width: 1em;
-        height: 1em;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
         line-height: 1;
+        text-align: center;
     }
 
     .timeline-type-icon--launch {
