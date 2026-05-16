@@ -341,6 +341,22 @@ namespace RP1AnalyticsWebApp.Services
             var result = new List<MilestoneComparison>();
             var benchmarkMap = benchmarks.ToDictionary(b => $"{b.Kind}:{b.Key}", StringComparer.OrdinalIgnoreCase);
 
+            var cohortContractDates = cohort.ToDictionary(
+                c => c,
+                c => c.ContractEventEntries?
+                       .Where(e => e.Type == ContractEventType.Complete)
+                       .GroupBy(e => e.InternalName, StringComparer.OrdinalIgnoreCase)
+                       .ToDictionary(g => g.Key, g => (DateTime?)g.Min(e => e.Date), StringComparer.OrdinalIgnoreCase)
+                    ?? new Dictionary<string, DateTime?>(StringComparer.OrdinalIgnoreCase));
+
+            var cohortProgramDates = cohort.ToDictionary(
+                c => c,
+                c => c.Programs?
+                       .Where(p => p.Completed.HasValue)
+                       .GroupBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
+                       .ToDictionary(g => g.Key, g => g.Min(p => p.Completed), StringComparer.OrdinalIgnoreCase)
+                    ?? new Dictionary<string, DateTime?>(StringComparer.OrdinalIgnoreCase));
+
             foreach (string contract in _contractSettings.MilestoneContractNames)
             {
                 var targetDate = GetContractCompletionDate(target, contract);
@@ -348,10 +364,10 @@ namespace RP1AnalyticsWebApp.Services
                 var completions = cohort.Select(c => new
                     {
                         Career = c,
-                        Date = GetContractCompletionDate(c, contract)
+                        Date = cohortContractDates[c].GetValueOrDefault(contract)
                     })
-                    .Where(e => e.Date.HasValue)
-                    .OrderBy(e => e.Date.Value)
+                    .Where(e => e.Date != default)
+                    .OrderBy(e => e.Date)
                     .ToList();
                 var days = completions.Select(e => DaysSinceEpoch(e.Date.Value)).ToList();
                 var record = completions.FirstOrDefault();
@@ -370,10 +386,10 @@ namespace RP1AnalyticsWebApp.Services
                 var completions = cohort.Select(c => new
                     {
                         Career = c,
-                        Date = GetProgramCompletionDate(c, program)
+                        Date = cohortProgramDates[c].GetValueOrDefault(program)
                     })
-                    .Where(e => e.Date.HasValue)
-                    .OrderBy(e => e.Date.Value)
+                    .Where(e => e.Date != default)
+                    .OrderBy(e => e.Date)
                     .ToList();
                 var days = completions.Select(e => DaysSinceEpoch(e.Date.Value)).ToList();
                 var record = completions.FirstOrDefault();
@@ -1306,8 +1322,8 @@ namespace RP1AnalyticsWebApp.Services
                 .Where(e => e.Type == ContractEventType.Complete &&
                             string.Equals(e.InternalName, contract, StringComparison.OrdinalIgnoreCase))
                 .Select(e => (DateTime?)e.Date)
-                .OrderBy(d => d)
-                .FirstOrDefault();
+                .DefaultIfEmpty()
+                .Min();
         }
 
         private bool IsProgramExcludedByTargetChoice(CareerLog target, string program, out string exclusionReason)
@@ -1373,8 +1389,8 @@ namespace RP1AnalyticsWebApp.Services
             return career.Programs?
                 .Where(p => string.Equals(p.Name, program, StringComparison.OrdinalIgnoreCase))
                 .Select(p => (DateTime?)p.Accepted)
-                .OrderBy(d => d)
-                .FirstOrDefault();
+                .DefaultIfEmpty()
+                .Min();
         }
 
         private static DateTime? GetProgramCompletionDate(CareerLog career, string program)
@@ -1383,8 +1399,8 @@ namespace RP1AnalyticsWebApp.Services
                 .Where(p => string.Equals(p.Name, program, StringComparison.OrdinalIgnoreCase))
                 .Select(p => p.Completed)
                 .Where(d => d.HasValue)
-                .OrderBy(d => d)
-                .FirstOrDefault();
+                .DefaultIfEmpty()
+                .Min();
         }
 
         private string ResolveContractName(string name)
