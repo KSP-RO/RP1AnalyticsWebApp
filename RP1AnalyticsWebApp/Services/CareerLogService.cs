@@ -609,7 +609,9 @@ namespace RP1AnalyticsWebApp.Services
             if (existingItem == null) return null;
 
             var periods = careerLogDto.Periods.Select(c => new CareerLogPeriod(c)).ToList();
-            var contracts = careerLogDto.ContractEvents.Select(c => new ContractEvent(c)).ToList();
+            var contracts = careerLogDto.ContractEvents
+                .Where(IsValidContract)
+                .Select(c => new ContractEvent(c)).ToList();
             var facilityConstructions = careerLogDto.FacilityConstructions.Select(fc => new FacilityConstruction(fc, careerLogDto.FacilityEvents));
             var tech = careerLogDto.TechEvents.Select(t => new TechResearchEvent(t)).ToList();
 
@@ -680,6 +682,12 @@ namespace RP1AnalyticsWebApp.Services
 
             await _careerLogs.FindOneAndUpdateAsync(filterDef, updateDef);
             await _cache.InvalidateAsync();
+        }
+
+        private bool IsValidContract(ContractEventDto c)
+        {
+            return !string.IsNullOrWhiteSpace(c.InternalName) &&
+                !c.InternalName.StartsWith("maintenance_", StringComparison.Ordinal);   // Currently only Skopos maintenance contracts use this identifier
         }
 
         private string ResolveContractName(string name)
