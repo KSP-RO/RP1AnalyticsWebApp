@@ -476,10 +476,10 @@ namespace RP1AnalyticsWebApp.Services
         {
             return new List<ComparisonBandSeries>
             {
-                BandSeries("milestones", "Milestones", "count", target, cohort, (c, date) => CountCompletedMilestonesByDate(c, date)),
-                BandSeries("programs", "Programs", "count", target, cohort, CountCompletedProgramsByDate),
-                BandSeries("techUnlocks", "Tech Unlocks", "count", target, cohort, CountTechUnlocksByDate),
-                BandSeries("launches", "Launches", "count", target, cohort, CountLaunchesByDate)
+                BandSeriesFromFactory("milestones", "Milestones", "count", target, cohort, BuildMilestoneSelector),
+                BandSeriesFromFactory("programs", "Programs", "count", target, cohort, BuildProgramsSelector),
+                BandSeriesFromFactory("techUnlocks", "Tech Unlocks", "count", target, cohort, BuildTechUnlocksSelector),
+                BandSeriesFromFactory("launches", "Launches", "count", target, cohort, BuildLaunchesSelector)
             };
         }
 
@@ -528,6 +528,45 @@ namespace RP1AnalyticsWebApp.Services
             {
                 Date = date.Date,
                 TargetValue = target.EndDate.Date >= date.Date ? selector(target, date) : null,
+                Median = Median(values),
+                P25 = PercentileValue(values, 0.25),
+                P75 = PercentileValue(values, 0.75),
+                ComparisonCount = values.Count
+            };
+        }
+
+        private static ComparisonBandSeries BandSeriesFromFactory(string key, string label, string unit,
+            CareerLog target, List<CareerLog> cohort, Func<CareerLog, Func<DateTime, double?>> selectorFactory)
+        {
+            var targetSelector = selectorFactory(target);
+            var cohortSelectors = cohort.Select(c => (career: c, selector: selectorFactory(c))).ToList();
+            var dates = ChartDates(target);
+
+            return new ComparisonBandSeries
+            {
+                Key = key,
+                Label = label,
+                Unit = unit,
+                Points = dates.Select(date => BandPointPrecomputed(date, target, targetSelector, cohortSelectors)).ToList()
+            };
+        }
+
+        private static ComparisonBandPoint BandPointPrecomputed(DateTime date, CareerLog target,
+            Func<DateTime, double?> targetSelector,
+            List<(CareerLog career, Func<DateTime, double?> selector)> cohortSelectors)
+        {
+            var values = cohortSelectors
+                .Where(cs => cs.career.StartDate.Date <= date.Date && cs.career.EndDate.Date >= date.Date)
+                .Select(cs => cs.selector(date))
+                .Where(v => v.HasValue)
+                .Select(v => v.Value)
+                .OrderBy(v => v)
+                .ToList();
+
+            return new ComparisonBandPoint
+            {
+                Date = date.Date,
+                TargetValue = target.EndDate.Date >= date.Date ? targetSelector(date) : null,
                 Median = Median(values),
                 P25 = PercentileValue(values, 0.25),
                 P75 = PercentileValue(values, 0.75),
@@ -1112,33 +1151,60 @@ namespace RP1AnalyticsWebApp.Services
             return _contractSettings.MilestoneContractNames.Count(name => GetContractCompletionDate(career, name).HasValue);
         }
 
-        private double? CountCompletedMilestonesByDate(CareerLog career, DateTime date)
+        private Func<DateTime, double?> BuildMilestoneSelector(CareerLog career)
         {
-            return _contractSettings.MilestoneContractNames.Count(name =>
+            var completionDates = _contractSettings.MilestoneContractNames
+                .Select(name => GetContractCompletionDate(career, name))
+                .Where(d => d.HasValue)
+                .Select(d => d.Value.Date)
+                .OrderBy(d => d)
+                .ToList();
+            return date => (double?)CountUpToDate(completionDates, date.Date);
+        }
+
+        private static Func<DateTime, double?> BuildProgramsSelector(CareerLog career)
             {
-                var completed = GetContractCompletionDate(career, name);
-                return completed.HasValue && completed.Value.Date <= date.Date;
-            });
+            var completionDates = career.Programs?
+                .Where(p => p.Completed.HasValue)
+                .Select(p => p.Completed.Value.Date)
+                .OrderBy(d => d)
+                .ToList() ?? [];
+            return date => (double?)CountUpToDate(completionDates, date.Date);
+        }
+
+        private static Func<DateTime, double?> BuildTechUnlocksSelector(CareerLog career)
+        {
+            var dates = career.TechEventEntries?
+                .Select(e => e.Date.Date)
+                .OrderBy(d => d)
+                .ToList() ?? [];
+            return date => (double?)CountUpToDate(dates, date.Date);
+        }
+
+        private static Func<DateTime, double?> BuildLaunchesSelector(CareerLog career)
+        {
+            var dates = career.LaunchEventEntries?
+                .Select(l => l.Date.Date)
+                .OrderBy(d => d)
+                .ToList() ?? [];
+            return date => (double?)CountUpToDate(dates, date.Date);
+        }
+
+        private static int CountUpToDate(List<DateTime> sortedDates, DateTime date)
+        {
+            int lo = 0, hi = sortedDates.Count;
+            while (lo < hi)
+        {
+                int mid = (lo + hi) >> 1;
+                if (sortedDates[mid] <= date) lo = mid + 1;
+                else hi = mid;
+            }
+            return lo;
         }
 
         private static int CountCompletedPrograms(CareerLog career)
         {
             return career.Programs?.Count(p => p.Completed.HasValue) ?? 0;
-        }
-
-        private static double? CountCompletedProgramsByDate(CareerLog career, DateTime date)
-        {
-            return career.Programs?.Count(p => p.Completed.HasValue && p.Completed.Value.Date <= date.Date) ?? 0;
-        }
-
-        private static double? CountTechUnlocksByDate(CareerLog career, DateTime date)
-        {
-            return career.TechEventEntries?.Count(e => e.Date.Date <= date.Date) ?? 0;
-        }
-
-        private static double? CountLaunchesByDate(CareerLog career, DateTime date)
-        {
-            return career.LaunchEventEntries?.Count(l => l.Date.Date <= date.Date) ?? 0;
         }
 
         private static double? CountInfrastructureCompletionsByDate(CareerLog career, DateTime date)
