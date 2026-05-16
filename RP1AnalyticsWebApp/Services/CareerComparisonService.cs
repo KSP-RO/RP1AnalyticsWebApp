@@ -1037,66 +1037,6 @@ namespace RP1AnalyticsWebApp.Services
             public List<string> Names { get; } = new();
         }
 
-        private static bool MatchesDateFilter(DateTime candidate, string op, DateTime filterDate)
-        {
-            var left = candidate.Date;
-            var right = filterDate.Date;
-            return op switch
-            {
-                "le" => left <= right,
-                "ge" => left >= right,
-                _ => left == right
-            };
-        }
-
-        private static bool VersionMatches(int? candidateVersionSort, int targetVersionSort, string op, bool minorOnly)
-        {
-            if (!candidateVersionSort.HasValue)
-            {
-                return false;
-            }
-
-            return op switch
-            {
-                "le" => candidateVersionSort.Value <= targetVersionSort,
-                "ge" => candidateVersionSort.Value >= targetVersionSort,
-                _ when minorOnly => candidateVersionSort.Value >= targetVersionSort &&
-                                    candidateVersionSort.Value < targetVersionSort + 1000,
-                _ => candidateVersionSort.Value == targetVersionSort
-            };
-        }
-
-        private List<CareerLog> ApplyRecordFilters(List<CareerLog> careers, string rp1Version, string rp1VersionOp,
-            DifficultyLevel? difficulty, CareerPlaystyle? playstyle, bool includeIneligible)
-        {
-            var q = careers.Where(c => c.CareerLogMeta != null && (includeIneligible || c.EligibleForRecords));
-
-            if (!string.IsNullOrWhiteSpace(rp1Version) && TryCreateSortableVersion(rp1Version, out int versionSort, out bool minorOnly))
-            {
-                string op = string.IsNullOrWhiteSpace(rp1VersionOp) ? "eq" : rp1VersionOp;
-                q = op switch
-                {
-                    "le" => q.Where(c => c.CareerLogMeta.VersionSort <= versionSort),
-                    "ge" => q.Where(c => c.CareerLogMeta.VersionSort >= versionSort),
-                    _ when minorOnly => q.Where(c => c.CareerLogMeta.VersionSort >= versionSort &&
-                                                     c.CareerLogMeta.VersionSort < versionSort + 1000),
-                    _ => q.Where(c => c.CareerLogMeta.VersionSort == versionSort)
-                };
-            }
-
-            if (difficulty.HasValue)
-            {
-                q = q.Where(c => c.CareerLogMeta.DifficultyLevel == difficulty.Value);
-            }
-
-            if (playstyle.HasValue)
-            {
-                q = q.Where(c => c.CareerLogMeta.CareerPlaystyle == playstyle.Value);
-            }
-
-            return q.ToList();
-        }
-
         private List<ContractRecord> CreateContractRecords(List<CareerLog> cohort)
         {
             return cohort.Where(c => c.ContractEventEntries != null)
@@ -1593,31 +1533,6 @@ namespace RP1AnalyticsWebApp.Services
         private static double PercentilePosition(List<double> sortedAscending, double value)
         {
             return Math.Round(sortedAscending.Count(v => v <= value) * 100d / sortedAscending.Count, 1);
-        }
-
-        private static bool TryCreateSortableVersion(string version, out int value, out bool minorOnly)
-        {
-            value = 0;
-            minorOnly = false;
-            string[] split = version.Split('.', StringSplitOptions.RemoveEmptyEntries);
-            if (split.Length == 0)
-            {
-                return false;
-            }
-
-            int[] mults = { 1000000, 1000, 1 };
-            for (int i = 0; i < Math.Min(3, split.Length); i++)
-            {
-                if (!int.TryParse(split[i], out int component))
-                {
-                    return false;
-                }
-
-                value += component * mults[i];
-            }
-
-            minorOnly = split.Length == 2;
-            return true;
         }
 
         private static string FormatMass(float value)
