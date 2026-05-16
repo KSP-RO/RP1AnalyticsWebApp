@@ -109,7 +109,7 @@ namespace RP1AnalyticsWebApp.Services
             return c.ContractEventEntries.Select(ce => new BaseContractEvent
             {
                 ContractInternalName = ce.InternalName,
-                ContractDisplayName = ResolveContractName(ce.InternalName),
+                ContractDisplayName = ResolveContractName(ce),
                 Type = ce.Type,
                 Date = ce.Date
             }).ToList();
@@ -147,6 +147,7 @@ namespace RP1AnalyticsWebApp.Services
                     CareerId = c.Id,
                     CareerName = c.Name,
                     ContractInternalName = e.InternalName,
+                    ContractDisplayName = e.DisplayName,
                     EventType = e.Type,
                     EventDate = e.Date
                 })
@@ -186,6 +187,7 @@ namespace RP1AnalyticsWebApp.Services
                     CareerName = c.Name,
                     UserLogin = c.UserLogin,
                     ContractInternalName = e.InternalName,
+                    ContractDisplayName = e.DisplayName,
                     EventType = e.Type,
                     EventDate = e.Date
                 })
@@ -195,6 +197,9 @@ namespace RP1AnalyticsWebApp.Services
                 .Select(g => new ContractRecord
                 {
                     ContractInternalName = g.Key,
+                    ContractDisplayName = g.First().ContractDisplayName,
+                    Rank = 1,
+                    CohortSize = g.Count(),
                     CareerId = g.First().CareerId,
                     UserLogin = g.First().UserLogin,
                     CareerName = g.First().CareerName,
@@ -205,7 +210,9 @@ namespace RP1AnalyticsWebApp.Services
 
             result.ForEach(r =>
             {
-                r.ContractDisplayName = ResolveContractName(r.ContractInternalName);
+                r.ContractDisplayName = string.IsNullOrWhiteSpace(r.ContractDisplayName)
+                    ? ResolveContractName(r.ContractInternalName)
+                    : r.ContractDisplayName;
                 r.UserPreferredName = GetUserPreferredName(r.UserLogin);
             });
 
@@ -238,6 +245,8 @@ namespace RP1AnalyticsWebApp.Services
                 .Select(g => new ProgramRecord
                 {
                     ProgramName = g.Key,
+                    Rank = 1,
+                    CohortSize = g.Count(),
                     CareerId = g.First().CareerId,
                     UserLogin = g.First().UserLogin,
                     CareerName = g.First().CareerName,
@@ -329,16 +338,19 @@ namespace RP1AnalyticsWebApp.Services
                 CareerId = c.Id,
                 CareerName = c.Name,
                 UserLogin = c.UserLogin,
-                ContractInternalName = e.InternalName,
-                Date = e.Date,
-                Type = e.Type
+                    ContractInternalName = e.InternalName,
+                    ContractDisplayName = e.DisplayName,
+                    Date = e.Date,
+                    Type = e.Type
             })
             .ToListAsync();
 
             events.ForEach(entry =>
             {
                 entry.UserPreferredName = GetUserPreferredName(entry.UserLogin);
-                entry.ContractDisplayName = ResolveContractName(entry.ContractInternalName);
+                entry.ContractDisplayName = string.IsNullOrWhiteSpace(entry.ContractDisplayName)
+                    ? ResolveContractName(entry.ContractInternalName)
+                    : entry.ContractDisplayName;
             });
 
             return events;
@@ -695,12 +707,19 @@ namespace RP1AnalyticsWebApp.Services
             return _contractSettings.ContractNameDict.TryGetValue(name, out string disp) ? disp : name;
         }
 
+        private string ResolveContractName(ContractEvent contractEvent)
+        {
+            return string.IsNullOrWhiteSpace(contractEvent.DisplayName)
+                ? ResolveContractName(contractEvent.InternalName)
+                : contractEvent.DisplayName;
+        }
+
         private string ResolveTechNodeName(string id)
         {
             return _techTreeSettings.NodeTitleDict.TryGetValue(id, out string disp) ? disp : id;
         }
 
-        private string GetUserPreferredName(string username)
+        public string GetUserPreferredName(string username)
         {
             return AllUsers.FirstOrDefault(u => u.UserName == username)?.PreferredName ?? username;
         }

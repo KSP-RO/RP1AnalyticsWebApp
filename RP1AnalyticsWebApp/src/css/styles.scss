@@ -18,6 +18,11 @@
     max-height: 36px;
 }
 
+body > .container {
+    box-sizing: border-box;
+    padding-inline: clamp(0.75rem, 2vw, 1.5rem);
+}
+
 .contracts-app {
     h2 {
         margin-top: 0.75rem;
