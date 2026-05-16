@@ -47,20 +47,10 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet("Overview", Name = "GetCareerOverview")]
-        public async Task<ActionResult<CareerOverviewSnapshot>> GetCareerOverviewAsync(
-            [FromQuery] List<string> players = null, [FromQuery] List<string> races = null,
-            ComparisonEndDateMode careerDateMode = ComparisonEndDateMode.All,
-            DateTime? careerDateStart = null, DateTime? careerDateEnd = null,
-            ComparisonEndDateMode lastUpdateMode = ComparisonEndDateMode.All,
-            DateTime? lastUpdateStart = null, DateTime? lastUpdateEnd = null,
-            [FromQuery] List<string> rp1Versions = null,
-            [FromQuery] List<string> difficulties = null, [FromQuery] List<string> playstyles = null,
-            string recordEligibility = "All")
+        public async Task<ActionResult<CareerOverviewSnapshot>> GetCareerOverviewAsync([FromQuery] CareerComparisonFilter filter)
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerOverview");
-            return await _careerComparisonService.GetCareerOverviewAsync(players, races, careerDateMode, careerDateStart,
-                careerDateEnd, lastUpdateMode, lastUpdateStart, lastUpdateEnd, rp1Versions, difficulties, playstyles,
-                recordEligibility);
+            return await _careerComparisonService.GetCareerOverviewAsync(filter);
         }
 
         [HttpGet("{id:length(24)}", Name = "GetCareerLog")]
@@ -87,25 +77,16 @@ namespace RP1AnalyticsWebApp.Controllers
 
         [HttpGet("{id:length(24)}/Comparison", Name = "GetCareerComparison")]
         public async Task<ActionResult<CareerComparison>> GetCareerComparisonAsync(string id,
-            [FromQuery] List<string> players = null, [FromQuery] List<string> races = null,
-            ComparisonEndDateMode careerDateMode = ComparisonEndDateMode.All,
-            DateTime? careerDateStart = null, DateTime? careerDateEnd = null,
-            ComparisonEndDateMode lastUpdateMode = ComparisonEndDateMode.All,
-            DateTime? lastUpdateStart = null, DateTime? lastUpdateEnd = null,
-            [FromQuery] List<string> rp1Versions = null,
-            [FromQuery] List<string> difficulties = null, [FromQuery] List<string> playstyles = null,
-            string recordEligibility = "All")
+            [FromQuery] CareerComparisonFilter filter)
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerComparison", new Dictionary<string, string>
             {
                 { nameof(id), id },
-                { nameof(careerDateMode), careerDateMode.ToString() },
-                { nameof(lastUpdateMode), lastUpdateMode.ToString() }
+                { "careerDateMode", filter.CareerDateMode.ToString() },
+                { "lastUpdateMode", filter.LastUpdateMode.ToString() }
             });
 
-            CareerComparison comparison = await _careerComparisonService.GetComparisonAsync(
-                id, players, races, careerDateMode, careerDateStart, careerDateEnd, lastUpdateMode,
-                lastUpdateStart, lastUpdateEnd, rp1Versions, difficulties, playstyles, recordEligibility);
+            CareerComparison comparison = await _careerComparisonService.GetComparisonAsync(id, filter);
             if (comparison == null)
             {
                 return NotFound();

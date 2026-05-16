@@ -42,15 +42,10 @@ namespace RP1AnalyticsWebApp.Services
             _historicalBenchmarkService = historicalBenchmarkService;
         }
 
-        public async Task<CareerComparison> GetComparisonAsync(string careerId,
-            List<string> players = null, List<string> races = null,
-            ComparisonEndDateMode careerDateMode = ComparisonEndDateMode.All,
-            DateTime? careerDateStart = null, DateTime? careerDateEnd = null,
-            ComparisonEndDateMode lastUpdateMode = ComparisonEndDateMode.All,
-            DateTime? lastUpdateStart = null, DateTime? lastUpdateEnd = null,
-            List<string> rp1Versions = null, List<string> difficulties = null, List<string> playstyles = null,
-            string recordEligibility = "All")
+        public async Task<CareerComparison> GetComparisonAsync(string careerId, CareerComparisonFilter filter = null)
         {
+            filter ??= new CareerComparisonFilter();
+
             var careers = await _careerLogService.GetAsync();
             var target = careers.FirstOrDefault(c => c.Id == careerId);
             if (target == null)
@@ -58,8 +53,7 @@ namespace RP1AnalyticsWebApp.Services
                 return null;
             }
 
-            var cohort = ApplyGlobalFilters(careers, players, races, careerDateMode, careerDateStart, careerDateEnd,
-                lastUpdateMode, lastUpdateStart, lastUpdateEnd, rp1Versions, difficulties, playstyles, recordEligibility);
+            var cohort = ApplyGlobalFilters(careers, filter);
             var benchmarks = _historicalBenchmarkService.GetHistoricalBenchmarks();
             var milestones = CreateMilestoneComparisons(target, cohort, benchmarks);
 
@@ -67,8 +61,7 @@ namespace RP1AnalyticsWebApp.Services
             {
                 CareerId = target.Id,
                 CareerName = target.Name,
-                Cohort = CreateCohortSummary(target, cohort, players, races, careerDateMode, careerDateStart, careerDateEnd,
-                    lastUpdateMode, lastUpdateStart, lastUpdateEnd, rp1Versions, difficulties, playstyles, recordEligibility),
+                Cohort = CreateCohortSummary(target, cohort, filter),
                 Metrics = CreateMetricComparisons(target, cohort),
                 Milestones = milestones,
                 Timeline = CreateTimeline(target).OrderBy(e => e.Date).ToList(),
@@ -83,15 +76,13 @@ namespace RP1AnalyticsWebApp.Services
             return career == null ? null : CreateTimeline(career).OrderBy(e => e.Date).ToList();
         }
 
-        public async Task<RecordsSnapshot> GetRecordsSnapshotAsync(List<string> players, List<string> races,
-            ComparisonEndDateMode careerDateMode, DateTime? careerDateStart, DateTime? careerDateEnd,
-            ComparisonEndDateMode lastUpdateMode, DateTime? lastUpdateStart, DateTime? lastUpdateEnd,
-            List<string> rp1Versions, List<string> difficulties, List<string> playstyles,
-            string recordEligibility, ProgramRecordType programType)
+        public async Task<RecordsSnapshot> GetRecordsSnapshotAsync(CareerComparisonFilter filter, ProgramRecordType programType)
         {
+            filter ??= new CareerComparisonFilter();
+
             var careers = await _careerLogService.GetAsync();
-            var cohort = ApplyGlobalFilters(careers, players, races, careerDateMode, careerDateStart, careerDateEnd,
-                lastUpdateMode, lastUpdateStart, lastUpdateEnd, rp1Versions, difficulties, playstyles, recordEligibility)
+
+            var cohort = ApplyGlobalFilters(careers, filter)
                 .Where(c => c.EligibleForRecords)
                 .ToList();
 
@@ -99,9 +90,9 @@ namespace RP1AnalyticsWebApp.Services
             {
                 Filters = new RecordFilterSummary
                 {
-                    Rp1Version = rp1Versions?.Count == 1 ? rp1Versions[0] : null,
-                    Difficulty = difficulties?.Count == 1 ? difficulties[0] : null,
-                    Playstyle = playstyles?.Count == 1 ? playstyles[0] : null,
+                    Rp1Version = filter.Rp1Versions?.Count == 1 ? filter.Rp1Versions[0] : null,
+                    Difficulty = filter.Difficulties?.Count == 1 ? filter.Difficulties[0] : null,
+                    Playstyle = filter.Playstyles?.Count == 1 ? filter.Playstyles[0] : null,
                     CareerCount = cohort.Count,
                     EligibleOnly = true
                 },
@@ -110,15 +101,13 @@ namespace RP1AnalyticsWebApp.Services
             };
         }
 
-        public async Task<CareerOverviewSnapshot> GetCareerOverviewAsync(List<string> players = null, List<string> races = null,
-            ComparisonEndDateMode careerDateMode = ComparisonEndDateMode.All, DateTime? careerDateStart = null, DateTime? careerDateEnd = null,
-            ComparisonEndDateMode lastUpdateMode = ComparisonEndDateMode.All, DateTime? lastUpdateStart = null, DateTime? lastUpdateEnd = null,
-            List<string> rp1Versions = null, List<string> difficulties = null, List<string> playstyles = null,
-            string recordEligibility = "All")
+        public async Task<CareerOverviewSnapshot> GetCareerOverviewAsync(CareerComparisonFilter filter = null)
         {
+            filter ??= new CareerComparisonFilter();
+
             var careers = await _careerLogService.GetAsync();
-            var filteredCareers = ApplyGlobalFilters(careers, players, races, careerDateMode, careerDateStart, careerDateEnd,
-                lastUpdateMode, lastUpdateStart, lastUpdateEnd, rp1Versions, difficulties, playstyles, recordEligibility);
+
+            var filteredCareers = ApplyGlobalFilters(careers, filter);
             var eligibleCareers = filteredCareers.Where(c => c.EligibleForRecords).ToList();
             var recordCounts = CreateRecordSummaries(eligibleCareers);
 
@@ -150,36 +139,31 @@ namespace RP1AnalyticsWebApp.Services
             };
         }
 
-        private static CohortSummary CreateCohortSummary(CareerLog target, List<CareerLog> cohort,
-            List<string> players, List<string> races, ComparisonEndDateMode careerDateMode,
-            DateTime? careerDateStart, DateTime? careerDateEnd,
-            ComparisonEndDateMode lastUpdateMode, DateTime? lastUpdateStart, DateTime? lastUpdateEnd,
-            List<string> rp1Versions, List<string> difficulties, List<string> playstyles, string recordEligibility)
+        private static CohortSummary CreateCohortSummary(CareerLog target, List<CareerLog> cohort, CareerComparisonFilter filter)
         {
-            var normalizedStart = NormalizeStartDate(careerDateMode, careerDateStart, careerDateEnd);
-            var normalizedEnd = NormalizeEndDate(careerDateMode, careerDateStart, careerDateEnd);
-            var normalizedLastUpdateStart = NormalizeStartDate(lastUpdateMode, lastUpdateStart, lastUpdateEnd);
-            var normalizedLastUpdateEnd = NormalizeEndDate(lastUpdateMode, lastUpdateStart, lastUpdateEnd);
+            var normalizedStart = NormalizeStartDate(filter.CareerDateMode, filter.CareerDateStart, filter.CareerDateEnd);
+            var normalizedEnd = NormalizeEndDate(filter.CareerDateMode, filter.CareerDateStart, filter.CareerDateEnd);
+            var normalizedLastUpdateStart = NormalizeStartDate(filter.LastUpdateMode, filter.LastUpdateStart, filter.LastUpdateEnd);
+            var normalizedLastUpdateEnd = NormalizeEndDate(filter.LastUpdateMode, filter.LastUpdateStart, filter.LastUpdateEnd);
 
             return new CohortSummary
             {
                 CareerCount = cohort.Count,
-                Rp1Version = SingleFilterValue(rp1Versions),
+                Rp1Version = SingleFilterValue(filter.Rp1Versions),
                 VersionSort = null,
-                Difficulty = SingleFilterValue(difficulties),
-                Playstyle = SingleFilterValue(playstyles),
-                EligibleOnly = string.Equals(recordEligibility, "Eligible", StringComparison.OrdinalIgnoreCase),
+                Difficulty = SingleFilterValue(filter.Difficulties),
+                Playstyle = SingleFilterValue(filter.Playstyles),
+                EligibleOnly = string.Equals(filter.RecordEligibility, "Eligible", StringComparison.OrdinalIgnoreCase),
                 Scope = "GlobalFilters",
-                Description = GlobalFilterDescription(players, races, careerDateMode, normalizedStart, normalizedEnd,
-                    lastUpdateMode, normalizedLastUpdateStart, normalizedLastUpdateEnd, rp1Versions, difficulties,
-                    playstyles, recordEligibility),
+                Description = GlobalFilterDescription(filter, normalizedStart, normalizedEnd,
+                    normalizedLastUpdateStart, normalizedLastUpdateEnd),
                 EndDateFilter = new ComparisonEndDateFilter
                 {
-                    Mode = careerDateMode.ToString(),
+                    Mode = filter.CareerDateMode.ToString(),
                     TargetEndDate = target.EndDate,
                     StartDate = normalizedStart,
                     EndDate = normalizedEnd,
-                    Description = EndDateDescription(careerDateMode, normalizedStart, normalizedEnd)
+                    Description = EndDateDescription(filter.CareerDateMode, normalizedStart, normalizedEnd)
                 }
             };
         }
@@ -238,35 +222,34 @@ namespace RP1AnalyticsWebApp.Services
             };
         }
 
-        private static string GlobalFilterDescription(List<string> players, List<string> races,
-            ComparisonEndDateMode careerDateMode, DateTime? careerDateStart, DateTime? careerDateEnd,
-            ComparisonEndDateMode lastUpdateMode, DateTime? lastUpdateStart, DateTime? lastUpdateEnd,
-            List<string> rp1Versions, List<string> difficulties, List<string> playstyles, string recordEligibility)
+        private static string GlobalFilterDescription(CareerComparisonFilter filter,
+            DateTime? normalizedCareerStart, DateTime? normalizedCareerEnd,
+            DateTime? normalizedLastUpdateStart, DateTime? normalizedLastUpdateEnd)
         {
             var parts = new List<string>();
-            AddFilterList(parts, "Player", players);
-            AddFilterList(parts, "Race", races);
-            AddFilterList(parts, "RP-1", rp1Versions);
-            AddFilterList(parts, "Difficulty", difficulties);
-            AddFilterList(parts, "Playstyle", playstyles);
+            AddFilterList(parts, "Player", filter.Players);
+            AddFilterList(parts, "Race", filter.Races);
+            AddFilterList(parts, "RP-1", filter.Rp1Versions);
+            AddFilterList(parts, "Difficulty", filter.Difficulties);
+            AddFilterList(parts, "Playstyle", filter.Playstyles);
 
-            string careerDateDescription = DateFilterDescription("Career date", careerDateMode, careerDateStart, careerDateEnd);
+            string careerDateDescription = DateFilterDescription("Career date", filter.CareerDateMode, normalizedCareerStart, normalizedCareerEnd);
             if (careerDateDescription != null)
             {
                 parts.Add(careerDateDescription);
             }
 
-            string lastUpdateDescription = DateFilterDescription("Last update", lastUpdateMode, lastUpdateStart, lastUpdateEnd);
+            string lastUpdateDescription = DateFilterDescription("Last update", filter.LastUpdateMode, normalizedLastUpdateStart, normalizedLastUpdateEnd);
             if (lastUpdateDescription != null)
             {
                 parts.Add(lastUpdateDescription);
             }
 
-            if (string.Equals(recordEligibility, "Eligible", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(filter.RecordEligibility, "Eligible", StringComparison.OrdinalIgnoreCase))
             {
                 parts.Add("Record eligibility: eligible only");
             }
-            else if (string.Equals(recordEligibility, "Ineligible", StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(filter.RecordEligibility, "Ineligible", StringComparison.OrdinalIgnoreCase))
             {
                 parts.Add("Record eligibility: ineligible only");
             }
@@ -802,17 +785,14 @@ namespace RP1AnalyticsWebApp.Services
             return launch.Failures?.Count > 0 ? "Had failures" : null;
         }
 
-        private static List<CareerLog> ApplyGlobalFilters(List<CareerLog> careers, List<string> players, List<string> races,
-            ComparisonEndDateMode careerDateMode, DateTime? careerDateStart, DateTime? careerDateEnd,
-            ComparisonEndDateMode lastUpdateMode, DateTime? lastUpdateStart, DateTime? lastUpdateEnd,
-            List<string> rp1Versions, List<string> difficulties, List<string> playstyles, string recordEligibility)
+        private static List<CareerLog> ApplyGlobalFilters(List<CareerLog> careers, CareerComparisonFilter filter)
         {
             IEnumerable<CareerLog> q = careers;
-            var playerSet = StringSet(players);
-            var raceSet = StringSet(races);
-            var versionSet = StringSet(rp1Versions);
-            var difficultySet = StringSet(difficulties);
-            var playstyleSet = StringSet(playstyles);
+            var playerSet = StringSet(filter.Players);
+            var raceSet = StringSet(filter.Races);
+            var versionSet = StringSet(filter.Rp1Versions);
+            var difficultySet = StringSet(filter.Difficulties);
+            var playstyleSet = StringSet(filter.Playstyles);
 
             if (playerSet.Count > 0)
             {
@@ -824,14 +804,14 @@ namespace RP1AnalyticsWebApp.Services
                 q = q.Where(c => !string.IsNullOrWhiteSpace(c.Race) && raceSet.Contains(c.Race));
             }
 
-            if (careerDateMode != ComparisonEndDateMode.All)
+            if (filter.CareerDateMode != ComparisonEndDateMode.All)
             {
-                q = q.Where(c => MatchesDateMode(c.EndDate, careerDateMode, careerDateStart, careerDateEnd));
+                q = q.Where(c => MatchesDateMode(c.EndDate, filter.CareerDateMode, filter.CareerDateStart, filter.CareerDateEnd));
             }
 
-            if (lastUpdateMode != ComparisonEndDateMode.All)
+            if (filter.LastUpdateMode != ComparisonEndDateMode.All)
             {
-                q = q.Where(c => MatchesDateMode(c.LastUpdate, lastUpdateMode, lastUpdateStart, lastUpdateEnd));
+                q = q.Where(c => MatchesDateMode(c.LastUpdate, filter.LastUpdateMode, filter.LastUpdateStart, filter.LastUpdateEnd));
             }
 
             if (versionSet.Count > 0)
@@ -852,11 +832,11 @@ namespace RP1AnalyticsWebApp.Services
                                  playstyleSet.Contains(c.CareerLogMeta.CareerPlaystyle.ToString()));
             }
 
-            if (string.Equals(recordEligibility, "Eligible", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(filter.RecordEligibility, "Eligible", StringComparison.OrdinalIgnoreCase))
             {
                 q = q.Where(c => c.EligibleForRecords);
             }
-            else if (string.Equals(recordEligibility, "Ineligible", StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(filter.RecordEligibility, "Ineligible", StringComparison.OrdinalIgnoreCase))
             {
                 q = q.Where(c => !c.EligibleForRecords);
             }
@@ -1035,66 +1015,6 @@ namespace RP1AnalyticsWebApp.Services
             public int ProgramRecords { get; set; }
             public int RecordCount => ContractRecords + ProgramRecords;
             public List<string> Names { get; } = new();
-        }
-
-        private static bool MatchesDateFilter(DateTime candidate, string op, DateTime filterDate)
-        {
-            var left = candidate.Date;
-            var right = filterDate.Date;
-            return op switch
-            {
-                "le" => left <= right,
-                "ge" => left >= right,
-                _ => left == right
-            };
-        }
-
-        private static bool VersionMatches(int? candidateVersionSort, int targetVersionSort, string op, bool minorOnly)
-        {
-            if (!candidateVersionSort.HasValue)
-            {
-                return false;
-            }
-
-            return op switch
-            {
-                "le" => candidateVersionSort.Value <= targetVersionSort,
-                "ge" => candidateVersionSort.Value >= targetVersionSort,
-                _ when minorOnly => candidateVersionSort.Value >= targetVersionSort &&
-                                    candidateVersionSort.Value < targetVersionSort + 1000,
-                _ => candidateVersionSort.Value == targetVersionSort
-            };
-        }
-
-        private List<CareerLog> ApplyRecordFilters(List<CareerLog> careers, string rp1Version, string rp1VersionOp,
-            DifficultyLevel? difficulty, CareerPlaystyle? playstyle, bool includeIneligible)
-        {
-            var q = careers.Where(c => c.CareerLogMeta != null && (includeIneligible || c.EligibleForRecords));
-
-            if (!string.IsNullOrWhiteSpace(rp1Version) && TryCreateSortableVersion(rp1Version, out int versionSort, out bool minorOnly))
-            {
-                string op = string.IsNullOrWhiteSpace(rp1VersionOp) ? "eq" : rp1VersionOp;
-                q = op switch
-                {
-                    "le" => q.Where(c => c.CareerLogMeta.VersionSort <= versionSort),
-                    "ge" => q.Where(c => c.CareerLogMeta.VersionSort >= versionSort),
-                    _ when minorOnly => q.Where(c => c.CareerLogMeta.VersionSort >= versionSort &&
-                                                     c.CareerLogMeta.VersionSort < versionSort + 1000),
-                    _ => q.Where(c => c.CareerLogMeta.VersionSort == versionSort)
-                };
-            }
-
-            if (difficulty.HasValue)
-            {
-                q = q.Where(c => c.CareerLogMeta.DifficultyLevel == difficulty.Value);
-            }
-
-            if (playstyle.HasValue)
-            {
-                q = q.Where(c => c.CareerLogMeta.CareerPlaystyle == playstyle.Value);
-            }
-
-            return q.ToList();
         }
 
         private List<ContractRecord> CreateContractRecords(List<CareerLog> cohort)
@@ -1593,31 +1513,6 @@ namespace RP1AnalyticsWebApp.Services
         private static double PercentilePosition(List<double> sortedAscending, double value)
         {
             return Math.Round(sortedAscending.Count(v => v <= value) * 100d / sortedAscending.Count, 1);
-        }
-
-        private static bool TryCreateSortableVersion(string version, out int value, out bool minorOnly)
-        {
-            value = 0;
-            minorOnly = false;
-            string[] split = version.Split('.', StringSplitOptions.RemoveEmptyEntries);
-            if (split.Length == 0)
-            {
-                return false;
-            }
-
-            int[] mults = { 1000000, 1000, 1 };
-            for (int i = 0; i < Math.Min(3, split.Length); i++)
-            {
-                if (!int.TryParse(split[i], out int component))
-                {
-                    return false;
-                }
-
-                value += component * mults[i];
-            }
-
-            minorOnly = split.Length == 2;
-            return true;
         }
 
         private static string FormatMass(float value)
