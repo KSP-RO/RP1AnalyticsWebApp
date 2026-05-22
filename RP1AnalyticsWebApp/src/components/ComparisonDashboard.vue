@@ -135,7 +135,7 @@
                         : key === 'engineerEfficiency'
                             ? 'Engineer Efficiency'
                             : key === 'confidence'
-                                ? 'Confidence earned'
+                                ? 'Current Confidence'
                                 : metric.label
                 };
             })

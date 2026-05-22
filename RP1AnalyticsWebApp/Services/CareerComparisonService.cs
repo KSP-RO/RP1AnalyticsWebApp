@@ -292,8 +292,8 @@ namespace RP1AnalyticsWebApp.Services
                     "Researchers at the latest uploaded period."),
                 Metric("engineerEfficiency", "Engineer efficiency", "Workforce", "percent", target, cohort, c => Last(c)?.EfficiencyEngineers * 100d, true,
                     "Engineer efficiency at the latest uploaded period."),
-                Metric("confidence", "Confidence earned", "Confidence", "score", target, cohort, c => SumPeriods(c, p => p.Confidence), true,
-                    "Cumulative confidence earned across uploaded periods.")
+                Metric("confidence", "Current confidence", "Confidence", "score", target, cohort, c => Last(c)?.Confidence, true,
+                    "Confidence balance at the latest uploaded period.")
             };
         }
 
@@ -496,7 +496,7 @@ namespace RP1AnalyticsWebApp.Services
             return new List<ComparisonBandSeries>
             {
                 BandSeries("totalSpending", "Total Spending", "funds", target, cohort, TotalSpendingByDate),
-                BandSeries("confidence", "Confidence Earned", "score", target, cohort, ConfidenceEarnedByDate)
+                BandSeries("confidence", "Current Confidence", "score", target, cohort, ConfidenceByDate)
             };
         }
 
@@ -1187,16 +1187,13 @@ namespace RP1AnalyticsWebApp.Services
                 .Sum(SpendingForPeriod);
         }
 
-        private static double? ConfidenceEarnedByDate(CareerLog career, DateTime date)
+        private static double? ConfidenceByDate(CareerLog career, DateTime date)
         {
-            if (career.CareerLogEntries == null || career.CareerLogEntries.Count == 0)
-            {
-                return null;
-            }
-
-            return career.CareerLogEntries
+            return career.CareerLogEntries?
                 .Where(p => p.EndDate.Date <= date.Date)
-                .Sum(p => p.Confidence);
+                .OrderBy(p => p.EndDate)
+                .Select(p => (double?)p.Confidence)
+                .LastOrDefault();
         }
 
         private static double SpendingForPeriod(CareerLogPeriod p)

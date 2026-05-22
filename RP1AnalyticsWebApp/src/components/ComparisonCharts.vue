@@ -185,7 +185,7 @@
                 <div class="chart-block__header">
                     <div>
                         <h3>Economy + Confidence</h3>
-                        <p>Total spending and cumulative confidence earned in context with the comparison group.</p>
+                        <p>Total spending and current confidence in context with the comparison group.</p>
                     </div>
                 </div>
                 <div class="stacked-band-charts">
