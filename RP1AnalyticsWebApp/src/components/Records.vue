@@ -1,4 +1,6 @@
 <template>
+    <ActiveFiltersSummary :filters="filters" />
+
     <h2 class="subtitle">Program Records</h2>
     <div id="selection-tab" class="selection-tab mb-1">
         <ProgramRecordTypeSelect :active="programsMode" v-on:change-active="handleChangeActive" />
@@ -16,6 +18,7 @@
     import { activeFilters } from '../utils/activeFilters';
     import type { ProgramRecord, ContractEventWithCareerInfo } from 'types';
     import ProgramRecordTypeSelect from '../components/ProgramRecordTypeSelect.vue';
+    import ActiveFiltersSummary from '../components/ActiveFiltersSummary.vue';
     import ProgramRecordsTable from '../components/ProgramRecordsTable.vue';
     import ProgramLeaderboardModal from '../components/ProgramLeaderboardModal.vue';
     import ContractRecordsTable from '../components/ContractRecordsTable.vue';

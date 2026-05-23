@@ -5,7 +5,8 @@
                 <input ref="inputRef"
                        type="text"
                        v-model="inputText"
-                       @focus="isOpen = true"
+                       @focus="openDropdown"
+                       @input="isSearching = true"
                        @keydown="onKeyDown"
                        placeholder="Select a career"
                        class="combo-input input is-rounded" />
@@ -80,6 +81,7 @@
     const items = ref<CareerListItem[] | null>(null);
     const isLoading = ref(false);
     const isOpen = ref(false);
+    const isSearching = ref(false);
     const inputText = ref('');
     const highlightedIndex = ref(-1);
     const dropdownContentRef = ref<HTMLElement | null>(null);
@@ -100,8 +102,15 @@
     function selectValue(value: CareerListItem) {
         inputText.value = value.name;
         isOpen.value = false;
+        isSearching.value = false;
         highlightedIndex.value = -1;
         careerChanged(value.id);
+    }
+
+    function openDropdown() {
+        isOpen.value = true;
+        isSearching.value = false;
+        inputRef.value?.select();
     }
 
     function onKeyDown(e: KeyboardEvent) {
@@ -140,6 +149,7 @@
     function updateInputText() {
         const selItem = items.value!.find(i => i.id === props.selectedCareer);
         inputText.value = selItem?.name ?? '';
+        isSearching.value = false;
     }
 
     function onMouseDown(e: MouseEvent) {
@@ -186,7 +196,7 @@
         let arr = items.value;
         if (!arr) return new Map<string, CareerListItem[]>();
 
-        const text = inputText.value.toLowerCase();
+        const text = isSearching.value ? inputText.value.toLowerCase() : '';
         if (text.length > 0) {
             arr = arr.filter(i => getPlayerName(i).toLowerCase().includes(text) ||
                                   i.name.toLowerCase().includes(text));

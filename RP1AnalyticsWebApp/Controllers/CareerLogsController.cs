@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,13 +15,15 @@ namespace RP1AnalyticsWebApp.Controllers
     public class CareerLogsController : ControllerBase
     {
         private readonly CareerLogService _careerLogService;
+        private readonly CareerComparisonService _careerComparisonService;
         private readonly TelemetryClient _telemetry;
 
         private bool IsLocalhost => string.Equals(HttpContext.Request.Host.Host, "localhost", System.StringComparison.OrdinalIgnoreCase);
 
-        public CareerLogsController(CareerLogService careerLogService, TelemetryClient telemetry)
+        public CareerLogsController(CareerLogService careerLogService, CareerComparisonService careerComparisonService, TelemetryClient telemetry)
         {
             _careerLogService = careerLogService;
+            _careerComparisonService = careerComparisonService;
             _telemetry = telemetry;
         }
 
@@ -43,6 +46,13 @@ namespace RP1AnalyticsWebApp.Controllers
             return await _careerLogService.GetCareerListAsync(userName);
         }
 
+        [HttpGet("Overview", Name = "GetCareerOverview")]
+        public async Task<ActionResult<CareerOverviewSnapshot>> GetCareerOverviewAsync([FromQuery] CareerComparisonFilter filter)
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetCareerOverview");
+            return await _careerComparisonService.GetCareerOverviewAsync(filter);
+        }
+
         [HttpGet("{id:length(24)}", Name = "GetCareerLog")]
         public async Task<ActionResult<CareerLog>> GetCareerLogAsync(string id)
         {
@@ -63,6 +73,43 @@ namespace RP1AnalyticsWebApp.Controllers
             }
 
             return careerLog;
+        }
+
+        [HttpGet("{id:length(24)}/Comparison", Name = "GetCareerComparison")]
+        public async Task<ActionResult<CareerComparison>> GetCareerComparisonAsync(string id,
+            [FromQuery] CareerComparisonFilter filter)
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetCareerComparison", new Dictionary<string, string>
+            {
+                { nameof(id), id },
+                { "careerDateMode", filter.CareerDateMode.ToString() },
+                { "lastUpdateMode", filter.LastUpdateMode.ToString() }
+            });
+
+            CareerComparison comparison = await _careerComparisonService.GetComparisonAsync(id, filter);
+            if (comparison == null)
+            {
+                return NotFound();
+            }
+
+            return comparison;
+        }
+
+        [HttpGet("{id:length(24)}/Timeline", Name = "GetCareerTimeline")]
+        public async Task<ActionResult<List<CareerTimelineEvent>>> GetCareerTimelineAsync(string id)
+        {
+            _telemetry.TrackEvent("CareerLogsController-GetCareerTimeline", new Dictionary<string, string>
+            {
+                { nameof(id), id }
+            });
+
+            List<CareerTimelineEvent> timeline = await _careerComparisonService.GetTimelineAsync(id);
+            if (timeline == null)
+            {
+                return NotFound();
+            }
+
+            return timeline;
         }
 
         [HttpGet("{id:length(24)}/Contracts", Name = "GetCareerContracts")]
