@@ -4,50 +4,58 @@ on:
   push:
     branches:
       - master
-
-env:
-  AZURE_WEBAPP_NAME: RP1CareerLog     # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '10.0.x'            # set this to the dot net version to use
-  NODE_VERSION: '20.x'                # set this to the node version to use
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    environment: production
     permissions:
-      id-token: write   #This is required for requesting the JWT
-      contents: read    #This is required for actions/checkout
+      contents: read #This is required for actions/checkout
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v5
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }} 
+          dotnet-version: '10.x'
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v4
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
         with:
-          node-version:  ${{ env.NODE_VERSION }}
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
 
-      - name: dotnet build and publish
-        run: |
-          dotnet restore
-          dotnet build --configuration Release
-          dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/azure-prod' 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
 
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_748F88D058DD4FBAB690FAB4D0C27D03 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9C269CD678E3422FBC2CA01E881C7AFF }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_6822A6434B25448F86223A5522CBF3E9 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_AEBAAFA7FDDD4F2DA2A6A93BFBF9A7A1 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1EEF65C51A934C718CCD85FD748F531D }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A69355C9E39044A4B7C194A2F82143C3 }}
 
       - name: Deploy to Azure Web App
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
-        with: 
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        with:
+          app-name: 'rp1careerlog'
           slot-name: 'Production'
-          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/azure-prod'
+          package: .
