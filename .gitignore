@@ -210,6 +210,14 @@ project.lock.json
 *.feature.xlsx.*
 *.Specs_*.html
 
+# Clankers
+CLAUDE.md
+/.claude/
+/.serena/
+
+# Publish profiles
+profile.arm.json
+
 RP1AnalyticsWebApp/wwwroot/*
 RP1AnalyticsWebApp/appsettings.Development.json
 RP1AnalyticsWebApp/appsettings.json
