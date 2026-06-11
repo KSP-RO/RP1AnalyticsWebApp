@@ -9,7 +9,9 @@ const baseFolder =
         ? `${process.env.APPDATA}/ASP.NET/https`
         : `${process.env.HOME}/.aspnet/https`;
 
-const certificateName = process.env.npm_package_name;
+// Fall back to a literal name: when the dev server is auto-started by Vite.AspNetCore
+// (Server.AutoRun) the Vite binary is spawned directly, so npm_package_name is undefined.
+const certificateName = process.env.npm_package_name || 'rp1analyticswebapp';
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
 

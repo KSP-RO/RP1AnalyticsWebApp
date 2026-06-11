@@ -129,4 +129,29 @@
     <Exec Command="npm run build" />
   </Target>
 
+  <!--
+    Export the ASP.NET HTTPS dev certificate to the path the Vite dev server expects.
+    The Vite dev server (started via Vite.AspNetCore Server.AutoRun) serves over HTTPS using
+    these files; if they are missing it fails to bind port 5173, causing ERR_CONNECTION_REFUSED.
+    Runs only in Debug and only when the files are missing, so it is a no-op on normal rebuilds.
+    The cert name must match `certificateName` in vite.config.ts.
+  -->
+  <Target Name="EnsureViteHttpsCert" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
+    <PropertyGroup>
+      <ViteCertName>rp1analyticswebapp</ViteCertName>
+      <ViteCertDir Condition=" '$(APPDATA)' != '' ">$(APPDATA)\ASP.NET\https</ViteCertDir>
+      <ViteCertDir Condition=" '$(APPDATA)' == '' ">$(HOME)/.aspnet/https</ViteCertDir>
+      <ViteCertPath>$(ViteCertDir)\$(ViteCertName).pem</ViteCertPath>
+      <ViteKeyPath>$(ViteCertDir)\$(ViteCertName).key</ViteKeyPath>
+    </PropertyGroup>
+    <Message Importance="high"
+             Text="Exporting HTTPS dev certificate for the Vite dev server to '$(ViteCertPath)'..."
+             Condition=" !Exists('$(ViteCertPath)') Or !Exists('$(ViteKeyPath)') " />
+    <!-- dotnet dev-certs will NOT create the target directory; it must exist beforehand. -->
+    <MakeDir Directories="$(ViteCertDir)"
+             Condition=" !Exists('$(ViteCertDir)') And ( !Exists('$(ViteCertPath)') Or !Exists('$(ViteKeyPath)') ) " />
+    <Exec Command="dotnet dev-certs https --export-path &quot;$(ViteCertPath)&quot; --format Pem --no-password"
+          Condition=" !Exists('$(ViteCertPath)') Or !Exists('$(ViteKeyPath)') " />
+  </Target>
+
 </Project>
