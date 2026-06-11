@@ -212,6 +212,7 @@ export interface Vector3 {
 
 export type DateFilterMode = 'All' | 'Range' | 'Before' | 'After';
 export type RecordEligibilityFilter = 'All' | 'Eligible' | 'Ineligible';
+export type VersionFilterOp = 'Any' | 'Is' | 'AtLeast' | 'AtMost';
 
 export interface Filters {
     players: string[];
@@ -222,7 +223,8 @@ export interface Filters {
     lastUpdateMode: DateFilterMode;
     lastUpdateStart: string | null;
     lastUpdateEnd: string | null;
-    rp1Versions: string[];
+    rp1VersionOp: VersionFilterOp;
+    rp1Version: string | null;
     difficulties: string[];
     playstyles: string[];
     recordEligibility: RecordEligibilityFilter;

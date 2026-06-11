@@ -33,18 +33,27 @@
                 <section class="filter-card">
                     <div class="filter-card__heading">
                         <h3>RP-1 Version</h3>
-                        <span>{{ localFilters.rp1Versions.length || 'All' }}</span>
+                        <span>{{ versionBadge }}</span>
                     </div>
-                    <label class="filter-search">
-                        <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
-                        <input v-model="versionSearch" type="search" placeholder="Search versions" />
+                    <div class="segmented-control" role="group" aria-label="RP-1 version filter mode">
+                        <button v-for="op in versionOps"
+                                :key="op.value"
+                                type="button"
+                                :class="{ 'is-active': localFilters.rp1VersionOp === op.value }"
+                                @click="setVersionOp(op.value)">
+                            {{ op.label }}
+                        </button>
+                    </div>
+                    <label v-if="localFilters.rp1VersionOp !== 'Any'" class="version-select">
+                        <select v-model="localFilters.rp1Version">
+                            <optgroup v-if="majorVersionOptions.length" label="Major">
+                                <option v-for="major in majorVersionOptions" :key="`major-${major.value}`" :value="major.value">{{ major.label }}</option>
+                            </optgroup>
+                            <optgroup v-if="exactVersionOptions.length" label="Exact">
+                                <option v-for="version in exactVersionOptions" :key="`exact-${version}`" :value="version">{{ version }}</option>
+                            </optgroup>
+                        </select>
                     </label>
-                    <div class="check-list">
-                        <label v-for="version in filteredVersions" :key="version" class="check-row">
-                            <input type="checkbox" :checked="isSelected(localFilters.rp1Versions, version)" @change="toggle(localFilters.rp1Versions, version)" />
-                            <span>{{ version }}</span>
-                        </label>
-                    </div>
                 </section>
 
                 <section class="filter-card">
@@ -176,9 +185,10 @@
 
 <script setup lang="ts">
     import { computed, ref, watch } from 'vue';
-    import type { DateFilterMode, Filters, RecordEligibilityFilter, UserData } from 'types';
+    import type { DateFilterMode, Filters, RecordEligibilityFilter, UserData, VersionFilterOp } from 'types';
     import { fetchCareerOverview, fetchRaces, fetchUsers } from '../utils/api';
     import { createEmptyFilters, normalizeFilters } from '../utils/activeFilters';
+    import { versionFilterLabel } from '../utils/versionFilter';
 
     const props = defineProps<{
         filters?: Filters;
@@ -196,10 +206,15 @@
     const rp1Versions = ref<string[]>([]);
     const playerSearch = ref('');
     const raceSearch = ref('');
-    const versionSearch = ref('');
     const localFilters = ref<Filters>(makeLocalFilters());
     const difficultyOptions = ['Easy', 'Normal', 'Moderate', 'Hard'];
     const playstyleOptions = ['Normal', 'Historic', 'Caveman'];
+    const versionOps: { label: string; value: VersionFilterOp }[] = [
+        { label: 'Any', value: 'Any' },
+        { label: 'Is', value: 'Is' },
+        { label: '≥', value: 'AtLeast' },
+        { label: '≤', value: 'AtMost' }
+    ];
     const dateModes: { label: string; value: DateFilterMode }[] = [
         { label: 'All', value: 'All' },
         { label: 'Range', value: 'Range' },
@@ -224,19 +239,42 @@
     });
 
     const filteredRaces = computed(() => filterStrings(races.value, raceSearch.value));
-    const filteredVersions = computed(() => filterStrings(rp1Versions.value, versionSearch.value));
+
+    const exactVersionOptions = computed(() =>
+        [...rp1Versions.value].sort((a, b) => b.localeCompare(a, undefined, { numeric: true })));
+
+    const majorVersionOptions = computed(() => {
+        const majors = new Set<number>();
+        for (const version of rp1Versions.value) {
+            const major = Number(version.split('.')[0]);
+            if (Number.isFinite(major)) majors.add(major);
+        }
+        return [...majors].sort((a, b) => b - a).map(major => ({ value: String(major), label: `${major}.x` }));
+    });
+
+    const defaultVersionValue = computed(() => majorVersionOptions.value[0]?.value ?? exactVersionOptions.value[0] ?? null);
+
+    const versionActive = computed(() => localFilters.value.rp1VersionOp !== 'Any' && !!localFilters.value.rp1Version);
+    const versionBadge = computed(() => versionFilterLabel(localFilters.value.rp1VersionOp, localFilters.value.rp1Version) ?? 'All');
 
     const activeCount = computed(() => {
         let count = localFilters.value.players.length +
             localFilters.value.races.length +
-            localFilters.value.rp1Versions.length +
             localFilters.value.difficulties.length +
             localFilters.value.playstyles.length;
+        if (versionActive.value) count++;
         if (localFilters.value.recordEligibility !== 'All') count++;
         if (localFilters.value.careerDateMode !== 'All') count++;
         if (localFilters.value.lastUpdateMode !== 'All') count++;
         return count;
     });
+
+    function setVersionOp(op: VersionFilterOp) {
+        localFilters.value.rp1VersionOp = op;
+        if (op !== 'Any' && !localFilters.value.rp1Version) {
+            localFilters.value.rp1Version = defaultVersionValue.value;
+        }
+    }
 
     function makeLocalFilters(): Filters {
         return normalizeFilters(props.filters);
@@ -487,6 +525,21 @@
         color: var(--filter-ink);
         font: inherit;
         outline: 0;
+    }
+
+    .version-select {
+        display: block;
+        margin-top: 0.65rem;
+    }
+
+    .version-select select {
+        width: 100%;
+        border: 1px solid var(--filter-line);
+        border-radius: 7px;
+        padding: 0.42rem 0.55rem;
+        background: #fff;
+        color: var(--filter-ink);
+        font: inherit;
     }
 
     .check-list {

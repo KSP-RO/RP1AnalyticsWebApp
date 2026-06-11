@@ -25,7 +25,7 @@
             const hasActiveFilters = computed(() =>
                 filters.players.length > 0 ||
                 filters.races.length > 0 ||
-                filters.rp1Versions.length > 0 ||
+                filters.rp1VersionOp !== 'Any' ||
                 filters.difficulties.length > 0 ||
                 filters.playstyles.length > 0 ||
                 filters.recordEligibility !== 'All' ||

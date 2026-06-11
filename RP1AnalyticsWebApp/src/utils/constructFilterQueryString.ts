@@ -1,4 +1,5 @@
-import type { Filters } from 'types';
+import type { Filters, VersionFilterOp } from 'types';
+import { versionSortBounds } from './versionFilter';
 
 export function constructFilterQueryString(filters: Filters | null, omitSeparator: boolean) {
     if (filters == null) return '';
@@ -16,7 +17,7 @@ export function constructFilterQueryString(filters: Filters | null, omitSeparato
     const lastUpdateFilter = dateModeFilter('LastUpdate', filters.lastUpdateMode, filters.lastUpdateStart, filters.lastUpdateEnd);
     if (lastUpdateFilter) arr.push(lastUpdateFilter);
 
-    const versionFilter = stringOrFilter('CareerLogMeta/VersionTag', filters.rp1Versions);
+    const versionFilter = versionSortFilter(filters.rp1VersionOp, filters.rp1Version);
     if (versionFilter) arr.push(versionFilter);
 
     const difficultyFilter = stringOrFilter('CareerLogMeta/DifficultyLevel', filters.difficulties);
@@ -32,6 +33,16 @@ export function constructFilterQueryString(filters: Filters | null, omitSeparato
     if (arr.length === 0) return '';
 
     return `${omitSeparator ? '' : '?'}$filter=${arr.join(' and ')}`;
+}
+
+function versionSortFilter(op: VersionFilterOp, value: string | null) {
+    const bounds = versionSortBounds(op, value);
+    if (!bounds) return '';
+
+    const parts: string[] = [];
+    if (bounds.min != null) parts.push(`CareerLogMeta/VersionSort ge ${bounds.min}`);
+    if (bounds.max != null) parts.push(`CareerLogMeta/VersionSort lt ${bounds.max}`);
+    return parts.join(' and ');
 }
 
 function stringOrFilter(property: string, values: string[]) {

@@ -13,7 +13,9 @@ namespace RP1AnalyticsWebApp.Models
         public ComparisonEndDateMode LastUpdateMode { get; set; } = ComparisonEndDateMode.All;
         public DateTime? LastUpdateStart { get; set; }
         public DateTime? LastUpdateEnd { get; set; }
-        public List<string> Rp1Versions { get; set; }
+        public int? Rp1VersionSortMin { get; set; }
+        public int? Rp1VersionSortMax { get; set; }
+        public string Rp1VersionLabel { get; set; }
         public List<string> Difficulties { get; set; }
         public List<string> Playstyles { get; set; }
         public string RecordEligibility { get; set; } = "All";

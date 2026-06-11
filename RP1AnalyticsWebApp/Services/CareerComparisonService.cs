@@ -90,7 +90,7 @@ namespace RP1AnalyticsWebApp.Services
             {
                 Filters = new RecordFilterSummary
                 {
-                    Rp1Version = filter.Rp1Versions?.Count == 1 ? filter.Rp1Versions[0] : null,
+                    Rp1Version = CleanLabel(filter.Rp1VersionLabel),
                     Difficulty = filter.Difficulties?.Count == 1 ? filter.Difficulties[0] : null,
                     Playstyle = filter.Playstyles?.Count == 1 ? filter.Playstyles[0] : null,
                     CareerCount = cohort.Count,
@@ -149,7 +149,7 @@ namespace RP1AnalyticsWebApp.Services
             return new CohortSummary
             {
                 CareerCount = cohort.Count,
-                Rp1Version = SingleFilterValue(filter.Rp1Versions),
+                Rp1Version = CleanLabel(filter.Rp1VersionLabel),
                 VersionSort = null,
                 Difficulty = SingleFilterValue(filter.Difficulties),
                 Playstyle = SingleFilterValue(filter.Playstyles),
@@ -229,7 +229,7 @@ namespace RP1AnalyticsWebApp.Services
             var parts = new List<string>();
             AddFilterList(parts, "Player", filter.Players);
             AddFilterList(parts, "Race", filter.Races);
-            AddFilterList(parts, "RP-1", filter.Rp1Versions);
+            AddFilterValue(parts, "RP-1", filter.Rp1VersionLabel);
             AddFilterList(parts, "Difficulty", filter.Difficulties);
             AddFilterList(parts, "Playstyle", filter.Playstyles);
 
@@ -790,7 +790,6 @@ namespace RP1AnalyticsWebApp.Services
             IEnumerable<CareerLog> q = careers;
             var playerSet = StringSet(filter.Players);
             var raceSet = StringSet(filter.Races);
-            var versionSet = StringSet(filter.Rp1Versions);
             var difficultySet = StringSet(filter.Difficulties);
             var playstyleSet = StringSet(filter.Playstyles);
 
@@ -814,10 +813,11 @@ namespace RP1AnalyticsWebApp.Services
                 q = q.Where(c => MatchesDateMode(c.LastUpdate, filter.LastUpdateMode, filter.LastUpdateStart, filter.LastUpdateEnd));
             }
 
-            if (versionSet.Count > 0)
+            if (filter.Rp1VersionSortMin.HasValue || filter.Rp1VersionSortMax.HasValue)
             {
-                q = q.Where(c => !string.IsNullOrWhiteSpace(c.CareerLogMeta?.VersionTag) &&
-                                 versionSet.Contains(c.CareerLogMeta.VersionTag));
+                q = q.Where(c => c.CareerLogMeta?.VersionSort != null &&
+                                 (!filter.Rp1VersionSortMin.HasValue || c.CareerLogMeta.VersionSort.Value >= filter.Rp1VersionSortMin.Value) &&
+                                 (!filter.Rp1VersionSortMax.HasValue || c.CareerLogMeta.VersionSort.Value < filter.Rp1VersionSortMax.Value));
             }
 
             if (difficultySet.Count > 0)
@@ -875,6 +875,20 @@ namespace RP1AnalyticsWebApp.Services
             parts.Add(normalized.Count <= 3
                 ? $"{label}: {string.Join(", ", normalized)}"
                 : $"{label}: {normalized.Count} selected");
+        }
+
+        private static void AddFilterValue(List<string> parts, string label, string value)
+        {
+            var clean = CleanLabel(value);
+            if (clean != null)
+            {
+                parts.Add($"{label}: {clean}");
+            }
+        }
+
+        private static string CleanLabel(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
         }
 
         private static IEnumerable<string> FilterValues(IEnumerable<string> values)

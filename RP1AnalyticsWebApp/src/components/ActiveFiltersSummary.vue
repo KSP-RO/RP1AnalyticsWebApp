@@ -9,6 +9,7 @@
 <script setup lang="ts">
     import { computed } from 'vue';
     import type { Filters } from '../types';
+    import { versionFilterLabel } from '../utils/versionFilter';
 
     const props = defineProps<{
         filters: Filters;
@@ -18,7 +19,8 @@
         const arr: string[] = [];
         pushList(arr, 'Player', props.filters.players);
         pushList(arr, 'Race', props.filters.races);
-        pushList(arr, 'RP-1', props.filters.rp1Versions);
+        const versionLabel = versionFilterLabel(props.filters.rp1VersionOp, props.filters.rp1Version);
+        if (versionLabel) arr.push(`RP-1: ${versionLabel}`);
         pushList(arr, 'Difficulty', props.filters.difficulties);
         pushList(arr, 'Playstyle', props.filters.playstyles);
         if (props.filters.recordEligibility !== 'All') {

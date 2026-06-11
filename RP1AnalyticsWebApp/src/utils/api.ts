@@ -1,5 +1,6 @@
 import { BaseContractEvent, CareerComparison, CareerListItem, CareerLog, CareerOverviewSnapshot, ContractEventWithCareerInfo, ContractRecord, FacilityEvent, Filters, HistoricalBenchmark, LaunchEvent, LaunchMetadata, LC, ExtendedLeaderEvent, ProgramItem, ProgramRecord, RecordsSnapshot, TechUnlockItem, UserData } from "../types";
 import { constructFilterQueryString } from "./constructFilterQueryString";
+import { versionFilterLabel, versionSortBounds } from "./versionFilter";
 
 interface ODateResp {
     value: any;
@@ -79,7 +80,7 @@ function filtersToParams(filters: Filters) {
     const params = new URLSearchParams();
     appendMany(params, 'players', filters.players);
     appendMany(params, 'races', filters.races);
-    appendMany(params, 'rp1Versions', filters.rp1Versions);
+    appendVersion(params, filters);
     appendMany(params, 'difficulties', filters.difficulties);
     appendMany(params, 'playstyles', filters.playstyles);
     params.set('recordEligibility', filters.recordEligibility);
@@ -99,6 +100,17 @@ function appendMany(params: URLSearchParams, key: string, values: string[]) {
     for (const value of values) {
         if (value) params.append(key, value);
     }
+}
+
+function appendVersion(params: URLSearchParams, filters: Filters) {
+    const bounds = versionSortBounds(filters.rp1VersionOp, filters.rp1Version);
+    if (!bounds) return;
+
+    if (bounds.min != null) params.set('rp1VersionSortMin', String(bounds.min));
+    if (bounds.max != null) params.set('rp1VersionSortMax', String(bounds.max));
+
+    const label = versionFilterLabel(filters.rp1VersionOp, filters.rp1Version);
+    if (label) params.set('rp1VersionLabel', label);
 }
 
 export async function assignCareerToRace(careerId: string, race: string): Promise<void> {

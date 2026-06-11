@@ -1,5 +1,5 @@
 import { reactive } from 'vue';
-import type { DateFilterMode, Filters, RecordEligibilityFilter } from 'types';
+import type { DateFilterMode, Filters, RecordEligibilityFilter, VersionFilterOp } from 'types';
 
 export function createEmptyFilters(): Filters {
     return {
@@ -11,7 +11,8 @@ export function createEmptyFilters(): Filters {
         lastUpdateMode: 'All',
         lastUpdateStart: null,
         lastUpdateEnd: null,
-        rp1Versions: [],
+        rp1VersionOp: 'Any',
+        rp1Version: null,
         difficulties: [],
         playstyles: [],
         recordEligibility: 'All'
@@ -22,6 +23,8 @@ export function normalizeFilters(value: Partial<Filters> & Record<string, unknow
     const empty = createEmptyFilters();
     if (!value) return empty;
 
+    const version = versionFilter(value);
+
     return {
         players: stringArray(value.players, value.player),
         races: stringArray(value.races, value.race),
@@ -31,11 +34,34 @@ export function normalizeFilters(value: Partial<Filters> & Record<string, unknow
         lastUpdateMode: dateMode(value.lastUpdateMode, value.lastUpdateOp, value.lastUpdate),
         lastUpdateStart: stringValue(value.lastUpdateStart) ?? legacyDateStart(value.lastUpdateOp, value.lastUpdate),
         lastUpdateEnd: stringValue(value.lastUpdateEnd) ?? legacyDateEnd(value.lastUpdateOp, value.lastUpdate),
-        rp1Versions: stringArray(value.rp1Versions, value.rp1ver),
+        rp1VersionOp: version.op,
+        rp1Version: version.version,
         difficulties: stringArray(value.difficulties, value.difficulty),
         playstyles: stringArray(value.playstyles, value.playstyle),
         recordEligibility: eligibility(value.recordEligibility)
     };
+}
+
+function versionFilter(value: Record<string, unknown>): { op: VersionFilterOp; version: string | null } {
+    const op = value.rp1VersionOp;
+    if (op === 'Any') {
+        return { op: 'Any', version: null };
+    }
+    if (op === 'Is' || op === 'AtLeast' || op === 'AtMost') {
+        const version = stringValue(value.rp1Version);
+        return version ? { op, version } : { op: 'Any', version: null };
+    }
+
+    // Legacy: original operator + free-text control (rp1verOp / rp1ver).
+    if (typeof value.rp1ver === 'string' && value.rp1ver.trim()) {
+        const legacyOp: VersionFilterOp = value.rp1verOp === 'le' ? 'AtMost' : value.rp1verOp === 'ge' ? 'AtLeast' : 'Is';
+        return { op: legacyOp, version: value.rp1ver.trim() };
+    }
+
+    // Legacy: discrete multi-select list. A single value maps cleanly; an
+    // arbitrary set cannot be expressed as a range, so it is dropped.
+    const list = stringArray(value.rp1Versions);
+    return list.length === 1 ? { op: 'Is', version: list[0] } : { op: 'Any', version: null };
 }
 
 function stringArray(primary: unknown, legacy?: unknown) {
