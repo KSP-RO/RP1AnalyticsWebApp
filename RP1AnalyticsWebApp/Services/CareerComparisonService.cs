@@ -130,7 +130,7 @@ namespace RP1AnalyticsWebApp.Services
                     LatestSaveDate = items.Count > 0 ? items.Max(c => c.EndDate) : null,
                     LatestUpdate = items.Count > 0 ? items.Max(c => c.LastUpdate) : null
                 },
-                VersionBreakdown = CreateBreakdown(items, c => c.Rp1Version),
+                VersionBreakdown = CreateBreakdown(items, c => NormalizeVersionTag(c.Rp1Version)),
                 DifficultyBreakdown = CreateBreakdown(items, c => c.DifficultyLevel),
                 PlaystyleBreakdown = CreateBreakdown(items, c => c.CareerPlaystyle),
                 RecentCareers = items.Take(10).ToList(),
@@ -1005,6 +1005,18 @@ namespace RP1AnalyticsWebApp.Services
             }
 
             return summary;
+        }
+
+        // Truncates to 3 components and strips trailing ".0" segments so that "4.3", "4.3.0",
+        // "4.3.0.0" all normalize to "4.3". The 4th component (revision) is never used in practice.
+        private static string NormalizeVersionTag(string version)
+        {
+            if (string.IsNullOrWhiteSpace(version)) return version;
+            var parts = version.Split('.');
+            if (parts.Any(p => !int.TryParse(p, out _))) return version;
+            int end = Math.Min(parts.Length, 3);
+            while (end > 1 && parts[end - 1] == "0") end--;
+            return string.Join(".", parts.Take(end));
         }
 
         private static List<CareerOverviewBreakdownItem> CreateBreakdown(List<CareerOverviewItem> items,
