@@ -15,7 +15,7 @@
                     <a role="button" class="modal-trigger" tabindex="0" @click="programClicked(r)" @keydown.enter="programClicked(r)">{{r.programDisplayName}}</a>
                 </td>
                 <td>{{formatRank(r.rank, r.cohortSize)}}</td>
-                <td class="date-col">{{formatDate(r.date)}}</td>
+                <td class="date-col" :title="formatDateFull(r.date)">{{formatDate(r.date)}}</td>
                 <td>{{r.userPreferredName}}</td>
                 <td>
                     <a :href="getCareerUrl(r)">{{r.careerName}}</a>
@@ -66,6 +66,10 @@
 
     function formatDate(date: string) {
         return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
+    }
+
+    function formatDateFull(date: string) {
+        return date ? parseUtcDate(date).toFormat('yyyy-MM-dd HH:mm:ss') : '';
     }
 
     function formatRank(rank?: number, cohortSize?: number) {

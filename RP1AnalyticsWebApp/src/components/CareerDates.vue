@@ -14,7 +14,7 @@
                 <tr v-for="item in items">
                     <td>{{ item.userPreferredName }}</td>
                     <td>{{ item.careerName }}</td>
-                    <td class="date-col">{{ getAndFormatDate(item) }}</td>
+                    <td class="date-col" :title="getAndFormatDateFull(item)">{{ getAndFormatDate(item) }}</td>
                     <td v-for="def in extraFields">{{item[def.field]}}</td>
                 </tr>
             </tbody>
@@ -40,7 +40,15 @@
         return formatDate(item[props.dateField]);
     }
 
+    function getAndFormatDateFull(item: any) {
+        return formatDateFull(item[props.dateField]);
+    }
+
     function formatDate(date: string) {
         return date ? parseUtcDate(date).toFormat('yyyy-MM-dd') : '';
+    }
+
+    function formatDateFull(date: string) {
+        return date ? parseUtcDate(date).toFormat('yyyy-MM-dd HH:mm:ss') : '';
     }
 </script>
