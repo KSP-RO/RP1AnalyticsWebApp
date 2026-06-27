@@ -53,9 +53,9 @@
             { label: 'Difficulty', value: meta.difficultyLevel || 'Unknown' },
             { label: 'Failure Model', value: meta.failureModel || 'Unknown' },
             { label: 'RP-1 Version', value: versionFormatted.value },
-            { label: 'Creation Date', value: formatToLocalDate(meta.creationDate), title: formatToUTCDateTime(meta.creationDate) },
+            { label: 'Creation Date', value: formatToLocalDate(meta.creationDate), title: formatToLocalDateTime(meta.creationDate) },
             { label: 'Current In-Game Date', value: formatToCareerDate(props.currentInGameDate), title: formatToUTCDateTime(props.currentInGameDate) },
-            { label: 'Last Updated', value: formatToLocalDate(meta.lastUpdate), title: formatToUTCDateTime(meta.lastUpdate) }
+            { label: 'Last Updated', value: formatToLocalDate(meta.lastUpdate), title: formatToLocalDateTime(meta.lastUpdate) }
         ];
     });
 
@@ -67,6 +67,11 @@
     function formatToCareerDate(date?: string | null) {
         if (typeof date !== 'string') return '?';
         return parseUtcDate(date).toFormat('yyyy-MM-dd');
+    }
+
+    function formatToLocalDateTime(date?: string | null) {
+        if (typeof date !== 'string') return '?';
+        return parseUtcDate(date).toLocal().toString();
     }
 
     function formatToUTCDateTime(date?: string | null) {

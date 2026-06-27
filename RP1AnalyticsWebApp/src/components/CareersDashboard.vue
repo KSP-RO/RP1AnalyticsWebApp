@@ -223,7 +223,7 @@
                                 <td>{{ career.difficultyLevel || '-' }}</td>
                                 <td>{{ career.careerPlaystyle || '-' }}</td>
                                 <td class="date-col">{{ formatDate(career.endDate) }}</td>
-                                <td class="date-col">{{ formatDate(career.lastUpdate) }}</td>
+                                <td class="date-col">{{ formatDateLocal(career.lastUpdate) }}</td>
                                 <td>{{ formatNumber(career.launchCount) }}</td>
                                 <td>{{ formatNumber(career.completedProgramCount) }}</td>
                                 <td>{{ formatNumber(career.completedMilestoneCount) }}</td>
@@ -415,8 +415,8 @@
             {
                 key: 'updateDate',
                 label: 'Latest Upload',
-                value: formatDateTimeGmt(summary.latestUpdate),
-                detail: 'GMT'
+                value: formatDateTimeLocal(summary.latestUpdate),
+                detail: 'Local time'
             }
         ];
     });
@@ -728,9 +728,14 @@
         return parseUtcDate(value).toFormat('yyyy-MM-dd');
     }
 
-    function formatDateTimeGmt(value?: string | null) {
+    function formatDateLocal(value?: string | null) {
         if (!value) return '-';
-        return parseUtcDate(value).toUTC().toFormat("yyyy-MM-dd HH:mm 'GMT'");
+        return parseUtcDate(value).toLocal().toFormat('yyyy-MM-dd');
+    }
+
+    function formatDateTimeLocal(value?: string | null) {
+        if (!value) return '-';
+        return parseUtcDate(value).toLocal().toFormat('yyyy-MM-dd HH:mm');
     }
 
     function dateValue(value?: string | null) {
