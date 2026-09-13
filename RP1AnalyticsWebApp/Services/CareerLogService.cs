@@ -631,7 +631,10 @@ namespace RP1AnalyticsWebApp.Services
             AddFailuresToLaunches(careerLogDto.FailureEvents, launches);
             AddExistingMetadataToLaunches(launches, existingItem.LaunchEventEntries);
 
-            var programs = careerLogDto.Programs.Select(p => new Models.Program(p)).ToList();
+            // Older RP-1 versions do not filter these out before submitting
+            var programs = careerLogDto.Programs.Select(p => new Models.Program(p))
+                                                .Where(p => !p.IsLikelyCompletedByConfigurableStart())
+                                                .ToList();
             List<LC> lcs = ParseLCs(careerLogDto);
             List<Leader> leaders = ParseLeaders(careerLogDto);
 

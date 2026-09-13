@@ -32,5 +32,24 @@ namespace RP1AnalyticsWebApp.Models
             RepPenaltyAssessed = p.RepPenaltyAssessed;
             Speed = (ProgramSpeed)p.Speed;
         }
+
+        /// <summary>
+        /// Uses the same heuristic as RP-1 itself: a completed program whose dates are all suspiciously
+        /// round was most likely granted by a configurable start scenario instead of being played out.
+        /// </summary>
+        public bool IsLikelyCompletedByConfigurableStart()
+        {
+            // Missing dates correspond to UT 0 in the game, which is a round date as well.
+            return Completed.HasValue &&
+                   IsSuspiciouslyRoundDate(Accepted) &&
+                   (!ObjectivesCompleted.HasValue || IsSuspiciouslyRoundDate(ObjectivesCompleted.Value)) &&
+                   IsSuspiciouslyRoundDate(Completed.Value);
+        }
+
+        private static bool IsSuspiciouslyRoundDate(DateTime dt)
+        {
+            // Apparently some scenarios assign minutes and hours to dates.
+            return dt.Second == 0 && dt.Millisecond == 0;
+        }
     }
 }
