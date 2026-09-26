@@ -18,10 +18,6 @@ namespace RP1AnalyticsWebApp.Models
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         [BsonRepresentation(BsonType.String)]
-        public required ConfigurableStart ConfigurableStart { get; set; }
-
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        [BsonRepresentation(BsonType.String)]
         public required FailureModel FailureModel { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]

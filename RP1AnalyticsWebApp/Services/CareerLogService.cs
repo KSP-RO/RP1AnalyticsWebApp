@@ -642,6 +642,7 @@ namespace RP1AnalyticsWebApp.Services
                 .Set(nameof(CareerLog.StartDate), periods.FirstOrDefault()?.StartDate ?? Constants.CareerEpoch)
                 .Set(nameof(CareerLog.EndDate), periods.LastOrDefault()?.EndDate ?? Constants.CareerEpoch)
                 .Set(nameof(CareerLog.LastUpdate), DateTime.UtcNow)
+                .Set(nameof(CareerLog.Scenario), careerLogDto.Scenario)
                 .Set(nameof(CareerLog.CareerLogEntries), periods)
                 .Set(nameof(CareerLog.ContractEventEntries), contracts)
                 .Set(nameof(CareerLog.Programs), programs)

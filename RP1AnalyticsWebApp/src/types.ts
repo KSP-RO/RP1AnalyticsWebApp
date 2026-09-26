@@ -20,6 +20,7 @@ export interface CareerLog {
     endDate: string;
     lastUpdate: string;
     race: string;
+    scenario: string | null;
     careerLogEntries: CareerLogPeriod[];
     contractEventEntries: ContractEvent[];
     lcs: LC[];
@@ -72,7 +73,6 @@ export interface CareerLogPeriod {
 export interface CareerLogMeta {
     careerPlaystyle: string;
     difficultyLevel: string;
-    configurableStart: string;
     failureModel: string;
     modRecency: string;
     versionTag: string;
@@ -83,6 +83,7 @@ export interface CareerLogMeta {
 
 export interface ExtendedCareerLogMeta extends CareerLogMeta {
     lastUpdate: string;
+    scenario: string | null;
 }
 
 export interface ContractEvent {

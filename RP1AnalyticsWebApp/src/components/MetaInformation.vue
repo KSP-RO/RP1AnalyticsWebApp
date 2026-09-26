@@ -24,12 +24,12 @@
 
 <script setup lang="ts">
     import { computed } from 'vue';
-    import type { CareerLogMeta } from 'types';
+    import type { ExtendedCareerLogMeta } from 'types';
     import { parseUtcDate } from '../utils/parseUtcDate';
     import * as showdown from 'showdown';
 
     const props = defineProps<{
-        meta?: CareerLogMeta;
+        meta?: ExtendedCareerLogMeta;
         title?: string | null;
         currentInGameDate?: string | null;
         isLoading?: boolean;
@@ -53,6 +53,7 @@
             { label: 'Difficulty', value: meta.difficultyLevel || 'Unknown' },
             { label: 'Failure Model', value: meta.failureModel || 'Unknown' },
             { label: 'RP-1 Version', value: versionFormatted.value },
+            { label: 'Scenario', value: meta.scenario || 'None', title: meta.scenario ?? undefined },
             { label: 'Creation Date', value: formatToLocalDate(meta.creationDate), title: formatToLocalDateTime(meta.creationDate) },
             { label: 'Current In-Game Date', value: formatToCareerDate(props.currentInGameDate), title: formatToUTCDateTime(props.currentInGameDate) },
             { label: 'Last Updated', value: formatToLocalDate(meta.lastUpdate), title: formatToLocalDateTime(meta.lastUpdate) }

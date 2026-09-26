@@ -48,9 +48,6 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Failure Mod")] public FailureModel FailureModel { get; set; }
 
-            [Display(Name = "Configurable Start (leave at 'NONE' if unused)")]
-            public ConfigurableStart ConfigurableStart { get; set; }
-
             [Display(Name = "Description")] public string DescriptionText { get; set; }
 
             [Display(Name = "Mod Recency")] public ModRecency ModRecency { get; set; }
@@ -173,7 +170,6 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             {
                 CareerPlaystyle = Form.CareerInput.CareerPlaystyle,
                 DifficultyLevel = Form.CareerInput.DifficultyLevel,
-                ConfigurableStart = Form.CareerInput.ConfigurableStart,
                 FailureModel = Form.CareerInput.FailureModel,
                 DescriptionText = Form.CareerInput.DescriptionText,
                 ModRecency = Form.CareerInput.ModRecency,

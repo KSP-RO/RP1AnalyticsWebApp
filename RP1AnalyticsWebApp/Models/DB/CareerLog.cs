@@ -20,6 +20,7 @@ namespace RP1AnalyticsWebApp.Models
         public required DateTime EndDate { get; set; }
         public required DateTime LastUpdate { get; set; }
         public string Race { get; set; }
+        public string Scenario { get; set; }
         public List<CareerLogPeriod> CareerLogEntries { get; set; }
         public List<ContractEvent> ContractEventEntries { get; set; }
         public List<LC> LCs { get; set; }

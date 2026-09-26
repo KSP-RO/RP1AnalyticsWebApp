@@ -6,6 +6,7 @@ namespace RP1AnalyticsWebApp.Models
     {
         public string JsonVer { get; set; }
         public string RP1Ver { get; set; }
+        public string Scenario { get; set; }
         public List<CareerLogPeriodDto> Periods { get; set; }
         public List<ContractEventDto> ContractEvents { get; set; }
         public List<FacilityConstructionDto> FacilityConstructions { get; set; }

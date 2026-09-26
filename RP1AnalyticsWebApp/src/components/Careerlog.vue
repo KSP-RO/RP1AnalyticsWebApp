@@ -195,6 +195,7 @@
             if (serial !== loadSerial) return;
             const meta = log.careerLogMeta as ExtendedCareerLogMeta;
             meta.lastUpdate = log.lastUpdate;
+            meta.scenario = log.scenario;
             isLoadingCareerMeta.value = false;
             careerLogMeta.value = meta;
             careerTitle.value = log.name;

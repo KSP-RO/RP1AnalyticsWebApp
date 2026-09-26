@@ -64,7 +64,6 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             {
                 CareerPlaystyle = Input.CareerPlaystyle,
                 DifficultyLevel = Input.DifficultyLevel,
-                ConfigurableStart = Input.ConfigurableStart,
                 FailureModel = Input.FailureModel,
                 DescriptionText = Input.DescriptionText,
                 ModRecency = Input.ModRecency,
