@@ -28,9 +28,9 @@
     import { parseUtcDate } from '../utils/parseUtcDate';
 
     const props = defineProps<{
-        items?: any[];
+        items?: any[] | null;
         dateField: string;
-        title?: string;
+        title?: string | null;
         extraFields?: { title: string; field: string }[];
     }>();
 

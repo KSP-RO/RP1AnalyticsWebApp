@@ -16,7 +16,7 @@
 <script setup lang="ts">
     import { ref, watch, useTemplateRef } from 'vue';
     import { activeFilters } from '../utils/activeFilters';
-    import type { ProgramRecord, ContractEventWithCareerInfo } from 'types';
+    import type { ProgramRecord, ContractRecord } from 'types';
     import ProgramRecordTypeSelect from '../components/ProgramRecordTypeSelect.vue';
     import ActiveFiltersSummary from '../components/ActiveFiltersSummary.vue';
     import ProgramRecordsTable from '../components/ProgramRecordsTable.vue';
@@ -51,7 +51,7 @@
         programName.value = program.programName;
     }
 
-    function showContractLeaderboard(contract: ContractEventWithCareerInfo) {
+    function showContractLeaderboard(contract: ContractRecord) {
         if (contractName.value === contract.contractInternalName) {
             contractModal.value!.show();
         }

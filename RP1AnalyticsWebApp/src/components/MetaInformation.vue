@@ -9,7 +9,7 @@
         </header>
 
         <div class="summary-grid">
-            <article v-for="fact in facts" :key="fact.label" class="summary-fact" :class="{ 'summary-fact--wide': fact.wide }">
+            <article v-for="fact in facts" :key="fact.label" class="summary-fact">
                 <span>{{ fact.label }}</span>
                 <strong :title="fact.title">{{ fact.value }}</strong>
             </article>
@@ -29,7 +29,7 @@
     import * as showdown from 'showdown';
 
     const props = defineProps<{
-        meta?: ExtendedCareerLogMeta;
+        meta?: ExtendedCareerLogMeta | null;
         title?: string | null;
         currentInGameDate?: string | null;
         isLoading?: boolean;

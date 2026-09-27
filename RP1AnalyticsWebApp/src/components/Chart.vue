@@ -108,6 +108,11 @@
         index: number;
     }
 
+    // Fx is part of Plotly's runtime API but missing from @types/plotly.js
+    interface PlotlyWithFx {
+        Fx: { hover(el: HTMLElement, evt: object, subplots: string[]): void };
+    }
+
     const ContractEventTypes = Object.freeze({ 'Accept': 0, 'Complete': 1, 'Fail': 2, 'Cancel': 3 });
     const MilestonesToShowOnChart = Object.freeze(new Map<string, string>([
         ['FirstScienceSat', 'FSO'],
@@ -125,9 +130,9 @@
     let hoverListenerSetUp = false;
 
     const props = defineProps<{
-        career?: CareerLog;
-        contractEvents?: BaseContractEvent[];
-        programs?: ProgramItem[];
+        career?: CareerLog | null;
+        contractEvents?: BaseContractEvent[] | null;
+        programs?: ProgramItem[] | null;
     }>();
 
     const isVisible = computed(() => props.career != null && props.contractEvents != null && props.programs != null);
@@ -360,11 +365,12 @@
             t.connectgaps = true;
         });
 
-        const layout: Layout = {
+        // Asserted rather than annotated: @types/plotly.js marks every Layout field as required
+        const layout = {
             hovermode: 'x unified',
             grid: {
                 columns: 1,
-                subplots: [['xy'], ['xy2'], ['xy3'], ['xy5']],
+                subplots: [['xy'], ['xy2'], ['xy3'], ['xy5']] as unknown as string[],    // @types/plotly.js wrongly types this as 1D
                 ygap: 0.1
             },
             xaxis: { title: 'Date', type: 'date', autorange: true },
@@ -382,7 +388,7 @@
             },
             font: { family: 'Poppins', size: 14 },
             margin: { t: 40, r: 20, b: 45, l: 80, pad: 4 }
-        };
+        } as Layout;
 
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             layout.paper_bgcolor = '#00000000';
@@ -426,7 +432,7 @@
                     plotlyEl.on('plotly_hover', eventData => {
                         if (hoverCurrentSubplotOnly) return;
                         if (eventData.xvals) {
-                            Plotly.Fx.hover(
+                            (Plotly as unknown as PlotlyWithFx).Fx.hover(
                                 plotlyEl,
                                 { xval: eventData.xvals[0] },
                                 ['xy', 'xy2', 'xy3', 'xy4', 'xy5', 'xy6']

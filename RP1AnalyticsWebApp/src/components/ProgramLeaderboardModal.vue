@@ -17,7 +17,7 @@
     import CareerDates from '../components/CareerDates.vue';
 
     const props = defineProps<{
-        programName?: string;
+        programName?: string | null;
         mode: string;
         filters: Filters;
     }>();

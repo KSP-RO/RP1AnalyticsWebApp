@@ -209,7 +209,8 @@
 
         // Make sure entries for currently logged in user appear first
         if (currentUser) {
-            const currentUserItem = arr.find(i => i.user === currentUser.userName);
+            const currentUserName = currentUser.userName;
+            const currentUserItem = arr.find(i => i.user === currentUserName);
             if (currentUserItem) {
                 const currentUserKey = getPlayerName(currentUserItem);
                 const currentUserGroup = groups.get(currentUserKey);

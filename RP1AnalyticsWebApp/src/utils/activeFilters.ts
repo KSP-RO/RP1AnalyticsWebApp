@@ -19,9 +19,12 @@ export function createEmptyFilters(): Filters {
     };
 }
 
-export function normalizeFilters(value: Partial<Filters> & Record<string, unknown> | null | undefined): Filters {
+export function normalizeFilters(input: Partial<Filters> | Record<string, unknown> | null | undefined): Filters {
     const empty = createEmptyFilters();
-    if (!value) return empty;
+    if (!input) return empty;
+
+    // May be current filters or legacy JSON from localStorage, so read fields untyped.
+    const value = input as Record<string, unknown>;
 
     const version = versionFilter(value);
 

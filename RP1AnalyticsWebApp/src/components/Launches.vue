@@ -121,6 +121,7 @@
     const { isVisible, isSpinnerShown, formatDate, formatDatePlusTime } = useDataTab('launches', props, items, isLoading, queryData);
 
     async function saveLaunchMetaChanges(launch: LaunchEventItem) {
+        if (!props.careerId) return;
         await patchLaunchMeta(props.careerId, launch.launchID, launch.metadata);
     }
 

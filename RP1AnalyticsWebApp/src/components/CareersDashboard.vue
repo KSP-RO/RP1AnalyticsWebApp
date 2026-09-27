@@ -271,7 +271,7 @@
 
 <script setup lang="ts">
     import { computed, onMounted, reactive, ref, watch } from 'vue';
-    import type { CareerOverviewBreakdownItem, CareerOverviewItem, CareerOverviewSnapshot, DateFilterMode, Filters } from '../types';
+    import type { CareerOverviewItem, CareerOverviewSnapshot, DateFilterMode, Filters } from '../types';
     import { fetchCareerOverview } from '../utils/api';
     import { createEmptyFilters } from '../utils/activeFilters';
     import { parseUtcDate } from '../utils/parseUtcDate';
@@ -689,15 +689,6 @@
         if (start) return `From ${formatDate(start)}`;
         if (end) return `To ${formatDate(end)}`;
         return 'Range';
-    }
-
-    function topBreakdown(items: CareerOverviewBreakdownItem[]) {
-        return items.slice(0, 5);
-    }
-
-    function breakdownStyle(count: number, items: CareerOverviewBreakdownItem[]) {
-        const max = Math.max(...items.map(i => i.count), 1);
-        return { width: `${Math.max(6, Math.round(count * 100 / max))}%` };
     }
 
     function recordsTitle(recordsOwned?: string[]) {
