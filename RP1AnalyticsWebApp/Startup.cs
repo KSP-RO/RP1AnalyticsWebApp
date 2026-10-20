@@ -195,6 +195,8 @@ namespace RP1AnalyticsWebApp
             var builder = new ODataConventionModelBuilder();
 
             var careerLog = builder.EntityType<CareerLog>();
+            // Token is the upload credential; keep it out of $filter/$orderby/$select entirely
+            careerLog.Ignore(c => c.Token);
             careerLog.HasMany(c => c.CareerLogEntries);
             careerLog.HasMany(c => c.LaunchEventEntries);
             //careerLog.HasMany(c => c.ContractEventEntries);
@@ -225,6 +227,7 @@ namespace RP1AnalyticsWebApp
             builder.EntitySet<CareerLogPeriod>("careerLogEntries");
 
             builder.EntitySet<CareerListItem>("careerListItems");
+            builder.EntityType<CareerListItem>().Ignore(c => c.Token);
 
             builder.EntitySet<ContractRecord>("contractRecords");
 
