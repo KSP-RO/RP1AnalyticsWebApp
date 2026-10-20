@@ -1,6 +1,7 @@
 import { UserConfig, defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { spawn } from 'child_process';
+import { X509Certificate } from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
@@ -15,13 +16,27 @@ const certificateName = process.env.npm_package_name || 'rp1analyticswebapp';
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
 
+// The dev cert is only valid for a year; a stale export would otherwise be served forever
+function isCertificateValid(): boolean {
+    if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
+        return false;
+    }
+
+    try {
+        const cert = new X509Certificate(fs.readFileSync(certFilePath));
+        return new Date(cert.validTo) > new Date();
+    } catch {
+        return false;
+    }
+}
+
 const cssPattern = /\.css$/;
 const imagePattern = /\.(png|jpe?g|gif|svg|webp|avif)$/;
 
 // Export Vite configuration
 export default defineConfig(async ({ command, mode, isSsrBuild, isPreview }) => {
-    // Ensure the certificate and key exist
-    if (command === 'serve' && (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath))) {
+    // Ensure the certificate and key exist and haven't expired
+    if (command === 'serve' && !isCertificateValid()) {
         // Wait for the certificate to be generated
         await new Promise<void>((resolve) => {
             spawn('dotnet', [
