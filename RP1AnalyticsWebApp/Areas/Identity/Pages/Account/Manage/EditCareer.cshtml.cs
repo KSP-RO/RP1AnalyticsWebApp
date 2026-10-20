@@ -41,6 +41,7 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             }
 
             CareerLog = await _careerLogService.GetByTokenAsync(RouteData.Values["token"].ToString());
+            if (CareerLog == null || CareerLog.UserLogin != User.Identity.Name) return NotFound();
 
             if (CareerLog.CareerLogMeta != null) InitFieldValues();
             else Input.CareerName = CareerLog.Name;
@@ -49,9 +50,13 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
-        public async Task<RedirectToPageResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
-            await _careerLogService.UpdateMetaByTokenAsync(RouteData.Values["token"].ToString(),
+            string token = RouteData.Values["token"].ToString();
+            CareerLog c = await _careerLogService.GetByTokenAsync(token);
+            if (c == null || c.UserLogin != User.Identity.Name) return NotFound();
+
+            await _careerLogService.UpdateMetaByTokenAsync(token,
                 Input.CareerName,
                 CreateCareerLogMeta());
 

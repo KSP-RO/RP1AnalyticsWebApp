@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +11,7 @@ using RP1AnalyticsWebApp.Services;
 
 namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize]
     public partial class IndexModel : PageModel
     {
         private readonly UserManager<WebAppUser> _userManager;
@@ -157,8 +159,11 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             return RedirectToPage();
         }
 
-        public async Task<RedirectToPageResult> OnPostDelete(string token)
+        public async Task<IActionResult> OnPostDelete(string token)
         {
+            CareerLog c = await _careerLogService.GetByTokenAsync(token);
+            if (c == null || c.UserLogin != User.Identity.Name) return NotFound();
+
             await _careerLogService.DeleteByTokenAsync(token);
 
             return new RedirectToPageResult("Index");
