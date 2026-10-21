@@ -50,7 +50,9 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Failure Mod")] public FailureModel FailureModel { get; set; }
 
-            [Display(Name = "Description")] public string DescriptionText { get; set; }
+            [MaxLength(CareerLogMeta.DescriptionMaxLength)]
+            [Display(Name = "Description")]
+            public string DescriptionText { get; set; }
 
             [Display(Name = "Mod Recency")] public ModRecency ModRecency { get; set; }
 

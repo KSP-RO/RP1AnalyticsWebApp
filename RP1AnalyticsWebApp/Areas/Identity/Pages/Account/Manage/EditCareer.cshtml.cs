@@ -56,6 +56,11 @@ namespace RP1AnalyticsWebApp.Areas.Identity.Pages.Account.Manage
             CareerLog c = await _careerLogService.GetByTokenAsync(token);
             if (c == null || c.UserLogin != User.Identity.Name) return NotFound();
 
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             await _careerLogService.UpdateMetaByTokenAsync(token,
                 Input.CareerName,
                 CreateCareerLogMeta());

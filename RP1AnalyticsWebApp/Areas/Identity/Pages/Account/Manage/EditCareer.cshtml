@@ -115,7 +115,8 @@
 
             <div class="field">
                 <label class="label" asp-for="Input.DescriptionText"></label>
-                <textarea id="description" asp-for="Input.DescriptionText" cols="150" rows="10"></textarea>
+                <textarea id="description" asp-for="Input.DescriptionText" cols="150" rows="10" maxlength="@CareerLogMeta.DescriptionMaxLength"></textarea>
+                <span asp-validation-for="Input.DescriptionText" class="text-danger"></span>
             </div>
 
             <div class="control">

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -8,6 +9,8 @@ namespace RP1AnalyticsWebApp.Models
     [BsonIgnoreExtraElements]
     public class CareerLogMeta
     {
+        public const int DescriptionMaxLength = 5000;
+
         [JsonConverter(typeof(JsonStringEnumConverter))]
         [BsonRepresentation(BsonType.String)]
         public required CareerPlaystyle CareerPlaystyle { get; set; }
@@ -34,6 +37,7 @@ namespace RP1AnalyticsWebApp.Models
         public DateTime? CreationDate { get; set; }
 
         [BsonRepresentation(BsonType.String)]
+        [MaxLength(DescriptionMaxLength)]
         public string DescriptionText { get; set; }
 
         public static int? CreateSortableVersion(Version version)
