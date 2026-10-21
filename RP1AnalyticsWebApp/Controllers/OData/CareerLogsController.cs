@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Hosting;
 using RP1AnalyticsWebApp.Models;
+using RP1AnalyticsWebApp.OData;
 using RP1AnalyticsWebApp.Services;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace RP1AnalyticsWebApp.Controllers.OData
     [ApiController]
     [ODataAttributeRouting]
     [Route("odata")]
+    [ValidateODataQuery]
     [EnableRateLimiting(Constants.RateLimitPolicies.Api)]
     public class CareerLogsController : ControllerBase
     {
