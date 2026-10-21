@@ -12,6 +12,7 @@
   "dependencies": {
     "@types/showdown": "^2.0.6",
     "buffer": "^6.0.3",
+    "dompurify": "^3.4.16",
     "luxon": "^3.5.0",
     "plotly.js-basic-dist": "^2.35.2",
     "showdown": "^2.1.0",

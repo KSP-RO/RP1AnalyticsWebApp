@@ -27,6 +27,7 @@
     import type { ExtendedCareerLogMeta } from 'types';
     import { parseUtcDate } from '../utils/parseUtcDate';
     import * as showdown from 'showdown';
+    import DOMPurify from 'dompurify';
 
     const props = defineProps<{
         meta?: ExtendedCareerLogMeta | null;
@@ -41,7 +42,8 @@
         const text = props.meta?.descriptionText?.trim();
         if (!text) return '';
         const converter = new showdown.Converter();
-        return converter.makeHtml(text);
+        // Description is user-provided; strip scripts, event handlers and javascript: URLs but keep formatting and images
+        return DOMPurify.sanitize(converter.makeHtml(text));
     });
 
     const facts = computed(() => {
