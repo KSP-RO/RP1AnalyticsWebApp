@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.Services;
 
@@ -17,14 +19,17 @@ namespace RP1AnalyticsWebApp.Controllers
         private readonly CareerLogService _careerLogService;
         private readonly CareerComparisonService _careerComparisonService;
         private readonly TelemetryClient _telemetry;
+        private readonly IWebHostEnvironment _environment;
 
-        private bool IsLocalhost => string.Equals(HttpContext.Request.Host.Host, "localhost", System.StringComparison.OrdinalIgnoreCase);
+        private bool IsDevelopment => _environment.IsDevelopment();
 
-        public CareerLogsController(CareerLogService careerLogService, CareerComparisonService careerComparisonService, TelemetryClient telemetry)
+        public CareerLogsController(CareerLogService careerLogService, CareerComparisonService careerComparisonService, TelemetryClient telemetry,
+            IWebHostEnvironment environment)
         {
             _careerLogService = careerLogService;
             _careerComparisonService = careerComparisonService;
             _telemetry = telemetry;
+            _environment = environment;
         }
 
         [HttpGet(Name = "GetCareerLogs")]
@@ -32,7 +37,7 @@ namespace RP1AnalyticsWebApp.Controllers
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerLogs");
             var res = await _careerLogService.GetAsync();
-            if (!IsLocalhost)
+            if (!IsDevelopment)
             {
                 res.ForEach(c => c.RemoveNonPublicData());
             }
@@ -67,7 +72,7 @@ namespace RP1AnalyticsWebApp.Controllers
                 return NotFound();
             }
 
-            if (!IsLocalhost)
+            if (!IsDevelopment)
             {
                 careerLog.RemoveNonPublicData();
             }

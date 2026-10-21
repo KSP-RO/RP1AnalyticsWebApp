@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
+using Microsoft.Extensions.Hosting;
 using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.Services;
 using System;
@@ -16,12 +18,14 @@ namespace RP1AnalyticsWebApp.Controllers.OData
     public class CareerLogsController : ControllerBase
     {
         private readonly CareerLogService _careerLogService;
+        private readonly IWebHostEnvironment _environment;
 
-        private bool IsLocalhost => string.Equals(HttpContext.Request.Host.Host, "localhost", System.StringComparison.OrdinalIgnoreCase);
+        private bool IsDevelopment => _environment.IsDevelopment();
 
-        public CareerLogsController(CareerLogService careerLogService)
+        public CareerLogsController(CareerLogService careerLogService, IWebHostEnvironment environment)
         {
             _careerLogService = careerLogService;
+            _environment = environment;
         }
 
         //[EnableQuery(AllowedQueryOptions = AllowedQueryOptions.Filter)]
@@ -29,7 +33,7 @@ namespace RP1AnalyticsWebApp.Controllers.OData
         public async Task<ActionResult<List<CareerLog>>> ODataGetCareerLogsAsync(ODataQueryOptions<CareerLog> queryOptions)
         {
             var res = await _careerLogService.GetAsync(queryOptions);
-            if (!IsLocalhost)
+            if (!IsDevelopment)
             {
                 res.ForEach(c => c.RemoveNonPublicData());
             }
@@ -45,7 +49,7 @@ namespace RP1AnalyticsWebApp.Controllers.OData
                 return NotFound();
             }
 
-            if (!IsLocalhost)
+            if (!IsDevelopment)
             {
                 careerLog.RemoveNonPublicData();
             }
