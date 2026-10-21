@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using RP1AnalyticsWebApp.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace RP1AnalyticsWebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableRateLimiting(Constants.RateLimitPolicies.Api)]
     public class UsersController : ControllerBase
     {
         private readonly UserManager<WebAppUser> _userManager;

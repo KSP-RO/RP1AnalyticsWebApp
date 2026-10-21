@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Hosting;
 using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.Services;
@@ -14,6 +15,7 @@ namespace RP1AnalyticsWebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableRateLimiting(Constants.RateLimitPolicies.Api)]
     public class CareerLogsController : ControllerBase
     {
         private readonly CareerLogService _careerLogService;
@@ -33,6 +35,7 @@ namespace RP1AnalyticsWebApp.Controllers
         }
 
         [HttpGet(Name = "GetCareerLogs")]
+        [EnableRateLimiting(Constants.RateLimitPolicies.FullDataset)]
         public async Task<ActionResult<List<CareerLog>>> GetCareerLogsAsync()
         {
             _telemetry.TrackEvent("CareerLogsController-GetCareerLogs");

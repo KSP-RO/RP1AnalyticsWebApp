@@ -11,5 +11,11 @@ namespace RP1AnalyticsWebApp
             public const string Admin = "Admin";
             public const string Member = "Member";
         }
+
+        public static class RateLimitPolicies
+        {
+            public const string Api = "Api";
+            public const string FullDataset = "FullDataset";
+        }
     }
 }

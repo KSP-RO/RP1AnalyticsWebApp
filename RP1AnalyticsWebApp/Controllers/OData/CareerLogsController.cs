@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Hosting;
 using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.Services;
@@ -15,6 +16,7 @@ namespace RP1AnalyticsWebApp.Controllers.OData
     [ApiController]
     [ODataAttributeRouting]
     [Route("odata")]
+    [EnableRateLimiting(Constants.RateLimitPolicies.Api)]
     public class CareerLogsController : ControllerBase
     {
         private readonly CareerLogService _careerLogService;
@@ -30,6 +32,7 @@ namespace RP1AnalyticsWebApp.Controllers.OData
 
         //[EnableQuery(AllowedQueryOptions = AllowedQueryOptions.Filter)]
         [HttpGet("careers", Name = "ODataGetCareerLogs")]
+        [EnableRateLimiting(Constants.RateLimitPolicies.FullDataset)]
         public async Task<ActionResult<List<CareerLog>>> ODataGetCareerLogsAsync(ODataQueryOptions<CareerLog> queryOptions)
         {
             var res = await _careerLogService.GetAsync(queryOptions);

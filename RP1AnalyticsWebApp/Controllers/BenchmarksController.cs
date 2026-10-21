@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using RP1AnalyticsWebApp.Models;
 using RP1AnalyticsWebApp.Services;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ namespace RP1AnalyticsWebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableRateLimiting(Constants.RateLimitPolicies.Api)]
     public class BenchmarksController : ControllerBase
     {
         private readonly HistoricalBenchmarkService _historicalBenchmarkService;

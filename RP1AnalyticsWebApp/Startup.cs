@@ -3,6 +3,7 @@ using AspNetCore.Identity.Mongo.Model;
 using OpenTelemetry.Trace;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Formatter.MediaType;
@@ -23,6 +24,7 @@ using RP1AnalyticsWebApp.OData;
 using RP1AnalyticsWebApp.Services;
 using System;
 using System.Linq;
+using System.Threading.RateLimiting;
 using Vite.AspNetCore;
 
 namespace RP1AnalyticsWebApp
@@ -136,6 +138,14 @@ namespace RP1AnalyticsWebApp
                 };
             });
 
+            services.AddRateLimiter(options =>
+            {
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+                options.AddPolicy(Constants.RateLimitPolicies.Api, httpContext => CreatePerClientLimiter(httpContext, 120));
+                // Endpoints that return every career with all of its data
+                options.AddPolicy(Constants.RateLimitPolicies.FullDataset, httpContext => CreatePerClientLimiter(httpContext, 10));
+            });
+
             services.AddHostedService<StartupHostedService>();
 
             services.AddViteServices(options =>
@@ -168,6 +178,7 @@ namespace RP1AnalyticsWebApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseRateLimiter();
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -188,6 +199,18 @@ namespace RP1AnalyticsWebApp
                 app.UseWebSockets();
                 app.UseViteDevelopmentServer(true);
             }
+        }
+
+        private static RateLimitPartition<string> CreatePerClientLimiter(HttpContext httpContext, int permitsPerMinute)
+        {
+            // App Service forwards the client address via X-Forwarded-For, which ASP.NET Core applies to RemoteIpAddress
+            return RateLimitPartition.GetFixedWindowLimiter(
+                httpContext.Connection.RemoteIpAddress?.ToString() ?? string.Empty,
+                _ => new FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = permitsPerMinute,
+                    Window = TimeSpan.FromMinutes(1)
+                });
         }
 
         private static IEdmModel GetEdmModel()
